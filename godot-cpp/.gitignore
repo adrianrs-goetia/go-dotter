@@ -1,12 +1,12 @@
 # Godot auto generated files
-*.gen.*
+# *.gen.*
 .import/
 .godot/
-/gen/
+# /gen/
 
 # Godot 3.x ignores
 include/gen
-src/gen
+# src/gen
 
 # Build configuration.
 /custom.py
