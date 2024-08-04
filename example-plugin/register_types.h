@@ -3,7 +3,7 @@
 
 #include <godot_cpp/core/class_db.hpp>
 
-void init_trialplugin_module(godot::ModuleInitializationLevel p_level);
-void uninit_trialplugin_module(godot::ModuleInitializationLevel p_level);
+void init_example_plugin_module(godot::ModuleInitializationLevel p_level);
+void uninit_example_plugin_module(godot::ModuleInitializationLevel p_level);
 
 #endif // GDEXAMPLEPLUGIN_REGISTER_TYPES_H

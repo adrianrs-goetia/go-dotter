@@ -4,38 +4,42 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "src/node3d_extension.h""
+#include "src/node3d_extension.h"
 
-void init_trialplugin_module(godot::ModuleInitializationLevel p_level)
+void init_example_plugin_module(godot::ModuleInitializationLevel p_level)
 {
-    if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE){
+    if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE)
+    {
         return;
     }
 
     GDREGISTER_CLASS(godot::Node3DExtension)
 }
 
-void uninit_trialplugin_module(godot::ModuleInitializationLevel p_level)
+void uninit_example_plugin_module(godot::ModuleInitializationLevel p_level)
 {
-    if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE){
+    if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE)
+    {
         return;
     }
 }
 
-extern "C" {
+/// Entry point for plugin
+// Name has to match ${PROJECT_NAME} from CMake configuration
+// In the CMake the '-' dashes will be replaced with underscore to match this function name
+extern "C"
+{
+    GDExtensionBool GDE_EXPORT example_plugin_init(
+        GDExtensionInterfaceGetProcAddress p_get_proc_address,
+        const GDExtensionClassLibraryPtr p_library,
+        GDExtensionInitialization *r_initialization)
+    {
+        godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
-GDExtensionBool GDE_EXPORT example_module_init(
-    GDExtensionInterfaceGetProcAddress p_get_proc_address,
-    const GDExtensionClassLibraryPtr p_library,
-    GDExtensionInitialization* r_initialization
-){
-    godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
+        init_obj.register_initializer(init_example_plugin_module);
+        init_obj.register_terminator(uninit_example_plugin_module);
+        init_obj.set_minimum_library_initialization_level(godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE);
 
-    init_obj.register_initializer(init_trialplugin_module);
-    init_obj.register_terminator(uninit_trialplugin_module);
-    init_obj.set_minimum_library_initialization_level(godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE);
-
-    return init_obj.init();
-}
-
+        return init_obj.init();
+    }
 }

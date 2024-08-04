@@ -1,7 +1,7 @@
 # Godot project specific
 out
 .godot
-.bin
+bin
 
 # CMake and work environment stuff
 .vscode/

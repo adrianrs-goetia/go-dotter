@@ -26,6 +26,7 @@ target_include_directories(
 # GDExtension file generation from gdextension.in
 string(TOLOWER "${PROJECT_NAME}.gdextension" GDEXTENSION_CONFIGURATION_FILE)
 string(TOLOWER ${PROJECT_NAME} GDEXTENSION_ENTRY_POINT)
+string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
 configure_file(gdextension.in ${GDEXTENSION_CONFIGURATION_FILE})
 
 # Build file locations
@@ -40,10 +41,10 @@ set_target_properties(${PROJECT_NAME}
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/${GDEXTENSION_CONFIGURATION_FILE}"
     CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/.bin/${PROJECT_NAME}
+    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
 )
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
     CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/.bin/${PROJECT_NAME}
+    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
 )
