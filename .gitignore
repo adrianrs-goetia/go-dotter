@@ -1,3 +1,8 @@
+# Godot project specific
 out
-.godot/
-godot-cpp/
+.godot
+.bin
+
+# CMake and work environment stuff
+.vscode/
+**/build/
