@@ -43,7 +43,6 @@ project(godot-cpp LANGUAGES CXX)
 option(GENERATE_TEMPLATE_GET_NODE "Generate a template version of the Node class's get_node." ON)
 option(GODOT_CPP_SYSTEM_HEADERS "Expose headers as SYSTEM." ON)
 option(GODOT_CPP_WARNING_AS_ERROR "Treat warnings as errors" OFF)
-option(HOT_RELOAD_ENABLED "Enable hot reloading of the plugin" ON)
 
 # Add path to modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")

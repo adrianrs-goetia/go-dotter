@@ -1,11 +1,13 @@
-project(example-plugin CXX)
+project(fsm-plugin CXX)
 
 # Shared library
 set(SOURCES
-    src/node3d_extension.cpp
+    src/state.cpp
+    src/playerstate.cpp
 )
 set(HEADER
-    src/node3d_extension.h
+    src/state.h
+    src/playerstate.h
 )
 add_library(
     ${PROJECT_NAME}
