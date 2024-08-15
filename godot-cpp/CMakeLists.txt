@@ -193,6 +193,7 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 	$<${compiler_is_msvc}:
 	TYPED_METHOD_BIND
 	>
+	# REAL_T_IS_DOUBLE 
 )
 
 target_link_options(${PROJECT_NAME} PRIVATE

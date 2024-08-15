@@ -1,5 +1,5 @@
 # GO-DOTTER 
-## trial project -- 3rd person ps1 based thingy
+## trial project -- 3rd person ps1 based MEDIEVIL thingy
 ### using Godot 4.2.2 
 https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_win64.exe.zip \
 https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz \

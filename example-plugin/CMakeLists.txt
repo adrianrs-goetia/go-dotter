@@ -38,14 +38,15 @@ set_target_properties(${PROJECT_NAME}
     RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
 )
 
+# DONT INSTALL EXAMPLE
 # Installation of .gdextension and .dll file into project
-install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/${GDEXTENSION_CONFIGURATION_FILE}"
-    CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
-)
-install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
-    CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
-)
+# install(
+#     FILES "${CMAKE_CURRENT_BINARY_DIR}/${GDEXTENSION_CONFIGURATION_FILE}"
+#     CONFIGURATIONS Release Debug
+#     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
+# )
+# install(
+#     FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+#     CONFIGURATIONS Release Debug
+#     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
+# )

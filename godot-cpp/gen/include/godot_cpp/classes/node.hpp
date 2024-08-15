@@ -275,8 +275,8 @@ public:
 	}
 	void set_thread_safe(const StringName &p_property, const Variant &p_value);
 	void notify_thread_safe(int32_t p_what);
-	virtual void _process(double p_delta);
-	virtual void _physics_process(double p_delta);
+	virtual void _process(real_t p_delta);
+	virtual void _physics_process(real_t p_delta);
 	virtual void _enter_tree();
 	virtual void _exit_tree();
 	virtual void _ready();

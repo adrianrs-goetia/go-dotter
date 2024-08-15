@@ -763,9 +763,9 @@ void Node::notify_thread_safe(int32_t p_what) {
 	internal::_call_native_mb_no_ret(_gde_method_bind, _owner, &p_what_encoded);
 }
 
-void Node::_process(double p_delta) {}
+void Node::_process(real_t p_delta) {}
 
-void Node::_physics_process(double p_delta) {}
+void Node::_physics_process(real_t p_delta) {}
 
 void Node::_enter_tree() {}
 
