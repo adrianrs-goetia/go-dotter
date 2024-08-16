@@ -6,6 +6,13 @@ https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2
 testing some stuff inside of Godot with GDExtensions for creating plugins. 
 
 
+## GAME
+3rd person
+Canvas for playing around with modelling and physics
+Whack object with stick
+Parry mechanic -> parry tennis balls || nukes
+
+
 ## godot-cpp
 ### branch 4.2 https://github.com/godotengine/godot-cpp/tree/4.2?tab=readme-ov-file
 Symbolic link your local godot-cpp clone, here in the root folder 

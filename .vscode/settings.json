@@ -1,8 +1,4 @@
 {
-    "cmake.generator": "Ninja",
-    "cmake.configureArgs": [
-        "-DEXPORT=ON"
-    ],
     "files.associations": {
         "list": "cpp",
         "algorithm": "cpp",
@@ -71,5 +67,9 @@
         "xtree": "cpp",
         "xutility": "cpp"
     },
+    "cmake.generator": "Ninja",
+    "cmake.configureArgs": [
+        "-DEXPORT=OFF"
+    ],
     "godotTools.editorPath.godot4": "c:\\dev\\godot\\bin\\Godot_v4.2.2-stable_win64.exe"
 }

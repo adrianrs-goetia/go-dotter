@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://h2pqh1vnci7k"]
+
+[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_o35cu"]
+[ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
+
+[node name="Mainscene" type="Node3D"]
+
+[node name="PlayerNode" parent="." instance=ExtResource("1_o35cu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98101, 0)
+
+[node name="TerrainBlock" parent="." instance=ExtResource("2_we13y")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.642828, 0.647642, 0.409062, -0.499209, -0.0508439, 0.864989, 0.581002, -0.760246, 0.290625, 0, 0, 0)
+shadow_enabled = true
+shadow_blur = 1.38

@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyjfpgx2xna18"]
+
+[ext_resource type="PackedScene" uid="uid://dbssbgo7e1nl5" path="res://models/dummy.blend" id="1_utca1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
+radius = 0.389134
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5wjqk"]
+sky_top_color = Color(0.573493, 0.313666, 0.329186, 1)
+sky_horizon_color = Color(0.772016, 0.554294, 0.879352, 1)
+sky_curve = 0.0724452
+sky_energy_multiplier = 0.9
+ground_bottom_color = Color(0.101453, 0.191907, 0.202777, 1)
+ground_horizon_color = Color(0.769738, 0.564014, 0.846341, 1)
+
+[sub_resource type="Sky" id="Sky_j0wsn"]
+sky_material = SubResource("ProceduralSkyMaterial_5wjqk")
+
+[sub_resource type="Environment" id="Environment_v17dg"]
+background_mode = 2
+sky = SubResource("Sky_j0wsn")
+
+[node name="PlayerNode" type="PlayerNode"]
+
+[node name="dummy" parent="." instance=ExtResource("1_utca1")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
+shape = SubResource("CapsuleShape3D_xmldd")
+
+[node name="CameraPivot" type="CameraPivot" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.27249, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.58395)
+environment = SubResource("Environment_v17dg")
+current = true
