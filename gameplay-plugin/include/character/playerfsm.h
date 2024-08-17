@@ -1,6 +1,6 @@
 
-#ifndef GD_CHARACTER_PLAYERFSM_PLUGIN_STEIKEMANNGAMEPLAY_H
-#define GD_CHARACTER_PLAYERFSM_PLUGIN_STEIKEMANNGAMEPLAY_H
+#ifndef GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
+#define GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
 
 #include <core/core.h>
 #include <core/godotincludes.h>
@@ -99,4 +99,4 @@ protected:
 	void _process_state(StateContext* context, StateReturn state_return);
 };
 
-#endif // GD_CHARACTER_PLAYERFSM_PLUGIN_STEIKEMANNGAMEPLAY_H
+#endif // GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H

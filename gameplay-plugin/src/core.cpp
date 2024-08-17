@@ -4,7 +4,8 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 	if (!expr) {
 		std::cerr << "Assert failed:\t" << msg << "\n"
 				  << "Expected:\t" << expr_str << "\n"
-				  << "Source:\n" << file << "\nline " << line << "\n";
+				  << "Source:\n"
+				  << file << "\nline " << line << "\n";
 		abort();
 	}
 }

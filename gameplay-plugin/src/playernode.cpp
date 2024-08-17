@@ -2,7 +2,6 @@
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
-#include <godot_cpp/classes/input_event_mouse_motion.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
 extern "C" {
@@ -72,10 +71,4 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 		m_state_context->input.last_valid_input_action = m_state_context->input.input_action;
 		m_state_context->input.input_action = InputAction{ EInputAction::NONE, EInputActionType::NONE };
 	}
-
-	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
-		printf("mouse movement = %s\n", String(p_mousemotion->get_velocity()).utf8().get_data());
-	}
-
-	input->set_mouse_mode(Input::MOUSE_MODE_HIDDEN);
 }

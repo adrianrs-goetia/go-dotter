@@ -1,5 +1,5 @@
-#ifndef GD_MAINNODE_PLUGIN_STEIKEMANNGAMEPLAY_H
-#define GD_MAINNODE_PLUGIN_STEIKEMANNGAMEPLAY_H
+#ifndef GD_MAINNODE_PLUGIN_GAMEPLAY_H
+#define GD_MAINNODE_PLUGIN_GAMEPLAY_H
 
 #include <core/core.h>
 #include <godot_cpp/classes/node.hpp>
@@ -16,4 +16,4 @@ public:
 	virtual void _unhandled_input(const Ref<InputEvent>& p_event) override;
 };
 
-#endif // GD_MAINNODE_PLUGIN_STEIKEMANNGAMEPLAY_H
+#endif // GD_MAINNODE_PLUGIN_GAMEPLAY_H

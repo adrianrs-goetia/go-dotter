@@ -1,5 +1,5 @@
-#ifndef GD_CORECORE_PLUGIN_STEIKEMANNGAMEPLAY_H
-#define GD_CORECORE_PLUGIN_STEIKEMANNGAMEPLAY_H
+#ifndef GD_CORECORE_PLUGIN_GAMEPLAY_H
+#define GD_CORECORE_PLUGIN_GAMEPLAY_H
 
 #include <chrono>
 #include <godot_cpp/classes/engine.hpp>
@@ -22,31 +22,45 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 			PropertyInfo(Variant::STRING, "class_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT), "",           \
 			"get_class_name");
 
+// From the context of the MainScene
+namespace NodePaths {
+
+	constexpr const char* player = "/root/Mainscene/PlayerNode";
+	constexpr const char* camera_pivot = "/root/Mainscene/PlayerNode/CameraPivot";
+
+} //namespace NodePaths
+
 namespace InputMap {
 
-constexpr const char* move_left = "move_left";
-constexpr const char* move_right = "move_right";
-constexpr const char* move_forward = "move_forward";
-constexpr const char* move_backward = "move_backward";
+	constexpr const char* move_left = "move_left";
+	constexpr const char* move_right = "move_right";
+	constexpr const char* move_forward = "move_forward";
+	constexpr const char* move_backward = "move_backward";
 
-constexpr const char* jump = "jump";
-constexpr const char* attack = "attack";
-constexpr const char* parry = "parry";
-constexpr const char* grapplehook = "grapplehook";
+	constexpr const char* jump = "jump";
+	constexpr const char* attack = "attack";
+	constexpr const char* parry = "parry";
+	constexpr const char* grapplehook = "grapplehook";
 
-constexpr const char* camera_left = "camera_left";
-constexpr const char* camera_right = "camera_right";
-constexpr const char* camera_up = "camera_up";
-constexpr const char* camera_down = "camera_down";
+	constexpr const char* camera_left = "camera_left";
+	constexpr const char* camera_right = "camera_right";
+	constexpr const char* camera_up = "camera_up";
+	constexpr const char* camera_down = "camera_down";
 
-constexpr const char* pause_menu = "pause_menu";
-constexpr const char* toggle_screen_mode = "toggle_screen_mode";
+	constexpr const char* pause_menu = "pause_menu";
+	constexpr const char* toggle_screen_mode = "toggle_screen_mode";
 
-// Some Built-in actions
-constexpr const char* ui_up = "ui_up";
-constexpr const char* ui_down = "ui_down";
+	// Some Built-in actions
+	constexpr const char* ui_up = "ui_up";
+	constexpr const char* ui_down = "ui_down";
 
 } // namespace InputMap
+
+enum class EInputMode : uint8_t {
+	NONE = 0,
+	MOUSE_N_KEYBOARD = 1,
+	JOYPAD = 2,
+};
 
 enum class EInputAction : int {
 	NONE = -1,
@@ -101,4 +115,4 @@ struct InputAction {
 	}
 };
 
-#endif // GD_CORECORE_PLUGIN_STEIKEMANNGAMEPLAY_H
+#endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
