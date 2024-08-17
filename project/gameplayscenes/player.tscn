@@ -30,11 +30,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
 shape = SubResource("CapsuleShape3D_xmldd")
 
 [node name="CameraPivot" type="CameraPivot" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.972076, 0.234667, 0, -0.234667, 0.972076, 0, 1.35, 0)
+spring_length_impl = 6.18
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
 collision_mask = 2147483648
-spring_length = 5.535
+spring_length = 6.18
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.19209e-07, 5.58395)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38419e-07, 6.0202)
 environment = SubResource("Environment_v17dg")
 current = true

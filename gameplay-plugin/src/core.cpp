@@ -10,7 +10,8 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 	}
 }
 
-ELog g_loglevel = ELog::INFO;
+ELog g_loglevel = ELog::DEBUG;
+
 constexpr const char* color_default = "0";
 constexpr const char* color_fg_gray = "37";
 constexpr const char* color_fg_green = "32";

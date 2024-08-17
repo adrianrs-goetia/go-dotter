@@ -1,8 +1,8 @@
 #ifndef GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 
-#include <core/core.h>
 #include <character/playerfsm.h>
+#include <core/core.h>
 
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event.hpp>
@@ -16,13 +16,17 @@ class CameraPivot : public SpringArm3D {
 	GDCLASS(CameraPivot, SpringArm3D)
 
 public:
-
 public:
 	GETNAME(CameraPivot)
 	static void _bind_methods();
 
+	void _ready() override;
 	void _enter_tree() override;
+	void _process(float delta) override;
 	void _physics_process(float delta) override;
+
+	// void set_length_impl(float p_length);
+	// float get_length_impl() const;
 
 	void process(StateContext* context, float delta);
 	void process_input(StateContext* context, Input* input, const Ref<InputEvent>& p_event, float delta);
