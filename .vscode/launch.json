@@ -13,7 +13,7 @@
                 "--path", "${workspaceFolder}/project"
             ],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            // "cwd": "${fileDirname}",
             "environment": [],
             "console": "externalTerminal",
             "preLaunchTask": "cmake build", 

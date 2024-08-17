@@ -1,6 +1,7 @@
 #include <mainnode.h>
 #include <godot_cpp/classes/display_server.hpp>
 #include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/input_event_key.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 
 using namespace godot;
@@ -28,6 +29,15 @@ void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 		}
 		else {
 			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
+		}
+	}
+	if (auto* keyevent = cast_to<InputEventKey>(*p_event)) {
+		switch (keyevent->get_keycode()) {
+			case KEY_7: return set_log_level(ELog::DEBUG);
+			case KEY_8: return set_log_level(ELog::INFO);
+			case KEY_9: return set_log_level(ELog::WARN);
+			case KEY_0: return set_log_level(ELog::ERROR);
+			default: break;
 		}
 	}
 }

@@ -24,9 +24,20 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 			"get_class_name");
 
 enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };
+#define LOG(level, msg, ...)                                                                                           \
+	{                                                                                                                  \
+		const char* message = ("%s :: %s", __FUNCTION__, msg);                                                         \
+		Log(ELog::level, message, ##__VA_ARGS__);                                                                      \
+	}
+void set_log_level(ELog level);
+const char* get_string(ELog level);
 void Log(ELog level, const char* msg);
+void Log(ELog level, const char* msg, const char* arg);
+void Log(ELog level, const char* msg, const float arg);
 void Log(ELog level, const char* msg, const godot::Vector2 v2);
 void Log(ELog level, const char* msg, const godot::Vector3 v2);
+void Log(ELog level, const char* msg, const godot::Quaternion q);
+void Log(ELog level, const char* msg, const godot::Transform3D t);
 
 // From the context of the MainScene
 namespace NodePaths {

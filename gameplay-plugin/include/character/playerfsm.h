@@ -82,8 +82,9 @@ public:
 	CLASSNAME(bool one_frame) : PlayerState(one_frame) {}                                                              \
 	CLASSNAME() : PlayerState() {}                                                                                     \
                                                                                                                        \
-	template <typename T> const char* _get_class_name() { return typeid(T).name(); }                                   \
-	virtual const char* get_class_name() override { return _get_class_name<CLASSNAME>(); }
+	virtual const char* get_class_name() override { return #CLASSNAME; }
+	// template <typename T> const char* _get_class_name() { return typeid(T).name(); }                                   \
+	// virtual const char* get_class_name() override { return _get_class_name<CLASSNAME>(); }
 };
 
 // statuses: Free, HoldingEnemy

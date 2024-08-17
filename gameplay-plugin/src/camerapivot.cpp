@@ -84,7 +84,6 @@ void CameraPivot::process_input(
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
 		context->input.mode = EInputMode::MOUSE_N_KEYBOARD;
 		Vector2 motion = p_mousemotion->get_velocity();
-		Log(ELog::INFO, "motion", motion);
 
 		Vector3 current_rot = get_rotation_degrees();
 		current_rot.y += motion.x * MNKMOTION_X_MULTIPLIER * delta * (MNK_X_INVERTED ? 1.f : -1.f);

@@ -4,7 +4,7 @@ PlayerState::PlayerState(bool one_frame) : m_guarantee_one_frame(one_frame) {}
 PlayerState::PlayerState() {}
 
 StateReturn PlayerState::enter_state(StateContext* context) {
-	Log(ELog::DEBUG, ("Entering state %s", get_class_name()));
+	LOG(DEBUG, "Entering state ", get_class_name());
 	return {};
 }
 
@@ -45,11 +45,11 @@ void PlayerFSM::handle_input(StateContext* context, float delta) {
 void PlayerFSM::_process_state(StateContext* context, StateReturn state_return) {
 	ASSERT(m_current_state != nullptr, "");
 	switch (state_return.ret_enum) {
-		case EStateReturn::CONTINUE:
-			break;
+		case EStateReturn::CONTINUE: break;
 		case EStateReturn::NEW_STATE:
 			if (!state_return.new_state) {
 				Log(ELog::WARN, ("%s new state was nullptr. Abort changing state", __FUNCTION__));
+				LOG(WARN, "new state was nullptr. Abort changing state");
 				break;
 			}
 			m_current_state->exit_state(context);
@@ -58,7 +58,6 @@ void PlayerFSM::_process_state(StateContext* context, StateReturn state_return) 
 			m_current_state = state_return.new_state;
 			_process_state(context, m_current_state->enter_state(context));
 			break;
-		default:
-			break;
+		default: break;
 	}
 }
