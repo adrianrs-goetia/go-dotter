@@ -10,31 +10,33 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 	}
 }
 
-// fg bg
-// foreground background
+ELog g_loglevel = ELog::INFO;
 constexpr const char* color_default = "0";
 constexpr const char* color_fg_gray = "37";
 constexpr const char* color_fg_green = "32";
 constexpr const char* color_fg_yellow = "33";
 constexpr const char* color_fg_red = "31";
 
-Log::Level level = Log::Level::INFO;
-
-void Log::debug(const char* msg) {
-	if (level <= Log::Level::DEBUG)
-		::printf("\033[%sm %s \n\033[%sm", color_fg_gray, msg, color_default);
+const char* color_from_level(ELog level) {
+	switch (level) {
+		case ELog::DEBUG: return color_fg_gray;
+		case ELog::INFO: return color_fg_green;
+		case ELog::WARN: return color_fg_yellow;
+		case ELog::ERROR: return color_fg_red;
+		default: return "";
+	}
 }
-void Log::info(const char* msg) {
-	if (level <= Log::Level::INFO)
-		::printf("\033[%sm %s \n\033[%sm", color_fg_green, msg, color_default);
+void Log(ELog level, const char* msg) {
+	if (level >= g_loglevel)
+		::printf("\033[%sm %s \n\033[%sm", color_from_level(level), msg, color_default);
 }
-
-void Log::warn(const char* msg) {
-	if (level <= Log::Level::WARN)
-		::printf("\033[%sm %s \n\033[%sm", color_fg_yellow, msg, color_default);
+void Log(ELog level, const char* msg, const godot::Vector2 v2) {
+	if (level >= g_loglevel)
+		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(v2).utf8().get_data(),
+				color_default);
 }
-
-void Log::error(const char* msg) {
-	if (level <= Log::Level::ERROR)
-		::printf("\033[%sm %s \n\033[%sm", color_fg_red, msg, color_default);
+void Log(ELog level, const char* msg, const godot::Vector3 v3) {
+	if (level >= g_loglevel)
+		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(v3).utf8().get_data(),
+				color_default);
 }

@@ -1,6 +1,7 @@
 #ifndef GD_CORECORE_PLUGIN_GAMEPLAY_H
 #define GD_CORECORE_PLUGIN_GAMEPLAY_H
 
+#include "godotincludes.h"
 #include <chrono>
 #include <godot_cpp/classes/engine.hpp>
 #include <typeinfo>
@@ -22,13 +23,10 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 			PropertyInfo(Variant::STRING, "class_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT), "",           \
 			"get_class_name");
 
-struct Log {
-	enum class Level : uint8_t { DEBUG, INFO, WARN, ERROR };
-	static void debug(const char* msg);
-	static void info(const char* msg);
-	static void warn(const char* msg);
-	static void error(const char* msg);
-};
+enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };
+void Log(ELog level, const char* msg);
+void Log(ELog level, const char* msg, const godot::Vector2 v2);
+void Log(ELog level, const char* msg, const godot::Vector3 v2);
 
 // From the context of the MainScene
 namespace NodePaths {
@@ -119,7 +117,6 @@ struct InputAction {
 				std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - timestamp)
 						.count();
 		float sec = (duration_since_timestamp / 1e9);
-		// printf("timeframe: %f -- time: %f \n", timeframe_seconds, sec);
 		return (duration_since_timestamp / 1e9) < timeframe_seconds;
 	}
 };

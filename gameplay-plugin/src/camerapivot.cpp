@@ -16,7 +16,7 @@ constexpr float MNKMOTION_X_MULTIPLIER = 0.6f;
 constexpr float MNKMOTION_Y_MULTIPLIER = 0.6f;
 
 constexpr bool JOYMOTION_X_INVERTED = false;
-constexpr bool JOYMOTION_Y_INVERTED = false;
+constexpr bool JOYMOTION_Y_INVERTED = true;
 constexpr float JOYMOTION_X_MULTIPLIER = 100.f;
 constexpr float JOYMOTION_Y_MULTIPLIER = 100.f;
 
@@ -26,7 +26,7 @@ void CameraPivot::_enter_tree() {
 	RETURN_IF_EDITOR
 	m_playernode = get_node<PlayerNode>(NodePath(NodePaths::player));
 	if (!m_playernode) {
-		printf("%s camera pivot failed to fetch playernode \n", __FUNCTION__);
+		Log(ELog::WARN, "camera pivot failed to fetch playernode");
 	}
 }
 
@@ -35,7 +35,6 @@ void CameraPivot::_process(float delta) {
 	switch (m_inputmode) {
 		case EInputMode::JOYPAD: {
 			Vector3 current_rot = get_rotation_degrees();
-			Log::debug(("%s", String(current_rot).utf8().get_data()));
 			current_rot.y += m_inputmotion.x;
 			current_rot.x += m_inputmotion.y;
 			current_rot.x = Math::clamp(current_rot.x, X_MIN_ROTATION, X_MAX_ROTATION);
@@ -57,7 +56,7 @@ void CameraPivot::_input(const Ref<InputEvent>& p_event) {
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
 		m_inputmode = EInputMode::MOUSE_N_KEYBOARD;
 		Vector2 motion = p_mousemotion->get_velocity();
-		Log::info(("%s", String(motion).utf8().get_data()));
+		Log(ELog::INFO, "motion", motion);
 
 		Vector3 current_rot = get_rotation_degrees();
 		current_rot.y += motion.x * MNKMOTION_X_MULTIPLIER * delta * (MNK_X_INVERTED ? 1.f : -1.f);

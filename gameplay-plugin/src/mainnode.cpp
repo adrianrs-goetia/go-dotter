@@ -15,7 +15,7 @@ void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 		}
 	}
 	else if (p_event->is_action_pressed(InputMap::toggle_screen_mode)) {
-		printf("Toggle primary screen mode");
+		Log(ELog::DEBUG, "Toggle primary screen mode");
 		DisplayServer* ds = DisplayServer::get_singleton();
 		int prime_screen = ds->get_primary_screen();
 		DisplayServer::WindowMode mode = ds->window_get_mode(prime_screen);

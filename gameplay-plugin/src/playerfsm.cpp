@@ -4,7 +4,7 @@ PlayerState::PlayerState(bool one_frame) : m_guarantee_one_frame(one_frame) {}
 PlayerState::PlayerState() {}
 
 StateReturn PlayerState::enter_state(StateContext* context) {
-	printf("Entering state %s \n", get_class_name());
+	Log(ELog::DEBUG, ("Entering state %s", get_class_name()));
 	return {};
 }
 
@@ -49,7 +49,7 @@ void PlayerFSM::_process_state(StateContext* context, StateReturn state_return) 
 			break;
 		case EStateReturn::NEW_STATE:
 			if (!state_return.new_state) {
-				printf("%s new state was nullptr. Abort changing state", __FUNCTION__);
+				Log(ELog::WARN, ("%s new state was nullptr. Abort changing state", __FUNCTION__));
 				break;
 			}
 			m_current_state->exit_state(context);
