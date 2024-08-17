@@ -52,9 +52,9 @@ public:
 	virtual StateReturn enter_state(StateContext* context);
 	virtual void exit_state(StateContext* context);
 
-	virtual StateReturn process(StateContext* context, real_t delta) = 0;
-	virtual StateReturn physics_process(StateContext* context, real_t delta) = 0;
-	virtual StateReturn handle_input(StateContext* context, real_t delta) = 0;
+	virtual StateReturn process(StateContext* context, float delta) = 0;
+	virtual StateReturn physics_process(StateContext* context, float delta) = 0;
+	virtual StateReturn handle_input(StateContext* context, float delta) = 0;
 	virtual const char* get_class_name() = 0;
 
 	virtual void deferred_actions(StateContext* context) { m_guarantee_one_frame = false; }
@@ -78,9 +78,9 @@ public:
 public:
 	virtual void _exit_tree();
 
-	void process(StateContext* context, real_t delta);
-	void physics_process(StateContext* context, real_t delta);
-	void handle_input(StateContext* context, real_t delta);
+	void process(StateContext* context, float delta);
+	void physics_process(StateContext* context, float delta);
+	void handle_input(StateContext* context, float delta);
 	void deferred_actions(StateContext* context); // After physics_process and handle input
 
 	template <typename T> void force_set_state(StateContext* context) {

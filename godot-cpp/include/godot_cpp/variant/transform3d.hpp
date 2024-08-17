@@ -49,11 +49,11 @@ struct _NO_DISCARD_ Transform3D {
 	void affine_invert();
 	Transform3D affine_inverse() const;
 
-	Transform3D rotated(const Vector3 &p_axis, real_t p_angle) const;
-	Transform3D rotated_local(const Vector3 &p_axis, real_t p_angle) const;
+	Transform3D rotated(const Vector3 &p_axis, float p_angle) const;
+	Transform3D rotated_local(const Vector3 &p_axis, float p_angle) const;
 
-	void rotate(const Vector3 &p_axis, real_t p_angle);
-	void rotate_basis(const Vector3 &p_axis, real_t p_angle);
+	void rotate(const Vector3 &p_axis, float p_angle);
+	void rotate_basis(const Vector3 &p_axis, float p_angle);
 
 	void set_look_at(const Vector3 &p_eye, const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0));
 	Transform3D looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3(0, 1, 0)) const;
@@ -62,7 +62,7 @@ struct _NO_DISCARD_ Transform3D {
 	Transform3D scaled(const Vector3 &p_scale) const;
 	Transform3D scaled_local(const Vector3 &p_scale) const;
 	void scale_basis(const Vector3 &p_scale);
-	void translate_local(real_t p_tx, real_t p_ty, real_t p_tz);
+	void translate_local(float p_tx, float p_ty, float p_tz);
 	void translate_local(const Vector3 &p_translation);
 	Transform3D translated(const Vector3 &p_translation) const;
 	Transform3D translated_local(const Vector3 &p_translation) const;
@@ -105,10 +105,10 @@ struct _NO_DISCARD_ Transform3D {
 
 	void operator*=(const Transform3D &p_transform);
 	Transform3D operator*(const Transform3D &p_transform) const;
-	void operator*=(const real_t p_val);
-	Transform3D operator*(const real_t p_val) const;
+	void operator*=(const float p_val);
+	Transform3D operator*(const float p_val) const;
 
-	Transform3D interpolate_with(const Transform3D &p_transform, real_t p_c) const;
+	Transform3D interpolate_with(const Transform3D &p_transform, float p_c) const;
 
 	_FORCE_INLINE_ Transform3D inverse_xform(const Transform3D &t) const {
 		Vector3 v = t.origin - origin;
@@ -116,7 +116,7 @@ struct _NO_DISCARD_ Transform3D {
 				basis.xform(v));
 	}
 
-	void set(real_t xx, real_t xy, real_t xz, real_t yx, real_t yy, real_t yz, real_t zx, real_t zy, real_t zz, real_t tx, real_t ty, real_t tz) {
+	void set(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz, float tx, float ty, float tz) {
 		basis.set(xx, xy, xz, yx, yy, yz, zx, zy, zz);
 		origin.x = tx;
 		origin.y = ty;
@@ -128,7 +128,7 @@ struct _NO_DISCARD_ Transform3D {
 	Transform3D() {}
 	Transform3D(const Basis &p_basis, const Vector3 &p_origin = Vector3());
 	Transform3D(const Vector3 &p_x, const Vector3 &p_y, const Vector3 &p_z, const Vector3 &p_origin);
-	Transform3D(real_t xx, real_t xy, real_t xz, real_t yx, real_t yy, real_t yz, real_t zx, real_t zy, real_t zz, real_t ox, real_t oy, real_t oz);
+	Transform3D(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz, float ox, float oy, float oz);
 };
 
 _FORCE_INLINE_ Vector3 Transform3D::xform(const Vector3 &p_vector) const {
@@ -171,8 +171,8 @@ _FORCE_INLINE_ AABB Transform3D::xform(const AABB &p_aabb) const {
 	for (int i = 0; i < 3; i++) {
 		tmin[i] = tmax[i] = origin[i];
 		for (int j = 0; j < 3; j++) {
-			real_t e = basis[i][j] * min[j];
-			real_t f = basis[i][j] * max[j];
+			float e = basis[i][j] * min[j];
+			float f = basis[i][j] * max[j];
 			if (e < f) {
 				tmin[i] += e;
 				tmax[i] += f;
@@ -247,7 +247,7 @@ _FORCE_INLINE_ Plane Transform3D::xform_fast(const Plane &p_plane, const Basis &
 	Vector3 normal = p_basis_inverse_transpose.xform(p_plane.normal);
 	normal.normalize();
 
-	real_t d = normal.dot(point);
+	float d = normal.dot(point);
 	return Plane(normal, d);
 }
 
@@ -267,7 +267,7 @@ _FORCE_INLINE_ Plane Transform3D::xform_inv_fast(const Plane &p_plane, const Tra
 	Vector3 normal = p_basis_transpose.xform(p_plane.normal);
 	normal.normalize();
 
-	real_t d = normal.dot(point);
+	float d = normal.dot(point);
 	return Plane(normal, d);
 }
 

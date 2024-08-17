@@ -482,7 +482,7 @@ def generate(env):
         env.Append(CPPDEFINES=["NDEBUG"])
 
     if env["precision"] == "double":
-        env.Append(CPPDEFINES=["REAL_T_IS_DOUBLE"])
+        env.Append(CPPDEFINES=["float_IS_DOUBLE"])
 
     # Allow detecting when building as a GDExtension.
     env.Append(CPPDEFINES=["GDEXTENSION"])

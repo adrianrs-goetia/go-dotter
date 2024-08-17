@@ -49,7 +49,7 @@ struct _NO_DISCARD_ Rect2 {
 	const Vector2 &get_size() const { return size; }
 	void set_size(const Vector2 &p_size) { size = p_size; }
 
-	real_t get_area() const { return size.width * size.height; }
+	float get_area() const { return size.width * size.height; }
 
 	_FORCE_INLINE_ Vector2 get_center() const { return position + (size * 0.5f); }
 
@@ -90,32 +90,32 @@ struct _NO_DISCARD_ Rect2 {
 		return true;
 	}
 
-	inline real_t distance_to(const Vector2 &p_point) const {
+	inline float distance_to(const Vector2 &p_point) const {
 #ifdef MATH_CHECKS
 		if (unlikely(size.x < 0 || size.y < 0)) {
 			ERR_PRINT("Rect2 size is negative, this is not supported. Use Rect2.abs() to get a Rect2 with a positive size.");
 		}
 #endif
-		real_t dist = 0.0;
+		float dist = 0.0;
 		bool inside = true;
 
 		if (p_point.x < position.x) {
-			real_t d = position.x - p_point.x;
+			float d = position.x - p_point.x;
 			dist = d;
 			inside = false;
 		}
 		if (p_point.y < position.y) {
-			real_t d = position.y - p_point.y;
+			float d = position.y - p_point.y;
 			dist = inside ? d : Math::min(dist, d);
 			inside = false;
 		}
 		if (p_point.x >= (position.x + size.x)) {
-			real_t d = p_point.x - (position.x + size.x);
+			float d = p_point.x - (position.x + size.x);
 			dist = inside ? d : Math::min(dist, d);
 			inside = false;
 		}
 		if (p_point.y >= (position.y + size.y)) {
-			real_t d = p_point.y - (position.y + size.y);
+			float d = p_point.y - (position.y + size.y);
 			dist = inside ? d : Math::min(dist, d);
 			inside = false;
 		}
@@ -214,20 +214,20 @@ struct _NO_DISCARD_ Rect2 {
 	bool operator==(const Rect2 &p_rect) const { return position == p_rect.position && size == p_rect.size; }
 	bool operator!=(const Rect2 &p_rect) const { return position != p_rect.position || size != p_rect.size; }
 
-	inline Rect2 grow(real_t p_amount) const {
+	inline Rect2 grow(float p_amount) const {
 		Rect2 g = *this;
 		g.grow_by(p_amount);
 		return g;
 	}
 
-	inline void grow_by(real_t p_amount) {
+	inline void grow_by(float p_amount) {
 		position.x -= p_amount;
 		position.y -= p_amount;
 		size.width += p_amount * 2;
 		size.height += p_amount * 2;
 	}
 
-	inline Rect2 grow_side(Side p_side, real_t p_amount) const {
+	inline Rect2 grow_side(Side p_side, float p_amount) const {
 		Rect2 g = *this;
 		g = g.grow_individual((SIDE_LEFT == p_side) ? p_amount : 0,
 				(SIDE_TOP == p_side) ? p_amount : 0,
@@ -236,11 +236,11 @@ struct _NO_DISCARD_ Rect2 {
 		return g;
 	}
 
-	inline Rect2 grow_side_bind(uint32_t p_side, real_t p_amount) const {
+	inline Rect2 grow_side_bind(uint32_t p_side, float p_amount) const {
 		return grow_side(Side(p_side), p_amount);
 	}
 
-	inline Rect2 grow_individual(real_t p_left, real_t p_top, real_t p_right, real_t p_bottom) const {
+	inline Rect2 grow_individual(float p_left, float p_top, float p_right, float p_bottom) const {
 		Rect2 g = *this;
 		g.position.x -= p_left;
 		g.position.y -= p_top;
@@ -284,7 +284,7 @@ struct _NO_DISCARD_ Rect2 {
 	}
 
 	_FORCE_INLINE_ Rect2 abs() const {
-		return Rect2(Point2(position.x + Math::min(size.x, (real_t)0), position.y + Math::min(size.y, (real_t)0)), size.abs());
+		return Rect2(Point2(position.x + Math::min(size.x, (float)0), position.y + Math::min(size.y, (float)0)), size.abs());
 	}
 
 	Vector2 get_support(const Vector2 &p_normal) const {
@@ -362,7 +362,7 @@ struct _NO_DISCARD_ Rect2 {
 	operator Rect2i() const;
 
 	Rect2() {}
-	Rect2(real_t p_x, real_t p_y, real_t p_width, real_t p_height) :
+	Rect2(float p_x, float p_y, float p_width, float p_height) :
 			position(Point2(p_x, p_y)),
 			size(Size2(p_width, p_height)) {
 	}

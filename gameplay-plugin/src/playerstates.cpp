@@ -6,7 +6,7 @@ constexpr float ONGROUND_DECELARTION = 30.0f;
 
 constexpr float GRAVITY = 9.81f;
 
-// PlayerOnGroundIdleState
+// PlayerOnGroundState
 StateReturn PlayerOnGroundState::enter_state(StateContext* context) {
 	Super::enter_state(context);
 	// Immediate jump when entering while having just pressed jump
@@ -18,7 +18,7 @@ StateReturn PlayerOnGroundState::enter_state(StateContext* context) {
 	return {};
 }
 
-StateReturn PlayerOnGroundState::physics_process(StateContext* context, real_t delta) {
+StateReturn PlayerOnGroundState::physics_process(StateContext* context, float delta) {
 	context->physics.velocity.y -= GRAVITY * delta;
 
 	// walking off edge
@@ -27,7 +27,7 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, real_t d
 	}
 	return {};
 }
-StateReturn PlayerOnGroundState::handle_input(StateContext* context, real_t delta) {
+StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta) {
 	// direction
 	if (context->input.input_direction.abs().x) {
 		context->physics.velocity.x = Math::move_toward(context->physics.velocity.x,
@@ -46,7 +46,7 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, real_t delt
 }
 
 // PlayerInAirState
-StateReturn PlayerInAirState::physics_process(StateContext* context, real_t delta) {
+StateReturn PlayerInAirState::physics_process(StateContext* context, float delta) {
 	if (context->physics.is_on_ground) {
 		if (!m_guarantee_one_frame) {
 			return StateReturn{ EStateReturn::NEW_STATE, new PlayerOnGroundState(false) };

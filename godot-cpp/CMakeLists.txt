@@ -78,7 +78,7 @@ endif()
 set(FLOAT_PRECISION "single" CACHE STRING "")
 
 if("${FLOAT_PRECISION}" STREQUAL "double")
-	add_definitions(-DREAL_T_IS_DOUBLE)
+	add_definitions(-Dfloat_IS_DOUBLE)
 endif()
 
 set(GODOT_COMPILE_FLAGS)
@@ -130,29 +130,31 @@ else()
 endif()
 
 # execute_process(COMMAND "${Python3_EXECUTABLE}" "-c" "import binding_generator; binding_generator.print_file_list(\"${GODOT_GDEXTENSION_API_FILE}\", \"${CMAKE_CURRENT_BINARY_DIR}\", headers=True, sources=True)"
-# 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-# 	OUTPUT_VARIABLE GENERATED_FILES_LIST
-# 	OUTPUT_STRIP_TRAILING_WHITESPACE
+# WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+# OUTPUT_VARIABLE GENERATED_FILES_LIST
+# OUTPUT_STRIP_TRAILING_WHITESPACE
 # )
 
 # add_custom_command(OUTPUT ${GENERATED_FILES_LIST}
-# 	COMMAND "${Python3_EXECUTABLE}" "-c" "import binding_generator; binding_generator.generate_bindings(\"${GODOT_GDEXTENSION_API_FILE}\", \"${GENERATE_BINDING_PARAMETERS}\", \"${BITS}\", \"${FLOAT_PRECISION}\", \"${CMAKE_CURRENT_BINARY_DIR}\")"
-# 	VERBATIM
-# 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-# 	MAIN_DEPENDENCY ${GODOT_GDEXTENSION_API_FILE}
-# 	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/binding_generator.py
-# 	COMMENT "Generating bindings"
+# COMMAND "${Python3_EXECUTABLE}" "-c" "import binding_generator; binding_generator.generate_bindings(\"${GODOT_GDEXTENSION_API_FILE}\", \"${GENERATE_BINDING_PARAMETERS}\", \"${BITS}\", \"${FLOAT_PRECISION}\", \"${CMAKE_CURRENT_BINARY_DIR}\")"
+# VERBATIM
+# WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+# MAIN_DEPENDENCY ${GODOT_GDEXTENSION_API_FILE}
+# DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/binding_generator.py
+# COMMENT "Generating bindings"
 # )
 
 # Get Sources
 # file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.c**)
 set(
 	SOURCES
+
 	# src
 	src/godot.cpp
 	src/classes/_translation_unit_classes.cpp
 	src/core/_translation_unit_core.cpp
 	src/variant/_translation_unit_variant.cpp
+
 	# gen/src
 	gen/src/variant/_translation_unit_variant.cpp
 	gen/src/classes/_translation_unit_classes_a.cpp
@@ -174,6 +176,7 @@ file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS include/*.h**)
 add_library(${PROJECT_NAME} STATIC
 	${SOURCES}
 	${HEADERS}
+
 	# ${GENERATED_FILES_LIST}
 )
 add_library(godot::cpp ALIAS ${PROJECT_NAME})
@@ -193,7 +196,8 @@ target_compile_definitions(${PROJECT_NAME} PUBLIC
 	$<${compiler_is_msvc}:
 	TYPED_METHOD_BIND
 	>
-	# REAL_T_IS_DOUBLE 
+
+	# float_IS_DOUBLE
 )
 
 target_link_options(${PROJECT_NAME} PRIVATE

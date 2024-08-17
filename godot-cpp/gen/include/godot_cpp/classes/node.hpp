@@ -33,12 +33,12 @@
 #ifndef GODOT_CPP_NODE_HPP
 #define GODOT_CPP_NODE_HPP
 
-#include <godot_cpp/variant/array.hpp>
 #include <godot_cpp/classes/global_constants.hpp>
-#include <godot_cpp/variant/node_path.hpp>
-#include <godot_cpp/core/object.hpp>
-#include <godot_cpp/variant/packed_string_array.hpp>
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/core/object.hpp>
+#include <godot_cpp/variant/array.hpp>
+#include <godot_cpp/variant/node_path.hpp>
+#include <godot_cpp/variant/packed_string_array.hpp>
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/string_name.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
@@ -61,7 +61,6 @@ class Node : public Object {
 	GDEXTENSION_CLASS(Node, Object)
 
 public:
-
 	enum ProcessMode {
 		PROCESS_MODE_INHERIT = 0,
 		PROCESS_MODE_PAUSABLE = 1,
@@ -234,18 +233,28 @@ public:
 	String get_editor_description() const;
 	void set_unique_name_in_owner(bool p_enable);
 	bool is_unique_name_in_owner() const;
-	private: Error rpc_internal(const Variant **p_args, GDExtensionInt p_arg_count);
-	public: template <typename... Args> Error rpc(const StringName &p_method, const Args&... p_args) {
-		std::array<Variant, 1 + sizeof...(Args)> variant_args { Variant(p_method), Variant(p_args)... };
+
+private:
+	Error rpc_internal(const Variant **p_args, GDExtensionInt p_arg_count);
+
+public:
+	template <typename... Args>
+	Error rpc(const StringName &p_method, const Args &...p_args) {
+		std::array<Variant, 1 + sizeof...(Args)> variant_args{ Variant(p_method), Variant(p_args)... };
 		std::array<const Variant *, 1 + sizeof...(Args)> call_args;
 		for (size_t i = 0; i < variant_args.size(); i++) {
 			call_args[i] = &variant_args[i];
 		}
 		return rpc_internal(call_args.data(), variant_args.size());
 	}
-	private: Error rpc_id_internal(const Variant **p_args, GDExtensionInt p_arg_count);
-	public: template <typename... Args> Error rpc_id(int64_t p_peer_id, const StringName &p_method, const Args&... p_args) {
-		std::array<Variant, 2 + sizeof...(Args)> variant_args { Variant(p_peer_id), Variant(p_method), Variant(p_args)... };
+
+private:
+	Error rpc_id_internal(const Variant **p_args, GDExtensionInt p_arg_count);
+
+public:
+	template <typename... Args>
+	Error rpc_id(int64_t p_peer_id, const StringName &p_method, const Args &...p_args) {
+		std::array<Variant, 2 + sizeof...(Args)> variant_args{ Variant(p_peer_id), Variant(p_method), Variant(p_args)... };
 		std::array<const Variant *, 2 + sizeof...(Args)> call_args;
 		for (size_t i = 0; i < variant_args.size(); i++) {
 			call_args[i] = &variant_args[i];
@@ -253,9 +262,14 @@ public:
 		return rpc_id_internal(call_args.data(), variant_args.size());
 	}
 	void update_configuration_warnings();
-	private: Variant call_deferred_thread_group_internal(const Variant **p_args, GDExtensionInt p_arg_count);
-	public: template <typename... Args> Variant call_deferred_thread_group(const StringName &p_method, const Args&... p_args) {
-		std::array<Variant, 1 + sizeof...(Args)> variant_args { Variant(p_method), Variant(p_args)... };
+
+private:
+	Variant call_deferred_thread_group_internal(const Variant **p_args, GDExtensionInt p_arg_count);
+
+public:
+	template <typename... Args>
+	Variant call_deferred_thread_group(const StringName &p_method, const Args &...p_args) {
+		std::array<Variant, 1 + sizeof...(Args)> variant_args{ Variant(p_method), Variant(p_args)... };
 		std::array<const Variant *, 1 + sizeof...(Args)> call_args;
 		for (size_t i = 0; i < variant_args.size(); i++) {
 			call_args[i] = &variant_args[i];
@@ -264,9 +278,14 @@ public:
 	}
 	void set_deferred_thread_group(const StringName &p_property, const Variant &p_value);
 	void notify_deferred_thread_group(int32_t p_what);
-	private: Variant call_thread_safe_internal(const Variant **p_args, GDExtensionInt p_arg_count);
-	public: template <typename... Args> Variant call_thread_safe(const StringName &p_method, const Args&... p_args) {
-		std::array<Variant, 1 + sizeof...(Args)> variant_args { Variant(p_method), Variant(p_args)... };
+
+private:
+	Variant call_thread_safe_internal(const Variant **p_args, GDExtensionInt p_arg_count);
+
+public:
+	template <typename... Args>
+	Variant call_thread_safe(const StringName &p_method, const Args &...p_args) {
+		std::array<Variant, 1 + sizeof...(Args)> variant_args{ Variant(p_method), Variant(p_args)... };
 		std::array<const Variant *, 1 + sizeof...(Args)> call_args;
 		for (size_t i = 0; i < variant_args.size(); i++) {
 			call_args[i] = &variant_args[i];
@@ -275,8 +294,8 @@ public:
 	}
 	void set_thread_safe(const StringName &p_property, const Variant &p_value);
 	void notify_thread_safe(int32_t p_what);
-	virtual void _process(real_t p_delta);
-	virtual void _physics_process(real_t p_delta);
+	virtual void _process(float p_delta);
+	virtual void _physics_process(float p_delta);
 	virtual void _enter_tree();
 	virtual void _exit_tree();
 	virtual void _ready();
@@ -285,38 +304,39 @@ public:
 	virtual void _shortcut_input(const Ref<InputEvent> &p_event);
 	virtual void _unhandled_input(const Ref<InputEvent> &p_event);
 	virtual void _unhandled_key_input(const Ref<InputEvent> &p_event);
+
 protected:
 	template <typename T, typename B>
 	static void register_virtuals() {
 		Object::register_virtuals<T, B>();
-		if constexpr (!std::is_same_v<decltype(&B::_process),decltype(&T::_process)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_process), decltype(&T::_process)>) {
 			BIND_VIRTUAL_METHOD(T, _process);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_physics_process),decltype(&T::_physics_process)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_physics_process), decltype(&T::_physics_process)>) {
 			BIND_VIRTUAL_METHOD(T, _physics_process);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_enter_tree),decltype(&T::_enter_tree)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_enter_tree), decltype(&T::_enter_tree)>) {
 			BIND_VIRTUAL_METHOD(T, _enter_tree);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_exit_tree),decltype(&T::_exit_tree)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_exit_tree), decltype(&T::_exit_tree)>) {
 			BIND_VIRTUAL_METHOD(T, _exit_tree);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_ready),decltype(&T::_ready)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_ready), decltype(&T::_ready)>) {
 			BIND_VIRTUAL_METHOD(T, _ready);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_get_configuration_warnings),decltype(&T::_get_configuration_warnings)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_get_configuration_warnings), decltype(&T::_get_configuration_warnings)>) {
 			BIND_VIRTUAL_METHOD(T, _get_configuration_warnings);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_input),decltype(&T::_input)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_input), decltype(&T::_input)>) {
 			BIND_VIRTUAL_METHOD(T, _input);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_shortcut_input),decltype(&T::_shortcut_input)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_shortcut_input), decltype(&T::_shortcut_input)>) {
 			BIND_VIRTUAL_METHOD(T, _shortcut_input);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_unhandled_input),decltype(&T::_unhandled_input)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_unhandled_input), decltype(&T::_unhandled_input)>) {
 			BIND_VIRTUAL_METHOD(T, _unhandled_input);
 		}
-		if constexpr (!std::is_same_v<decltype(&B::_unhandled_key_input),decltype(&T::_unhandled_key_input)>) {
+		if constexpr (!std::is_same_v<decltype(&B::_unhandled_key_input), decltype(&T::_unhandled_key_input)>) {
 			BIND_VIRTUAL_METHOD(T, _unhandled_key_input);
 		}
 	}
@@ -324,7 +344,6 @@ protected:
 public:
 	template <typename T>
 	T *get_node(const NodePath &p_path) const { return Object::cast_to<T>(get_node_internal(p_path)); }
-
 };
 
 } // namespace godot

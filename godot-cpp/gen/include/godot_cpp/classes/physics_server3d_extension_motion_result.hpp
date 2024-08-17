@@ -40,9 +40,9 @@ namespace godot {
 struct PhysicsServer3DExtensionMotionResult {
 	Vector3 travel;
 	Vector3 remainder;
-	real_t collision_depth;
-	real_t collision_safe_fraction;
-	real_t collision_unsafe_fraction;
+	float collision_depth;
+	float collision_safe_fraction;
+	float collision_unsafe_fraction;
 	PhysicsServer3DExtensionMotionCollision collisions[32];
 	int collision_count;
 };

@@ -21,7 +21,7 @@ void CameraPivot::_ready() {
 	}
 }
 
-void CameraPivot::_physics_process(real_t delta) {
+void CameraPivot::_physics_process(float delta) {
 	RETURN_IF_EDITOR
 	Vector3 position = get_position();
 	position.z = 0;

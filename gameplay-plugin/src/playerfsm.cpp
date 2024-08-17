@@ -24,19 +24,19 @@ void PlayerFSM::_exit_tree() {
 	ASSERT(m_current_state == nullptr, "");
 }
 
-void PlayerFSM::process(StateContext* context, real_t delta) {
+void PlayerFSM::process(StateContext* context, float delta) {
 	if (m_current_state) {
 		_process_state(context, m_current_state->process(context, delta));
 	}
 }
 
-void PlayerFSM::physics_process(StateContext* context, real_t delta) {
+void PlayerFSM::physics_process(StateContext* context, float delta) {
 	if (m_current_state) {
 		_process_state(context, m_current_state->physics_process(context, delta));
 	}
 }
 
-void PlayerFSM::handle_input(StateContext* context, real_t delta) {
+void PlayerFSM::handle_input(StateContext* context, float delta) {
 	if (m_current_state) {
 		_process_state(context, m_current_state->handle_input(context, delta));
 	}

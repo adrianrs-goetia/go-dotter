@@ -393,13 +393,13 @@ def generate_bindings(api_filepath, use_template_get_node, bits="64", precision=
     shutil.rmtree(target_dir, ignore_errors=True)
     target_dir.mkdir(parents=True)
 
-    real_t = "double" if precision == "double" else "float"
-    print("Built-in type config: " + real_t + "_" + bits)
+    float = "double" if precision == "double" else "float"
+    print("Built-in type config: " + float + "_" + bits)
 
     generate_global_constants(api, target_dir)
     generate_version_header(api, target_dir)
     generate_global_constant_binds(api, target_dir)
-    generate_builtin_bindings(api, target_dir, real_t + "_" + bits)
+    generate_builtin_bindings(api, target_dir, float + "_" + bits)
     generate_engine_classes_bindings(api, target_dir, use_template_get_node)
     generate_utility_functions(api, target_dir)
 
@@ -2530,7 +2530,7 @@ def is_pod_type(type_name):
         "Nil",
         "void",
         "bool",
-        "real_t",
+        "float",
         "float",
         "double",
         "int",

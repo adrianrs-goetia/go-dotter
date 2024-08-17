@@ -40,7 +40,7 @@ class Variant;
 
 struct _NO_DISCARD_ Plane {
 	Vector3 normal;
-	real_t d = 0;
+	float d = 0;
 
 	void set_normal(const Vector3 &p_normal);
 	_FORCE_INLINE_ Vector3 get_normal() const { return normal; }
@@ -54,8 +54,8 @@ struct _NO_DISCARD_ Plane {
 	Vector3 get_any_perpendicular_normal() const;
 
 	_FORCE_INLINE_ bool is_point_over(const Vector3 &p_point) const; ///< Point is over plane
-	_FORCE_INLINE_ real_t distance_to(const Vector3 &p_point) const;
-	_FORCE_INLINE_ bool has_point(const Vector3 &p_point, real_t p_tolerance = CMP_EPSILON) const;
+	_FORCE_INLINE_ float distance_to(const Vector3 &p_point) const;
+	_FORCE_INLINE_ bool has_point(const Vector3 &p_point, float p_tolerance = CMP_EPSILON) const;
 
 	/* intersections */
 
@@ -84,11 +84,11 @@ struct _NO_DISCARD_ Plane {
 	operator String() const;
 
 	_FORCE_INLINE_ Plane() {}
-	_FORCE_INLINE_ Plane(real_t p_a, real_t p_b, real_t p_c, real_t p_d) :
+	_FORCE_INLINE_ Plane(float p_a, float p_b, float p_c, float p_d) :
 			normal(p_a, p_b, p_c),
 			d(p_d) {}
 
-	_FORCE_INLINE_ Plane(const Vector3 &p_normal, real_t p_d = 0.0);
+	_FORCE_INLINE_ Plane(const Vector3 &p_normal, float p_d = 0.0);
 	_FORCE_INLINE_ Plane(const Vector3 &p_normal, const Vector3 &p_point);
 	_FORCE_INLINE_ Plane(const Vector3 &p_point1, const Vector3 &p_point2, const Vector3 &p_point3, ClockDirection p_dir = CLOCKWISE);
 };
@@ -97,17 +97,17 @@ bool Plane::is_point_over(const Vector3 &p_point) const {
 	return (normal.dot(p_point) > d);
 }
 
-real_t Plane::distance_to(const Vector3 &p_point) const {
+float Plane::distance_to(const Vector3 &p_point) const {
 	return (normal.dot(p_point) - d);
 }
 
-bool Plane::has_point(const Vector3 &p_point, real_t p_tolerance) const {
-	real_t dist = normal.dot(p_point) - d;
+bool Plane::has_point(const Vector3 &p_point, float p_tolerance) const {
+	float dist = normal.dot(p_point) - d;
 	dist = Math::abs(dist);
 	return (dist <= p_tolerance);
 }
 
-Plane::Plane(const Vector3 &p_normal, real_t p_d) :
+Plane::Plane(const Vector3 &p_normal, float p_d) :
 		normal(p_normal),
 		d(p_d) {
 }

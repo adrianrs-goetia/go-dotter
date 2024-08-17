@@ -356,11 +356,11 @@ String vformat(const String &p_text, const VarArgs... p_args) {
 
 #include <godot_cpp/variant/builtin_vararg_methods.hpp>
 
-#ifdef REAL_T_IS_DOUBLE
+#ifdef float_IS_DOUBLE
 using PackedRealArray = PackedFloat64Array;
 #else
 using PackedRealArray = PackedFloat32Array;
-#endif // REAL_T_IS_DOUBLE
+#endif // float_IS_DOUBLE
 
 } // namespace godot
 

@@ -141,7 +141,7 @@ struct _NO_DISCARD_ Color {
 
 		float cMax = MAX(cRed, MAX(cGreen, cBlue));
 
-		float expp = MAX(-B - 1.0f, floor(Math::log(cMax) / (real_t)Math_LN2)) + 1.0f + B;
+		float expp = MAX(-B - 1.0f, floor(Math::log(cMax) / (float)Math_LN2)) + 1.0f + B;
 
 		float sMax = (float)floor((cMax / Math::pow(2.0f, expp - B - N)) + 0.5f);
 

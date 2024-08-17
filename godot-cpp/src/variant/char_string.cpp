@@ -200,7 +200,7 @@ String String::num_real(double p_num, bool p_trailing) {
 			return num_int64((int64_t)p_num);
 		}
 	}
-#ifdef REAL_T_IS_DOUBLE
+#ifdef float_IS_DOUBLE
 	int decimals = 14;
 #else
 	int decimals = 6;

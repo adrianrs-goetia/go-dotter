@@ -206,7 +206,7 @@ static inline uint64_t BSWAP64(uint64_t x) {
 namespace Math {
 
 // This epsilon should match the one used by Godot for consistency.
-// Using `f` when `real_t` is float.
+// Using `f` when `float` is float.
 #define CMP_EPSILON 0.00001f
 #define CMP_EPSILON2 (CMP_EPSILON * CMP_EPSILON)
 
@@ -219,7 +219,7 @@ namespace Math {
 #endif
 
 // Functions reproduced as in Godot's source code `math_funcs.h`.
-// Some are overloads to automatically support changing real_t into either double or float in the way Godot does.
+// Some are overloads to automatically support changing float into either double or float in the way Godot does.
 
 inline double fmod(double p_x, double p_y) {
 	return ::fmod(p_x, p_y);
@@ -695,7 +695,7 @@ inline double absd(double g) {
 }
 
 inline double smoothstep(double p_from, double p_to, double p_weight) {
-	if (is_equal_approx(static_cast<real_t>(p_from), static_cast<real_t>(p_to))) {
+	if (is_equal_approx(static_cast<float>(p_from), static_cast<float>(p_to))) {
 		return p_from;
 	}
 	double x = clamp((p_weight - p_from) / (p_to - p_from), 0.0, 1.0);
@@ -743,8 +743,8 @@ inline int64_t wrapi(int64_t value, int64_t min, int64_t max) {
 	return range == 0 ? min : min + ((((value - min) % range) + range) % range);
 }
 
-inline float wrapf(real_t value, real_t min, real_t max) {
-	const real_t range = max - min;
+inline float wrapf(float value, float min, float max) {
+	const float range = max - min;
 	return is_zero_approx(range) ? min : value - (range * floor((value - min) / range));
 }
 

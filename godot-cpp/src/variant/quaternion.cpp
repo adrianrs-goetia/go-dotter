@@ -35,8 +35,8 @@
 
 namespace godot {
 
-real_t Quaternion::angle_to(const Quaternion &p_to) const {
-	real_t d = dot(p_to);
+float Quaternion::angle_to(const Quaternion &p_to) const {
+	float d = dot(p_to);
 	return Math::acos(CLAMP(d * d * 2 - 1, -1, 1));
 }
 
@@ -62,9 +62,9 @@ Vector3 Quaternion::get_euler_yxz() const {
 }
 
 void Quaternion::operator*=(const Quaternion &p_q) {
-	real_t xx = w * p_q.x + x * p_q.w + y * p_q.z - z * p_q.y;
-	real_t yy = w * p_q.y + y * p_q.w + z * p_q.x - x * p_q.z;
-	real_t zz = w * p_q.z + z * p_q.w + x * p_q.y - y * p_q.x;
+	float xx = w * p_q.x + x * p_q.w + y * p_q.z - z * p_q.y;
+	float yy = w * p_q.y + y * p_q.w + z * p_q.x - x * p_q.z;
+	float zz = w * p_q.z + z * p_q.w + x * p_q.y - y * p_q.x;
 	w = w * p_q.w - x * p_q.x - y * p_q.y - z * p_q.z;
 	x = xx;
 	y = yy;
@@ -85,7 +85,7 @@ bool Quaternion::is_finite() const {
 	return Math::is_finite(x) && Math::is_finite(y) && Math::is_finite(z) && Math::is_finite(w);
 }
 
-real_t Quaternion::length() const {
+float Quaternion::length() const {
 	return Math::sqrt(length_squared());
 }
 
@@ -98,7 +98,7 @@ Quaternion Quaternion::normalized() const {
 }
 
 bool Quaternion::is_normalized() const {
-	return Math::is_equal_approx(length_squared(), 1, (real_t)UNIT_EPSILON); //use less epsilon
+	return Math::is_equal_approx(length_squared(), 1, (float)UNIT_EPSILON); //use less epsilon
 }
 
 Quaternion Quaternion::inverse() const {
@@ -117,7 +117,7 @@ Quaternion Quaternion::log() const {
 Quaternion Quaternion::exp() const {
 	Quaternion src = *this;
 	Vector3 src_v = Vector3(src.x, src.y, src.z);
-	real_t theta = src_v.length();
+	float theta = src_v.length();
 	src_v = src_v.normalized();
 	if (theta < CMP_EPSILON || !src_v.is_normalized()) {
 		return Quaternion(0, 0, 0, 1);
@@ -125,13 +125,13 @@ Quaternion Quaternion::exp() const {
 	return Quaternion(src_v, theta);
 }
 
-Quaternion Quaternion::slerp(const Quaternion &p_to, const real_t &p_weight) const {
+Quaternion Quaternion::slerp(const Quaternion &p_to, const float &p_weight) const {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_V_MSG(!is_normalized(), Quaternion(), "The start quaternion must be normalized.");
 	ERR_FAIL_COND_V_MSG(!p_to.is_normalized(), Quaternion(), "The end quaternion must be normalized.");
 #endif
 	Quaternion to1;
-	real_t omega, cosom, sinom, scale0, scale1;
+	float omega, cosom, sinom, scale0, scale1;
 
 	// calc cosine
 	cosom = dot(p_to);
@@ -146,7 +146,7 @@ Quaternion Quaternion::slerp(const Quaternion &p_to, const real_t &p_weight) con
 
 	// calculate coefficients
 
-	if ((1.0f - cosom) > (real_t)CMP_EPSILON) {
+	if ((1.0f - cosom) > (float)CMP_EPSILON) {
 		// standard case (slerp)
 		omega = Math::acos(cosom);
 		sinom = Math::sin(omega);
@@ -166,23 +166,23 @@ Quaternion Quaternion::slerp(const Quaternion &p_to, const real_t &p_weight) con
 			scale0 * w + scale1 * to1.w);
 }
 
-Quaternion Quaternion::slerpni(const Quaternion &p_to, const real_t &p_weight) const {
+Quaternion Quaternion::slerpni(const Quaternion &p_to, const float &p_weight) const {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_V_MSG(!is_normalized(), Quaternion(), "The start quaternion must be normalized.");
 	ERR_FAIL_COND_V_MSG(!p_to.is_normalized(), Quaternion(), "The end quaternion must be normalized.");
 #endif
 	const Quaternion &from = *this;
 
-	real_t dot = from.dot(p_to);
+	float dot = from.dot(p_to);
 
 	if (Math::absf(dot) > 0.9999f) {
 		return from;
 	}
 
-	real_t theta = Math::acos(dot),
-		   sinT = 1.0f / Math::sin(theta),
-		   newFactor = Math::sin(p_weight * theta) * sinT,
-		   invFactor = Math::sin((1.0f - p_weight) * theta) * sinT;
+	float theta = Math::acos(dot),
+		  sinT = 1.0f / Math::sin(theta),
+		  newFactor = Math::sin(p_weight * theta) * sinT,
+		  invFactor = Math::sin((1.0f - p_weight) * theta) * sinT;
 
 	return Quaternion(invFactor * from.x + newFactor * p_to.x,
 			invFactor * from.y + newFactor * p_to.y,
@@ -190,7 +190,7 @@ Quaternion Quaternion::slerpni(const Quaternion &p_to, const real_t &p_weight) c
 			invFactor * from.w + newFactor * p_to.w);
 }
 
-Quaternion Quaternion::spherical_cubic_interpolate(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight) const {
+Quaternion Quaternion::spherical_cubic_interpolate(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const float &p_weight) const {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_V_MSG(!is_normalized(), Quaternion(), "The start quaternion must be normalized.");
 	ERR_FAIL_COND_V_MSG(!p_b.is_normalized(), Quaternion(), "The end quaternion must be normalized.");
@@ -240,8 +240,8 @@ Quaternion Quaternion::spherical_cubic_interpolate(const Quaternion &p_b, const 
 	return q1.slerp(q2, p_weight);
 }
 
-Quaternion Quaternion::spherical_cubic_interpolate_in_time(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const real_t &p_weight,
-		const real_t &p_b_t, const real_t &p_pre_a_t, const real_t &p_post_b_t) const {
+Quaternion Quaternion::spherical_cubic_interpolate_in_time(const Quaternion &p_b, const Quaternion &p_pre_a, const Quaternion &p_post_b, const float &p_weight,
+		const float &p_b_t, const float &p_pre_a_t, const float &p_post_b_t) const {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_V_MSG(!is_normalized(), Quaternion(), "The start quaternion must be normalized.");
 	ERR_FAIL_COND_V_MSG(!p_b.is_normalized(), Quaternion(), "The end quaternion must be normalized.");
@@ -299,28 +299,28 @@ Vector3 Quaternion::get_axis() const {
 	if (Math::abs(w) > 1 - CMP_EPSILON) {
 		return Vector3(x, y, z);
 	}
-	real_t r = ((real_t)1) / Math::sqrt(1 - w * w);
+	float r = ((float)1) / Math::sqrt(1 - w * w);
 	return Vector3(x * r, y * r, z * r);
 }
 
-real_t Quaternion::get_angle() const {
+float Quaternion::get_angle() const {
 	return 2 * Math::acos(w);
 }
 
-Quaternion::Quaternion(const Vector3 &p_axis, real_t p_angle) {
+Quaternion::Quaternion(const Vector3 &p_axis, float p_angle) {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_MSG(!p_axis.is_normalized(), "The axis Vector3 must be normalized.");
 #endif
-	real_t d = p_axis.length();
+	float d = p_axis.length();
 	if (d == 0) {
 		x = 0;
 		y = 0;
 		z = 0;
 		w = 0;
 	} else {
-		real_t sin_angle = Math::sin(p_angle * 0.5f);
-		real_t cos_angle = Math::cos(p_angle * 0.5f);
-		real_t s = sin_angle / d;
+		float sin_angle = Math::sin(p_angle * 0.5f);
+		float cos_angle = Math::cos(p_angle * 0.5f);
+		float s = sin_angle / d;
 		x = p_axis.x * s;
 		y = p_axis.y * s;
 		z = p_axis.z * s;
@@ -333,20 +333,20 @@ Quaternion::Quaternion(const Vector3 &p_axis, real_t p_angle) {
 // and similar for other axes.
 // This implementation uses YXZ convention (Z is the first rotation).
 Quaternion::Quaternion(const Vector3 &p_euler) {
-	real_t half_a1 = p_euler.y * 0.5f;
-	real_t half_a2 = p_euler.x * 0.5f;
-	real_t half_a3 = p_euler.z * 0.5f;
+	float half_a1 = p_euler.y * 0.5f;
+	float half_a2 = p_euler.x * 0.5f;
+	float half_a3 = p_euler.z * 0.5f;
 
 	// R = Y(a1).X(a2).Z(a3) convention for Euler angles.
 	// Conversion to quaternion as listed in https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770024290.pdf (page A-6)
 	// a3 is the angle of the first rotation, following the notation in this reference.
 
-	real_t cos_a1 = Math::cos(half_a1);
-	real_t sin_a1 = Math::sin(half_a1);
-	real_t cos_a2 = Math::cos(half_a2);
-	real_t sin_a2 = Math::sin(half_a2);
-	real_t cos_a3 = Math::cos(half_a3);
-	real_t sin_a3 = Math::sin(half_a3);
+	float cos_a1 = Math::cos(half_a1);
+	float sin_a1 = Math::sin(half_a1);
+	float cos_a2 = Math::cos(half_a2);
+	float sin_a2 = Math::sin(half_a2);
+	float cos_a3 = Math::cos(half_a3);
+	float sin_a3 = Math::sin(half_a3);
 
 	x = sin_a1 * cos_a2 * sin_a3 + cos_a1 * sin_a2 * cos_a3;
 	y = sin_a1 * cos_a2 * cos_a3 - cos_a1 * sin_a2 * sin_a3;

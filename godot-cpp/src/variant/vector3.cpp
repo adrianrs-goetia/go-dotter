@@ -37,11 +37,11 @@
 
 namespace godot {
 
-void Vector3::rotate(const Vector3 &p_axis, const real_t p_angle) {
+void Vector3::rotate(const Vector3 &p_axis, const float p_angle) {
 	*this = Basis(p_axis, p_angle).xform(*this);
 }
 
-Vector3 Vector3::rotated(const Vector3 &p_axis, const real_t p_angle) const {
+Vector3 Vector3::rotated(const Vector3 &p_axis, const float p_angle) const {
 	Vector3 r = *this;
 	r.rotate(p_axis, p_angle);
 	return r;
@@ -66,8 +66,8 @@ Vector3 Vector3::snapped(const Vector3 p_step) const {
 	return v;
 }
 
-Vector3 Vector3::limit_length(const real_t p_len) const {
-	const real_t l = length();
+Vector3 Vector3::limit_length(const float p_len) const {
+	const float l = length();
 	Vector3 v = *this;
 	if (l > 0 && p_len < l) {
 		v /= l;
@@ -77,11 +77,11 @@ Vector3 Vector3::limit_length(const real_t p_len) const {
 	return v;
 }
 
-Vector3 Vector3::move_toward(const Vector3 &p_to, const real_t p_delta) const {
+Vector3 Vector3::move_toward(const Vector3 &p_to, const float p_delta) const {
 	Vector3 v = *this;
 	Vector3 vd = p_to - v;
-	real_t len = vd.length();
-	return len <= p_delta || len < (real_t)CMP_EPSILON ? p_to : v + vd / len * p_delta;
+	float len = vd.length();
+	return len <= p_delta || len < (float)CMP_EPSILON ? p_to : v + vd / len * p_delta;
 }
 
 Vector2 Vector3::octahedron_encode() const {

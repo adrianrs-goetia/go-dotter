@@ -42,7 +42,7 @@ struct PhysicsServer3DExtensionMotionCollision {
 	Vector3 normal;
 	Vector3 collider_velocity;
 	Vector3 collider_angular_velocity;
-	real_t depth;
+	float depth;
 	int local_shape;
 	ObjectID collider_id;
 	RID collider;

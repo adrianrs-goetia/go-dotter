@@ -38,16 +38,16 @@
 namespace godot {
 
 void Basis::from_z(const Vector3 &p_z) {
-	if (Math::abs(p_z.z) > (real_t)Math_SQRT12) {
+	if (Math::abs(p_z.z) > (float)Math_SQRT12) {
 		// choose p in y-z plane
-		real_t a = p_z[1] * p_z[1] + p_z[2] * p_z[2];
-		real_t k = 1.0f / Math::sqrt(a);
+		float a = p_z[1] * p_z[1] + p_z[2] * p_z[2];
+		float k = 1.0f / Math::sqrt(a);
 		rows[0] = Vector3(0, -p_z[2] * k, p_z[1] * k);
 		rows[1] = Vector3(a * k, -p_z[0] * rows[0][2], p_z[0] * rows[0][1]);
 	} else {
 		// choose p in x-y plane
-		real_t a = p_z.x * p_z.x + p_z.y * p_z.y;
-		real_t k = 1.0f / Math::sqrt(a);
+		float a = p_z.x * p_z.x + p_z.y * p_z.y;
+		float k = 1.0f / Math::sqrt(a);
 		rows[0] = Vector3(-p_z.y * k, p_z.x * k, 0);
 		rows[1] = Vector3(-p_z.z * rows[0].y, p_z.z * rows[0].x, a * k);
 	}
@@ -55,16 +55,16 @@ void Basis::from_z(const Vector3 &p_z) {
 }
 
 void Basis::invert() {
-	real_t co[3] = {
+	float co[3] = {
 		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
 	};
-	real_t det = rows[0][0] * co[0] +
+	float det = rows[0][0] * co[0] +
 			rows[0][1] * co[1] +
 			rows[0][2] * co[2];
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == 0);
 #endif
-	real_t s = 1.0f / det;
+	float s = 1.0f / det;
 
 	set(co[0] * s, cofac(0, 2, 2, 1) * s, cofac(0, 1, 1, 2) * s,
 			co[1] * s, cofac(0, 0, 2, 2) * s, cofac(0, 2, 1, 0) * s,
@@ -122,7 +122,7 @@ bool Basis::is_diagonal() const {
 }
 
 bool Basis::is_rotation() const {
-	return Math::is_equal_approx(determinant(), 1, (real_t)UNIT_EPSILON) && is_orthogonal();
+	return Math::is_equal_approx(determinant(), 1, (float)UNIT_EPSILON) && is_orthogonal();
 }
 
 #ifdef MATH_CHECKS
@@ -150,14 +150,14 @@ Basis Basis::diagonalize() {
 #endif
 	const int ite_max = 1024;
 
-	real_t off_matrix_norm_2 = rows[0][1] * rows[0][1] + rows[0][2] * rows[0][2] + rows[1][2] * rows[1][2];
+	float off_matrix_norm_2 = rows[0][1] * rows[0][1] + rows[0][2] * rows[0][2] + rows[1][2] * rows[1][2];
 
 	int ite = 0;
 	Basis acc_rot;
-	while (off_matrix_norm_2 > (real_t)CMP_EPSILON2 && ite++ < ite_max) {
-		real_t el01_2 = rows[0][1] * rows[0][1];
-		real_t el02_2 = rows[0][2] * rows[0][2];
-		real_t el12_2 = rows[1][2] * rows[1][2];
+	while (off_matrix_norm_2 > (float)CMP_EPSILON2 && ite++ < ite_max) {
+		float el01_2 = rows[0][1] * rows[0][1];
+		float el02_2 = rows[0][2] * rows[0][2];
+		float el12_2 = rows[1][2] * rows[1][2];
 		// Find the pivot element
 		int i, j;
 		if (el01_2 > el02_2) {
@@ -179,7 +179,7 @@ Basis Basis::diagonalize() {
 		}
 
 		// Compute the rotation angle
-		real_t angle;
+		float angle;
 		if (Math::is_equal_approx(rows[j][j], rows[i][i])) {
 			angle = Math_PI / 4;
 		} else {
@@ -292,7 +292,7 @@ Vector3 Basis::get_scale_abs() const {
 }
 
 Vector3 Basis::get_scale_local() const {
-	real_t det_sign = SIGN(determinant());
+	float det_sign = SIGN(determinant());
 	return det_sign * Vector3(rows[0].length(), rows[1].length(), rows[2].length());
 }
 
@@ -318,7 +318,7 @@ Vector3 Basis::get_scale() const {
 	// matrix elements.
 	//
 	// The rotation part of this decomposition is returned by get_rotation* functions.
-	real_t det_sign = SIGN(determinant());
+	float det_sign = SIGN(determinant());
 	return det_sign * get_scale_abs();
 }
 
@@ -348,21 +348,21 @@ Vector3 Basis::rotref_posscale_decomposition(Basis &rotref) const {
 // The main use of Basis is as Transform.basis, which is used by the transformation matrix
 // of 3D object. Rotate here refers to rotation of the object (which is R * (*this)),
 // not the matrix itself (which is R * (*this) * R.transposed()).
-Basis Basis::rotated(const Vector3 &p_axis, real_t p_angle) const {
+Basis Basis::rotated(const Vector3 &p_axis, float p_angle) const {
 	return Basis(p_axis, p_angle) * (*this);
 }
 
-void Basis::rotate(const Vector3 &p_axis, real_t p_angle) {
+void Basis::rotate(const Vector3 &p_axis, float p_angle) {
 	*this = rotated(p_axis, p_angle);
 }
 
-void Basis::rotate_local(const Vector3 &p_axis, real_t p_angle) {
+void Basis::rotate_local(const Vector3 &p_axis, float p_angle) {
 	// performs a rotation in object-local coordinate system:
 	// M -> (M.R.Minv).M = M.R.
 	*this = rotated_local(p_axis, p_angle);
 }
 
-Basis Basis::rotated_local(const Vector3 &p_axis, real_t p_angle) const {
+Basis Basis::rotated_local(const Vector3 &p_axis, float p_angle) const {
 	return (*this) * Basis(p_axis, p_angle);
 }
 
@@ -387,7 +387,7 @@ Vector3 Basis::get_euler_normalized(EulerOrder p_order) const {
 	// and returns the Euler angles corresponding to the rotation part, complementing get_scale().
 	// See the comment in get_scale() for further information.
 	Basis m = orthonormalized();
-	real_t det = m.determinant();
+	float det = m.determinant();
 	if (det < 0) {
 		// Ensure that the determinant is 1, such that result is a proper rotation matrix which can be represented by Euler angles.
 		m.scale(Vector3(-1, -1, -1));
@@ -401,7 +401,7 @@ Quaternion Basis::get_rotation_quaternion() const {
 	// and returns the Euler angles corresponding to the rotation part, complementing get_scale().
 	// See the comment in get_scale() for further information.
 	Basis m = orthonormalized();
-	real_t det = m.determinant();
+	float det = m.determinant();
 	if (det < 0) {
 		// Ensure that the determinant is 1, such that result is a proper rotation matrix which can be represented by Euler angles.
 		m.scale(Vector3(-1, -1, -1));
@@ -415,19 +415,19 @@ void Basis::rotate_to_align(Vector3 p_start_direction, Vector3 p_end_direction) 
 	// Adopted from: https://gist.github.com/kevinmoran/b45980723e53edeb8a5a43c49f134724
 	const Vector3 axis = p_start_direction.cross(p_end_direction).normalized();
 	if (axis.length_squared() != 0) {
-		real_t dot = p_start_direction.dot(p_end_direction);
+		float dot = p_start_direction.dot(p_end_direction);
 		dot = CLAMP(dot, -1.0f, 1.0f);
-		const real_t angle_rads = Math::acos(dot);
+		const float angle_rads = Math::acos(dot);
 		set_axis_angle(axis, angle_rads);
 	}
 }
 
-void Basis::get_rotation_axis_angle(Vector3 &p_axis, real_t &p_angle) const {
+void Basis::get_rotation_axis_angle(Vector3 &p_axis, float &p_angle) const {
 	// Assumes that the matrix can be decomposed into a proper rotation and scaling matrix as M = R.S,
 	// and returns the Euler angles corresponding to the rotation part, complementing get_scale().
 	// See the comment in get_scale() for further information.
 	Basis m = orthonormalized();
-	real_t det = m.determinant();
+	float det = m.determinant();
 	if (det < 0) {
 		// Ensure that the determinant is 1, such that result is a proper rotation matrix which can be represented by Euler angles.
 		m.scale(Vector3(-1, -1, -1));
@@ -436,13 +436,13 @@ void Basis::get_rotation_axis_angle(Vector3 &p_axis, real_t &p_angle) const {
 	m.get_axis_angle(p_axis, p_angle);
 }
 
-void Basis::get_rotation_axis_angle_local(Vector3 &p_axis, real_t &p_angle) const {
+void Basis::get_rotation_axis_angle_local(Vector3 &p_axis, float &p_angle) const {
 	// Assumes that the matrix can be decomposed into a proper rotation and scaling matrix as M = R.S,
 	// and returns the Euler angles corresponding to the rotation part, complementing get_scale().
 	// See the comment in get_scale() for further information.
 	Basis m = transposed();
 	m.orthonormalize();
-	real_t det = m.determinant();
+	float det = m.determinant();
 	if (det < 0) {
 		// Ensure that the determinant is 1, such that result is a proper rotation matrix which can be represented by Euler angles.
 		m.scale(Vector3(-1, -1, -1));
@@ -463,9 +463,9 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 			//       -cx*cz*sy+sx*sz  cz*sx+cx*sy*sz  cx*cy
 
 			Vector3 euler;
-			real_t sy = rows[0][2];
-			if (sy < (1.0f - (real_t)CMP_EPSILON)) {
-				if (sy > -(1.0f - (real_t)CMP_EPSILON)) {
+			float sy = rows[0][2];
+			if (sy < (1.0f - (float)CMP_EPSILON)) {
+				if (sy > -(1.0f - (float)CMP_EPSILON)) {
 					// is this a pure Y rotation?
 					if (rows[1][0] == 0 && rows[0][1] == 0 && rows[1][2] == 0 && rows[2][1] == 0 && rows[1][1] == 1) {
 						// return the simplest form (human friendlier in editor and scripts)
@@ -498,9 +498,9 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 			//        cy*sx*sz          cz*sx           cx*cy+sx*sz*sy
 
 			Vector3 euler;
-			real_t sz = rows[0][1];
-			if (sz < (1.0f - (real_t)CMP_EPSILON)) {
-				if (sz > -(1.0f - (real_t)CMP_EPSILON)) {
+			float sz = rows[0][1];
+			if (sz < (1.0f - (float)CMP_EPSILON)) {
+				if (sz > -(1.0f - (float)CMP_EPSILON)) {
 					euler.x = Math::atan2(rows[2][1], rows[1][1]);
 					euler.y = Math::atan2(rows[0][2], rows[0][0]);
 					euler.z = Math::asin(-sz);
@@ -528,10 +528,10 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 
 			Vector3 euler;
 
-			real_t m12 = rows[1][2];
+			float m12 = rows[1][2];
 
-			if (m12 < (1 - (real_t)CMP_EPSILON)) {
-				if (m12 > -(1 - (real_t)CMP_EPSILON)) {
+			if (m12 < (1 - (float)CMP_EPSILON)) {
+				if (m12 > -(1 - (float)CMP_EPSILON)) {
 					// is this a pure X rotation?
 					if (rows[1][0] == 0 && rows[0][1] == 0 && rows[0][2] == 0 && rows[2][0] == 0 && rows[0][0] == 1) {
 						// return the simplest form (human friendlier in editor and scripts)
@@ -565,9 +565,9 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 			//        -cz*sy            cy*sx+cx*sy*sz     cy*cx-sy*sz*sx
 
 			Vector3 euler;
-			real_t sz = rows[1][0];
-			if (sz < (1.0f - (real_t)CMP_EPSILON)) {
-				if (sz > -(1.0f - (real_t)CMP_EPSILON)) {
+			float sz = rows[1][0];
+			if (sz < (1.0f - (float)CMP_EPSILON)) {
+				if (sz > -(1.0f - (float)CMP_EPSILON)) {
 					euler.x = Math::atan2(-rows[1][2], rows[1][1]);
 					euler.y = Math::atan2(-rows[2][0], rows[0][0]);
 					euler.z = Math::asin(sz);
@@ -593,9 +593,9 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 			//        cy*sz+cz*sx*sy    cz*cx                 sz*sy-cz*cy*sx
 			//        -cx*sy            sx                    cx*cy
 			Vector3 euler;
-			real_t sx = rows[2][1];
-			if (sx < (1.0f - (real_t)CMP_EPSILON)) {
-				if (sx > -(1.0f - (real_t)CMP_EPSILON)) {
+			float sx = rows[2][1];
+			if (sx < (1.0f - (float)CMP_EPSILON)) {
+				if (sx > -(1.0f - (float)CMP_EPSILON)) {
 					euler.x = Math::asin(sx);
 					euler.y = Math::atan2(-rows[2][0], rows[2][2]);
 					euler.z = Math::atan2(-rows[0][1], rows[1][1]);
@@ -621,9 +621,9 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 			//        cy*sz             cz*cx+sz*sy*sx        cx*sz*sy-cz*sx
 			//        -sy               cy*sx                 cy*cx
 			Vector3 euler;
-			real_t sy = rows[2][0];
-			if (sy < (1.0f - (real_t)CMP_EPSILON)) {
-				if (sy > -(1.0f - (real_t)CMP_EPSILON)) {
+			float sy = rows[2][0];
+			if (sy < (1.0f - (float)CMP_EPSILON)) {
+				if (sy > -(1.0f - (float)CMP_EPSILON)) {
 					euler.x = Math::atan2(rows[2][1], rows[2][2]);
 					euler.y = Math::asin(-sy);
 					euler.z = Math::atan2(rows[1][0], rows[0][0]);
@@ -649,7 +649,7 @@ Vector3 Basis::get_euler(EulerOrder p_order) const {
 }
 
 void Basis::set_euler(const Vector3 &p_euler, EulerOrder p_order) {
-	real_t c, s;
+	float c, s;
 
 	c = Math::cos(p_euler.x);
 	s = Math::sin(p_euler.x);
@@ -724,11 +724,11 @@ Quaternion Basis::get_quaternion() const {
 #endif
 	/* Allow getting a quaternion from an unnormalized transform */
 	Basis m = *this;
-	real_t trace = m.rows[0][0] + m.rows[1][1] + m.rows[2][2];
-	real_t temp[4];
+	float trace = m.rows[0][0] + m.rows[1][1] + m.rows[2][2];
+	float temp[4];
 
 	if (trace > 0.0f) {
-		real_t s = Math::sqrt(trace + 1.0f);
+		float s = Math::sqrt(trace + 1.0f);
 		temp[3] = (s * 0.5f);
 		s = 0.5f / s;
 
@@ -742,7 +742,7 @@ Quaternion Basis::get_quaternion() const {
 		int j = (i + 1) % 3;
 		int k = (i + 2) % 3;
 
-		real_t s = Math::sqrt(m.rows[i][i] - m.rows[j][j] - m.rows[k][k] + 1.0f);
+		float s = Math::sqrt(m.rows[i][i] - m.rows[j][j] - m.rows[k][k] + 1.0f);
 		temp[i] = s * 0.5f;
 		s = 0.5f / s;
 
@@ -754,7 +754,7 @@ Quaternion Basis::get_quaternion() const {
 	return Quaternion(temp[0], temp[1], temp[2], temp[3]);
 }
 
-void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
+void Basis::get_axis_angle(Vector3 &r_axis, float &r_angle) const {
 	/* checking this is a bad idea, because obtaining from scaled transform is a valid use case
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(!is_rotation());
@@ -762,7 +762,7 @@ void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 	*/
 
 	// https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/index.htm
-	real_t x, y, z; // Variables for result.
+	float x, y, z; // Variables for result.
 	if (Math::is_zero_approx(rows[0][1] - rows[1][0]) && Math::is_zero_approx(rows[0][2] - rows[2][0]) && Math::is_zero_approx(rows[1][2] - rows[2][1])) {
 		// Singularity found.
 		// First check for identity matrix which must have +1 for all terms in leading diagonal and zero in other terms.
@@ -773,12 +773,12 @@ void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 			return;
 		}
 		// Otherwise this singularity is angle = 180.
-		real_t xx = (rows[0][0] + 1) / 2;
-		real_t yy = (rows[1][1] + 1) / 2;
-		real_t zz = (rows[2][2] + 1) / 2;
-		real_t xy = (rows[0][1] + rows[1][0]) / 4;
-		real_t xz = (rows[0][2] + rows[2][0]) / 4;
-		real_t yz = (rows[1][2] + rows[2][1]) / 4;
+		float xx = (rows[0][0] + 1) / 2;
+		float yy = (rows[1][1] + 1) / 2;
+		float zz = (rows[2][2] + 1) / 2;
+		float xy = (rows[0][1] + rows[1][0]) / 4;
+		float xz = (rows[0][2] + rows[2][0]) / 4;
+		float yz = (rows[1][2] + rows[2][1]) / 4;
 
 		if ((xx > yy) && (xx > zz)) { // rows[0][0] is the largest diagonal term.
 			if (xx < CMP_EPSILON) {
@@ -829,37 +829,37 @@ void Basis::get_axis_angle(Vector3 &r_axis, real_t &r_angle) const {
 
 	r_axis = Vector3(x, y, z);
 	// CLAMP to avoid NaN if the value passed to acos is not in [0,1].
-	r_angle = Math::acos(CLAMP((rows[0][0] + rows[1][1] + rows[2][2] - 1) / 2, (real_t)0.0, (real_t)1.0));
+	r_angle = Math::acos(CLAMP((rows[0][0] + rows[1][1] + rows[2][2] - 1) / 2, (float)0.0, (float)1.0));
 }
 
 void Basis::set_quaternion(const Quaternion &p_quaternion) {
-	real_t d = p_quaternion.length_squared();
-	real_t s = 2.0f / d;
-	real_t xs = p_quaternion.x * s, ys = p_quaternion.y * s, zs = p_quaternion.z * s;
-	real_t wx = p_quaternion.w * xs, wy = p_quaternion.w * ys, wz = p_quaternion.w * zs;
-	real_t xx = p_quaternion.x * xs, xy = p_quaternion.x * ys, xz = p_quaternion.x * zs;
-	real_t yy = p_quaternion.y * ys, yz = p_quaternion.y * zs, zz = p_quaternion.z * zs;
+	float d = p_quaternion.length_squared();
+	float s = 2.0f / d;
+	float xs = p_quaternion.x * s, ys = p_quaternion.y * s, zs = p_quaternion.z * s;
+	float wx = p_quaternion.w * xs, wy = p_quaternion.w * ys, wz = p_quaternion.w * zs;
+	float xx = p_quaternion.x * xs, xy = p_quaternion.x * ys, xz = p_quaternion.x * zs;
+	float yy = p_quaternion.y * ys, yz = p_quaternion.y * zs, zz = p_quaternion.z * zs;
 	set(1.0f - (yy + zz), xy - wz, xz + wy,
 			xy + wz, 1.0f - (xx + zz), yz - wx,
 			xz - wy, yz + wx, 1.0f - (xx + yy));
 }
 
-void Basis::set_axis_angle(const Vector3 &p_axis, real_t p_angle) {
+void Basis::set_axis_angle(const Vector3 &p_axis, float p_angle) {
 // Rotation matrix from axis and angle, see https://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_angle
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND_MSG(!p_axis.is_normalized(), "The axis Vector3 must be normalized.");
 #endif
 	Vector3 axis_sq(p_axis.x * p_axis.x, p_axis.y * p_axis.y, p_axis.z * p_axis.z);
-	real_t cosine = Math::cos(p_angle);
+	float cosine = Math::cos(p_angle);
 	rows[0][0] = axis_sq.x + cosine * (1.0f - axis_sq.x);
 	rows[1][1] = axis_sq.y + cosine * (1.0f - axis_sq.y);
 	rows[2][2] = axis_sq.z + cosine * (1.0f - axis_sq.z);
 
-	real_t sine = Math::sin(p_angle);
-	real_t t = 1 - cosine;
+	float sine = Math::sin(p_angle);
+	float t = 1 - cosine;
 
-	real_t xyzt = p_axis.x * p_axis.y * t;
-	real_t zyxs = p_axis.z * sine;
+	float xyzt = p_axis.x * p_axis.y * t;
+	float zyxs = p_axis.z * sine;
 	rows[0][1] = xyzt - zyxs;
 	rows[1][0] = xyzt + zyxs;
 
@@ -874,7 +874,7 @@ void Basis::set_axis_angle(const Vector3 &p_axis, real_t p_angle) {
 	rows[2][1] = xyzt + zyxs;
 }
 
-void Basis::set_axis_angle_scale(const Vector3 &p_axis, real_t p_angle, const Vector3 &p_scale) {
+void Basis::set_axis_angle_scale(const Vector3 &p_axis, float p_angle, const Vector3 &p_scale) {
 	_set_diagonal(p_scale);
 	rotate(p_axis, p_angle);
 }
@@ -905,7 +905,7 @@ void Basis::_set_diagonal(const Vector3 &p_diag) {
 	rows[2][2] = p_diag.z;
 }
 
-Basis Basis::lerp(const Basis &p_to, const real_t &p_weight) const {
+Basis Basis::lerp(const Basis &p_to, const float &p_weight) const {
 	Basis b;
 	b.rows[0] = rows[0].lerp(p_to.rows[0], p_weight);
 	b.rows[1] = rows[1].lerp(p_to.rows[1], p_weight);
@@ -914,7 +914,7 @@ Basis Basis::lerp(const Basis &p_to, const real_t &p_weight) const {
 	return b;
 }
 
-Basis Basis::slerp(const Basis &p_to, const real_t &p_weight) const {
+Basis Basis::slerp(const Basis &p_to, const float &p_weight) const {
 	//consider scale
 	Quaternion from(*this);
 	Quaternion to(p_to);
@@ -927,75 +927,75 @@ Basis Basis::slerp(const Basis &p_to, const real_t &p_weight) const {
 	return b;
 }
 
-void Basis::rotate_sh(real_t *p_values) {
+void Basis::rotate_sh(float *p_values) {
 	// code by John Hable
 	// http://filmicworlds.com/blog/simple-and-fast-spherical-harmonic-rotation/
 	// this code is Public Domain
 
-	const static real_t s_c3 = 0.94617469575; // (3*sqrt(5))/(4*sqrt(pi))
-	const static real_t s_c4 = -0.31539156525; // (-sqrt(5))/(4*sqrt(pi))
-	const static real_t s_c5 = 0.54627421529; // (sqrt(15))/(4*sqrt(pi))
+	const static float s_c3 = 0.94617469575; // (3*sqrt(5))/(4*sqrt(pi))
+	const static float s_c4 = -0.31539156525; // (-sqrt(5))/(4*sqrt(pi))
+	const static float s_c5 = 0.54627421529; // (sqrt(15))/(4*sqrt(pi))
 
-	const static real_t s_c_scale = 1.0 / 0.91529123286551084;
-	const static real_t s_c_scale_inv = 0.91529123286551084;
+	const static float s_c_scale = 1.0 / 0.91529123286551084;
+	const static float s_c_scale_inv = 0.91529123286551084;
 
-	const static real_t s_rc2 = 1.5853309190550713 * s_c_scale;
-	const static real_t s_c4_div_c3 = s_c4 / s_c3;
-	const static real_t s_c4_div_c3_x2 = (s_c4 / s_c3) * 2.0;
+	const static float s_rc2 = 1.5853309190550713 * s_c_scale;
+	const static float s_c4_div_c3 = s_c4 / s_c3;
+	const static float s_c4_div_c3_x2 = (s_c4 / s_c3) * 2.0;
 
-	const static real_t s_scale_dst2 = s_c3 * s_c_scale_inv;
-	const static real_t s_scale_dst4 = s_c5 * s_c_scale_inv;
+	const static float s_scale_dst2 = s_c3 * s_c_scale_inv;
+	const static float s_scale_dst4 = s_c5 * s_c_scale_inv;
 
-	const real_t src[9] = { p_values[0], p_values[1], p_values[2], p_values[3], p_values[4], p_values[5], p_values[6], p_values[7], p_values[8] };
+	const float src[9] = { p_values[0], p_values[1], p_values[2], p_values[3], p_values[4], p_values[5], p_values[6], p_values[7], p_values[8] };
 
-	real_t m00 = rows[0][0];
-	real_t m01 = rows[0][1];
-	real_t m02 = rows[0][2];
-	real_t m10 = rows[1][0];
-	real_t m11 = rows[1][1];
-	real_t m12 = rows[1][2];
-	real_t m20 = rows[2][0];
-	real_t m21 = rows[2][1];
-	real_t m22 = rows[2][2];
+	float m00 = rows[0][0];
+	float m01 = rows[0][1];
+	float m02 = rows[0][2];
+	float m10 = rows[1][0];
+	float m11 = rows[1][1];
+	float m12 = rows[1][2];
+	float m20 = rows[2][0];
+	float m21 = rows[2][1];
+	float m22 = rows[2][2];
 
 	p_values[0] = src[0];
 	p_values[1] = m11 * src[1] - m12 * src[2] + m10 * src[3];
 	p_values[2] = -m21 * src[1] + m22 * src[2] - m20 * src[3];
 	p_values[3] = m01 * src[1] - m02 * src[2] + m00 * src[3];
 
-	real_t sh0 = src[7] + src[8] + src[8] - src[5];
-	real_t sh1 = src[4] + s_rc2 * src[6] + src[7] + src[8];
-	real_t sh2 = src[4];
-	real_t sh3 = -src[7];
-	real_t sh4 = -src[5];
+	float sh0 = src[7] + src[8] + src[8] - src[5];
+	float sh1 = src[4] + s_rc2 * src[6] + src[7] + src[8];
+	float sh2 = src[4];
+	float sh3 = -src[7];
+	float sh4 = -src[5];
 
 	// Rotations.  R0 and R1 just use the raw matrix columns
-	real_t r2x = m00 + m01;
-	real_t r2y = m10 + m11;
-	real_t r2z = m20 + m21;
+	float r2x = m00 + m01;
+	float r2y = m10 + m11;
+	float r2z = m20 + m21;
 
-	real_t r3x = m00 + m02;
-	real_t r3y = m10 + m12;
-	real_t r3z = m20 + m22;
+	float r3x = m00 + m02;
+	float r3y = m10 + m12;
+	float r3z = m20 + m22;
 
-	real_t r4x = m01 + m02;
-	real_t r4y = m11 + m12;
-	real_t r4z = m21 + m22;
+	float r4x = m01 + m02;
+	float r4y = m11 + m12;
+	float r4z = m21 + m22;
 
 	// dense matrix multiplication one column at a time
 
 	// column 0
-	real_t sh0_x = sh0 * m00;
-	real_t sh0_y = sh0 * m10;
-	real_t d0 = sh0_x * m10;
-	real_t d1 = sh0_y * m20;
-	real_t d2 = sh0 * (m20 * m20 + s_c4_div_c3);
-	real_t d3 = sh0_x * m20;
-	real_t d4 = sh0_x * m00 - sh0_y * m10;
+	float sh0_x = sh0 * m00;
+	float sh0_y = sh0 * m10;
+	float d0 = sh0_x * m10;
+	float d1 = sh0_y * m20;
+	float d2 = sh0 * (m20 * m20 + s_c4_div_c3);
+	float d3 = sh0_x * m20;
+	float d4 = sh0_x * m00 - sh0_y * m10;
 
 	// column 1
-	real_t sh1_x = sh1 * m02;
-	real_t sh1_y = sh1 * m12;
+	float sh1_x = sh1 * m02;
+	float sh1_y = sh1 * m12;
 	d0 += sh1_x * m12;
 	d1 += sh1_y * m22;
 	d2 += sh1 * (m22 * m22 + s_c4_div_c3);
@@ -1003,8 +1003,8 @@ void Basis::rotate_sh(real_t *p_values) {
 	d4 += sh1_x * m02 - sh1_y * m12;
 
 	// column 2
-	real_t sh2_x = sh2 * r2x;
-	real_t sh2_y = sh2 * r2y;
+	float sh2_x = sh2 * r2x;
+	float sh2_y = sh2 * r2y;
 	d0 += sh2_x * r2y;
 	d1 += sh2_y * r2z;
 	d2 += sh2 * (r2z * r2z + s_c4_div_c3_x2);
@@ -1012,8 +1012,8 @@ void Basis::rotate_sh(real_t *p_values) {
 	d4 += sh2_x * r2x - sh2_y * r2y;
 
 	// column 3
-	real_t sh3_x = sh3 * r3x;
-	real_t sh3_y = sh3 * r3y;
+	float sh3_x = sh3 * r3x;
+	float sh3_y = sh3 * r3y;
 	d0 += sh3_x * r3y;
 	d1 += sh3_y * r3z;
 	d2 += sh3 * (r3z * r3z + s_c4_div_c3_x2);
@@ -1021,8 +1021,8 @@ void Basis::rotate_sh(real_t *p_values) {
 	d4 += sh3_x * r3x - sh3_y * r3y;
 
 	// column 4
-	real_t sh4_x = sh4 * r4x;
-	real_t sh4_y = sh4 * r4y;
+	float sh4_x = sh4 * r4x;
+	float sh4_y = sh4 * r4y;
 	d0 += sh4_x * r4y;
 	d1 += sh4_y * r4z;
 	d2 += sh4 * (r4z * r4z + s_c4_div_c3_x2);

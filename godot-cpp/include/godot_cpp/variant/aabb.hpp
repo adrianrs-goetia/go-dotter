@@ -47,7 +47,7 @@ struct _NO_DISCARD_ AABB {
 	Vector3 position;
 	Vector3 size;
 
-	real_t get_volume() const;
+	float get_volume() const;
 	_FORCE_INLINE_ bool has_volume() const {
 		return size.x > 0.0f && size.y > 0.0f && size.z > 0.0f;
 	}
@@ -75,7 +75,7 @@ struct _NO_DISCARD_ AABB {
 	AABB intersection(const AABB &p_aabb) const; ///get box where two intersect, empty if no intersection occurs
 	bool intersects_segment(const Vector3 &p_from, const Vector3 &p_to, Vector3 *r_clip = nullptr, Vector3 *r_normal = nullptr) const;
 	bool intersects_ray(const Vector3 &p_from, const Vector3 &p_dir, Vector3 *r_clip = nullptr, Vector3 *r_normal = nullptr) const;
-	_FORCE_INLINE_ bool smits_intersect_ray(const Vector3 &p_from, const Vector3 &p_dir, real_t t0, real_t t1) const;
+	_FORCE_INLINE_ bool smits_intersect_ray(const Vector3 &p_from, const Vector3 &p_dir, float t0, float t1) const;
 
 	_FORCE_INLINE_ bool intersects_convex_shape(const Plane *p_planes, int p_plane_count, const Vector3 *p_points, int p_point_count) const;
 	_FORCE_INLINE_ bool inside_convex_shape(const Plane *p_planes, int p_plane_count) const;
@@ -86,31 +86,31 @@ struct _NO_DISCARD_ AABB {
 
 	Vector3 get_longest_axis() const;
 	int get_longest_axis_index() const;
-	_FORCE_INLINE_ real_t get_longest_axis_size() const;
+	_FORCE_INLINE_ float get_longest_axis_size() const;
 
 	Vector3 get_shortest_axis() const;
 	int get_shortest_axis_index() const;
-	_FORCE_INLINE_ real_t get_shortest_axis_size() const;
+	_FORCE_INLINE_ float get_shortest_axis_size() const;
 
-	AABB grow(real_t p_by) const;
-	_FORCE_INLINE_ void grow_by(real_t p_amount);
+	AABB grow(float p_by) const;
+	_FORCE_INLINE_ void grow_by(float p_amount);
 
 	void get_edge(int p_edge, Vector3 &r_from, Vector3 &r_to) const;
 	_FORCE_INLINE_ Vector3 get_endpoint(int p_point) const;
 
 	AABB expand(const Vector3 &p_vector) const;
-	_FORCE_INLINE_ void project_range_in_plane(const Plane &p_plane, real_t &r_min, real_t &r_max) const;
+	_FORCE_INLINE_ void project_range_in_plane(const Plane &p_plane, float &r_min, float &r_max) const;
 	_FORCE_INLINE_ void expand_to(const Vector3 &p_vector); /** expand to contain a point if necessary */
 
 	_FORCE_INLINE_ AABB abs() const {
-		return AABB(Vector3(position.x + MIN(size.x, (real_t)0), position.y + MIN(size.y, (real_t)0), position.z + MIN(size.z, (real_t)0)), size.abs());
+		return AABB(Vector3(position.x + MIN(size.x, (float)0), position.y + MIN(size.y, (float)0), position.z + MIN(size.z, (float)0)), size.abs());
 	}
 
 	Variant intersects_segment_bind(const Vector3 &p_from, const Vector3 &p_to) const;
 	Variant intersects_ray_bind(const Vector3 &p_from, const Vector3 &p_dir) const;
 
-	_FORCE_INLINE_ void quantize(real_t p_unit);
-	_FORCE_INLINE_ AABB quantized(real_t p_unit) const;
+	_FORCE_INLINE_ void quantize(float p_unit);
+	_FORCE_INLINE_ AABB quantized(float p_unit) const;
 
 	_FORCE_INLINE_ void set_end(const Vector3 &p_end) {
 		size = p_end - position;
@@ -365,18 +365,18 @@ inline void AABB::expand_to(const Vector3 &p_vector) {
 	size = end - begin;
 }
 
-void AABB::project_range_in_plane(const Plane &p_plane, real_t &r_min, real_t &r_max) const {
+void AABB::project_range_in_plane(const Plane &p_plane, float &r_min, float &r_max) const {
 	Vector3 half_extents(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f);
 	Vector3 center(position.x + half_extents.x, position.y + half_extents.y, position.z + half_extents.z);
 
-	real_t length = p_plane.normal.abs().dot(half_extents);
-	real_t distance = p_plane.distance_to(center);
+	float length = p_plane.normal.abs().dot(half_extents);
+	float distance = p_plane.distance_to(center);
 	r_min = distance - length;
 	r_max = distance + length;
 }
 
-inline real_t AABB::get_longest_axis_size() const {
-	real_t max_size = size.x;
+inline float AABB::get_longest_axis_size() const {
+	float max_size = size.x;
 
 	if (size.y > max_size) {
 		max_size = size.y;
@@ -389,8 +389,8 @@ inline real_t AABB::get_longest_axis_size() const {
 	return max_size;
 }
 
-inline real_t AABB::get_shortest_axis_size() const {
-	real_t max_size = size.x;
+inline float AABB::get_shortest_axis_size() const {
+	float max_size = size.x;
 
 	if (size.y < max_size) {
 		max_size = size.y;
@@ -403,18 +403,18 @@ inline real_t AABB::get_shortest_axis_size() const {
 	return max_size;
 }
 
-bool AABB::smits_intersect_ray(const Vector3 &p_from, const Vector3 &p_dir, real_t t0, real_t t1) const {
+bool AABB::smits_intersect_ray(const Vector3 &p_from, const Vector3 &p_dir, float t0, float t1) const {
 #ifdef MATH_CHECKS
 	if (unlikely(size.x < 0 || size.y < 0 || size.z < 0)) {
 		ERR_PRINT("AABB size is negative, this is not supported. Use AABB.abs() to get an AABB with a positive size.");
 	}
 #endif
-	real_t divx = 1.0f / p_dir.x;
-	real_t divy = 1.0f / p_dir.y;
-	real_t divz = 1.0f / p_dir.z;
+	float divx = 1.0f / p_dir.x;
+	float divy = 1.0f / p_dir.y;
+	float divz = 1.0f / p_dir.z;
 
 	Vector3 upbound = position + size;
-	real_t tmin, tmax, tymin, tymax, tzmin, tzmax;
+	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 	if (p_dir.x >= 0) {
 		tmin = (position.x - p_from.x) * divx;
 		tmax = (upbound.x - p_from.x) * divx;
@@ -457,7 +457,7 @@ bool AABB::smits_intersect_ray(const Vector3 &p_from, const Vector3 &p_dir, real
 	return ((tmin < t1) && (tmax > t0));
 }
 
-void AABB::grow_by(real_t p_amount) {
+void AABB::grow_by(float p_amount) {
 	position.x -= p_amount;
 	position.y -= p_amount;
 	position.z -= p_amount;
@@ -466,7 +466,7 @@ void AABB::grow_by(real_t p_amount) {
 	size.z += 2.0f * p_amount;
 }
 
-void AABB::quantize(real_t p_unit) {
+void AABB::quantize(float p_unit) {
 	size += position;
 
 	position.x -= Math::fposmodp(position.x, p_unit);
@@ -484,7 +484,7 @@ void AABB::quantize(real_t p_unit) {
 	size -= position;
 }
 
-AABB AABB::quantized(real_t p_unit) const {
+AABB AABB::quantized(float p_unit) const {
 	AABB ret = *this;
 	ret.quantize(p_unit);
 	return ret;

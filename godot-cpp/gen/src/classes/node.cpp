@@ -763,9 +763,9 @@ void Node::notify_thread_safe(int32_t p_what) {
 	internal::_call_native_mb_no_ret(_gde_method_bind, _owner, &p_what_encoded);
 }
 
-void Node::_process(real_t p_delta) {}
+void Node::_process(float p_delta) {}
 
-void Node::_physics_process(real_t p_delta) {}
+void Node::_physics_process(float p_delta) {}
 
 void Node::_enter_tree() {}
 
@@ -785,5 +785,4 @@ void Node::_unhandled_input(const Ref<InputEvent> &p_event) {}
 
 void Node::_unhandled_key_input(const Ref<InputEvent> &p_event) {}
 
-
-} // namespace godot 
+} // namespace godot

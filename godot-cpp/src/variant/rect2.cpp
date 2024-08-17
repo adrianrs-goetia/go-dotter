@@ -50,23 +50,23 @@ bool Rect2::intersects_segment(const Point2 &p_from, const Point2 &p_to, Point2 
 		ERR_PRINT("Rect2 size is negative, this is not supported. Use Rect2.abs() to get a Rect2 with a positive size.");
 	}
 #endif
-	real_t min = 0, max = 1;
+	float min = 0, max = 1;
 	int axis = 0;
-	real_t sign = 0;
+	float sign = 0;
 
 	for (int i = 0; i < 2; i++) {
-		real_t seg_from = p_from[i];
-		real_t seg_to = p_to[i];
-		real_t box_begin = position[i];
-		real_t box_end = box_begin + size[i];
-		real_t cmin, cmax;
-		real_t csign;
+		float seg_from = p_from[i];
+		float seg_to = p_to[i];
+		float box_begin = position[i];
+		float box_end = box_begin + size[i];
+		float cmin, cmax;
+		float csign;
 
 		if (seg_from < seg_to) {
 			if (seg_from > box_end || seg_to < box_begin) {
 				return false;
 			}
-			real_t length = seg_to - seg_from;
+			float length = seg_to - seg_from;
 			cmin = (seg_from < box_begin) ? ((box_begin - seg_from) / length) : 0;
 			cmax = (seg_to > box_end) ? ((box_end - seg_from) / length) : 1;
 			csign = -1.0;
@@ -75,7 +75,7 @@ bool Rect2::intersects_segment(const Point2 &p_from, const Point2 &p_to, Point2 
 			if (seg_to > box_end || seg_from < box_begin) {
 				return false;
 			}
-			real_t length = seg_to - seg_from;
+			float length = seg_to - seg_from;
 			cmin = (seg_from > box_end) ? (box_end - seg_from) / length : 0;
 			cmax = (seg_to < box_begin) ? (box_begin - seg_from) / length : 1;
 			csign = 1.0;
@@ -124,7 +124,7 @@ bool Rect2::intersects_transformed(const Transform2D &p_xform, const Rect2 &p_re
 		p_xform.xform(Vector2(p_rect.position.x + p_rect.size.x, p_rect.position.y + p_rect.size.y)),
 	};
 
-	real_t low_limit;
+	float low_limit;
 
 	//base rect2 first (faster)
 
@@ -207,10 +207,10 @@ next4:
 		Vector2(position.x + size.x, position.y + size.y),
 	};
 
-	real_t maxa = p_xform.columns[0].dot(xf_points2[0]);
-	real_t mina = maxa;
+	float maxa = p_xform.columns[0].dot(xf_points2[0]);
+	float mina = maxa;
 
-	real_t dp = p_xform.columns[0].dot(xf_points2[1]);
+	float dp = p_xform.columns[0].dot(xf_points2[1]);
 	maxa = Math::max(dp, maxa);
 	mina = Math::min(dp, mina);
 
@@ -222,8 +222,8 @@ next4:
 	maxa = Math::max(dp, maxa);
 	mina = Math::min(dp, mina);
 
-	real_t maxb = p_xform.columns[0].dot(xf_points[0]);
-	real_t minb = maxb;
+	float maxb = p_xform.columns[0].dot(xf_points[0]);
+	float minb = maxb;
 
 	dp = p_xform.columns[0].dot(xf_points[1]);
 	maxb = Math::max(dp, maxb);

@@ -58,23 +58,23 @@ Transform3D Transform3D::inverse() const {
 	return ret;
 }
 
-void Transform3D::rotate(const Vector3 &p_axis, real_t p_angle) {
+void Transform3D::rotate(const Vector3 &p_axis, float p_angle) {
 	*this = rotated(p_axis, p_angle);
 }
 
-Transform3D Transform3D::rotated(const Vector3 &p_axis, real_t p_angle) const {
+Transform3D Transform3D::rotated(const Vector3 &p_axis, float p_angle) const {
 	// Equivalent to left multiplication
 	Basis p_basis(p_axis, p_angle);
 	return Transform3D(p_basis * basis, p_basis.xform(origin));
 }
 
-Transform3D Transform3D::rotated_local(const Vector3 &p_axis, real_t p_angle) const {
+Transform3D Transform3D::rotated_local(const Vector3 &p_axis, float p_angle) const {
 	// Equivalent to right multiplication
 	Basis p_basis(p_axis, p_angle);
 	return Transform3D(basis * p_basis, origin);
 }
 
-void Transform3D::rotate_basis(const Vector3 &p_axis, real_t p_angle) {
+void Transform3D::rotate_basis(const Vector3 &p_axis, float p_angle) {
 	basis.rotate(p_axis, p_angle);
 }
 
@@ -95,7 +95,7 @@ void Transform3D::set_look_at(const Vector3 &p_eye, const Vector3 &p_target, con
 	origin = p_eye;
 }
 
-Transform3D Transform3D::interpolate_with(const Transform3D &p_transform, real_t p_c) const {
+Transform3D Transform3D::interpolate_with(const Transform3D &p_transform, float p_c) const {
 	Transform3D interp;
 
 	Vector3 src_scale = basis.get_scale();
@@ -131,7 +131,7 @@ void Transform3D::scale_basis(const Vector3 &p_scale) {
 	basis.scale(p_scale);
 }
 
-void Transform3D::translate_local(real_t p_tx, real_t p_ty, real_t p_tz) {
+void Transform3D::translate_local(float p_tx, float p_ty, float p_tz) {
 	translate_local(Vector3(p_tx, p_ty, p_tz));
 }
 
@@ -198,12 +198,12 @@ Transform3D Transform3D::operator*(const Transform3D &p_transform) const {
 	return t;
 }
 
-void Transform3D::operator*=(const real_t p_val) {
+void Transform3D::operator*=(const float p_val) {
 	origin *= p_val;
 	basis *= p_val;
 }
 
-Transform3D Transform3D::operator*(const real_t p_val) const {
+Transform3D Transform3D::operator*(const float p_val) const {
 	Transform3D ret(*this);
 	ret *= p_val;
 	return ret;
@@ -228,7 +228,7 @@ Transform3D::Transform3D(const Vector3 &p_x, const Vector3 &p_y, const Vector3 &
 	basis.set_column(2, p_z);
 }
 
-Transform3D::Transform3D(real_t xx, real_t xy, real_t xz, real_t yx, real_t yy, real_t yz, real_t zx, real_t zy, real_t zz, real_t ox, real_t oy, real_t oz) {
+Transform3D::Transform3D(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz, float ox, float oy, float oz) {
 	basis = Basis(xx, xy, xz, yx, yy, yz, zx, zy, zz);
 	origin = Vector3(ox, oy, oz);
 }

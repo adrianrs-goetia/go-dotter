@@ -20,7 +20,7 @@ public: // functions
 
 	void _enter_tree() override;
 	void _ready() override;
-	void _physics_process(real_t delta) override;
+	void _physics_process(float delta) override;
 };
 
 #endif // GD_CHARACTER_CAMERAPIVOT_PLUGIN_STEIKEMANNGAMEPLAY_H

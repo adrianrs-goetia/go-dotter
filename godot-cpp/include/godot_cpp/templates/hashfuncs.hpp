@@ -165,8 +165,8 @@ static _FORCE_INLINE_ uint32_t hash_murmur3_one_double(double p_in, uint32_t p_s
 	return hash_murmur3_one_64(u.i, p_seed);
 }
 
-static _FORCE_INLINE_ uint32_t hash_murmur3_one_real(real_t p_in, uint32_t p_seed = HASH_MURMUR3_SEED) {
-#ifdef REAL_T_IS_DOUBLE
+static _FORCE_INLINE_ uint32_t hash_murmur3_one_real(float p_in, uint32_t p_seed = HASH_MURMUR3_SEED) {
+#ifdef float_IS_DOUBLE
 	return hash_murmur3_one_double(p_in, p_seed);
 #else
 	return hash_murmur3_one_float(p_in, p_seed);

@@ -37,7 +37,7 @@ namespace godot {
 
 Vector4::Axis Vector4::min_axis_index() const {
 	uint32_t min_index = 0;
-	real_t min_value = x;
+	float min_value = x;
 	for (uint32_t i = 1; i < 4; i++) {
 		if (operator[](i) <= min_value) {
 			min_index = i;
@@ -49,7 +49,7 @@ Vector4::Axis Vector4::min_axis_index() const {
 
 Vector4::Axis Vector4::max_axis_index() const {
 	uint32_t max_index = 0;
-	real_t max_value = x;
+	float max_value = x;
 	for (uint32_t i = 1; i < 4; i++) {
 		if (operator[](i) > max_value) {
 			max_index = i;
@@ -71,16 +71,16 @@ bool Vector4::is_finite() const {
 	return Math::is_finite(x) && Math::is_finite(y) && Math::is_finite(z) && Math::is_finite(w);
 }
 
-real_t Vector4::length() const {
+float Vector4::length() const {
 	return Math::sqrt(length_squared());
 }
 
 void Vector4::normalize() {
-	real_t lengthsq = length_squared();
+	float lengthsq = length_squared();
 	if (lengthsq == 0) {
 		x = y = z = w = 0;
 	} else {
-		real_t length = Math::sqrt(lengthsq);
+		float length = Math::sqrt(lengthsq);
 		x /= length;
 		y /= length;
 		z /= length;
@@ -95,14 +95,14 @@ Vector4 Vector4::normalized() const {
 }
 
 bool Vector4::is_normalized() const {
-	return Math::is_equal_approx(length_squared(), (real_t)1, (real_t)UNIT_EPSILON);
+	return Math::is_equal_approx(length_squared(), (float)1, (float)UNIT_EPSILON);
 }
 
-real_t Vector4::distance_to(const Vector4 &p_to) const {
+float Vector4::distance_to(const Vector4 &p_to) const {
 	return (p_to - *this).length();
 }
 
-real_t Vector4::distance_squared_to(const Vector4 &p_to) const {
+float Vector4::distance_squared_to(const Vector4 &p_to) const {
 	return (p_to - *this).length_squared();
 }
 
@@ -132,7 +132,7 @@ Vector4 Vector4::round() const {
 	return Vector4(Math::round(x), Math::round(y), Math::round(z), Math::round(w));
 }
 
-Vector4 Vector4::lerp(const Vector4 &p_to, const real_t p_weight) const {
+Vector4 Vector4::lerp(const Vector4 &p_to, const float p_weight) const {
 	return Vector4(
 			x + (p_weight * (p_to.x - x)),
 			y + (p_weight * (p_to.y - y)),
@@ -140,7 +140,7 @@ Vector4 Vector4::lerp(const Vector4 &p_to, const real_t p_weight) const {
 			w + (p_weight * (p_to.w - w)));
 }
 
-Vector4 Vector4::cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const real_t p_weight) const {
+Vector4 Vector4::cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const float p_weight) const {
 	Vector4 res = *this;
 	res.x = Math::cubic_interpolate(res.x, p_b.x, p_pre_a.x, p_post_b.x, p_weight);
 	res.y = Math::cubic_interpolate(res.y, p_b.y, p_pre_a.y, p_post_b.y, p_weight);
@@ -149,7 +149,7 @@ Vector4 Vector4::cubic_interpolate(const Vector4 &p_b, const Vector4 &p_pre_a, c
 	return res;
 }
 
-Vector4 Vector4::cubic_interpolate_in_time(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const real_t p_weight, const real_t &p_b_t, const real_t &p_pre_a_t, const real_t &p_post_b_t) const {
+Vector4 Vector4::cubic_interpolate_in_time(const Vector4 &p_b, const Vector4 &p_pre_a, const Vector4 &p_post_b, const float p_weight, const float &p_b_t, const float &p_pre_a_t, const float &p_post_b_t) const {
 	Vector4 res = *this;
 	res.x = Math::cubic_interpolate_in_time(res.x, p_b.x, p_pre_a.x, p_post_b.x, p_weight, p_b_t, p_pre_a_t, p_post_b_t);
 	res.y = Math::cubic_interpolate_in_time(res.y, p_b.y, p_pre_a.y, p_post_b.y, p_weight, p_b_t, p_pre_a_t, p_post_b_t);
@@ -158,7 +158,7 @@ Vector4 Vector4::cubic_interpolate_in_time(const Vector4 &p_b, const Vector4 &p_
 	return res;
 }
 
-Vector4 Vector4::posmod(const real_t p_mod) const {
+Vector4 Vector4::posmod(const float p_mod) const {
 	return Vector4(Math::fposmod(x, p_mod), Math::fposmod(y, p_mod), Math::fposmod(z, p_mod), Math::fposmod(w, p_mod));
 }
 
@@ -195,6 +195,6 @@ Vector4::operator String() const {
 	return "(" + String::num_real(x, false) + ", " + String::num_real(y, false) + ", " + String::num_real(z, false) + ", " + String::num_real(w, false) + ")";
 }
 
-static_assert(sizeof(Vector4) == 4 * sizeof(real_t));
+static_assert(sizeof(Vector4) == 4 * sizeof(float));
 
 } // namespace godot

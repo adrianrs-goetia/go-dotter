@@ -35,7 +35,7 @@
 
 namespace godot {
 
-real_t AABB::get_volume() const {
+float AABB::get_volume() const {
 	return size.x * size.y * size.z;
 }
 
@@ -127,8 +127,8 @@ bool AABB::intersects_ray(const Vector3 &p_from, const Vector3 &p_dir, Vector3 *
 #endif
 	Vector3 c1, c2;
 	Vector3 end = position + size;
-	real_t near = -1e20;
-	real_t far = 1e20;
+	float near = -1e20;
+	float far = 1e20;
 	int axis = 0;
 
 	for (int i = 0; i < 3; i++) {
@@ -173,23 +173,23 @@ bool AABB::intersects_segment(const Vector3 &p_from, const Vector3 &p_to, Vector
 		ERR_PRINT("AABB size is negative, this is not supported. Use AABB.abs() to get an AABB with a positive size.");
 	}
 #endif
-	real_t min = 0, max = 1;
+	float min = 0, max = 1;
 	int axis = 0;
-	real_t sign = 0;
+	float sign = 0;
 
 	for (int i = 0; i < 3; i++) {
-		real_t seg_from = p_from[i];
-		real_t seg_to = p_to[i];
-		real_t box_begin = position[i];
-		real_t box_end = box_begin + size[i];
-		real_t cmin, cmax;
-		real_t csign;
+		float seg_from = p_from[i];
+		float seg_to = p_to[i];
+		float box_begin = position[i];
+		float box_end = box_begin + size[i];
+		float cmin, cmax;
+		float csign;
 
 		if (seg_from < seg_to) {
 			if (seg_from > box_end || seg_to < box_begin) {
 				return false;
 			}
-			real_t length = seg_to - seg_from;
+			float length = seg_to - seg_from;
 			cmin = (seg_from < box_begin) ? ((box_begin - seg_from) / length) : 0;
 			cmax = (seg_to > box_end) ? ((box_end - seg_from) / length) : 1;
 			csign = -1.0;
@@ -198,7 +198,7 @@ bool AABB::intersects_segment(const Vector3 &p_from, const Vector3 &p_to, Vector
 			if (seg_to > box_end || seg_from < box_begin) {
 				return false;
 			}
-			real_t length = seg_to - seg_from;
+			float length = seg_to - seg_from;
 			cmin = (seg_from > box_end) ? (box_end - seg_from) / length : 0;
 			cmax = (seg_to < box_begin) ? (box_begin - seg_from) / length : 1;
 			csign = 1.0;
@@ -260,7 +260,7 @@ bool AABB::intersects_plane(const Plane &p_plane) const {
 
 Vector3 AABB::get_longest_axis() const {
 	Vector3 axis(1, 0, 0);
-	real_t max_size = size.x;
+	float max_size = size.x;
 
 	if (size.y > max_size) {
 		axis = Vector3(0, 1, 0);
@@ -276,7 +276,7 @@ Vector3 AABB::get_longest_axis() const {
 
 int AABB::get_longest_axis_index() const {
 	int axis = 0;
-	real_t max_size = size.x;
+	float max_size = size.x;
 
 	if (size.y > max_size) {
 		axis = 1;
@@ -292,7 +292,7 @@ int AABB::get_longest_axis_index() const {
 
 Vector3 AABB::get_shortest_axis() const {
 	Vector3 axis(1, 0, 0);
-	real_t min_size = size.x;
+	float min_size = size.x;
 
 	if (size.y < min_size) {
 		axis = Vector3(0, 1, 0);
@@ -308,7 +308,7 @@ Vector3 AABB::get_shortest_axis() const {
 
 int AABB::get_shortest_axis_index() const {
 	int axis = 0;
-	real_t min_size = size.x;
+	float min_size = size.x;
 
 	if (size.y < min_size) {
 		axis = 1;
@@ -334,7 +334,7 @@ AABB AABB::expand(const Vector3 &p_vector) const {
 	return aabb;
 }
 
-AABB AABB::grow(real_t p_by) const {
+AABB AABB::grow(float p_by) const {
 	AABB aabb = *this;
 	aabb.grow_by(p_by);
 	return aabb;

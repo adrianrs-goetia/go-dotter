@@ -43,9 +43,9 @@ struct PhysicsServer2DExtensionMotionResult {
 	Vector2 collision_point;
 	Vector2 collision_normal;
 	Vector2 collider_velocity;
-	real_t collision_depth;
-	real_t collision_safe_fraction;
-	real_t collision_unsafe_fraction;
+	float collision_depth;
+	float collision_safe_fraction;
+	float collision_unsafe_fraction;
 	int collision_local_shape;
 	ObjectID collider_id;
 	RID collider;

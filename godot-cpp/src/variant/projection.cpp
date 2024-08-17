@@ -95,11 +95,11 @@ Vector4 Projection::xform_inv(const Vector4 &p_vec4) const {
 			columns[3][0] * p_vec4.x + columns[3][1] * p_vec4.y + columns[3][2] * p_vec4.z + columns[3][3] * p_vec4.w);
 }
 
-void Projection::adjust_perspective_znear(real_t p_new_znear) {
-	real_t zfar = get_z_far();
-	real_t znear = p_new_znear;
+void Projection::adjust_perspective_znear(float p_new_znear) {
+	float zfar = get_z_far();
+	float znear = p_new_znear;
 
-	real_t deltaZ = zfar - znear;
+	float deltaZ = zfar - znear;
 	columns[2][2] = -(zfar + znear) / deltaZ;
 	columns[3][2] = -2 * znear * zfar / deltaZ;
 }
@@ -116,43 +116,43 @@ Projection Projection::create_light_atlas_rect(const Rect2 &p_rect) {
 	return proj;
 }
 
-Projection Projection::create_perspective(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov) {
+Projection Projection::create_perspective(float p_fovy_degrees, float p_aspect, float p_z_near, float p_z_far, bool p_flip_fov) {
 	Projection proj;
 	proj.set_perspective(p_fovy_degrees, p_aspect, p_z_near, p_z_far, p_flip_fov);
 	return proj;
 }
 
-Projection Projection::create_perspective_hmd(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov, int p_eye, real_t p_intraocular_dist, real_t p_convergence_dist) {
+Projection Projection::create_perspective_hmd(float p_fovy_degrees, float p_aspect, float p_z_near, float p_z_far, bool p_flip_fov, int p_eye, float p_intraocular_dist, float p_convergence_dist) {
 	Projection proj;
 	proj.set_perspective(p_fovy_degrees, p_aspect, p_z_near, p_z_far, p_flip_fov, p_eye, p_intraocular_dist, p_convergence_dist);
 	return proj;
 }
 
-Projection Projection::create_for_hmd(int p_eye, real_t p_aspect, real_t p_intraocular_dist, real_t p_display_width, real_t p_display_to_lens, real_t p_oversample, real_t p_z_near, real_t p_z_far) {
+Projection Projection::create_for_hmd(int p_eye, float p_aspect, float p_intraocular_dist, float p_display_width, float p_display_to_lens, float p_oversample, float p_z_near, float p_z_far) {
 	Projection proj;
 	proj.set_for_hmd(p_eye, p_aspect, p_intraocular_dist, p_display_width, p_display_to_lens, p_oversample, p_z_near, p_z_far);
 	return proj;
 }
 
-Projection Projection::create_orthogonal(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_znear, real_t p_zfar) {
+Projection Projection::create_orthogonal(float p_left, float p_right, float p_bottom, float p_top, float p_znear, float p_zfar) {
 	Projection proj;
 	proj.set_orthogonal(p_left, p_right, p_bottom, p_top, p_znear, p_zfar);
 	return proj;
 }
 
-Projection Projection::create_orthogonal_aspect(real_t p_size, real_t p_aspect, real_t p_znear, real_t p_zfar, bool p_flip_fov) {
+Projection Projection::create_orthogonal_aspect(float p_size, float p_aspect, float p_znear, float p_zfar, bool p_flip_fov) {
 	Projection proj;
 	proj.set_orthogonal(p_size, p_aspect, p_znear, p_zfar, p_flip_fov);
 	return proj;
 }
 
-Projection Projection::create_frustum(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_near, real_t p_far) {
+Projection Projection::create_frustum(float p_left, float p_right, float p_bottom, float p_top, float p_near, float p_far) {
 	Projection proj;
 	proj.set_frustum(p_left, p_right, p_bottom, p_top, p_near, p_far);
 	return proj;
 }
 
-Projection Projection::create_frustum_aspect(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov) {
+Projection Projection::create_frustum_aspect(float p_size, float p_aspect, Vector2 p_offset, float p_near, float p_far, bool p_flip_fov) {
 	Projection proj;
 	proj.set_frustum(p_size, p_aspect, p_offset, p_near, p_far, p_flip_fov);
 	return proj;
@@ -164,14 +164,14 @@ Projection Projection::create_fit_aabb(const AABB &p_aabb) {
 	return proj;
 }
 
-Projection Projection::perspective_znear_adjusted(real_t p_new_znear) const {
+Projection Projection::perspective_znear_adjusted(float p_new_znear) const {
 	Projection proj = *this;
 	proj.adjust_perspective_znear(p_new_znear);
 	return proj;
 }
 
 Plane Projection::get_projection_plane(Planes p_plane) const {
-	const real_t *matrix = (const real_t *)this->columns;
+	const float *matrix = (const float *)this->columns;
 
 	switch (p_plane) {
 		case PLANE_NEAR: {
@@ -251,13 +251,13 @@ Projection Projection ::jitter_offseted(const Vector2 &p_offset) const {
 	return proj;
 }
 
-void Projection::set_perspective(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov) {
+void Projection::set_perspective(float p_fovy_degrees, float p_aspect, float p_z_near, float p_z_far, bool p_flip_fov) {
 	if (p_flip_fov) {
 		p_fovy_degrees = get_fovy(p_fovy_degrees, 1.0 / p_aspect);
 	}
 
-	real_t sine, cotangent, deltaZ;
-	real_t radians = Math::deg_to_rad(p_fovy_degrees / 2.0);
+	float sine, cotangent, deltaZ;
+	float radians = Math::deg_to_rad(p_fovy_degrees / 2.0);
 
 	deltaZ = p_z_far - p_z_near;
 	sine = Math::sin(radians);
@@ -277,12 +277,12 @@ void Projection::set_perspective(real_t p_fovy_degrees, real_t p_aspect, real_t 
 	columns[3][3] = 0;
 }
 
-void Projection::set_perspective(real_t p_fovy_degrees, real_t p_aspect, real_t p_z_near, real_t p_z_far, bool p_flip_fov, int p_eye, real_t p_intraocular_dist, real_t p_convergence_dist) {
+void Projection::set_perspective(float p_fovy_degrees, float p_aspect, float p_z_near, float p_z_far, bool p_flip_fov, int p_eye, float p_intraocular_dist, float p_convergence_dist) {
 	if (p_flip_fov) {
 		p_fovy_degrees = get_fovy(p_fovy_degrees, 1.0 / p_aspect);
 	}
 
-	real_t left, right, modeltranslation, ymax, xmax, frustumshift;
+	float left, right, modeltranslation, ymax, xmax, frustumshift;
 
 	ymax = p_z_near * tan(Math::deg_to_rad(p_fovy_degrees / 2.0));
 	xmax = ymax * p_aspect;
@@ -315,15 +315,15 @@ void Projection::set_perspective(real_t p_fovy_degrees, real_t p_aspect, real_t 
 	*this = *this * cm;
 }
 
-void Projection::set_for_hmd(int p_eye, real_t p_aspect, real_t p_intraocular_dist, real_t p_display_width, real_t p_display_to_lens, real_t p_oversample, real_t p_z_near, real_t p_z_far) {
+void Projection::set_for_hmd(int p_eye, float p_aspect, float p_intraocular_dist, float p_display_width, float p_display_to_lens, float p_oversample, float p_z_near, float p_z_far) {
 	// we first calculate our base frustum on our values without taking our lens magnification into account.
-	real_t f1 = (p_intraocular_dist * 0.5) / p_display_to_lens;
-	real_t f2 = ((p_display_width - p_intraocular_dist) * 0.5) / p_display_to_lens;
-	real_t f3 = (p_display_width / 4.0) / p_display_to_lens;
+	float f1 = (p_intraocular_dist * 0.5) / p_display_to_lens;
+	float f2 = ((p_display_width - p_intraocular_dist) * 0.5) / p_display_to_lens;
+	float f3 = (p_display_width / 4.0) / p_display_to_lens;
 
 	// now we apply our oversample factor to increase our FOV. how much we oversample is always a balance we strike between performance and how much
 	// we're willing to sacrifice in FOV.
-	real_t add = ((f1 + f2) * (p_oversample - 1.0)) / 2.0;
+	float add = ((f1 + f2) * (p_oversample - 1.0)) / 2.0;
 	f1 += add;
 	f2 += add;
 	f3 *= p_oversample;
@@ -343,7 +343,7 @@ void Projection::set_for_hmd(int p_eye, real_t p_aspect, real_t p_intraocular_di
 	}
 }
 
-void Projection::set_orthogonal(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_znear, real_t p_zfar) {
+void Projection::set_orthogonal(float p_left, float p_right, float p_bottom, float p_top, float p_znear, float p_zfar) {
 	set_identity();
 
 	columns[0][0] = 2.0 / (p_right - p_left);
@@ -355,7 +355,7 @@ void Projection::set_orthogonal(real_t p_left, real_t p_right, real_t p_bottom, 
 	columns[3][3] = 1.0;
 }
 
-void Projection::set_orthogonal(real_t p_size, real_t p_aspect, real_t p_znear, real_t p_zfar, bool p_flip_fov) {
+void Projection::set_orthogonal(float p_size, float p_aspect, float p_znear, float p_zfar, bool p_flip_fov) {
 	if (!p_flip_fov) {
 		p_size *= p_aspect;
 	}
@@ -363,19 +363,19 @@ void Projection::set_orthogonal(real_t p_size, real_t p_aspect, real_t p_znear, 
 	set_orthogonal(-p_size / 2, +p_size / 2, -p_size / p_aspect / 2, +p_size / p_aspect / 2, p_znear, p_zfar);
 }
 
-void Projection::set_frustum(real_t p_left, real_t p_right, real_t p_bottom, real_t p_top, real_t p_near, real_t p_far) {
+void Projection::set_frustum(float p_left, float p_right, float p_bottom, float p_top, float p_near, float p_far) {
 	ERR_FAIL_COND(p_right <= p_left);
 	ERR_FAIL_COND(p_top <= p_bottom);
 	ERR_FAIL_COND(p_far <= p_near);
 
-	real_t *te = &columns[0][0];
-	real_t x = 2 * p_near / (p_right - p_left);
-	real_t y = 2 * p_near / (p_top - p_bottom);
+	float *te = &columns[0][0];
+	float x = 2 * p_near / (p_right - p_left);
+	float y = 2 * p_near / (p_top - p_bottom);
 
-	real_t a = (p_right + p_left) / (p_right - p_left);
-	real_t b = (p_top + p_bottom) / (p_top - p_bottom);
-	real_t c = -(p_far + p_near) / (p_far - p_near);
-	real_t d = -2 * p_far * p_near / (p_far - p_near);
+	float a = (p_right + p_left) / (p_right - p_left);
+	float b = (p_top + p_bottom) / (p_top - p_bottom);
+	float c = -(p_far + p_near) / (p_far - p_near);
+	float d = -2 * p_far * p_near / (p_far - p_near);
 
 	te[0] = x;
 	te[1] = 0;
@@ -395,7 +395,7 @@ void Projection::set_frustum(real_t p_left, real_t p_right, real_t p_bottom, rea
 	te[15] = 0;
 }
 
-void Projection::set_frustum(real_t p_size, real_t p_aspect, Vector2 p_offset, real_t p_near, real_t p_far, bool p_flip_fov) {
+void Projection::set_frustum(float p_size, float p_aspect, Vector2 p_offset, float p_near, float p_far, bool p_flip_fov) {
 	if (!p_flip_fov) {
 		p_size *= p_aspect;
 	}
@@ -403,8 +403,8 @@ void Projection::set_frustum(real_t p_size, real_t p_aspect, Vector2 p_offset, r
 	set_frustum(-p_size / 2 + p_offset.x, +p_size / 2 + p_offset.x, -p_size / p_aspect / 2 + p_offset.y, +p_size / p_aspect / 2 + p_offset.y, p_near, p_far);
 }
 
-real_t Projection::get_z_far() const {
-	const real_t *matrix = (const real_t *)this->columns;
+float Projection::get_z_far() const {
+	const float *matrix = (const float *)this->columns;
 	Plane new_plane = Plane(matrix[3] - matrix[2],
 			matrix[7] - matrix[6],
 			matrix[11] - matrix[10],
@@ -416,8 +416,8 @@ real_t Projection::get_z_far() const {
 	return new_plane.d;
 }
 
-real_t Projection::get_z_near() const {
-	const real_t *matrix = (const real_t *)this->columns;
+float Projection::get_z_near() const {
+	const float *matrix = (const float *)this->columns;
 	Plane new_plane = Plane(matrix[3] + matrix[2],
 			matrix[7] + matrix[6],
 			matrix[11] + matrix[10],
@@ -428,7 +428,7 @@ real_t Projection::get_z_near() const {
 }
 
 Vector2 Projection::get_viewport_half_extents() const {
-	const real_t *matrix = (const real_t *)this->columns;
+	const float *matrix = (const float *)this->columns;
 	///////--- Near Plane ---///////
 	Plane near_plane = Plane(matrix[3] + matrix[2],
 			matrix[7] + matrix[6],
@@ -456,7 +456,7 @@ Vector2 Projection::get_viewport_half_extents() const {
 }
 
 Vector2 Projection::get_far_plane_half_extents() const {
-	const real_t *matrix = (const real_t *)this->columns;
+	const float *matrix = (const float *)this->columns;
 	///////--- Far Plane ---///////
 	Plane far_plane = Plane(matrix[3] - matrix[2],
 			matrix[7] - matrix[6],
@@ -519,7 +519,7 @@ Array Projection::get_projection_planes(const Transform3D &p_transform) const {
 	Array planes;
 	planes.resize(6);
 
-	const real_t *matrix = (const real_t *)this->columns;
+	const float *matrix = (const float *)this->columns;
 
 	Plane new_plane;
 
@@ -601,9 +601,9 @@ Projection Projection::inverse() const {
 void Projection::invert() {
 	int i, j, k;
 	int pvt_i[4], pvt_j[4]; /* Locations of pivot matrix */
-	real_t pvt_val; /* Value of current pivot element */
-	real_t hold; /* Temporary storage */
-	real_t determinant = 1.0f;
+	float pvt_val; /* Value of current pivot element */
+	float hold; /* Temporary storage */
+	float determinant = 1.0f;
 	for (k = 0; k < 4; k++) {
 		/** Locate k'th pivot element **/
 		pvt_val = columns[k][k]; /** Initialize for search **/
@@ -711,7 +711,7 @@ Projection Projection::operator*(const Projection &p_matrix) const {
 
 	for (int j = 0; j < 4; j++) {
 		for (int i = 0; i < 4; i++) {
-			real_t ab = 0;
+			float ab = 0;
 			for (int k = 0; k < 4; k++) {
 				ab += columns[k][i] * p_matrix.columns[j][k];
 			}
@@ -723,7 +723,7 @@ Projection Projection::operator*(const Projection &p_matrix) const {
 }
 
 void Projection::set_depth_correction(bool p_flip_y) {
-	real_t *m = &columns[0][0];
+	float *m = &columns[0][0];
 
 	m[0] = 1;
 	m[1] = 0.0;
@@ -744,7 +744,7 @@ void Projection::set_depth_correction(bool p_flip_y) {
 }
 
 void Projection::set_light_bias() {
-	real_t *m = &columns[0][0];
+	float *m = &columns[0][0];
 
 	m[0] = 0.5;
 	m[1] = 0.0;
@@ -765,7 +765,7 @@ void Projection::set_light_bias() {
 }
 
 void Projection::set_light_atlas_rect(const Rect2 &p_rect) {
-	real_t *m = &columns[0][0];
+	float *m = &columns[0][0];
 
 	m[0] = p_rect.size.width;
 	m[1] = 0.0;
@@ -796,7 +796,7 @@ Projection::operator String() const {
 	return str;
 }
 
-real_t Projection::get_aspect() const {
+float Projection::get_aspect() const {
 	Vector2 vp_he = get_viewport_half_extents();
 	return vp_he.x / vp_he.y;
 }
@@ -811,8 +811,8 @@ bool Projection::is_orthogonal() const {
 	return columns[3][3] == 1.0;
 }
 
-real_t Projection::get_fov() const {
-	const real_t *matrix = (const real_t *)this->columns;
+float Projection::get_fov() const {
+	const float *matrix = (const float *)this->columns;
 
 	Plane right_plane = Plane(matrix[3] - matrix[0],
 			matrix[7] - matrix[4],
@@ -885,7 +885,7 @@ void Projection::add_jitter_offset(const Vector2 &p_offset) {
 
 Projection::operator Transform3D() const {
 	Transform3D tr;
-	const real_t *m = &columns[0][0];
+	const float *m = &columns[0][0];
 
 	tr.basis.rows[0][0] = m[0];
 	tr.basis.rows[1][0] = m[1];
@@ -915,7 +915,7 @@ Projection::Projection(const Vector4 &p_x, const Vector4 &p_y, const Vector4 &p_
 
 Projection::Projection(const Transform3D &p_transform) {
 	const Transform3D &tr = p_transform;
-	real_t *m = &columns[0][0];
+	float *m = &columns[0][0];
 
 	m[0] = tr.basis.rows[0][0];
 	m[1] = tr.basis.rows[1][0];

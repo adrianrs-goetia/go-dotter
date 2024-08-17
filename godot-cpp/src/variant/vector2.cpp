@@ -35,24 +35,24 @@
 
 namespace godot {
 
-real_t Vector2::angle() const {
+float Vector2::angle() const {
 	return Math::atan2(y, x);
 }
 
-Vector2 Vector2::from_angle(const real_t p_angle) {
+Vector2 Vector2::from_angle(const float p_angle) {
 	return Vector2(Math::cos(p_angle), Math::sin(p_angle));
 }
 
-real_t Vector2::length() const {
+float Vector2::length() const {
 	return Math::sqrt(x * x + y * y);
 }
 
-real_t Vector2::length_squared() const {
+float Vector2::length_squared() const {
 	return x * x + y * y;
 }
 
 void Vector2::normalize() {
-	real_t l = x * x + y * y;
+	float l = x * x + y * y;
 	if (l != 0) {
 		l = Math::sqrt(l);
 		x /= l;
@@ -68,30 +68,30 @@ Vector2 Vector2::normalized() const {
 
 bool Vector2::is_normalized() const {
 	// use length_squared() instead of length() to avoid sqrt(), makes it more stringent.
-	return Math::is_equal_approx(length_squared(), 1, (real_t)UNIT_EPSILON);
+	return Math::is_equal_approx(length_squared(), 1, (float)UNIT_EPSILON);
 }
 
-real_t Vector2::distance_to(const Vector2 &p_vector2) const {
+float Vector2::distance_to(const Vector2 &p_vector2) const {
 	return Math::sqrt((x - p_vector2.x) * (x - p_vector2.x) + (y - p_vector2.y) * (y - p_vector2.y));
 }
 
-real_t Vector2::distance_squared_to(const Vector2 &p_vector2) const {
+float Vector2::distance_squared_to(const Vector2 &p_vector2) const {
 	return (x - p_vector2.x) * (x - p_vector2.x) + (y - p_vector2.y) * (y - p_vector2.y);
 }
 
-real_t Vector2::angle_to(const Vector2 &p_vector2) const {
+float Vector2::angle_to(const Vector2 &p_vector2) const {
 	return Math::atan2(cross(p_vector2), dot(p_vector2));
 }
 
-real_t Vector2::angle_to_point(const Vector2 &p_vector2) const {
+float Vector2::angle_to_point(const Vector2 &p_vector2) const {
 	return (p_vector2 - *this).angle();
 }
 
-real_t Vector2::dot(const Vector2 &p_other) const {
+float Vector2::dot(const Vector2 &p_other) const {
 	return x * p_other.x + y * p_other.y;
 }
 
-real_t Vector2::cross(const Vector2 &p_other) const {
+float Vector2::cross(const Vector2 &p_other) const {
 	return x * p_other.y - y * p_other.x;
 }
 
@@ -111,15 +111,15 @@ Vector2 Vector2::round() const {
 	return Vector2(Math::round(x), Math::round(y));
 }
 
-Vector2 Vector2::rotated(const real_t p_by) const {
-	real_t sine = Math::sin(p_by);
-	real_t cosi = Math::cos(p_by);
+Vector2 Vector2::rotated(const float p_by) const {
+	float sine = Math::sin(p_by);
+	float cosi = Math::cos(p_by);
 	return Vector2(
 			x * cosi - y * sine,
 			x * sine + y * cosi);
 }
 
-Vector2 Vector2::posmod(const real_t p_mod) const {
+Vector2 Vector2::posmod(const float p_mod) const {
 	return Vector2(Math::fposmod(x, p_mod), Math::fposmod(y, p_mod));
 }
 
@@ -143,8 +143,8 @@ Vector2 Vector2::snapped(const Vector2 &p_step) const {
 			Math::snapped(y, p_step.y));
 }
 
-Vector2 Vector2::limit_length(const real_t p_len) const {
-	const real_t l = length();
+Vector2 Vector2::limit_length(const float p_len) const {
+	const float l = length();
 	Vector2 v = *this;
 	if (l > 0 && p_len < l) {
 		v /= l;
@@ -154,11 +154,11 @@ Vector2 Vector2::limit_length(const real_t p_len) const {
 	return v;
 }
 
-Vector2 Vector2::move_toward(const Vector2 &p_to, const real_t p_delta) const {
+Vector2 Vector2::move_toward(const Vector2 &p_to, const float p_delta) const {
 	Vector2 v = *this;
 	Vector2 vd = p_to - v;
-	real_t len = vd.length();
-	return len <= p_delta || len < (real_t)CMP_EPSILON ? p_to : v + vd / len * p_delta;
+	float len = vd.length();
+	return len <= p_delta || len < (float)CMP_EPSILON ? p_to : v + vd / len * p_delta;
 }
 
 // slide returns the component of the vector along the given plane, specified by its normal vector.

@@ -40,7 +40,7 @@ void Plane::set_normal(const Vector3 &p_normal) {
 }
 
 void Plane::normalize() {
-	real_t l = normal.length();
+	float l = normal.length();
 	if (l == 0) {
 		*this = Plane(0, 0, 0, 0);
 		return;
@@ -80,7 +80,7 @@ bool Plane::intersect_3(const Plane &p_plane1, const Plane &p_plane2, Vector3 *r
 	Vector3 normal1 = p_plane1.normal;
 	Vector3 normal2 = p_plane2.normal;
 
-	real_t denom = vec3_cross(normal0, normal1).dot(normal2);
+	float denom = vec3_cross(normal0, normal1).dot(normal2);
 
 	if (Math::is_zero_approx(denom)) {
 		return false;
@@ -98,17 +98,17 @@ bool Plane::intersect_3(const Plane &p_plane1, const Plane &p_plane2, Vector3 *r
 
 bool Plane::intersects_ray(const Vector3 &p_from, const Vector3 &p_dir, Vector3 *p_intersection) const {
 	Vector3 segment = p_dir;
-	real_t den = normal.dot(segment);
+	float den = normal.dot(segment);
 
 	//printf("den is %i\n",den);
 	if (Math::is_zero_approx(den)) {
 		return false;
 	}
 
-	real_t dist = (normal.dot(p_from) - d) / den;
+	float dist = (normal.dot(p_from) - d) / den;
 	//printf("dist is %i\n",dist);
 
-	if (dist > (real_t)CMP_EPSILON) { //this is a ray, before the emitting pos (p_from) doesn't exist
+	if (dist > (float)CMP_EPSILON) { //this is a ray, before the emitting pos (p_from) doesn't exist
 
 		return false;
 	}
@@ -121,17 +121,17 @@ bool Plane::intersects_ray(const Vector3 &p_from, const Vector3 &p_dir, Vector3 
 
 bool Plane::intersects_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 *p_intersection) const {
 	Vector3 segment = p_begin - p_end;
-	real_t den = normal.dot(segment);
+	float den = normal.dot(segment);
 
 	//printf("den is %i\n",den);
 	if (Math::is_zero_approx(den)) {
 		return false;
 	}
 
-	real_t dist = (normal.dot(p_begin) - d) / den;
+	float dist = (normal.dot(p_begin) - d) / den;
 	//printf("dist is %i\n",dist);
 
-	if (dist < (real_t)-CMP_EPSILON || dist > (1.0f + (real_t)CMP_EPSILON)) {
+	if (dist < (float)-CMP_EPSILON || dist > (1.0f + (float)CMP_EPSILON)) {
 		return false;
 	}
 
