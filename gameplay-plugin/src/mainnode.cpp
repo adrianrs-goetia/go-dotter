@@ -10,8 +10,7 @@ void MainNode::_bind_methods() { DEFAULT_PROPERTY(MainNode) }
 void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (p_event->is_action_pressed(InputMap::pause_menu)) {
-		SceneTree* tree = get_tree();
-		if (tree) {
+		if (SceneTree* tree = get_tree()) {
 			tree->quit(0);
 		}
 	}

@@ -23,16 +23,30 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 			"get_class_name");
 
 namespace InputMap {
+
 constexpr const char* move_left = "move_left";
 constexpr const char* move_right = "move_right";
+constexpr const char* move_forward = "move_forward";
+constexpr const char* move_backward = "move_backward";
+
 constexpr const char* jump = "jump";
+constexpr const char* attack = "attack";
+constexpr const char* parry = "parry";
+constexpr const char* grapplehook = "grapplehook";
+
+constexpr const char* camera_left = "camera_left";
+constexpr const char* camera_right = "camera_right";
+constexpr const char* camera_up = "camera_up";
+constexpr const char* camera_down = "camera_down";
+
 constexpr const char* pause_menu = "pause_menu";
 constexpr const char* toggle_screen_mode = "toggle_screen_mode";
 
 // Some Built-in actions
 constexpr const char* ui_up = "ui_up";
 constexpr const char* ui_down = "ui_down";
-} //namespace InputMap
+
+} // namespace InputMap
 
 enum class EInputAction : int {
 	NONE = -1,
