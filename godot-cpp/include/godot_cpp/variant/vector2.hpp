@@ -39,6 +39,7 @@ namespace godot {
 class String;
 struct Vector2i;
 
+// assumed size 8 bytes
 struct _NO_DISCARD_ Vector2 {
 	static const int AXIS_COUNT = 2;
 

@@ -17,17 +17,34 @@ struct StatePhysicsContext {
 	Vector3 position;
 	Vector3 velocity;
 };
-
-// Data FSM and State receives from an owner regarding _unhandled_input
+// Data FSM and State receives from an owner regarding _input
 struct StateInputContext {
-	Vector2 input_direction;
+	EInputMode mode;
+
+	Vector2 movedir;
+	Vector2 motion;
+	Vector2 camera2ddir;
+
 	InputAction input_action;
 	InputAction last_valid_input_action;
+
+	Vector2 get_camerarelative_movedir() const { return movedir.rotated(camera2ddir.angle()); }
 };
+
 struct StateContext {
 	StatePhysicsContext physics;
 	StateInputContext input;
 };
+
+namespace Compiletime {
+	// constexpr int sizeof_statephysicscontext = sizeof(StatePhysicsContext);
+	// constexpr int sizeof_stateinputcontext = sizeof(StateInputContext);
+	constexpr int sizeof_statecontext = sizeof(StateContext);
+
+	// static_assert(sizeof(StatePhysicsContext) == 28, "sizeof(StatePhysicsContext) is not 28");
+	// static_assert(sizeof(StateInputContext) == 56, "sizeof(StatePhysicsContext) is not 56");
+	static_assert(sizeof(StateContext) == 96, "sizeof(StatePhysicsContext) is not 96");
+} //namespace Compiletime
 
 enum class EStateReturn : uint8_t {
 	CONTINUE,

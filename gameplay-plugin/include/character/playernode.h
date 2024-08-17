@@ -8,12 +8,15 @@
 
 using namespace godot;
 
+class CameraPivot;
+
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
 
 public: // data
 	PlayerFSM m_fsm;
 	StateContext* m_state_context = nullptr;
+	CameraPivot* m_camerapivot = nullptr;
 
 public: // functions
 	GETNAME(PlayerNode)

@@ -29,11 +29,12 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 }
 StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta) {
 	// direction
-	if (context->input.input_direction.abs() > Vector2()) {
-		context->physics.velocity.x = Math::move_toward(context->physics.velocity.x,
-				context->input.input_direction.x * MAX_HORIZONTAL_SPEED, ONGROUND_ACCELERATION * delta);
-		context->physics.velocity.z = Math::move_toward(context->physics.velocity.z,
-				context->input.input_direction.y * MAX_HORIZONTAL_SPEED, ONGROUND_ACCELERATION * delta);
+	if (context->input.movedir.abs() > Vector2()) {
+		const Vector2 move = context->input.get_camerarelative_movedir();
+		context->physics.velocity.x = Math::move_toward(
+				context->physics.velocity.x, move.x * MAX_HORIZONTAL_SPEED, ONGROUND_ACCELERATION * delta);
+		context->physics.velocity.z = Math::move_toward(
+				context->physics.velocity.z, move.y * MAX_HORIZONTAL_SPEED, ONGROUND_ACCELERATION * delta);
 	}
 	else {
 		context->physics.velocity.x =

@@ -41,6 +41,7 @@ struct Basis;
 struct Vector2;
 struct Vector3i;
 
+// assumed size 12 bytes
 struct _NO_DISCARD_ Vector3 {
 	static const int AXIS_COUNT = 3;
 

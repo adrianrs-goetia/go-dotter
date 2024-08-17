@@ -69,8 +69,8 @@ enum class EInputMode : uint8_t {
 	JOYPAD = 2,
 };
 
-enum class EInputAction : int {
-	NONE = -1,
+enum class EInputAction : uint8_t {
+	NONE = 0,
 	// Game action
 	// MOVE_LEFT,
 	// MOVE_RIGHT,
@@ -91,7 +91,7 @@ enum class EInputAction : int {
 	UI_MENU,
 };
 
-enum class EInputActionType : int {
+enum class EInputActionType : uint8_t {
 	NONE = 0,
 	PRESSED,
 	RELEASED,
@@ -100,6 +100,8 @@ enum class EInputActionType : int {
 	TES2,
 };
 
+// Input action passed down to the players fsm->current_state
+// size == 10 bytes + potential padding
 struct InputAction {
 	InputAction(EInputAction a, EInputActionType t) : action(a), type(t), timestamp(std::chrono::system_clock::now()) {}
 	EInputAction action = EInputAction::NONE;
