@@ -22,11 +22,20 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 			PropertyInfo(Variant::STRING, "class_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT), "",           \
 			"get_class_name");
 
+struct Log {
+	enum class Level : uint8_t { DEBUG, INFO, WARN, ERROR };
+	static void debug(const char* msg);
+	static void info(const char* msg);
+	static void warn(const char* msg);
+	static void error(const char* msg);
+};
+
 // From the context of the MainScene
 namespace NodePaths {
 
 	constexpr const char* player = "/root/Mainscene/PlayerNode";
 	constexpr const char* camera_pivot = "/root/Mainscene/PlayerNode/CameraPivot";
+	constexpr const char* camera = ("%s/Camera", camera_pivot);
 
 } //namespace NodePaths
 

@@ -27,3 +27,7 @@ https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/gdextensi
 https://thatonegamedev.com/cpp/cmake/godot-native-using-cmake/ \
 https://www.machinemakesnoise.com/posts/how-to-start-making-gdextensions-for-godot/#fresh-gdextension 
 
+
+#### stdout color
+https://unix.stackexchange.com/questions/105568/how-can-i-list-the-available-color-names
+https://ss64.com/nt/syntax-ansi.html
