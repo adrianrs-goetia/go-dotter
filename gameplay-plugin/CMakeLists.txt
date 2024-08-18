@@ -5,13 +5,13 @@ option(EXPORT "Exporting game for publishing" OFF)
 # Source files
 set(SOURCES
 
-    # src/camerapivot.cpp
-    # src/core.cpp
-    # src/mainnode.cpp
-    # src/playerfsm.cpp
-    # src/playernode.cpp
+    src/camerapivot.cpp
+    src/core.cpp
+    src/mainnode.cpp
+    src/playerfsm.cpp
+    src/playernode.cpp
     src/playerstates.cpp
-    src/_translation_unit.cpp
+    # src/_translation_unit.cpp
 )
 
 # Shared library
@@ -19,7 +19,7 @@ add_library(
     ${PROJECT_NAME}
     SHARED
 
-    # register_types.cpp # Always added
+    register_types.cpp # Always added
     ${SOURCES}
 )
 target_link_libraries(${PROJECT_NAME}

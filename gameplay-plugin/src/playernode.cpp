@@ -10,7 +10,7 @@ extern "C" {
 #include <stdlib.h>
 }
 
-constexpr float MESHDUMMY_ROTATIONSPEED = 10.f;
+constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
 
 using namespace godot;
 
