@@ -4,6 +4,7 @@ project(gameplay-plugin CXX)
 set(SOURCES
     src/camerapivot.cpp
     src/core.cpp
+    src/grapplenode.cpp
     src/mainnode.cpp
     src/playerfsm.cpp
     src/playernode.cpp

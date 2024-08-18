@@ -1,5 +1,6 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
+// #include <environment/grapplenode.h>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -15,15 +16,25 @@ constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
 
 using namespace godot;
 
-void PlayerNode::_bind_methods() { DEFAULT_PROPERTY(PlayerNode) }
+void PlayerNode::_bind_methods() {
+	DEFAULT_PROPERTY(PlayerNode)
+	ClassDB::bind_method(D_METHOD("body_entered_area3d", "body"), &PlayerNode::body_entered_area3d);
+	ClassDB::bind_method(D_METHOD("area_entered_area3d", "area"), &PlayerNode::area_entered_area3d);
+}
 
 void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");
+
 	meshdummy = get_node<Node3D>("dummy");
 	ASSERT(meshdummy != nullptr, "");
+
+	area3d = get_node<Area3D>("GrappleDetection");
+	ASSERT(area3d != nullptr, "");
+	area3d->connect("body_entered", callable_mp(this, &PlayerNode::body_entered_area3d));
+	area3d->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_area3d));
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
 	ASSERT(m_state_context != nullptr, "");
@@ -41,6 +52,12 @@ void PlayerNode::_exit_tree() {
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 	::free(m_state_context);
+
+	ASSERT(area3d != nullptr, "");
+	area3d->disconnect("body_entered", callable_mp(this, &PlayerNode::body_entered_area3d));
+	area3d->disconnect("area_entered", callable_mp(this, &PlayerNode::area_entered_area3d));
+	area3d = nullptr;
+
 	m_state_context = nullptr;
 }
 
@@ -108,3 +125,11 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 	Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
 	meshdummy->set_basis(Basis(newquat));
 }
+
+void PlayerNode::body_entered_area3d(Node3D* body) { LOG(DEBUG, "Body entered grapple area: ", body->get_name()) }
+
+void PlayerNode::body_left_area3d(Node3D* body) {}
+
+void PlayerNode::area_entered_area3d(Area3D* area) { LOG(DEBUG, "Area entered grapple area: ", area->get_name()) }
+
+void PlayerNode::area_left_area3d(Area3D* area) {}

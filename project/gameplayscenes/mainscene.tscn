@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://h2pqh1vnci7k"]
+[gd_scene load_steps=8 format=3 uid="uid://h2pqh1vnci7k"]
 
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_o35cu"]
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
+[ext_resource type="PackedScene" uid="uid://eshf5oqjxbxl" path="res://gameplayscenes/grapplenode.tscn" id="3_wmrg6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -75,3 +76,11 @@ transform = Transform3D(1.46272, -0.0259895, -0.856031, 0, 1.69422, -0.0514374, 
 
 [node name="TerrainBlock3" parent="Terrain" instance=ExtResource("2_we13y")]
 transform = Transform3D(0.997857, 0, 0.065438, 0, 1, 0, -0.065438, 0, 0.997857, -1.48207, -4.23122, -15.791)
+
+[node name="GrappleNodes" type="Node" parent="."]
+
+[node name="GrappleNode" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.609271, 2.96452, -5.12265)
+
+[node name="GrappleNode2" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85917, 4.65445, -7.20631)

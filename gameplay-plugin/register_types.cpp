@@ -5,6 +5,7 @@
 #include <godot_cpp/godot.hpp>
 
 #include <character/camerapivot.h>
+#include <environment/grapplenode.h>
 #include <character/playernode.h>
 #include <mainnode.h>
 
@@ -24,9 +25,10 @@ uint64_t debug_draw_manager_id = 0;
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
-	GDREGISTER_CLASS(MainNode)
-	GDREGISTER_CLASS(CameraPivot)
-	GDREGISTER_CLASS(PlayerNode)
+	ClassDB::register_class<MainNode>();
+	ClassDB::register_class<CameraPivot>();
+	ClassDB::register_class<PlayerNode>();
+	ClassDB::register_class<GrappleNode>();
 
 	/// @DEBUGDRAW3D@ ///
 #ifdef ENABLE_DD3D
