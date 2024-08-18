@@ -40,9 +40,9 @@ namespace Compiletime {
 	// constexpr int sizeof_stateinputcontext = sizeof(StateInputContext);
 	constexpr int sizeof_statecontext = sizeof(StateContext);
 
-	// static_assert(sizeof(StatePhysicsContext) == 28, "sizeof(StatePhysicsContext) is not 28");
-	// static_assert(sizeof(StateInputContext) == 56, "sizeof(StatePhysicsContext) is not 56");
-	static_assert(sizeof(StateContext) == 104, "sizeof(StatePhysicsContext) is not 104");
+	// static_assert(sizeof(StatePhysicsContext) == 28);
+	// static_assert(sizeof(StateInputContext) == 56);
+	static_assert(sizeof(StateContext) == 104);
 } //namespace Compiletime
 
 enum class EStateReturn : uint8_t {
