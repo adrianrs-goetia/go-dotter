@@ -100,10 +100,11 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 	const Vector3 g_up(0, 1, 0);
 	const Vector3 g_forward(0, 0, 1);
 	const Vector3 g_right(1, 0, 0);
-	const Vector3 input(m_state_context->input.movedir_rotated.x, 0, m_state_context->input.movedir_rotated.y);
+	Vector3 input(m_state_context->input.movedir_rotated.x, 0, m_state_context->input.movedir_rotated.y);
 	if (input.length_squared() <= 0) {
 		return;
 	}
+	input.normalize();
 
 	const int angle_dir = (g_right.dot(input) > 0.f) ? 1 : -1;
 	float angle = Math::acos(g_forward.dot(input));
