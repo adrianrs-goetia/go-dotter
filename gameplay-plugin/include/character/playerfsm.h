@@ -28,8 +28,6 @@ struct StateInputContext {
 
 	InputAction input_action;
 	InputAction last_valid_input_action;
-
-	Vector2 get_camerarelative_movedir() const { return movedir.rotated(camera2ddir.angle()); }
 };
 
 struct StateContext {
