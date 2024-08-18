@@ -13,6 +13,8 @@ constexpr float GRAVITY_CONSTANT = 9.81f;
 constexpr float GRAVITY_SCALE = 2.6f;
 constexpr float GRAVITY = GRAVITY_CONSTANT * GRAVITY_SCALE;
 
+constexpr float GRAPPLE_LAUNCH_STRENGTH = 20.0f;
+
 namespace helper {
 	void movement_acceleration(StateContext* context, float acceleration, float deceleration, float delta) {
 		// direction
@@ -55,10 +57,14 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 	helper::movement_acceleration(context, ONGROUND_ACCELERATION, ONGROUND_DECELARATION, delta);
 
 	// actions
-	// if (context->input.input_action.is_action_down(EInputAction::JUMP)) {
+	// if (context->input.input_action.is_action_down(EInputAction::JUMP)) { ## TODO improve capturing input. Preferably
+	// avoid this at state level
 	if (godot::Input::get_singleton()->is_action_pressed(InputMap::jump)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) };
+	}
+	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
+		return StateReturn{ EStateReturn::NEW_STATE, new PlayerPreGrappleLaunchState(true) };
 	}
 	return {};
 }
@@ -74,4 +80,28 @@ StateReturn PlayerInAirState::physics_process(StateContext* context, float delta
 	helper::movement_acceleration(context, INAIR_ACCELERATION, INAIR_DECELARATION, delta);
 	context->physics.velocity.y -= GRAVITY * delta;
 	return {};
+}
+
+StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
+	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
+		return StateReturn{ EStateReturn::NEW_STATE, new PlayerPreGrappleLaunchState(true) };
+	}
+
+	return StateReturn();
+}
+
+// PlayerPreGrappleLaunchState
+StateReturn PlayerPreGrappleLaunchState::enter_state(StateContext* context) {
+	// TODO: PlayerState::can_enter_state() const ?? Make certain states not spammable?
+	// TODO: camera adjustment and whatnot here?
+	context->physics.velocity = Vector3();
+	return StateReturn{ EStateReturn::NEW_STATE, new PlayerGrappleLaunchState(true) };
+}
+
+// PlayerGrappleLaunchState
+StateReturn PlayerGrappleLaunchState::enter_state(StateContext* context) {
+	// TODO... What to do here other than launch?
+	const Vector3 launch_dir = Vector3(context->grapple.target_position - context->physics.position).normalized();
+	context->physics.velocity = launch_dir * GRAPPLE_LAUNCH_STRENGTH;
+	return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(true) };
 }

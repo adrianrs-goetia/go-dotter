@@ -69,9 +69,6 @@ void PlayerNode::_process(float delta) {
 	ASSERT(m_camerapivot != nullptr, "");
 	m_camerapivot->process(m_state_context, delta);
 	determine_grapple_target();
-	// if (m_state_context->grapple.target)
-	// 	DEBUG_DRAW_BOX(
-	// 			m_state_context->grapple.target_position, Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(0, 0, 1));
 
 	const Vector2 c = m_state_context->input.camera2ddir.normalized().rotated(-Math::deg_to_rad(90.f));
 	const Vector3 cam3d = Vector3(c.x, 0, c.y).normalized();
