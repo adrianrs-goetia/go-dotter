@@ -61,15 +61,14 @@ struct StateReturn {
 
 class PlayerState {
 public:
-	bool m_guarantee_one_frame = false; // guarantee that frame is processed for a single physics process
-										// TODO: deferr to end of frame somehow in PlayerNode? Not just _physics_process
+	// guarantee that frame is processed for a single physics process
+	// TODO: deferr to end of frame somehow in PlayerNode? Not just _physics_process
+	bool m_guarantee_one_frame_processing = false;
 
-public:
 	friend class PlayerFSM;
 
-	PlayerState(bool one_frame);
-	PlayerState();
-
+public:
+	void init(bool guarantee_one_frame_processing);
 	virtual StateReturn enter_state(StateContext* context);
 	virtual void exit_state(StateContext* context);
 
@@ -78,15 +77,15 @@ public:
 	virtual StateReturn handle_input(StateContext* context, float delta) = 0;
 	virtual const char* get_class_name() = 0;
 
-	virtual void deferred_actions(StateContext* context) { m_guarantee_one_frame = false; }
+	virtual void deferred_actions(StateContext* context) { m_guarantee_one_frame_processing = false; }
 
 // Macros to be implemented on each class inheriting this
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	CLASSNAME(bool one_frame) : PlayerState(one_frame) {}                                                              \
-	CLASSNAME() : PlayerState() {}                                                                                     \
-                                                                                                                       \
 	virtual const char* get_class_name() override { return #CLASSNAME; }
+	// CLASSNAME() : PlayerState() {}
+	// CLASSNAME(bool one_frame) : PlayerState(one_frame) {} \
+
 };
 
 // statuses: Free, HoldingEnemy

@@ -38,7 +38,7 @@ StateReturn PlayerOnGroundState::enter_state(StateContext* context) {
 	if (context->input.last_valid_input_action.is_action_down(EInputAction::JUMP) &&
 			context->input.last_valid_input_action.received_input_within_timeframe(0.1)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
-		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(true) };
+		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(true) };
 	}
 	return {};
 }
@@ -47,7 +47,9 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 	context->physics.velocity.y -= GRAVITY * delta;
 
 	// walking off edge
-	if (!context->physics.is_on_ground) { return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) }; }
+	if (!context->physics.is_on_ground) {
+		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
+	}
 	DEBUG_DRAW_BOX(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
 
 	return {};
@@ -61,10 +63,10 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 	// avoid this at state level
 	if (godot::Input::get_singleton()->is_action_pressed(InputMap::jump)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
-		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) };
+		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 	}
 	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
-		return StateReturn{ EStateReturn::NEW_STATE, new PlayerPreGrappleLaunchState(true) };
+		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
 	return {};
 }
@@ -72,9 +74,9 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 // PlayerInAirState
 StateReturn PlayerInAirState::physics_process(StateContext* context, float delta) {
 	if (context->physics.is_on_ground) {
-		if (!m_guarantee_one_frame) {
+		if (!m_guarantee_one_frame_processing) {
 			DEBUG_DRAW_POSITION(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
-			return StateReturn{ EStateReturn::NEW_STATE, new PlayerOnGroundState(false) };
+			return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerOnGroundState>(false) };
 		}
 	}
 	helper::movement_acceleration(context, INAIR_ACCELERATION, INAIR_DECELARATION, delta);
@@ -84,7 +86,7 @@ StateReturn PlayerInAirState::physics_process(StateContext* context, float delta
 
 StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
 	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
-		return StateReturn{ EStateReturn::NEW_STATE, new PlayerPreGrappleLaunchState(true) };
+		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
 
 	return StateReturn();
@@ -95,7 +97,7 @@ StateReturn PlayerPreGrappleLaunchState::enter_state(StateContext* context) {
 	// TODO: PlayerState::can_enter_state() const ?? Make certain states not spammable?
 	// TODO: camera adjustment and whatnot here?
 	context->physics.velocity = Vector3();
-	return StateReturn{ EStateReturn::NEW_STATE, new PlayerGrappleLaunchState(true) };
+	return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerGrappleLaunchState>(false) };
 }
 
 // PlayerGrappleLaunchState
@@ -103,5 +105,5 @@ StateReturn PlayerGrappleLaunchState::enter_state(StateContext* context) {
 	// TODO... What to do here other than launch?
 	const Vector3 launch_dir = Vector3(context->grapple.target_position - context->physics.position).normalized();
 	context->physics.velocity = launch_dir * GRAPPLE_LAUNCH_STRENGTH;
-	return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(true) };
+	return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 }

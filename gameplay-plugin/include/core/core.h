@@ -27,6 +27,7 @@ enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };
 		const char* message = ("%s :: %s", __FUNCTION__, msg);                                                         \
 		Log(ELog::level, message, ##__VA_ARGS__);                                                                      \
 	}
+
 void set_log_level(ELog level);
 const char* get_string(ELog level);
 void Log(ELog level, const char* msg);
@@ -38,6 +39,20 @@ void Log(ELog level, const char* msg, const godot::Vector2 v2);
 void Log(ELog level, const char* msg, const godot::Vector3 v2);
 void Log(ELog level, const char* msg, const godot::Quaternion q);
 void Log(ELog level, const char* msg, const godot::Transform3D t);
+
+class Timestamp {
+	std::chrono::system_clock::time_point timestamp;
+
+public:
+	Timestamp() : timestamp(std::chrono::system_clock::now()) {}
+	bool timestamp_within_timeframe(float timeframe_seconds) {
+		float duration_since_timestamp =
+				std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - timestamp)
+						.count();
+		float sec = (duration_since_timestamp / 1e9);
+		return (duration_since_timestamp / 1e9) < timeframe_seconds;
+	}
+};
 
 // From the context of the MainScene
 namespace NodePaths {
@@ -115,10 +130,10 @@ enum class EInputActionType : uint8_t {
 // Input action passed down to the players fsm->current_state
 // size == 10 bytes + potential padding
 struct InputAction {
-	InputAction(EInputAction a, EInputActionType t) : action(a), type(t), timestamp(std::chrono::system_clock::now()) {}
+	InputAction(EInputAction a, EInputActionType t) : action(a), type(t) {}
 	EInputAction action = EInputAction::NONE;
 	EInputActionType type = EInputActionType::NONE;
-	std::chrono::system_clock::time_point timestamp;
+	Timestamp timestamp;
 
 	bool is_action_pressed(EInputAction action) { return action == action && type == EInputActionType::PRESSED; }
 	bool is_action_released(EInputAction action) { return action == action && type == EInputActionType::RELEASED; }
@@ -127,11 +142,7 @@ struct InputAction {
 		return action == action && (type == EInputActionType::HELD || type == EInputActionType::PRESSED);
 	}
 	bool received_input_within_timeframe(float timeframe_seconds) {
-		float duration_since_timestamp =
-				std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - timestamp)
-						.count();
-		float sec = (duration_since_timestamp / 1e9);
-		return (duration_since_timestamp / 1e9) < timeframe_seconds;
+		return timestamp.timestamp_within_timeframe(timeframe_seconds);
 	}
 };
 
