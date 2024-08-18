@@ -10,14 +10,20 @@ extern "C" {
 #include <stdlib.h>
 }
 
+constexpr float MESHDUMMY_ROTATIONSPEED = 10.f;
+
 using namespace godot;
 
 void PlayerNode::_bind_methods() { DEFAULT_PROPERTY(PlayerNode) }
 
 void PlayerNode::_enter_tree() {
-	RETURN_IF_EDITOR
+	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
+	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");
+	meshdummy = get_node<Node3D>("dummy");
+	ASSERT(meshdummy != nullptr, "");
+
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
 	ASSERT(m_state_context != nullptr, "");
 
@@ -58,6 +64,7 @@ void PlayerNode::_physics_process(float delta) {
 	// set data from context
 	set_velocity(m_state_context->physics.velocity);
 	move_and_slide();
+	rotate_towards_velocity(delta);
 
 	// deferred actions
 	m_fsm.deferred_actions(m_state_context);
@@ -84,4 +91,22 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 
 	ASSERT(m_camerapivot != nullptr, "");
 	m_camerapivot->process_input(m_state_context, input, p_event, delta);
+}
+
+void PlayerNode::rotate_towards_velocity(float delta) {
+	const Vector3 g_up(0, 1, 0);
+	const Vector3 g_forward(0, 0, 1);
+	const Vector3 g_right(1, 0, 0);
+	const Vector3 input(m_state_context->input.movedir_rotated.x, 0, m_state_context->input.movedir_rotated.y);
+	if (input.length_squared() <= 0) {
+		return;
+	}
+
+	const int angle_dir = (g_right.dot(input) > 0.f) ? 1 : -1;
+	float angle = Math::acos(g_forward.dot(input));
+	angle *= angle_dir;
+	const Quaternion curquat = meshdummy->get_transform().get_basis().get_quaternion();
+	const Quaternion targetquat(g_up, angle);
+	Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
+	meshdummy->set_basis(Basis(newquat));
 }

@@ -22,6 +22,7 @@ struct StateInputContext {
 	EInputMode mode;
 
 	Vector2 movedir;
+	Vector2 movedir_rotated;
 	Vector2 motion;
 	Vector2 camera2ddir;
 
@@ -43,7 +44,7 @@ namespace Compiletime {
 
 	// static_assert(sizeof(StatePhysicsContext) == 28, "sizeof(StatePhysicsContext) is not 28");
 	// static_assert(sizeof(StateInputContext) == 56, "sizeof(StatePhysicsContext) is not 56");
-	static_assert(sizeof(StateContext) == 96, "sizeof(StatePhysicsContext) is not 96");
+	static_assert(sizeof(StateContext) == 104, "sizeof(StatePhysicsContext) is not 104");
 } //namespace Compiletime
 
 enum class EStateReturn : uint8_t {
@@ -83,8 +84,6 @@ public:
 	CLASSNAME() : PlayerState() {}                                                                                     \
                                                                                                                        \
 	virtual const char* get_class_name() override { return #CLASSNAME; }
-	// template <typename T> const char* _get_class_name() { return typeid(T).name(); }                                   \
-	// virtual const char* get_class_name() override { return _get_class_name<CLASSNAME>(); }
 };
 
 // statuses: Free, HoldingEnemy

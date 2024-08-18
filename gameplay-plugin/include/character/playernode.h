@@ -13,12 +13,13 @@ class CameraPivot;
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
 
-public: // data
+public:
 	PlayerFSM m_fsm;
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
+	Node3D* meshdummy = nullptr;
 
-public: // functions
+public:
 	GETNAME(PlayerNode)
 	static void _bind_methods();
 
@@ -27,6 +28,8 @@ public: // functions
 	void _process(float delta) override;
 	void _physics_process(float delta) override;
 	void _input(const Ref<InputEvent>& p_event);
+
+	void rotate_towards_velocity(float delta);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

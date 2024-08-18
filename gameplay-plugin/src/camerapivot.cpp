@@ -80,6 +80,7 @@ void CameraPivot::process_input(
 		StateContext* context, godot::Input* input, const Ref<InputEvent>& p_event, float delta) {
 	input->set_mouse_mode(Input::MOUSE_MODE_HIDDEN);
 	context->input.camera2ddir = Vector2::from_angle(-get_rotation().y);
+	context->input.movedir_rotated = context->input.movedir.rotated(-get_rotation().y);
 
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
 		context->input.mode = EInputMode::MOUSE_N_KEYBOARD;

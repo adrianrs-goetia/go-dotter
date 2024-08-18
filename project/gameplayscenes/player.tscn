@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=7 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="PackedScene" uid="uid://dbssbgo7e1nl5" path="res://models/dummy.blend" id="1_utca1"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_d7g18"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
 radius = 0.389134
@@ -25,12 +27,23 @@ sky = SubResource("Sky_j0wsn")
 [node name="dummy" parent="." instance=ExtResource("1_utca1")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="dummy"]
+transform = Transform3D(0.135, 0, 4.44089e-16, 0, 0.0717516, 0, 0, 0, 0.0553447, -1.1281e-08, 1.82366, 0.12904)
+mesh = SubResource("BoxMesh_d7g18")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="dummy"]
+transform = Transform3D(0.0670476, 0, 0, 0, 0.0574118, 0, 0, 0, 0.0479869, -0.0532659, 1.91285, 0.12904)
+mesh = SubResource("BoxMesh_d7g18")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="dummy"]
+transform = Transform3D(0.0670476, 0, 0, 0, 0.0574118, 0, 0, 0, 0.0479869, 0.061412, 1.91285, 0.131989)
+mesh = SubResource("BoxMesh_d7g18")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
 shape = SubResource("CapsuleShape3D_xmldd")
 
 [node name="CameraPivot" type="CameraPivot" parent="."]
-spring_length_impl = 6.18
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
 collision_mask = 2147483648
 spring_length = 6.18
