@@ -35,6 +35,7 @@ void Log(ELog level, const char* msg);
 void Log(ELog level, const char* msg, const bool arg);
 void Log(ELog level, const char* msg, const char* arg);
 void Log(ELog level, const char* msg, const float arg);
+void Log(ELog level, const char* msg, const godot::String s);
 void Log(ELog level, const char* msg, const godot::Vector2 v2);
 void Log(ELog level, const char* msg, const godot::Vector3 v2);
 void Log(ELog level, const char* msg, const godot::Quaternion q);
@@ -68,6 +69,7 @@ namespace InputMap {
 
 	constexpr const char* pause_menu = "pause_menu";
 	constexpr const char* toggle_screen_mode = "toggle_screen_mode";
+	constexpr const char* restart = "restart";
 
 	// Some Built-in actions
 	constexpr const char* ui_up = "ui_up";

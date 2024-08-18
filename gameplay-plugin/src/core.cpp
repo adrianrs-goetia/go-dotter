@@ -57,6 +57,10 @@ void Log(ELog level, const char* msg, const float arg) {
 	if (level >= g_loglevel)
 		::printf("\033[%sm %s %f \n\033[%sm", color_from_level(level), msg, arg, color_default);
 }
+void Log(ELog level, const char* msg, const godot::String s) {
+	if (level >= g_loglevel)
+		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, s.utf8().get_data(), color_default);
+}
 void Log(ELog level, const char* msg, const godot::Vector2 v2) {
 	if (level >= g_loglevel)
 		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(v2).utf8().get_data(),

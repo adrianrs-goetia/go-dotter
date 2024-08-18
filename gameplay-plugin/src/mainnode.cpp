@@ -12,11 +12,12 @@ void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (p_event->is_action_pressed(InputMap::pause_menu)) {
 		if (SceneTree* tree = get_tree()) {
+			LOG(DEBUG, "tree->quit(0)")
 			tree->quit(0);
 		}
 	}
 	else if (p_event->is_action_pressed(InputMap::toggle_screen_mode)) {
-		Log(ELog::DEBUG, "Toggle primary screen mode");
+		LOG(DEBUG, "Toggle primary screen mode");
 		DisplayServer* ds = DisplayServer::get_singleton();
 		int prime_screen = ds->get_primary_screen();
 		DisplayServer::WindowMode mode = ds->window_get_mode(prime_screen);
@@ -29,6 +30,12 @@ void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 		}
 		else {
 			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
+		}
+	}
+	else if (p_event->is_action_pressed(InputMap::restart)) {
+		if (SceneTree* tree = get_tree()){
+			LOG(DEBUG, "Reloading current scene")
+			tree->reload_current_scene();
 		}
 	}
 	if (auto* keyevent = cast_to<InputEventKey>(*p_event)) {

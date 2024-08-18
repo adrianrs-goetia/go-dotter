@@ -1,5 +1,7 @@
 #include <character/playerstates.h>
 
+#include <godot_cpp/classes/input.hpp>
+
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
 constexpr float ONGROUND_DECELARATION = 30.0f;
@@ -55,7 +57,8 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 	helper::movement_acceleration(context, ONGROUND_ACCELERATION, ONGROUND_DECELARATION, delta);
 
 	// actions
-	if (context->input.input_action.is_action_down(EInputAction::JUMP)) {
+	// if (context->input.input_action.is_action_down(EInputAction::JUMP)) {
+	if (godot::Input::get_singleton()->is_action_pressed(InputMap::jump)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) };
 	}
