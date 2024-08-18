@@ -4,13 +4,14 @@
 #include <character/playerstates.h>
 #include <core/core.h>
 
+#include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
-#include <godot_cpp/classes/area3d.hpp>
 
 using namespace godot;
 
 class CameraPivot;
+class GrappleNode;
 
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
@@ -21,6 +22,8 @@ public:
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* meshdummy = nullptr;
 	Area3D* area3d = nullptr;
+
+	std::vector<GrappleNode*> m_in_range_grapplenodes;
 
 public:
 	GETNAME(PlayerNode)
@@ -33,11 +36,12 @@ public:
 	void _input(const Ref<InputEvent>& p_event);
 
 	void rotate_towards_velocity(float delta);
-	
+
 	void body_entered_area3d(Node3D* body);
-	void body_left_area3d(Node3D* body);	
+	void body_left_area3d(Node3D* body);
 	void area_entered_area3d(Area3D* area);
-	void area_left_area3d(Area3D* area);	
+	void area_exited_area3d(Area3D* area);
+	void determine_grapple_target();
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

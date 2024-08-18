@@ -29,10 +29,15 @@ struct StateInputContext {
 	InputAction input_action;
 	InputAction last_valid_input_action;
 };
+struct StateGrappleContext {
+	Node3D* target = nullptr;
+	Vector3 target_position;
+};
 
 struct StateContext {
 	StatePhysicsContext physics;
 	StateInputContext input;
+	StateGrappleContext grapple;
 };
 
 namespace Compiletime {
@@ -42,7 +47,7 @@ namespace Compiletime {
 
 	// static_assert(sizeof(StatePhysicsContext) == 28);
 	// static_assert(sizeof(StateInputContext) == 56);
-	static_assert(sizeof(StateContext) == 104);
+	static_assert(sizeof(StateContext) == 128);
 } //namespace Compiletime
 
 enum class EStateReturn : uint8_t {

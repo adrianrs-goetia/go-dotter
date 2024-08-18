@@ -84,3 +84,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.609271, 2.96452, -5.12265)
 
 [node name="GrappleNode2" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85917, 4.65445, -7.20631)
+
+[node name="GrappleNode3" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85917, 4.15445, -6.20631)

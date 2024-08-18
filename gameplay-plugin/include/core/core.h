@@ -138,12 +138,16 @@ struct InputAction {
 #ifdef ENABLE_DD3D
 
 #include <debugdraw3d/3d/debug_draw_3d.h>
+#define DEBUG_DRAW_ARROW DebugDraw3D::get_singleton()->draw_arrow
 #define DEBUG_DRAW_BOX DebugDraw3D::get_singleton()->draw_box
+#define DEBUG_DRAW_LINE DebugDraw3D::get_singleton()->draw_line
 #define DEBUG_DRAW_POSITION DebugDraw3D::get_singleton()->draw_position
 
 #else
 
+#define DEBUG_DRAW_ARROW(...)
 #define DEBUG_DRAW_BOX(...)
+#define DEBUG_DRAW_LINE(...)
 #define DEBUG_DRAW_POSITION(...)
 
 #endif
