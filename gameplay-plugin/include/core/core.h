@@ -32,6 +32,7 @@ enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };
 void set_log_level(ELog level);
 const char* get_string(ELog level);
 void Log(ELog level, const char* msg);
+void Log(ELog level, const char* msg, const bool arg);
 void Log(ELog level, const char* msg, const char* arg);
 void Log(ELog level, const char* msg, const float arg);
 void Log(ELog level, const char* msg, const godot::Vector2 v2);
