@@ -1,10 +1,7 @@
 project(gameplay-plugin CXX)
 
-option(EXPORT "Exporting game for publishing" OFF)
-
 # Source files
 set(SOURCES
-
     src/camerapivot.cpp
     src/core.cpp
     src/mainnode.cpp
@@ -18,7 +15,6 @@ set(SOURCES
 add_library(
     ${PROJECT_NAME}
     SHARED
-
     register_types.cpp # Always added
     ${SOURCES}
 )
@@ -33,6 +29,12 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 target_compile_definitions(${PROJECT_NAME} PRIVATE HOT_RELOAD_ENABLED)
+
+# Optional links
+if (ENABLE_DD3D)
+    target_link_libraries(${PROJECT_NAME} PRIVATE debug-draw3d-plugin-obj)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_DD3D)
+endif()
 
 # GDExtension file generation from gdextension.in
 string(TOLOWER "${PROJECT_NAME}.gdextension" GDEXTENSION_CONFIGURATION_FILE)

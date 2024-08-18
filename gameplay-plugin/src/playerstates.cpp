@@ -46,6 +46,8 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 	if (!context->physics.is_on_ground) {
 		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) };
 	}
+	DEBUG_DRAW_BOX(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
+
 	return {};
 }
 StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta) {
@@ -64,6 +66,7 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 StateReturn PlayerInAirState::physics_process(StateContext* context, float delta) {
 	if (context->physics.is_on_ground) {
 		if (!m_guarantee_one_frame) {
+			DEBUG_DRAW_POSITION(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
 			return StateReturn{ EStateReturn::NEW_STATE, new PlayerOnGroundState(false) };
 		}
 	}

@@ -31,3 +31,7 @@ https://www.machinemakesnoise.com/posts/how-to-start-making-gdextensions-for-god
 #### stdout color
 https://unix.stackexchange.com/questions/105568/how-can-i-list-the-available-color-names
 https://ss64.com/nt/syntax-ansi.html
+
+
+#### debug draw 3d
+https://github.com/DmitriySalnikov/godot_debug_draw_3d

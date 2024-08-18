@@ -19,5 +19,4 @@ skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_e6khm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
 shape = SubResource("BoxShape3D_4q0tm")

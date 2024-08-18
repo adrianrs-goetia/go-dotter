@@ -5,7 +5,8 @@
 [sub_resource type="BoxMesh" id="BoxMesh_d7g18"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
-radius = 0.389134
+radius = 0.279674
+height = 2.0324
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5wjqk"]
 sky_top_color = Color(0.573493, 0.313666, 0.329186, 1)
