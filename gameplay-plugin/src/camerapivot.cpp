@@ -77,10 +77,8 @@ void CameraPivot::_physics_process(float delta) {}
 
 void CameraPivot::process_input(
 		StateContext* context, godot::Input* input, const Ref<InputEvent>& p_event, float delta) {
-
 	ASSERT(DisplayServer::get_singleton() != nullptr, "");
-	if (DisplayServer::get_singleton()->window_is_focused())
-		input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED);
+	if (DisplayServer::get_singleton()->window_is_focused()) input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED);
 
 	context->input.camera2ddir = Vector2::from_angle(-get_rotation().y);
 	context->input.movedir_rotated = context->input.movedir.rotated(-get_rotation().y);
@@ -102,7 +100,5 @@ void CameraPivot::process_input(
 		context->input.motion.x *= JOYMOTION_X_MULTIPLIER * delta * (JOYMOTION_X_INVERTED ? 1.f : -1.f);
 		context->input.motion.y *= JOYMOTION_Y_MULTIPLIER * delta * (JOYMOTION_Y_INVERTED ? 1.f : -1.f);
 	}
-	else {
-		context->input.mode = EInputMode::NONE;
-	}
+	else { context->input.mode = EInputMode::NONE; }
 }

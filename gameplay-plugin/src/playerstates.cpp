@@ -45,9 +45,7 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 	context->physics.velocity.y -= GRAVITY * delta;
 
 	// walking off edge
-	if (!context->physics.is_on_ground) {
-		return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) };
-	}
+	if (!context->physics.is_on_ground) { return StateReturn{ EStateReturn::NEW_STATE, new PlayerInAirState(false) }; }
 	DEBUG_DRAW_BOX(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
 
 	return {};

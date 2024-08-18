@@ -11,9 +11,7 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
 
 // Distinction between editor-mode and in-game
 #define RETURN_IF_EDITOR                                                                                               \
-	if (godot::Engine::get_singleton()->is_editor_hint()) {                                                            \
-		return;                                                                                                        \
-	}
+	if (godot::Engine::get_singleton()->is_editor_hint()) { return; }
 
 #define GETNAME(class_name)                                                                                            \
 	String get_class_name() const { return #class_name; }

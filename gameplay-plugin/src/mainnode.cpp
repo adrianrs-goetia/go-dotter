@@ -28,12 +28,10 @@ void MainNode::_unhandled_input(const Ref<InputEvent>& p_event) {
 			Vector2i size = ds->screen_get_size();
 			ds->window_set_position(size / 4, prime_screen);
 		}
-		else {
-			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
-		}
+		else { ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN); }
 	}
 	else if (p_event->is_action_pressed(InputMap::restart)) {
-		if (SceneTree* tree = get_tree()){
+		if (SceneTree* tree = get_tree()) {
 			LOG(DEBUG, "Reloading current scene")
 			tree->reload_current_scene();
 		}

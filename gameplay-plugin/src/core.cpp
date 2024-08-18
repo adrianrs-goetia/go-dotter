@@ -42,20 +42,17 @@ void set_log_level(ELog level) {
 	g_loglevel = level;
 }
 void Log(ELog level, const char* msg) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s \n\033[%sm", color_from_level(level), msg, color_default);
+	if (level >= g_loglevel) ::printf("\033[%sm %s \n\033[%sm", color_from_level(level), msg, color_default);
 }
 void Log(ELog level, const char* msg, const bool arg) {
 	if (level >= g_loglevel)
 		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg ? "true" : "false", color_default);
 }
 void Log(ELog level, const char* msg, const char* arg) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg, color_default);
+	if (level >= g_loglevel) ::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg, color_default);
 }
 void Log(ELog level, const char* msg, const float arg) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %f \n\033[%sm", color_from_level(level), msg, arg, color_default);
+	if (level >= g_loglevel) ::printf("\033[%sm %s %f \n\033[%sm", color_from_level(level), msg, arg, color_default);
 }
 void Log(ELog level, const char* msg, const godot::String s) {
 	if (level >= g_loglevel)

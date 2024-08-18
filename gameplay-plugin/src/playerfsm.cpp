@@ -11,9 +11,7 @@ StateReturn PlayerState::enter_state(StateContext* context) {
 void PlayerState::exit_state(StateContext* context) {}
 
 void PlayerFSM::deferred_actions(StateContext* context) {
-	if (m_current_state) {
-		m_current_state->deferred_actions(context);
-	}
+	if (m_current_state) { m_current_state->deferred_actions(context); }
 }
 
 void PlayerFSM::_exit_tree() {
@@ -25,21 +23,15 @@ void PlayerFSM::_exit_tree() {
 }
 
 void PlayerFSM::process(StateContext* context, float delta) {
-	if (m_current_state) {
-		_process_state(context, m_current_state->process(context, delta));
-	}
+	if (m_current_state) { _process_state(context, m_current_state->process(context, delta)); }
 }
 
 void PlayerFSM::physics_process(StateContext* context, float delta) {
-	if (m_current_state) {
-		_process_state(context, m_current_state->physics_process(context, delta));
-	}
+	if (m_current_state) { _process_state(context, m_current_state->physics_process(context, delta)); }
 }
 
 void PlayerFSM::handle_input(StateContext* context, float delta) {
-	if (m_current_state) {
-		_process_state(context, m_current_state->handle_input(context, delta));
-	}
+	if (m_current_state) { _process_state(context, m_current_state->handle_input(context, delta)); }
 }
 
 void PlayerFSM::_process_state(StateContext* context, StateReturn state_return) {

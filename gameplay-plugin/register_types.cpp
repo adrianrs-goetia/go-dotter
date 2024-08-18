@@ -23,9 +23,7 @@ uint64_t debug_draw_manager_id = 0;
 #endif
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
-		return;
-	}
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
 	GDREGISTER_CLASS(MainNode)
 	GDREGISTER_CLASS(CameraPivot)
 	GDREGISTER_CLASS(PlayerNode)
@@ -57,9 +55,7 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
-		return;
-	}
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
 
 /// @DEBUGDRAW3D@ ///
 // If this library is disabled manually before deleting the scene tree (hot-reload),
@@ -67,9 +63,7 @@ void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 #ifdef ENABLE_DD3D
 	DebugDrawManager* debug_draw_manager =
 			Object::cast_to<DebugDrawManager>(ObjectDB::get_instance(debug_draw_manager_id));
-	if (Engine::get_singleton()->get_main_loop() && debug_draw_manager) {
-		memdelete(debug_draw_manager);
-	}
+	if (Engine::get_singleton()->get_main_loop() && debug_draw_manager) { memdelete(debug_draw_manager); }
 	debug_draw_manager_id = 0;
 #endif
 }
