@@ -8,6 +8,12 @@
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 
+#include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
+#include <godot_cpp/classes/collision_shape3d.hpp>
+#include <godot_cpp/classes/shape3d.hpp>
+#include <godot_cpp/classes/world3d.hpp>
+#include <godot_cpp/classes/physics_direct_space_state3d.hpp>
+
 using namespace godot;
 
 class CameraPivot;
@@ -21,7 +27,10 @@ public:
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* meshdummy = nullptr;
+	CollisionShape3D* m_capsule = nullptr;
 	Area3D* m_grappledetectionarea = nullptr;
+	Area3D* m_parrydetectionarea = nullptr;
+	CollisionShape3D* m_parrydetectionshape = nullptr;
 
 	std::vector<GrappleNode*> m_in_range_grapplenodes;
 
@@ -37,11 +46,12 @@ public:
 
 	void rotate_towards_velocity(float delta);
 
-	// void body_entered_grappledetection(Node3D* body);
-	// void body_left_area3d(Node3D* body);
 	void area_entered_grappledetection(Area3D* area);
 	void area_exited_grappledetection(Area3D* area);
 	void determine_grapple_target();
+
+	void area_entered_parrydetection(Area3D* area);
+	void area_exited_parrydetection(Area3D* area);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

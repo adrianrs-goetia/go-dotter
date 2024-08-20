@@ -6,7 +6,7 @@
 #include <godot_cpp/classes/engine.hpp>
 #include <typeinfo>
 
-#define ASSERT(expr, msg) __m_assert(#expr, expr, __FILE__, __LINE__, msg)
+#define ASSERT(expr, msg) { __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
 void __m_assert(const char* expr_str, bool expr, const char* file, int line, const char* msg);
 
 // Distinction between editor-mode and in-game
@@ -153,6 +153,7 @@ struct InputAction {
 #define DEBUG_DRAW_BOX DebugDraw3D::get_singleton()->draw_box
 #define DEBUG_DRAW_LINE DebugDraw3D::get_singleton()->draw_line
 #define DEBUG_DRAW_POSITION DebugDraw3D::get_singleton()->draw_position
+#define DEBUG_DRAW_SPHERE DebugDraw3D::get_singleton()->draw_sphere
 
 #else
 
@@ -160,6 +161,7 @@ struct InputAction {
 #define DEBUG_DRAW_BOX(...)
 #define DEBUG_DRAW_LINE(...)
 #define DEBUG_DRAW_POSITION(...)
+#define DEBUG_DRAW_SPHERE(...)
 
 #endif
 

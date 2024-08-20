@@ -65,8 +65,12 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 	}
-	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
+	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook)) {
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
+	}
+	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry)) {
+		DEBUG_DRAW_SPHERE(
+				context->physics.get_gravity_center(), context->parry.detectionradius, Color(0.2, 0.9, 0.1), 2.f);
 	}
 	return {};
 }

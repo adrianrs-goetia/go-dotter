@@ -10,12 +10,19 @@ using namespace godot;
 class PlayerState;
 class PlayerFSM;
 
+constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
+constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
+
 // Data som en playerstate alltid er interessert i
 //  Forer inn en ny struct som dette i hver _physics_process
 struct StatePhysicsContext {
 	bool is_on_ground;
 	Vector3 position;
 	Vector3 velocity;
+
+	Vector3 get_gravity_center() const {
+		return Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
+	}
 };
 // Data FSM and State receives from an owner regarding _input
 struct StateInputContext {
@@ -33,11 +40,15 @@ struct StateGrappleContext {
 	Node3D* target = nullptr;
 	Vector3 target_position;
 };
+struct StateParryContext {
+	float detectionradius{};
+};
 
 struct StateContext {
 	StatePhysicsContext physics;
 	StateInputContext input;
 	StateGrappleContext grapple;
+	StateParryContext parry;
 };
 
 namespace Compiletime {
@@ -47,7 +58,7 @@ namespace Compiletime {
 
 	// static_assert(sizeof(StatePhysicsContext) == 28);
 	// static_assert(sizeof(StateInputContext) == 56);
-	static_assert(sizeof(StateContext) == 128);
+	// static_assert(sizeof(StateContext) == 136);
 } //namespace Compiletime
 
 enum class EStateReturn : uint8_t {

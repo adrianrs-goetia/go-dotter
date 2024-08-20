@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=9 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="PackedScene" uid="uid://dbssbgo7e1nl5" path="res://models/dummy.blend" id="1_utca1"]
 
@@ -26,6 +26,9 @@ sky = SubResource("Sky_j0wsn")
 [sub_resource type="SphereShape3D" id="SphereShape3D_6du44"]
 radius = 2.89418
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_en38a"]
+radius = 1.36218
+
 [node name="PlayerNode" type="PlayerNode"]
 
 [node name="dummy" parent="." instance=ExtResource("1_utca1")]
@@ -43,7 +46,7 @@ mesh = SubResource("BoxMesh_d7g18")
 transform = Transform3D(0.0670476, 0, 0, 0, 0.0574118, 0, 0, 0, 0.0479869, 0.061412, 1.91285, 0.131989)
 mesh = SubResource("BoxMesh_d7g18")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Capsule" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
 shape = SubResource("CapsuleShape3D_xmldd")
 
@@ -64,3 +67,9 @@ collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrappleDetection"]
 shape = SubResource("SphereShape3D_6du44")
+
+[node name="ParryDetection" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParryDetection"]
+shape = SubResource("SphereShape3D_en38a")
