@@ -3,10 +3,6 @@
 
 #include <character/playerfsm.h>
 
-// // Forward declare
-// class PlayerOnGroundState;
-// class PlayerInAirState;
-
 class PlayerOnGroundState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerOnGroundState)

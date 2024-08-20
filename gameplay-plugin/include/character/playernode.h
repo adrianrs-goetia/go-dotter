@@ -21,7 +21,7 @@ public:
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* meshdummy = nullptr;
-	Area3D* area3d = nullptr;
+	Area3D* m_grappledetectionarea = nullptr;
 
 	std::vector<GrappleNode*> m_in_range_grapplenodes;
 
@@ -37,10 +37,10 @@ public:
 
 	void rotate_towards_velocity(float delta);
 
-	void body_entered_area3d(Node3D* body);
-	void body_left_area3d(Node3D* body);
-	void area_entered_area3d(Area3D* area);
-	void area_exited_area3d(Area3D* area);
+	// void body_entered_grappledetection(Node3D* body);
+	// void body_left_area3d(Node3D* body);
+	void area_entered_grappledetection(Area3D* area);
+	void area_exited_grappledetection(Area3D* area);
 	void determine_grapple_target();
 };
 

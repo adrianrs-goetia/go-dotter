@@ -18,9 +18,8 @@ using namespace godot;
 
 void PlayerNode::_bind_methods() {
 	DEFAULT_PROPERTY(PlayerNode)
-	ClassDB::bind_method(D_METHOD("body_entered_area3d", "body"), &PlayerNode::body_entered_area3d);
-	ClassDB::bind_method(D_METHOD("area_entered_area3d", "area"), &PlayerNode::area_entered_area3d);
-	ClassDB::bind_method(D_METHOD("area_exited_area3d", "area"), &PlayerNode::area_exited_area3d);
+	ClassDB::bind_method(D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
+	ClassDB::bind_method(D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
 }
 
 void PlayerNode::_enter_tree() {
@@ -32,11 +31,10 @@ void PlayerNode::_enter_tree() {
 	meshdummy = get_node<Node3D>("dummy");
 	ASSERT(meshdummy != nullptr, "");
 
-	area3d = get_node<Area3D>("GrappleDetection");
-	ASSERT(area3d != nullptr, "");
-	area3d->connect("body_entered", callable_mp(this, &PlayerNode::body_entered_area3d));
-	area3d->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_area3d));
-	area3d->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_area3d));
+	m_grappledetectionarea = get_node<Area3D>("GrappleDetection");
+	ASSERT(m_grappledetectionarea != nullptr, "");
+	m_grappledetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
+	m_grappledetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
 	ASSERT(m_state_context != nullptr, "");
@@ -55,11 +53,10 @@ void PlayerNode::_exit_tree() {
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 	::free(m_state_context);
 
-	ASSERT(area3d != nullptr, "");
-	area3d->disconnect("body_entered", callable_mp(this, &PlayerNode::body_entered_area3d));
-	area3d->disconnect("area_entered", callable_mp(this, &PlayerNode::area_entered_area3d));
-	area3d->disconnect("area_exited", callable_mp(this, &PlayerNode::area_exited_area3d));
-	area3d = nullptr;
+	ASSERT(m_grappledetectionarea != nullptr, "");
+	m_grappledetectionarea->disconnect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
+	m_grappledetectionarea->disconnect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
+	m_grappledetectionarea = nullptr;
 
 	m_state_context = nullptr;
 }
@@ -140,16 +137,13 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 	meshdummy->set_basis(Basis(newquat));
 }
 
-void PlayerNode::body_entered_area3d(Node3D* body) {}
 
-void PlayerNode::body_left_area3d(Node3D* body) {}
-
-void PlayerNode::area_entered_area3d(Area3D* area) {
+void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	LOG(DEBUG, "Area entered grapple area: ", area->get_name())
 	if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
 }
 
-void PlayerNode::area_exited_area3d(Area3D* area) {
+void PlayerNode::area_exited_grappledetection(Area3D* area) {
 	LOG(DEBUG, "Area left grapple area: ", area->get_name())
 	if (GrappleNode* gn = cast_to<GrappleNode>(area)) {
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),

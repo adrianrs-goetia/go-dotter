@@ -88,8 +88,6 @@ public:
 
 };
 
-// statuses: Free, HoldingEnemy
-// states: OnGround, Falling, HoldingEnemy_OnGround, HoldingEnemy_Falling
 class PlayerFSM {
 public:
 	PlayerState* m_current_state = nullptr;
