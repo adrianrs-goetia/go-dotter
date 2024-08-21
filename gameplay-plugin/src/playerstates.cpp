@@ -1,6 +1,7 @@
 #include <character/playerstates.h>
 
 #include <godot_cpp/classes/input.hpp>
+#include <debugdraw3d/api.h>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
@@ -50,7 +51,7 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 	if (!context->physics.is_on_ground) {
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 	}
-	DEBUG_DRAW_BOX(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
+	DebugDraw::Box(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
 
 	return {};
 }
@@ -69,7 +70,7 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
 	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry)) {
-		DEBUG_DRAW_SPHERE(
+		DebugDraw::Sphere(
 				context->physics.get_gravity_center(), context->parry.detectionradius, Color(0.2, 0.9, 0.1), 2.f);
 	}
 	return {};
@@ -79,7 +80,7 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 StateReturn PlayerInAirState::physics_process(StateContext* context, float delta) {
 	if (context->physics.is_on_ground) {
 		if (!m_guarantee_one_frame_processing) {
-			DEBUG_DRAW_POSITION(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
+			DebugDraw::Position(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
 			return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerOnGroundState>(false) };
 		}
 	}
@@ -90,6 +91,7 @@ StateReturn PlayerInAirState::physics_process(StateContext* context, float delta
 
 StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
 	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook) && context->grapple.target) {
+		LOG(WARN, "inair grappling time")
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
 

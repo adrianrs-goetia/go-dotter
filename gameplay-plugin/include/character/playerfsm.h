@@ -3,7 +3,7 @@
 #define GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
 
 #include <core/core.h>
-#include <core/godotincludes.h>
+#include <godot_cpp/classes/node3d.hpp>
 
 using namespace godot;
 

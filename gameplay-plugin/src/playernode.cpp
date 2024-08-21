@@ -8,6 +8,8 @@
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
+#include <debugdraw3d/api.h>
+
 extern "C" {
 #include <stdlib.h>
 }
@@ -87,12 +89,12 @@ void PlayerNode::_process(float delta) {
 
 	const Vector2 c = m_state_context->input.camera2ddir.normalized().rotated(-Math::deg_to_rad(90.f));
 	const Vector3 cam3d = Vector3(c.x, 0, c.y).normalized();
-	DEBUG_DRAW_LINE(get_position(), get_position() + (cam3d * 10.f), Color(1, 1, 1));
+	DebugDraw::Line(get_position(), get_position() + (cam3d * 10.f), Color(1, 1, 1));
 	if (m_state_context->grapple.target) {
-		DEBUG_DRAW_POSITION(
+		DebugDraw::Position(
 				Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), m_state_context->grapple.target_position),
 				Color(0, 0, 1), delta);
-		DEBUG_DRAW_LINE(get_position(), m_state_context->grapple.target_position, Color(0, 1, 0));
+		DebugDraw::Line(get_position(), m_state_context->grapple.target_position, Color(0, 1, 0));
 	}
 }
 
@@ -134,7 +136,7 @@ void PlayerNode::_physics_process(float delta) {
 	PhysicsDirectSpaceState3D* space_state = get_viewport()->get_world_3d()->get_direct_space_state();
 	TypedArray<Vector3> collision_points = space_state->collide_shape(query);
 	for (int i = 0; i < collision_points.size(); ++i) {
-		DEBUG_DRAW_POSITION(
+		DebugDraw::Position(
 				Transform3D(Basis(Quaternion(1, 0, 0, 0), Vector3(1, 1, 1)), collision_points[i]), Color(0, 0, 1), 0.f);
 	}
 }

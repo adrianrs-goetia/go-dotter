@@ -1,7 +1,3 @@
-/* register_types.cpp */
-/// THIS IS IGNORED IN GO-DOTTER
-just to make sure it doesn't compile
-
 #include "2d/config_2d.h"
 #include "2d/debug_draw_2d.h"
 #include "2d/graphs.h"

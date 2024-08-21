@@ -21,6 +21,8 @@ add_library(
 )
 target_link_libraries(${PROJECT_NAME}
     PRIVATE godot-cpp
+    PRIVATE debugdraw3d_api
+    PRIVATE debug-draw-3d-library
 )
 target_include_directories(
     ${PROJECT_NAME}
@@ -33,7 +35,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE HOT_RELOAD_ENABLED)
 
 # Optional links
 if (ENABLE_DD3D)
-    target_link_libraries(${PROJECT_NAME} PRIVATE debug-draw3d-plugin-obj)
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_DD3D)
 endif()
 
@@ -62,10 +63,10 @@ set_target_properties(${PROJECT_NAME}
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/${GDEXTENSION_CONFIGURATION_FILE}"
     CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
+    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
 install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
     CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin/${PROJECT_NAME}
+    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
