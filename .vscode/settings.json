@@ -69,7 +69,8 @@
     },
     "cmake.generator": "Ninja",
     "cmake.configureArgs": [
-        "-DEXPORT=ON",
+        "-DEXPORT=OFF",
+        "-DEXPORT_NON_HOTRELOADABLE=OFF",
         "-DENABLE_DD3D=ON",
     ],
     "godotTools.editorPath.godot4": "c:\\dev\\godot\\bin\\Godot_v4.2.2-stable_win64.exe",

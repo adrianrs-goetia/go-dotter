@@ -45,7 +45,7 @@ string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
 if (EXPORT)
     set(DLLPATH "")
 else()
-    set(DLLPATH "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+    set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
 endif()
 configure_file(gdextension.in ${GDEXTENSION_CONFIGURATION_FILE})
 
@@ -54,7 +54,7 @@ set_target_properties(${PROJECT_NAME}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
     LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
-    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
+    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/bin>
 )
 
 # Installation of .gdextension and .dll file into project

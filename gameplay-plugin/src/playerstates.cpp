@@ -1,7 +1,7 @@
 #include <character/playerstates.h>
 
-#include <godot_cpp/classes/input.hpp>
 #include <debugdraw3d/api.h>
+#include <godot_cpp/classes/input.hpp>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;

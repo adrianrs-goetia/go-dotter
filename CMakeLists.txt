@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 project(go-dotter)
 
 option(EXPORT "Exporting game for publishing" OFF)
+option(EXPORT_NON_RELOADABLE "Only export non-reloadable when executable is not running" OFF)
 option(ENABLE_DD3D "Enable or disable DD3D debug rendering" ON)
 
 # option(ARCHITECTURE "x64 or x86 Architecture" "x64")

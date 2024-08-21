@@ -36,13 +36,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE godot-cpp)
 target_include_directories(
     ${PROJECT_NAME}
     PRIVATE
-    $<INSTALL_INTERFACE:src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/debugdraw3d>
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/debugdraw3d
 )
-# target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src/debugdraw3d)
-# target_compile_definitions(${PROJECT_NAME} PRIVATE HOT_RELOAD_ENABLED)
 
 # Api library
 add_library(debugdraw3d_api INTERFACE)
@@ -57,7 +54,7 @@ string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
 if (EXPORT)
     set(DLLPATH "")
 else()
-    set(DLLPATH "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+    set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
 endif()
 configure_file(gdextension.in ${GDEXTENSION_CONFIGURATION_FILE})
 
@@ -66,7 +63,7 @@ set_target_properties(${PROJECT_NAME}
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
     LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
-    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/bin>
+    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/bin>
 )
 
 # Installation of .gdextension and .dll file into project
@@ -77,8 +74,10 @@ install(
     CONFIGURATIONS Release Debug
     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
-install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
-    CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
-)
+if (EXPORT_NON_RELOADABLE)
+    install(
+        FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+        CONFIGURATIONS Release Debug
+        DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
+    )
+endif()
