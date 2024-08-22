@@ -5,3 +5,7 @@ out
 
 # CMake and work environment stuff
 **/build/
+project/bin/~gameplay-plugin.dll
+*.blend1
+*.blend2
+*.blend3
