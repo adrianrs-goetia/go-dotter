@@ -6,6 +6,7 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
+#include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
 #include <debugdraw3d/api.h>
@@ -58,7 +59,13 @@ void PlayerNode::_enter_tree() {
 	m_fsm.force_set_state<PlayerInAirState>(m_state_context);
 
 	m_parrydetectionarea->set_position(m_state_context->physics.get_gravity_center());
-	m_state_context->parry.detectionradius = 1.362f; // TODO: get value from editor
+	auto sphere = cast_to<SphereShape3D>(*m_parrydetectionshape->get_shape());
+	m_state_context->parry.detectionradius = sphere->get_radius();
+	TypedArray<RID> ignores;
+	ignores.append(get_rid());
+	ignores.append(m_grappledetectionarea->get_rid());
+	ignores.append(m_parrydetectionarea->get_rid());
+	m_state_context->parry.init(ignores, m_parrydetectionshape->get_shape(), get_world_3d());
 }
 
 void PlayerNode::_exit_tree() {
@@ -117,6 +124,8 @@ void PlayerNode::_physics_process(float delta) {
 
 	// deferred actions
 	m_fsm.deferred_actions(m_state_context);
+
+	// m_animtree.process_animation(m_state_context, delta);
 
 	// SHAPE COLLISION WITH PHYSICS QUERY
 	ASSERT(m_parrydetectionshape != nullptr, "")

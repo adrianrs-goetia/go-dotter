@@ -27,7 +27,7 @@ sky = SubResource("Sky_j0wsn")
 radius = 2.89418
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_en38a"]
-radius = 1.36218
+radius = 2.36218
 
 [node name="PlayerNode" type="PlayerNode"]
 
@@ -45,6 +45,10 @@ mesh = SubResource("BoxMesh_d7g18")
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="dummy"]
 transform = Transform3D(0.0670476, 0, 0, 0, 0.0574118, 0, 0, 0, 0.0479869, 0.061412, 1.91285, 0.131989)
 mesh = SubResource("BoxMesh_d7g18")
+
+[node name="AnimationTree" type="AnimationTree" parent="dummy"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="dummy"]
 
 [node name="Capsule" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)

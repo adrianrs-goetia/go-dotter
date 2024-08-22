@@ -16,6 +16,8 @@ constexpr float GRAVITY = GRAVITY_CONSTANT * GRAVITY_SCALE;
 
 constexpr float GRAPPLE_LAUNCH_STRENGTH = 20.0f;
 
+constexpr float PARRY_LAUNCH_STRENGTH = 8.0f;
+
 namespace helper {
 	void movement_acceleration(StateContext* context, float acceleration, float deceleration, float delta) {
 		// direction
@@ -29,6 +31,27 @@ namespace helper {
 			context->physics.velocity.x = Math::move_toward(context->physics.velocity.x, 0.0f, deceleration * delta);
 			context->physics.velocity.z = Math::move_toward(context->physics.velocity.z, 0.0f, deceleration * delta);
 		}
+	}
+
+	// Expected to only handle collision queries containing at least a single point within the collison shape
+	void parry_impulse(StateContext* context, const TypedArray<Vector3>& positions, float impulse_strength) {
+		LOG(DEBUG, "Parrying something within the world");
+		// DebugDraw::Sphere(
+		// 		context->physics.get_gravity_center(), context->parry.detectionradius, Color(1.2, 0.2, 0.4), 2.f);
+
+		Vector3 closest = Vector3(INT_MAX, 0, 0);
+		for (int i = 0; i < positions.size(); i++) {
+			const Vector3 v3 = positions[0];
+			if (v3.length_squared() < closest.length_squared()) { closest = v3; }
+			DebugDraw::Position(Transform3D(Basis(Quaternion(1, 0, 0, 0), Vector3(2, 2, 2)), v3), Color(1, 0, 0), 2.f);
+		}
+
+		const Vector3 impulse_dir = Vector3(context->input.movedir_rotated.x, 1,
+				context->input.movedir_rotated.y)
+											.normalized(); // TODO get better input movedir_rotated
+		DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
+				Color(1, 0, 0), 2.f);
+		context->physics.velocity = impulse_dir * impulse_strength;
 	}
 } //namespace helper
 
@@ -93,6 +116,11 @@ StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
 	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook) && context->grapple.target) {
 		LOG(WARN, "inair grappling time")
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
+	}
+	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry) && context->grapple.target) {
+		TypedArray<Vector3> close_positions =
+				context->parry.get_parry_physics_query(context->physics.get_gravity_center());
+		if (close_positions.size() > 0) { helper::parry_impulse(context, close_positions, PARRY_LAUNCH_STRENGTH); }
 	}
 
 	return StateReturn();

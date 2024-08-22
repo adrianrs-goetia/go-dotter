@@ -10,9 +10,6 @@
 
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
-#include <godot_cpp/classes/shape3d.hpp>
-#include <godot_cpp/classes/world3d.hpp>
-#include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 
 using namespace godot;
 

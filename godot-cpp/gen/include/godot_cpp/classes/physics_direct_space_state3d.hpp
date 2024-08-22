@@ -56,8 +56,8 @@ class PhysicsDirectSpaceState3D : public Object {
 public:
 
 	TypedArray<Dictionary> intersect_point(const Ref<PhysicsPointQueryParameters3D> &p_parameters, int32_t p_max_results = 32);
-	Dictionary intersect_ray(const Ref<PhysicsRayQueryParameters3D> &p_parameters);
 	TypedArray<Dictionary> intersect_shape(const Ref<PhysicsShapeQueryParameters3D> &p_parameters, int32_t p_max_results = 32);
+	Dictionary intersect_ray(const Ref<PhysicsRayQueryParameters3D> &p_parameters);
 	PackedFloat32Array cast_motion(const Ref<PhysicsShapeQueryParameters3D> &p_parameters);
 	TypedArray<Vector3> collide_shape(const Ref<PhysicsShapeQueryParameters3D> &p_parameters, int32_t p_max_results = 32);
 	Dictionary get_rest_info(const Ref<PhysicsShapeQueryParameters3D> &p_parameters);
