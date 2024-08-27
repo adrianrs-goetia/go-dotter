@@ -41,46 +41,25 @@ void set_log_level(ELog level) {
 	LOG(DEBUG, "Setting log level -> ", get_string(level));
 	g_loglevel = level;
 }
-void Log(ELog level, const char* msg) {
-	if (level >= g_loglevel) ::printf("\033[%sm %s \n\033[%sm", color_from_level(level), msg, color_default);
-}
-void Log(ELog level, const char* msg, const bool arg) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg ? "true" : "false", color_default);
-}
-void Log(ELog level, const char* msg, const char* arg) {
+void log_impl(ELog level, const char* msg, const char* arg) {
 	if (level >= g_loglevel) ::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg, color_default);
 }
-void Log(ELog level, const char* msg, const float arg) {
-	if (level >= g_loglevel) ::printf("\033[%sm %s %f \n\033[%sm", color_from_level(level), msg, arg, color_default);
+void Log(ELog level, const char* msg) { log_impl(level, msg, ""); }
+void Log(ELog level, const char* msg, const bool arg) { log_impl(level, msg, arg ? "true" : "false"); }
+void Log(ELog level, const char* msg, const char* arg) { log_impl(level, msg, arg); }
+void Log(ELog level, const char* msg, const float arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
+void Log(ELog level, const char* msg, const int64_t arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
+void Log(ELog level, const char* msg, const uint64_t arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
+void Log(ELog level, const char* msg, const godot::String& s) { log_impl(level, msg, s.utf8().get_data()); }
+void Log(ELog level, const char* msg, const godot::Vector2& v2) {
+	log_impl(level, msg, godot::String(v2).utf8().get_data());
 }
-void Log(ELog level, const char* msg, const int64_t arg) {
-	if (level >= g_loglevel) ::printf("\033[%sm %s %lld \n\033[%sm", color_from_level(level), msg, arg, color_default);
+void Log(ELog level, const char* msg, const godot::Vector3& v3) {
+	log_impl(level, msg, godot::String(v3).utf8().get_data());
 }
-void Log(ELog level, const char* msg, const uint64_t arg) {
-	if (level >= g_loglevel) ::printf("\033[%sm %s %llu \n\033[%sm", color_from_level(level), msg, arg, color_default);
+void Log(ELog level, const char* msg, const godot::Quaternion& q) {
+	log_impl(level, msg, godot::String(q).utf8().get_data());
 }
-void Log(ELog level, const char* msg, const godot::String s) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, s.utf8().get_data(), color_default);
-}
-void Log(ELog level, const char* msg, const godot::Vector2 v2) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(v2).utf8().get_data(),
-				color_default);
-}
-void Log(ELog level, const char* msg, const godot::Vector3 v3) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(v3).utf8().get_data(),
-				color_default);
-}
-void Log(ELog level, const char* msg, const godot::Quaternion q) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(q).utf8().get_data(),
-				color_default);
-}
-void Log(ELog level, const char* msg, const godot::Transform3D t) {
-	if (level >= g_loglevel)
-		::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, godot::String(t).utf8().get_data(),
-				color_default);
+void Log(ELog level, const char* msg, const godot::Transform3D& t) {
+	log_impl(level, msg, godot::String(t).utf8().get_data());
 }

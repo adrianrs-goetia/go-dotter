@@ -36,11 +36,11 @@ void Log(ELog level, const char* msg, const char* arg);
 void Log(ELog level, const char* msg, const float arg);
 void Log(ELog level, const char* msg, const int64_t arg);
 void Log(ELog level, const char* msg, const uint64_t arg);
-void Log(ELog level, const char* msg, const godot::String s);
-void Log(ELog level, const char* msg, const godot::Vector2 v2);
-void Log(ELog level, const char* msg, const godot::Vector3 v2);
-void Log(ELog level, const char* msg, const godot::Quaternion q);
-void Log(ELog level, const char* msg, const godot::Transform3D t);
+void Log(ELog level, const char* msg, const godot::String& s);
+void Log(ELog level, const char* msg, const godot::Vector2& v2);
+void Log(ELog level, const char* msg, const godot::Vector3& v2);
+void Log(ELog level, const char* msg, const godot::Quaternion& q);
+void Log(ELog level, const char* msg, const godot::Transform3D& t);
 
 class Timestamp {
 	std::chrono::system_clock::time_point timestamp;
