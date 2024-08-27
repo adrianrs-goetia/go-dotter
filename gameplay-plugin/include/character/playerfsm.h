@@ -46,7 +46,7 @@ struct StateGrappleContext {
 	Vector3 target_position;
 };
 struct StateParryContext {
-	float detectionradius{};	
+	float detectionradius{};
 	Ref<PhysicsShapeQueryParameters3D> query;
 	Ref<World3D> world;
 
@@ -137,7 +137,8 @@ public:
 	void handle_input(StateContext* context, float delta);
 	void deferred_actions(StateContext* context); // After physics_process and handle input
 
-	template <typename T> void force_set_state(StateContext* context) {
+	template <typename T>
+	void force_set_state(StateContext* context) {
 		static_assert(std::is_base_of_v<PlayerState, T>, "FSM requires class State as base");
 		if (m_current_state) {
 			m_current_state->exit_state(context);

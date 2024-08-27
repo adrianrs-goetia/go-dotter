@@ -26,7 +26,7 @@ AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 # AlwaysBreakAfterDefinitionReturnType: None
 # AlwaysBreakAfterReturnType: None
 # AlwaysBreakBeforeMultilineStrings: false
-# AlwaysBreakTemplateDeclarations: MultiLine
+AlwaysBreakTemplateDeclarations: true
 # AttributeMacros:
 #   - __capability
 # BinPackArguments: true
