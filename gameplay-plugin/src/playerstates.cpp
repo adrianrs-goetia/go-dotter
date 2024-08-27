@@ -35,16 +35,18 @@ namespace helper {
 
 	// Expected to only handle collision queries containing at least a single point within the collison shape
 	void parry_impulse(StateContext* context, const TypedArray<Vector3>& positions, float impulse_strength) {
-		LOG(DEBUG, "Parrying something within the world");
-		// DebugDraw::Sphere(
-		// 		context->physics.get_gravity_center(), context->parry.detectionradius, Color(1.2, 0.2, 0.4), 2.f);
+		ASSERT(positions.size() > 0, "")
 
-		Vector3 closest = Vector3(INT_MAX, 0, 0);
+		const float debug_draw_duration = 0.2f;
+		DebugDraw::Sphere(context->physics.get_gravity_center(), context->parry.detectionradius, Color(1.2, 0.2, 0.4),
+				debug_draw_duration);
+		
+		Vector3 closest = positions[0];
 		for (int i = 0; i < positions.size(); i++) {
-			const Vector3 v3 = positions[0];
+			const Vector3 v3 = positions[i];
 			if (v3.length_squared() < closest.length_squared()) { closest = v3; }
-			DebugDraw::Position(Transform3D(Basis(Quaternion(1, 0, 0, 0), Vector3(2, 2, 2)), v3), Color(1, 0, 0), 2.f);
 		}
+		DebugDraw::Sphere(closest, 0.8f, Color(0, 2, 1, 0), debug_draw_duration);
 
 		const Vector3 impulse_dir = Vector3(context->input.movedir_rotated.x, 1,
 				context->input.movedir_rotated.y)
@@ -74,7 +76,6 @@ StateReturn PlayerOnGroundState::physics_process(StateContext* context, float de
 	if (!context->physics.is_on_ground) {
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 	}
-	DebugDraw::Box(Vector3(0, 1, 0), Quaternion(1, 0, 0, 0), Vector3(2, 2, 2), Color(1, 0, 0));
 
 	return {};
 }
@@ -91,10 +92,6 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 	}
 	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook) && context->grapple.target) {
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
-	}
-	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry)) {
-		DebugDraw::Sphere(
-				context->physics.get_gravity_center(), context->parry.detectionradius, Color(0.2, 0.9, 0.1), 2.f);
 	}
 	return {};
 }
@@ -117,7 +114,7 @@ StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
 		LOG(WARN, "inair grappling time")
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
-	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry) && context->grapple.target) {
+	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry)) {
 		TypedArray<Vector3> close_positions =
 				context->parry.get_parry_physics_query(context->physics.get_gravity_center());
 		if (close_positions.size() > 0) { helper::parry_impulse(context, close_positions, PARRY_LAUNCH_STRENGTH); }

@@ -61,14 +61,11 @@ struct StateParryContext {
 		Ref<PhysicsShapeQueryParameters3D> query;
 		query.instantiate();
 		query->set_shape(get_shape());
+		query->set_transform(Transform3D(Basis(), gravity_center));
 		query->set_collide_with_areas(true);
 		query->set_collide_with_bodies(true);
-
-		ASSERT(query.is_valid(), "")
 		query->set_exclude(get_rid());
-		query->set_transform(Transform3D(Basis(), gravity_center));
 		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
-
 		ASSERT(space_state != nullptr, "")
 		return space_state->collide_shape(query);
 	}

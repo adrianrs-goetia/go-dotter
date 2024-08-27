@@ -61,19 +61,15 @@ void PlayerNode::_enter_tree() {
 	m_parrydetectionarea->set_position(m_state_context->physics.get_gravity_center());
 	auto sphere = cast_to<SphereShape3D>(*m_parrydetectionshape->get_shape());
 	m_state_context->parry.detectionradius = sphere->get_radius();
-	m_state_context->parry.get_rid = [this](){
+	m_state_context->parry.get_rid = [this]() {
 		TypedArray<RID> ignores;
 		ignores.append(this->get_rid());
 		ignores.append(this->m_grappledetectionarea->get_rid());
 		ignores.append(this->m_parrydetectionarea->get_rid());
-		return ignores;	
+		return ignores;
 	};
-	m_state_context->parry.get_shape = [this](){
-		return this->m_parrydetectionshape->get_shape();
-	};
-	m_state_context->parry.get_world = [this](){
-		return this->get_world_3d();
-	};
+	m_state_context->parry.get_shape = [this]() { return this->m_parrydetectionshape->get_shape(); };
+	m_state_context->parry.get_world = [this]() { return this->get_viewport()->get_world_3d(); };
 }
 
 void PlayerNode::_exit_tree() {
@@ -137,25 +133,6 @@ void PlayerNode::_physics_process(float delta) {
 
 	// SHAPE COLLISION WITH PHYSICS QUERY
 	ASSERT(m_parrydetectionshape != nullptr, "")
-
-	Ref<PhysicsShapeQueryParameters3D> query;
-	query.instantiate();
-	query->set_shape(m_parrydetectionshape->get_shape());
-	query->set_transform(Transform3D(Basis(), m_state_context->physics.get_gravity_center()));
-	query->set_collide_with_areas(true);
-	query->set_collide_with_bodies(true);
-	TypedArray<RID> ignores;
-	ignores.append(get_rid());
-	ignores.append(m_grappledetectionarea->get_rid());
-	ignores.append(m_parrydetectionarea->get_rid());
-	query->set_exclude(ignores);
-
-	PhysicsDirectSpaceState3D* space_state = get_viewport()->get_world_3d()->get_direct_space_state();
-	TypedArray<Vector3> collision_points = space_state->collide_shape(query);
-	for (int i = 0; i < collision_points.size(); ++i) {
-		DebugDraw::Position(
-				Transform3D(Basis(Quaternion(1, 0, 0, 0), Vector3(1, 1, 1)), collision_points[i]), Color(0, 0, 1), 0.f);
-	}
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {

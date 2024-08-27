@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * THIS FILE IS CURRENTLY TEMPORARY, remove when compilable and used
+ */
+
 template <typename Context, typename Ret>
 struct State {
 	struct Return {
