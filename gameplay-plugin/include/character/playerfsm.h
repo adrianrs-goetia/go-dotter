@@ -42,6 +42,9 @@ struct StateInputContext {
 
 	InputAction input_action;
 	InputAction last_valid_input_action;
+
+	Vector3 get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
+	Vector3 get_movedir_rotated_3d() const { return Vector3(movedir_rotated.x, 0, movedir_rotated.y).normalized(); }
 };
 struct StateGrappleContext {
 	Node3D* target = nullptr;

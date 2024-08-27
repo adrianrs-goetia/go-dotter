@@ -98,9 +98,6 @@ void PlayerNode::_process(float delta) {
 	m_camerapivot->process(m_state_context, delta);
 	determine_grapple_target();
 
-	const Vector2 c = m_state_context->input.camera2ddir.normalized().rotated(-Math::deg_to_rad(90.f));
-	const Vector3 cam3d = Vector3(c.x, 0, c.y).normalized();
-	DebugDraw::Line(get_position(), get_position() + (cam3d * 10.f), Color(1, 1, 1));
 	if (m_state_context->grapple.target) {
 		DebugDraw::Position(
 				Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), m_state_context->grapple.target_position),
@@ -193,13 +190,14 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 void PlayerNode::determine_grapple_target() {
 	RETURN_IF_EDITOR
 	ASSERT(m_state_context != nullptr, "")
-	const Vector2 cam_dir = m_state_context->input.camera2ddir.normalized().rotated(-Math::deg_to_rad(90.f));
+	const Vector3 cam3d = m_state_context->input.get_camera3ddir();
 	float lowest_dot = -1.0f;
 	GrappleNode* target = nullptr;
 	for (GrappleNode* gn : m_in_range_grapplenodes) {
-		const Vector3 dir3d = gn->get_position() - get_position();
-		const Vector2 gn_unit_dir = Vector2(dir3d.x, dir3d.z).normalized();
-		const float dot = cam_dir.dot(gn_unit_dir);
+		Vector3 dir_2d = gn->get_position() - get_position();
+		dir_2d.y = 0;
+		dir_2d.normalize();
+		const float dot = cam3d.dot(dir_2d);
 		if (dot > lowest_dot && dot > 0.f) {
 			lowest_dot = dot;
 			target = gn;

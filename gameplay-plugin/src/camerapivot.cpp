@@ -7,7 +7,13 @@
 #include <godot_cpp/classes/input_event_mouse_motion.hpp>
 #include <godot_cpp/core/math.hpp>
 
+#include <debugdraw3d/api.h>
+
 using namespace godot;
+
+constexpr float PI = 3.14159f;
+constexpr float PI_HALF = 3.14159f / 2.f;
+constexpr float PI_TWO = 3.14159f * 2.f;
 
 constexpr float X_MAX_ROTATION = 20.0f;
 constexpr float X_MIN_ROTATION = -80.0f;
@@ -80,7 +86,7 @@ void CameraPivot::process_input(
 	ASSERT(DisplayServer::get_singleton() != nullptr, "");
 	if (DisplayServer::get_singleton()->window_is_focused()) input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED);
 
-	context->input.camera2ddir = Vector2::from_angle(-get_rotation().y);
+	context->input.camera2ddir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
 	context->input.movedir_rotated = context->input.movedir.rotated(-get_rotation().y);
 
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
