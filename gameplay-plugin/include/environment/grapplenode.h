@@ -7,20 +7,18 @@
 using namespace godot;
 
 class GrappleNode : public Area3D {
-    GDCLASS(GrappleNode, Area3D)
+	GDCLASS(GrappleNode, Area3D)
 
 public:
-
 public:
-    GETNAME(GrappleNode)
-    static void _bind_methods();
+	GETNAME(GrappleNode)
+	static void _bind_methods();
 
-    void _enter_tree() override;
-    void _exit_tree() override;
+	void _enter_tree() override;
+	void _exit_tree() override;
 
-    void grapplenode_in_range();
-    void grapplenode_out_of_range();
+	void grapplenode_in_range();
+	void grapplenode_out_of_range();
 };
-
 
 #endif // GD_ENVIRONMENT_GRAPPLENODE_PLUGIN_GAMEPLAY_H

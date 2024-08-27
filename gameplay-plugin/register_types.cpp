@@ -5,8 +5,8 @@
 #include <godot_cpp/godot.hpp>
 
 #include <character/camerapivot.h>
-#include <environment/grapplenode.h>
 #include <character/playernode.h>
+#include <environment/grapplenode.h>
 #include <mainnode.h>
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {

@@ -65,7 +65,8 @@ public:
 		static PlayerStateBank statebank;
 		return statebank;
 	}
-	template <class T> PlayerState* state(bool guarantee_one_frame_processing = false) {
+	template <class T>
+	PlayerState* state(bool guarantee_one_frame_processing = false) {
 		static_assert(std::is_base_of_v<PlayerState, T>, "PlayerStateBank can only handle PlayerStates");
 		if (std::is_same_v<T, PlayerOnGroundState>) {
 			ongroundstate.init(guarantee_one_frame_processing);

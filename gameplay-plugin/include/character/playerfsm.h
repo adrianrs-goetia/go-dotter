@@ -57,7 +57,7 @@ struct StateParryContext {
 		ASSERT(get_rid != nullptr, "")
 		ASSERT(get_world != nullptr, "")
 		ASSERT(get_shape != nullptr, "")
-		
+
 		Ref<PhysicsShapeQueryParameters3D> query;
 		query.instantiate();
 		query->set_shape(get_shape());

@@ -40,7 +40,7 @@ namespace helper {
 		const float debug_draw_duration = 0.2f;
 		DebugDraw::Sphere(context->physics.get_gravity_center(), context->parry.detectionradius, Color(1.2, 0.2, 0.4),
 				debug_draw_duration);
-		
+
 		Vector3 closest = positions[0];
 		for (int i = 0; i < positions.size(); i++) {
 			const Vector3 v3 = positions[i];
