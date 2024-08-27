@@ -2,6 +2,8 @@
 #ifndef GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
 
+#include <functional>
+
 #include <core/core.h>
 
 #include <godot_cpp/classes/node3d.hpp>
@@ -47,24 +49,26 @@ struct StateGrappleContext {
 };
 struct StateParryContext {
 	float detectionradius{};
-	Ref<PhysicsShapeQueryParameters3D> query;
-	Ref<World3D> world;
-
-	void init(TypedArray<RID>& ignores, const Ref<Shape3D>& shape, const Ref<World3D>& world3d) {
-		query.instantiate();
-		world = world3d;
-		query->set_shape(shape);
-		query->set_collide_with_areas(true);
-		query->set_collide_with_bodies(true);
-		query->set_exclude(ignores);
-		// query->set_collision_mask(0xf0000000);
-	}
+	std::function<TypedArray<RID>()> get_rid = nullptr;
+	std::function<Ref<World3D>()> get_world = nullptr;
+	std::function<Ref<Shape3D>()> get_shape = nullptr;
 
 	TypedArray<Vector3> get_parry_physics_query(const Vector3& gravity_center) {
+		ASSERT(get_rid != nullptr, "")
+		ASSERT(get_world != nullptr, "")
+		ASSERT(get_shape != nullptr, "")
+		
+		Ref<PhysicsShapeQueryParameters3D> query;
+		query.instantiate();
+		query->set_shape(get_shape());
+		query->set_collide_with_areas(true);
+		query->set_collide_with_bodies(true);
+
 		ASSERT(query.is_valid(), "")
-		// query->set_exclude(ignores);
+		query->set_exclude(get_rid());
 		query->set_transform(Transform3D(Basis(), gravity_center));
-		PhysicsDirectSpaceState3D* space_state = world->get_direct_space_state();
+		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
+
 		ASSERT(space_state != nullptr, "")
 		return space_state->collide_shape(query);
 	}

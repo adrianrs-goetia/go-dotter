@@ -61,11 +61,19 @@ void PlayerNode::_enter_tree() {
 	m_parrydetectionarea->set_position(m_state_context->physics.get_gravity_center());
 	auto sphere = cast_to<SphereShape3D>(*m_parrydetectionshape->get_shape());
 	m_state_context->parry.detectionradius = sphere->get_radius();
-	TypedArray<RID> ignores;
-	ignores.append(get_rid());
-	ignores.append(m_grappledetectionarea->get_rid());
-	ignores.append(m_parrydetectionarea->get_rid());
-	m_state_context->parry.init(ignores, m_parrydetectionshape->get_shape(), get_world_3d());
+	m_state_context->parry.get_rid = [this](){
+		TypedArray<RID> ignores;
+		ignores.append(this->get_rid());
+		ignores.append(this->m_grappledetectionarea->get_rid());
+		ignores.append(this->m_parrydetectionarea->get_rid());
+		return ignores;	
+	};
+	m_state_context->parry.get_shape = [this](){
+		return this->m_parrydetectionshape->get_shape();
+	};
+	m_state_context->parry.get_world = [this](){
+		return this->get_world_3d();
+	};
 }
 
 void PlayerNode::_exit_tree() {
