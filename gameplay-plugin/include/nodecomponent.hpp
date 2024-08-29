@@ -29,14 +29,14 @@ public:
 	 * Will only look for components at the same depth as the current component
 	 */
 	template <typename T>
-	static T* get_adjacent_node_component(const NodeComponent* nodecomponent);
+	T* get_adjacent_node_component() const;
 
 	/**
 	 * Asserts parent derives from class T
 	 * Tmp method for potensially making it easier to fetch recursively or certain amount of steps up in the future
 	 */
 	template <typename T>
-	static T* get_parent_node(const NodeComponent* nodecomponent);
+	T* get_parent_node() const;
 };
 
 //////////////////////////////////////////
@@ -53,16 +53,14 @@ T* NodeComponent::get_child_node_component(const Node* node) {
 }
 
 template <typename T>
-T* NodeComponent::get_adjacent_node_component(const NodeComponent* nodecomponent) {
-	ASSERT(nodecomponent != nullptr, "")
-	if (const Node* parent = nodecomponent->get_parent()) { return NodeComponent::get_child_node_component<T>(parent); }
+T* NodeComponent::get_adjacent_node_component() const {
+	if (const Node* parent = get_parent()) { return NodeComponent::get_child_node_component<T>(parent); }
 	return nullptr;
 }
 
 template <typename T>
-T* NodeComponent::get_parent_node(const NodeComponent* nodecomponent) {
-	ASSERT(nodecomponent != nullptr, "")
-	if (T* parent = cast_to<T>(get_parent())) { return parent; }
+T* NodeComponent::get_parent_node() const {
+	if (T* parent = dynamic_cast<T*>(get_parent())) { return parent; }
 	return nullptr;
 }
 

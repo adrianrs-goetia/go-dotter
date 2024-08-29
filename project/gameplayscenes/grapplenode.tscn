@@ -20,3 +20,5 @@ shape = SubResource("SphereShape3D_f4kbh")
 [node name="NameComponent2" type="NameComponent2" parent="."]
 
 [node name="OtherNameComponent" type="OtherNameComponent" parent="."]
+
+[node name="GrappleComponent" type="GrappleComponent" parent="."]

@@ -177,8 +177,18 @@ void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
 
 	if (auto* component = NodeComponent::get_child_node_component<NameComponent>(area)) {
-		if (auto* othercomp = NodeComponent::get_adjacent_node_component<OtherNameComponent>(component)) {
+		if (auto* othercomp = component->get_adjacent_node_component<OtherNameComponent>()) {
 			LOG(INFO, "OtherComponent name =", othercomp->get_nodecomp_name())
+		}
+
+		if (component->get_parent_node<Area3D>()){
+			LOG(INFO, "Components parent derives from Area3D")
+		}
+		if (component->get_parent_node<Node3D>()){
+			LOG(INFO, "Components parent derives from Node3D")
+		}
+		if (component->get_parent_node<CharacterBody3D>()){
+			LOG(INFO, "Components parent derives from CharacterBody3D")
 		}
 	}
 }

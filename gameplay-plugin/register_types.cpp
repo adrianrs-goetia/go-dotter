@@ -7,17 +7,19 @@
 #include <environment/grapplenode.h>
 #include <mainnode.h>
 #include <nodecomponent.hpp>
+#include <components/grapplecomponent.h>
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
 	// ClassDB::register_class<MainNode>();
-	ClassDB::register_internal_class<MainNode>();
+	ClassDB::register_class<MainNode>();
 	ClassDB::register_class<CameraPivot>();
 	ClassDB::register_class<PlayerNode>();
 	ClassDB::register_class<GrappleNode>();
 
 	// Components
 	ClassDB::register_abstract_class<NodeComponent>();
+	ClassDB::register_class<GrappleComponent>();
 	// example components
 	ClassDB::register_class<NameComponent>();
 	ClassDB::register_class<NameComponent2>();
