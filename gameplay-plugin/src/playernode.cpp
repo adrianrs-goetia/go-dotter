@@ -1,6 +1,7 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
 #include <environment/grapplenode.h>
+#include <nodecomponent.hpp>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -174,6 +175,12 @@ void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
 	LOG(DEBUG, "Area entered grapple area: ", area->get_name())
 	if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
+
+	if (auto* component = NodeComponent::get_child_node_component<NameComponent>(area)) {
+		if (auto* othercomp = NodeComponent::get_adjacent_node_component<OtherNameComponent>(component)) {
+			LOG(INFO, "OtherComponent name =", othercomp->get_nodecomp_name())
+		}
+	}
 }
 
 void PlayerNode::area_exited_grappledetection(Area3D* area) {

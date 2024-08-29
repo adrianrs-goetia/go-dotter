@@ -1,5 +1,3 @@
-// #include "register_types.h"
-
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
@@ -8,6 +6,7 @@
 #include <character/playernode.h>
 #include <environment/grapplenode.h>
 #include <mainnode.h>
+#include <nodecomponent.hpp>
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
@@ -16,6 +15,13 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	ClassDB::register_class<CameraPivot>();
 	ClassDB::register_class<PlayerNode>();
 	ClassDB::register_class<GrappleNode>();
+
+	// Components
+	ClassDB::register_abstract_class<NodeComponent>();
+	// example components
+	ClassDB::register_class<NameComponent>();
+	ClassDB::register_class<NameComponent2>();
+	ClassDB::register_class<OtherNameComponent>();
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {

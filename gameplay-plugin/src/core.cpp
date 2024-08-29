@@ -45,8 +45,12 @@ void log_impl(ELog level, const char* msg, const char* arg) {
 	if (level >= g_loglevel) ::printf("\033[%sm %s %s \n\033[%sm", color_from_level(level), msg, arg, color_default);
 }
 void Log(ELog level, const char* msg) { log_impl(level, msg, ""); }
-void Log(ELog level, const char* msg, const bool arg) { log_impl(level, msg, arg ? "true" : "false"); }
 void Log(ELog level, const char* msg, const char* arg) { log_impl(level, msg, arg); }
+void Log(ELog level, const char* msg, const char* arg, const char* arg2) {
+	std::string marg = std::string(arg) + std::string(arg2);
+	log_impl(level, msg, marg.c_str());
+}
+void Log(ELog level, const char* msg, const bool arg) { log_impl(level, msg, arg ? "true" : "false"); }
 void Log(ELog level, const char* msg, const float arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
 void Log(ELog level, const char* msg, const int64_t arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
 void Log(ELog level, const char* msg, const uint64_t arg) { log_impl(level, msg, std::to_string(arg).c_str()); }
