@@ -2,6 +2,9 @@
 
 #include <nodecomponent.hpp>
 
+#include <godot_cpp/classes/area3d.hpp>
+#include <godot_cpp/classes/collision_shape3d.hpp>
+
 using namespace godot;
 
 struct GrappleEvent;
@@ -11,11 +14,18 @@ struct GrappleEvent;
  */
 class GrappleComponent : public NodeComponent {
 	GDCLASS(GrappleComponent, NodeComponent)
-private:
-	bool is_anchor = true;
+public:
+	bool m_is_anchor = true;
+	Area3D* m_area = nullptr;
+	CollisionShape3D* m_shape = nullptr;
 
 public:
 	static void _bind_methods();
+
+	void _enter_tree() override;
+	void _exit_tree() override;
+
+	RID get_rid() const;
 
 	void set_is_anchor(bool val);
 	bool get_is_anchor() const;

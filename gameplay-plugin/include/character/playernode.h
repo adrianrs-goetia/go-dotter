@@ -14,7 +14,8 @@
 using namespace godot;
 
 class CameraPivot;
-class GrappleNode;
+// class GrappleNode;
+class GrappleComponent;
 
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
@@ -29,7 +30,8 @@ public:
 	Area3D* m_parrydetectionarea = nullptr;
 	CollisionShape3D* m_parrydetectionshape = nullptr;
 
-	std::vector<GrappleNode*> m_in_range_grapplenodes;
+	// std::vector<GrappleNode*> m_in_range_grapplenodes;
+	std::vector<GrappleComponent*> m_in_range_grapplenodes;
 
 public:
 	GETNAME(PlayerNode)

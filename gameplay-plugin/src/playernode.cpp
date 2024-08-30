@@ -1,7 +1,7 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
+#include <components/grapplecomponent.h>
 #include <environment/grapplenode.h>
-#include <nodecomponent.hpp>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -173,32 +173,35 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	LOG(DEBUG, "Area entered grapple area: ", area->get_name())
-	if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
-
-	if (auto* component = NodeComponent::get_child_node_component<NameComponent>(area)) {
-		if (auto* othercomp = component->get_adjacent_node_component<OtherNameComponent>()) {
-			LOG(INFO, "OtherComponent name =", othercomp->get_nodecomp_name())
-		}
-
-		if (component->get_parent_node<Area3D>()){
-			LOG(INFO, "Components parent derives from Area3D")
-		}
-		if (component->get_parent_node<Node3D>()){
-			LOG(INFO, "Components parent derives from Node3D")
-		}
-		if (component->get_parent_node<CharacterBody3D>()){
-			LOG(INFO, "Components parent derives from CharacterBody3D")
-		}
+	// if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
+	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
+		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
+		m_in_range_grapplenodes.push_back(gn);
 	}
+
+	// if (auto* component = NodeComponent::get_child_node_component<NameComponent>(area)) {
+	// 	if (auto* othercomp = component->get_adjacent_node_component<OtherNameComponent>()) {
+	// 		LOG(INFO, "OtherComponent name =", othercomp->get_nodecomp_name())
+	// 	}
+
+	// 	if (component->get_parent_node<Area3D>()){
+	// 		LOG(INFO, "Components parent derives from Area3D")
+	// 	}
+	// 	if (component->get_parent_node<Node3D>()){
+	// 		LOG(INFO, "Components parent derives from Node3D")
+	// 	}
+	// 	if (component->get_parent_node<CharacterBody3D>()){
+	// 		LOG(INFO, "Components parent derives from CharacterBody3D")
+	// 	}
+	// }
 }
 
 void PlayerNode::area_exited_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
 	LOG(DEBUG, "Area left grapple area: ", area->get_name())
-	if (GrappleNode* gn = cast_to<GrappleNode>(area)) {
+	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),
-				[gn](GrappleNode* a) -> bool { return a->get_rid() == gn->get_rid(); });
+				[gn](GrappleComponent* a) -> bool { return a->get_rid() == gn->get_rid(); });
 		m_in_range_grapplenodes.erase(it);
 		if (gn == m_state_context->grapple.target) { m_state_context->grapple = { nullptr, Vector3() }; }
 	}
@@ -209,9 +212,9 @@ void PlayerNode::determine_grapple_target() {
 	ASSERT(m_state_context != nullptr, "")
 	const Vector3 cam3d = m_state_context->input.get_camera3ddir();
 	float lowest_dot = -1.0f;
-	GrappleNode* target = nullptr;
-	for (GrappleNode* gn : m_in_range_grapplenodes) {
-		Vector3 dir_2d = gn->get_position() - get_position();
+	GrappleComponent* target = nullptr;
+	for (GrappleComponent* gn : m_in_range_grapplenodes) {
+		Vector3 dir_2d = gn->get_global_position() - get_global_position();
 		dir_2d.y = 0;
 		dir_2d.normalize();
 		const float dot = cam3d.dot(dir_2d);
@@ -220,7 +223,7 @@ void PlayerNode::determine_grapple_target() {
 			target = gn;
 		}
 	}
-	if (target) m_state_context->grapple = { target, target->get_position() };
+	if (target) m_state_context->grapple = { target, target->get_global_position() };
 	else m_state_context->grapple = { nullptr, Vector3() };
 }
 

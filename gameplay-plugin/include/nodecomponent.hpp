@@ -2,7 +2,7 @@
 
 #include <core/core.h>
 
-#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/node3d.hpp>
 
 using namespace godot;
 
@@ -10,8 +10,8 @@ using namespace godot;
  * NodeComponent for Godot
  * Do NOT have more than one of a given NodeComponent type on a given Node
  */
-class NodeComponent : public Node {
-	GDCLASS(NodeComponent, Node)
+class NodeComponent : public Node3D {
+	GDCLASS(NodeComponent, Node3D)
 
 public:
 	static void _bind_methods() {}
@@ -64,7 +64,9 @@ T* NodeComponent::get_parent_node() const {
 	return nullptr;
 }
 
-// Example components
+//////////////////////////////////////////
+// Example Components
+//////////////////////////////////////////
 class NameComponent : public NodeComponent {
 	GDCLASS(NameComponent, NodeComponent)
 

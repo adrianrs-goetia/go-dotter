@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_o35cu"]
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
-[ext_resource type="PackedScene" uid="uid://eshf5oqjxbxl" path="res://gameplayscenes/grapplenode.tscn" id="3_wmrg6"]
+[ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://gameplayscenes/grapplenode.tscn" id="4_ii646"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -79,11 +79,26 @@ transform = Transform3D(0.997857, 0, 0.065438, 0, 1, 0, -0.065438, 0, 0.997857, 
 
 [node name="GrappleNodes" type="Node" parent="."]
 
-[node name="GrappleNode" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.609271, 2.96452, -5.12265)
+[node name="Node3D" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -6.80459, 3.77016, -3.59475)
 
-[node name="GrappleNode2" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.85917, 4.65445, -7.20631)
+[node name="Node3D5" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -3.57347, 3.77016, -6.99963)
 
-[node name="GrappleNode3" parent="GrappleNodes" instance=ExtResource("3_wmrg6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85917, 4.15445, -6.20631)
+[node name="Node3D6" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.04072, 0, -0.914013, 0, 2.23606, 0, 0.914013, 0, 2.04072, -8.0617, 7.25731, -11.0096)
+
+[node name="Node3D2" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 3.19782, 3.77016, -6.62132)
+
+[node name="Node3D3" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 9.41453, 3.77016, -24.1779)
+
+[node name="Node3D7" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 5.14331, 16.1576, -42.0429)
+
+[node name="Node3D8" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 7.23008, 7.64099, -50.5463)
+
+[node name="Node3D4" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -4.15327, 9.01932, -16.2561)
