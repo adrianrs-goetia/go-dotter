@@ -30,6 +30,8 @@ public:
 	Area3D* m_parrydetectionarea = nullptr;
 	CollisionShape3D* m_parrydetectionshape = nullptr;
 
+	GrappleComponent* m_grapplecomponent = nullptr;
+
 	// std::vector<GrappleNode*> m_in_range_grapplenodes;
 	std::vector<GrappleComponent*> m_in_range_grapplenodes;
 

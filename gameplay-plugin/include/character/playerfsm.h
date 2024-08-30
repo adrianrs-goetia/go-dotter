@@ -16,6 +16,7 @@ using namespace godot;
 
 class PlayerState;
 class PlayerFSM;
+class GrappleComponent;
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
@@ -47,8 +48,8 @@ struct StateInputContext {
 	Vector3 get_movedir_rotated_3d() const { return Vector3(movedir_rotated.x, 0, movedir_rotated.y).normalized(); }
 };
 struct StateGrappleContext {
-	Node3D* target = nullptr;
-	Vector3 target_position;
+	GrappleComponent* instigator = nullptr;
+	GrappleComponent* target = nullptr;
 };
 struct StateParryContext {
 	float detectionradius{};
@@ -84,6 +85,10 @@ struct StateContext {
 namespace Compiletime {
 	// constexpr int sizeof_statephysicscontext = sizeof(StatePhysicsContext);
 	// constexpr int sizeof_stateinputcontext = sizeof(StateInputContext);
+	constexpr int sizeof_physicscontext = sizeof(StatePhysicsContext);
+	constexpr int sizeof_inputcontext = sizeof(StateInputContext);
+	constexpr int sizeof_grapplecontext = sizeof(StateGrappleContext);
+	constexpr int sizeof_parrycontext = sizeof(StateParryContext);
 	constexpr int sizeof_statecontext = sizeof(StateContext);
 
 	// static_assert(sizeof(StatePhysicsContext) == 28);

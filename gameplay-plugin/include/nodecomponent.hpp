@@ -60,7 +60,7 @@ T* NodeComponent::get_adjacent_node_component() const {
 
 template <typename T>
 T* NodeComponent::get_parent_node() const {
-	if (T* parent = dynamic_cast<T*>(get_parent())) { return parent; }
+	if (T* parent = cast_to<T>(get_parent())) { return parent; }
 	return nullptr;
 }
 

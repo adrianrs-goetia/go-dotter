@@ -20,9 +20,9 @@ settings/3d/volumetric_defaults/thickness=0.01
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
-window/size/initial_position=Vector2i(105, 0)
+window/size/viewport_width=1200
+window/size/viewport_height=800
+window/size/initial_position=Vector2i(250, 0)
 
 [input]
 

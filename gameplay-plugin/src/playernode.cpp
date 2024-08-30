@@ -31,6 +31,8 @@ void PlayerNode::_bind_methods() {
 void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
+	m_grapplecomponent = get_child_node_of_type<GrappleComponent>(this);
+
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
@@ -58,6 +60,9 @@ void PlayerNode::_enter_tree() {
 	m_state_context->physics.position = get_position();
 	m_state_context->physics.velocity = get_velocity();
 	m_fsm.force_set_state<PlayerInAirState>(m_state_context);
+
+	ASSERT(m_grapplecomponent != nullptr, "")
+	m_state_context->grapple.instigator = m_grapplecomponent;
 
 	m_parrydetectionarea->set_position(m_state_context->physics.get_gravity_center());
 	auto sphere = cast_to<SphereShape3D>(*m_parrydetectionshape->get_shape());
@@ -100,10 +105,10 @@ void PlayerNode::_process(float delta) {
 	determine_grapple_target();
 
 	if (m_state_context->grapple.target) {
-		DebugDraw::Position(
-				Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), m_state_context->grapple.target_position),
+		DebugDraw::Position(Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)),
+									m_state_context->grapple.target->get_global_position()),
 				Color(0, 0, 1), delta);
-		DebugDraw::Line(get_position(), m_state_context->grapple.target_position, Color(0, 1, 0));
+		DebugDraw::Line(get_position(), m_state_context->grapple.target->get_global_position(), Color(0, 1, 0));
 	}
 }
 
@@ -173,27 +178,11 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	// if (GrappleNode* gn = cast_to<GrappleNode>(area)) { m_in_range_grapplenodes.push_back(gn); }
+	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
 	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
 		m_in_range_grapplenodes.push_back(gn);
 	}
-
-	// if (auto* component = NodeComponent::get_child_node_component<NameComponent>(area)) {
-	// 	if (auto* othercomp = component->get_adjacent_node_component<OtherNameComponent>()) {
-	// 		LOG(INFO, "OtherComponent name =", othercomp->get_nodecomp_name())
-	// 	}
-
-	// 	if (component->get_parent_node<Area3D>()){
-	// 		LOG(INFO, "Components parent derives from Area3D")
-	// 	}
-	// 	if (component->get_parent_node<Node3D>()){
-	// 		LOG(INFO, "Components parent derives from Node3D")
-	// 	}
-	// 	if (component->get_parent_node<CharacterBody3D>()){
-	// 		LOG(INFO, "Components parent derives from CharacterBody3D")
-	// 	}
-	// }
 }
 
 void PlayerNode::area_exited_grappledetection(Area3D* area) {
@@ -203,7 +192,7 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),
 				[gn](GrappleComponent* a) -> bool { return a->get_rid() == gn->get_rid(); });
 		m_in_range_grapplenodes.erase(it);
-		if (gn == m_state_context->grapple.target) { m_state_context->grapple = { nullptr, Vector3() }; }
+		if (gn == m_state_context->grapple.target) { m_state_context->grapple = { m_grapplecomponent, nullptr }; }
 	}
 }
 
@@ -223,8 +212,8 @@ void PlayerNode::determine_grapple_target() {
 			target = gn;
 		}
 	}
-	if (target) m_state_context->grapple = { target, target->get_global_position() };
-	else m_state_context->grapple = { nullptr, Vector3() };
+	if (target) m_state_context->grapple = { m_grapplecomponent, target };
+	else m_state_context->grapple = { m_grapplecomponent, nullptr };
 }
 
 void PlayerNode::area_entered_parrydetection(Area3D* area) { RETURN_IF_EDITOR }

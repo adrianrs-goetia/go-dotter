@@ -1,7 +1,9 @@
 #include <character/playerstates.h>
+#include <components/grapplecomponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/input.hpp>
+#include <godot_cpp/classes/character_body3d.hpp>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
@@ -134,7 +136,9 @@ StateReturn PlayerPreGrappleLaunchState::enter_state(StateContext* context) {
 // PlayerGrappleLaunchState
 StateReturn PlayerGrappleLaunchState::enter_state(StateContext* context) {
 	// TODO... What to do here other than launch?
-	const Vector3 launch_dir = Vector3(context->grapple.target_position - context->physics.position).normalized();
-	context->physics.velocity = launch_dir * GRAPPLE_LAUNCH_STRENGTH;
+	// const Vector3 launch_dir = Vector3(context->grapple.target_position - context->physics.position).normalized();
+	// context->physics.velocity = launch_dir * GRAPPLE_LAUNCH_STRENGTH;
+	context->grapple.instigator->launch(context->grapple.target);
+	context->physics.velocity = context->grapple.instigator->get_parent_node<CharacterBody3D>()->get_velocity();
 	return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 }

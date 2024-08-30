@@ -234,6 +234,17 @@ public:
 	void set_unique_name_in_owner(bool p_enable);
 	bool is_unique_name_in_owner() const;
 
+	template <typename T>
+	T *get_child_node_of_type(const godot::Node *node) {
+		TypedArray<godot::Node> children = node->get_children();
+		for (int i = 0; i < children.size(); ++i) {
+			if (T *child = cast_to<T>(children[i])) {
+				return child;
+			}
+		}
+		return nullptr;
+	}
+
 private:
 	Error rpc_internal(const Variant **p_args, GDExtensionInt p_arg_count);
 

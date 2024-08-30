@@ -5,9 +5,10 @@ radius = 0.31118
 
 [sub_resource type="TorusMesh" id="TorusMesh_0euda"]
 
-[node name="Node3D" type="Node3D"]
+[node name="grapplepoint" type="Node3D"]
 
 [node name="GrappleComponent" type="GrappleComponent" parent="."]
+anchored = true
 
 [node name="Area3D" type="Area3D" parent="GrappleComponent"]
 
