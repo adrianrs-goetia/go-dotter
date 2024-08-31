@@ -74,6 +74,11 @@ install(
     CONFIGURATIONS Release Debug
     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
+install(
+    FILES "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+    CONFIGURATIONS Release Debug
+    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
+)
 if (EXPORT_NON_RELOADABLE)
     install(
         FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
