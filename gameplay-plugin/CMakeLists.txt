@@ -5,7 +5,6 @@ set(SOURCES
     src/camerapivot.cpp
     src/core.cpp
     src/grapplecomponent.cpp
-    src/grapplenode.cpp
     src/mainnode.cpp
     src/playerfsm.cpp
     src/playernode.cpp

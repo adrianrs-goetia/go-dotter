@@ -1,7 +1,6 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
 #include <components/grapplecomponent.h>
-#include <environment/grapplenode.h>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
