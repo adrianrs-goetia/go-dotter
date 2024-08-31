@@ -15,8 +15,8 @@ public:
 	Area3D* m_area = nullptr;
 	CollisionShape3D* m_shape = nullptr;
 
-	bool anchored = true;
-	float m_launch_strength = 10.f;
+	bool anchored = false;
+	float m_pull_strength = 0.f;
 	float m_mass = 10.f;
 
 public:
@@ -31,7 +31,7 @@ protected:
 	};
 	LaunchType _determine_launch_type(const GrappleComponent* subject);
 	Vector3 _determine_launch_direction_atob(const GrappleComponent* a, const GrappleComponent* b);
-	void _impulse_owner(const Vector3& direction, float launchstrengthmultiplier = 1.0f);
+	void _impulse_owner(const Vector3& direction, float impulse_strength);
 
 public:
 	static void _bind_methods();
@@ -43,8 +43,8 @@ public:
 
 	void set_is_anchor(bool val);
 	bool get_is_anchor() const;
-	void set_launch_strength(float val);
-	float get_launch_strength() const;
+	void set_pull_strength(float val);
+	float get_pull_strength() const;
 	void set_mass(float val);
 	float get_mass() const;
 };

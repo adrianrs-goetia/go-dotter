@@ -79,5 +79,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_en38a")
 
 [node name="GrappleComponent" type="GrappleComponent" parent="."]
-"launch strength" = 19.23
-anchored = false
+"pull strength" = 20.f

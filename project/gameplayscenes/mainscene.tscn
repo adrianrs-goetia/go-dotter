@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://h2pqh1vnci7k"]
+[gd_scene load_steps=9 format=3 uid="uid://h2pqh1vnci7k"]
 
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_o35cu"]
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
 [ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://gameplayscenes/grapplenode.tscn" id="4_ii646"]
+[ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://gameplayscenes/rigid_body_3d.tscn" id="4_nem2m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -47,6 +48,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_rady5")
 [node name="TerrainBlock" parent="Terrain" instance=ExtResource("2_we13y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.0118, 0)
 
+[node name="TerrainBlock12" parent="Terrain" instance=ExtResource("2_we13y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8965, -8.19045, -6.85304)
+
+[node name="TerrainBlock13" parent="Terrain" instance=ExtResource("2_we13y")]
+transform = Transform3D(0.821468, 0, 0.570255, 0, 1, 0, -0.570255, 0, 0.821468, 7.6257, -11.8962, 2.27329)
+
 [node name="TerrainBlock4" parent="Terrain" instance=ExtResource("2_we13y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.242669, -5.0118, -9.59125)
 
@@ -85,6 +92,9 @@ transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -6.80459, 3
 [node name="Node3D5" parent="GrappleNodes" instance=ExtResource("4_ii646")]
 transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -3.57347, 3.77016, -6.99963)
 
+[node name="Node3D10" parent="GrappleNodes" instance=ExtResource("4_ii646")]
+transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 8.44696, -0.462502, -0.298694)
+
 [node name="Node3D6" parent="GrappleNodes" instance=ExtResource("4_ii646")]
 transform = Transform3D(2.04072, 0, -0.914013, 0, 2.23606, 0, 0.914013, 0, 2.04072, -8.0617, 7.25731, -11.0096)
 
@@ -102,3 +112,14 @@ transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, 7.23008, 7.
 
 [node name="Node3D4" parent="GrappleNodes" instance=ExtResource("4_ii646")]
 transform = Transform3D(2.23606, 0, 0, 0, 2.23606, 0, 0, 0, 2.23606, -4.15327, 9.01932, -16.2561)
+
+[node name="RigidBodies" type="Node" parent="."]
+
+[node name="RigidBody3D" parent="RigidBodies" instance=ExtResource("4_nem2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.436272, 1.05451, -6.11612)
+
+[node name="RigidBody3D2" parent="RigidBodies" instance=ExtResource("4_nem2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.06752, -0.556016, -4.07498)
+
+[node name="RigidBody3D3" parent="RigidBodies" instance=ExtResource("4_nem2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3213, -4.94221, 2.71412)
