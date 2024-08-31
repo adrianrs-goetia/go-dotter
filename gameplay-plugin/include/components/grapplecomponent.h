@@ -20,18 +20,24 @@ public:
 	float m_mass = 10.f;
 
 public:
-	void launch(GrappleComponent* subject);
-
-protected:
 	enum LaunchType {
 		BOTH_ANCHOR,
 		BOTH_NON_ANCHOR,
 		INSTIGATOR_ANCHOR,
 		SUBJECT_ANCHOR,
 	};
+	struct LaunchContext {
+		Vector3 impulse;
+		LaunchType type;
+	};
+
+public:
+	LaunchContext launch(GrappleComponent* subject);
+
+protected:
 	LaunchType _determine_launch_type(const GrappleComponent* subject);
 	Vector3 _determine_launch_direction_atob(const GrappleComponent* a, const GrappleComponent* b);
-	void _impulse_owner(const Vector3& direction, float impulse_strength);
+	Vector3 _impulse_owner(const Vector3& direction, float impulse_strength);
 
 public:
 	static void _bind_methods();

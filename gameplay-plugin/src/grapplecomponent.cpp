@@ -5,33 +5,37 @@
 
 #include <debugdraw3d/api.h>
 
-void GrappleComponent::launch(GrappleComponent* subject) {
-	switch (_determine_launch_type(subject)) {
+GrappleComponent::LaunchContext GrappleComponent::launch(GrappleComponent* subject) {
+	LaunchContext context;
+	context.type = _determine_launch_type(subject);
+	switch (context.type) {
 		case LaunchType::BOTH_ANCHOR: {
 			LOG(WARN, "GrappleComponent launch between two anchors. This shouldn't happen")
-			return;
+			break;
 		}
 		case LaunchType::BOTH_NON_ANCHOR: {
 			const float max_mass = get_mass() + subject->get_mass();
 			const float subject_weight = get_mass() / max_mass;
 			const float instigator_weight = subject->get_mass() / max_mass;
-			_impulse_owner(_determine_launch_direction_atob(this, subject), get_pull_strength() * instigator_weight);
-			subject->_impulse_owner(
-					_determine_launch_direction_atob(subject, this), get_pull_strength() * subject_weight);
 			LOG(DEBUG, "Grapple launch -- BOTH_NON_ANCHOR")
+			std::ignore = subject->_impulse_owner(
+					_determine_launch_direction_atob(subject, this), get_pull_strength() * subject_weight);
+			context.impulse = _impulse_owner(
+					_determine_launch_direction_atob(this, subject), get_pull_strength() * instigator_weight);
 			break;
 		}
 		case LaunchType::INSTIGATOR_ANCHOR: {
-			subject->_impulse_owner(_determine_launch_direction_atob(subject, this), get_pull_strength());
 			LOG(DEBUG, "Grapple launch -- INSTIGATOR_ANCHOR")
+			std::ignore = subject->_impulse_owner(_determine_launch_direction_atob(subject, this), get_pull_strength());
 			break;
 		}
 		case LaunchType::SUBJECT_ANCHOR: {
-			_impulse_owner(_determine_launch_direction_atob(this, subject), get_pull_strength());
 			LOG(DEBUG, "Grapple launch -- SUBJECT_ANCHOR")
+			context.impulse = _impulse_owner(_determine_launch_direction_atob(this, subject), get_pull_strength());
 			break;
 		}
 	}
+	return context;
 }
 
 GrappleComponent::LaunchType GrappleComponent::_determine_launch_type(const GrappleComponent* subject) {
@@ -45,14 +49,16 @@ Vector3 GrappleComponent::_determine_launch_direction_atob(const GrappleComponen
 	return Vector3(b->get_global_position() - a->get_global_position()).normalized();
 }
 
-void GrappleComponent::_impulse_owner(const Vector3& direction, float impulse_strength) {
-	DebugDraw::Line(get_global_position(), get_global_position() + (direction * impulse_strength), Color(1, 0, 1), 1.f);
-	if (auto* p = get_parent_node<RigidBody3D>()) { p->set_linear_velocity(direction * impulse_strength); }
-	else if (auto* p = get_parent_node<CharacterBody3D>()) { p->set_velocity(direction * impulse_strength); }
+Vector3 GrappleComponent::_impulse_owner(const Vector3& direction, float impulse_strength) {
+	const Vector3 impulse = direction * impulse_strength;
+	DebugDraw::Line(get_global_position(), get_global_position() + (impulse), Color(1, 0, 1), 1.f);
+	if (auto* p = get_parent_node<RigidBody3D>()) { p->set_linear_velocity(impulse); }
+	else if (auto* p = get_parent_node<CharacterBody3D>()) { p->set_velocity(impulse); }
 	else {
 		LOG(ERROR, "GrappleComponent impulse on invalid parent",
 				get_parent()->get_name().get_basename().utf8().get_data())
 	}
+	return impulse;
 }
 
 void GrappleComponent::_bind_methods() {
