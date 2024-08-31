@@ -76,7 +76,7 @@
     },
     "cmake.generator": "Ninja",
     "cmake.configureArgs": [
-        "-DEXPORT=ON",
+        "-DEXPORT=OFF",
         "-DEXPORT_NON_HOTRELOADABLE=OFF",
         "-DENABLE_DD3D=ON",
     ],

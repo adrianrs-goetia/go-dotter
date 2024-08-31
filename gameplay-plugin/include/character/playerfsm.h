@@ -77,7 +77,7 @@ struct StateParryContext {
 
 struct StateContext {
 	StatePhysicsContext physics;
-	StateInputContext input;
+	StateInputContext input; // TODO: make InputComponent
 	StateGrappleContext grapple;
 	StateParryContext parry;
 };

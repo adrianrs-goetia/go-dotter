@@ -63,36 +63,3 @@ T* NodeComponent::get_parent_node() const {
 	if (T* parent = cast_to<T>(get_parent())) { return parent; }
 	return nullptr;
 }
-
-//////////////////////////////////////////
-// Example Components
-//////////////////////////////////////////
-class NameComponent : public NodeComponent {
-	GDCLASS(NameComponent, NodeComponent)
-
-public:
-	GETNAME(NameComponent)
-	static void _bind_methods() { DEFAULT_PROPERTY(NameComponent) }
-	const char* get_nodecomp_name() {
-		LOG(DEBUG, "getting name from a component", get_name());
-		return "This is NameComponent";
-	}
-};
-
-class NameComponent2 : public NameComponent {
-	GDCLASS(NameComponent2, NodeComponent)
-
-public:
-	GETNAME(NameComponent2)
-	static void _bind_methods() { DEFAULT_PROPERTY(NameComponent2) }
-};
-
-class OtherNameComponent : public NodeComponent {
-	GDCLASS(OtherNameComponent, NodeComponent)
-
-public:
-	GETNAME(OtherNameComponent)
-	static void _bind_methods() { DEFAULT_PROPERTY(OtherNameComponent) }
-	const char* get_nodecomp_name() { return "This is OtherNameComponent"; }
-};
-// //

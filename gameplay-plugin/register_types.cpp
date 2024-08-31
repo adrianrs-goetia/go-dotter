@@ -18,10 +18,6 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	// Components
 	ClassDB::register_abstract_class<NodeComponent>();
 	ClassDB::register_class<GrappleComponent>();
-	// example components
-	ClassDB::register_class<NameComponent>();
-	ClassDB::register_class<NameComponent2>();
-	ClassDB::register_class<OtherNameComponent>();
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
