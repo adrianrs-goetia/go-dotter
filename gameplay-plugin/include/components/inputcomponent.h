@@ -136,5 +136,6 @@ public:
 	static InputComponent* getinput(const Node* referencenode);
 
 	Vector3 get_camera3ddir() const;
+	Vector3 get_input_raw_3d() const;
 	Vector3 get_input_relative_3d() const;
 };

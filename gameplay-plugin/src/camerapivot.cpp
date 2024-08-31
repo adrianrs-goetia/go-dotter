@@ -7,10 +7,6 @@
 
 using namespace godot;
 
-constexpr float PI = 3.14159f;
-constexpr float PI_HALF = 3.14159f / 2.f;
-constexpr float PI_TWO = 3.14159f * 2.f;
-
 constexpr float X_MAX_ROTATION = 20.0f;
 constexpr float X_MIN_ROTATION = -80.0f;
 

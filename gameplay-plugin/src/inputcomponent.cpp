@@ -7,12 +7,14 @@
 #include <godot_cpp/classes/input_event_mouse_motion.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 
+#include <debugdraw3d/api.h>
+
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
 void InputComponent::_bind_methods() { DEFAULT_PROPERTY(InputComponent) }
 
 void InputComponent::_physics_process(float delta) {
-    RETURN_IF_EDITOR
+	RETURN_IF_EDITOR
 	godot::Input* input = Input::get_singleton();
 
 	// Input movement direction (wasd or leftstick equivalent)
@@ -117,6 +119,8 @@ InputComponent* InputComponent::getinput(const Node* referencenode) {
 }
 
 Vector3 InputComponent::get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
+
+Vector3 InputComponent::get_input_raw_3d() const { return Vector3(input_raw.x, 0, input_raw.y).normalized(); }
 
 Vector3 InputComponent::get_input_relative_3d() const {
 	return Vector3(input_relative.x, 0, input_relative.y).normalized();

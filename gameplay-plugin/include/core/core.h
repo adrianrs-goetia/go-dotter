@@ -67,8 +67,10 @@ namespace NodePaths {
 
 } //namespace NodePaths
 
-
-
+// Math constants
+constexpr float PI = 3.14159f;
+constexpr float PI_HALF = 3.14159f / 2.f;
+constexpr float PI_TWO = 3.14159f * 2.f;
 
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
