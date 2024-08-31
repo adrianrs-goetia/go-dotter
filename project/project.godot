@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.2")
 [autoload]
 
 DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
+Inputcomponent="*res://autoload/inputcomponent.tscn"
 
 [debug_draw_3d]
 

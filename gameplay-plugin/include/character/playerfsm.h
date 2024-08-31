@@ -17,6 +17,7 @@ using namespace godot;
 class PlayerState;
 class PlayerFSM;
 class GrappleComponent;
+class InputComponent;
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
@@ -33,20 +34,20 @@ struct StatePhysicsContext {
 	}
 };
 // Data FSM and State receives from an owner regarding _input
-struct StateInputContext {
-	EInputMode mode;
+// struct StateInputContext {
+// 	EInputMode mode;
 
-	Vector2 movedir;
-	Vector2 movedir_rotated;
-	Vector2 motion;
-	Vector2 camera2ddir;
+// 	Vector2 movedir;
+// 	Vector2 movedir_rotated;
+// 	Vector2 motion;
+// 	Vector2 camera2ddir;
 
-	InputAction input_action;
-	InputAction last_valid_input_action;
+// 	InputAction input_action;
+// 	InputAction last_valid_input_action;
 
-	Vector3 get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
-	Vector3 get_movedir_rotated_3d() const { return Vector3(movedir_rotated.x, 0, movedir_rotated.y).normalized(); }
-};
+// 	Vector3 get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
+// 	Vector3 get_movedir_rotated_3d() const { return Vector3(movedir_rotated.x, 0, movedir_rotated.y).normalized(); }
+// };
 struct StateGrappleContext {
 	GrappleComponent* instigator = nullptr;
 	GrappleComponent* target = nullptr;
@@ -77,7 +78,8 @@ struct StateParryContext {
 
 struct StateContext {
 	StatePhysicsContext physics;
-	StateInputContext input; // TODO: make InputComponent
+	InputComponent* input = nullptr;
+	// StateInputContext input; // TODO: make InputComponent
 	StateGrappleContext grapple;
 	StateParryContext parry;
 };
@@ -86,7 +88,7 @@ namespace Compiletime {
 	// constexpr int sizeof_statephysicscontext = sizeof(StatePhysicsContext);
 	// constexpr int sizeof_stateinputcontext = sizeof(StateInputContext);
 	constexpr int sizeof_physicscontext = sizeof(StatePhysicsContext);
-	constexpr int sizeof_inputcontext = sizeof(StateInputContext);
+	// constexpr int sizeof_inputcontext = sizeof(StateInputContext);
 	constexpr int sizeof_grapplecontext = sizeof(StateGrappleContext);
 	constexpr int sizeof_parrycontext = sizeof(StateParryContext);
 	constexpr int sizeof_statecontext = sizeof(StateContext);

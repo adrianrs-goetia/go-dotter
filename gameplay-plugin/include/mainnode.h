@@ -12,8 +12,6 @@ class MainNode : public Node {
 public:
 	GETNAME(MainNode)
 	static void _bind_methods();
-
-	virtual void _unhandled_input(const Ref<InputEvent>& p_event) override;
 };
 
 #endif // GD_MAINNODE_PLUGIN_GAMEPLAY_H

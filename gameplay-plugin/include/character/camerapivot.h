@@ -29,7 +29,7 @@ public:
 	// float get_length_impl() const;
 
 	void process(StateContext* context, float delta);
-	void process_input(StateContext* context, Input* input, const Ref<InputEvent>& p_event, float delta);
+	void process_input(StateContext* context, float delta);
 };
 
 #endif // GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H

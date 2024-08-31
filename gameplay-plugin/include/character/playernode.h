@@ -3,6 +3,7 @@
 
 #include <character/playerstates.h>
 #include <core/core.h>
+#include <components/inputcomponent.h>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
@@ -14,7 +15,6 @@
 using namespace godot;
 
 class CameraPivot;
-// class GrappleNode;
 class GrappleComponent;
 
 class PlayerNode : public CharacterBody3D {
@@ -32,7 +32,6 @@ public:
 
 	GrappleComponent* m_grapplecomponent = nullptr;
 
-	// std::vector<GrappleNode*> m_in_range_grapplenodes;
 	std::vector<GrappleComponent*> m_in_range_grapplenodes;
 
 public:

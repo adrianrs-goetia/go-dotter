@@ -1,5 +1,6 @@
 #include <character/playerstates.h>
 #include <components/grapplecomponent.h>
+#include <components/inputcomponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/character_body3d.hpp>
@@ -23,11 +24,11 @@ constexpr float PARRY_LAUNCH_STRENGTH = 8.0f;
 namespace helper {
 	void movement_acceleration(StateContext* context, float acceleration, float deceleration, float delta) {
 		// direction
-		if (context->input.movedir.abs() > Vector2()) {
+		if (context->input->input_raw.abs() > Vector2()) {
 			context->physics.velocity.x = Math::move_toward(context->physics.velocity.x,
-					context->input.movedir_rotated.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context->input->input_relative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
 			context->physics.velocity.z = Math::move_toward(context->physics.velocity.z,
-					context->input.movedir_rotated.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context->input->input_relative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
 		}
 		else {
 			context->physics.velocity.x = Math::move_toward(context->physics.velocity.x, 0.0f, deceleration * delta);
@@ -50,8 +51,8 @@ namespace helper {
 		}
 		DebugDraw::Sphere(closest, 0.8f, Color(0, 2, 1, 0), debug_draw_duration);
 
-		const Vector3 impulse_dir = Vector3(context->input.movedir_rotated.x, 1,
-				context->input.movedir_rotated.y)
+		const Vector3 impulse_dir = Vector3(context->input->input_relative.x, 1,
+				context->input->input_relative.y)
 											.normalized(); // TODO get better input movedir_rotated
 		DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
 				Color(1, 0, 0), 2.f);
@@ -63,8 +64,8 @@ namespace helper {
 StateReturn PlayerOnGroundState::enter_state(StateContext* context) {
 	Super::enter_state(context);
 	// Immediate jump when entering while having just pressed jump
-	if (context->input.last_valid_input_action.is_action_down(EInputAction::JUMP) &&
-			context->input.last_valid_input_action.received_input_within_timeframe(0.1)) {
+	if (context->input->last_valid_input_action.is_action_down(EInputAction::JUMP) &&
+			context->input->last_valid_input_action.received_input_within_timeframe(0.1)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(true) };
 	}

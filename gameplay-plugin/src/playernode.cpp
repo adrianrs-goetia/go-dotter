@@ -1,6 +1,7 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
 #include <components/grapplecomponent.h>
+#include <components/inputcomponent.h>
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -55,6 +56,7 @@ void PlayerNode::_enter_tree() {
 	m_parrydetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_parrydetection));
 	m_parrydetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_parrydetection));
 
+	m_state_context->input = InputComponent::getinput(this);
 	m_state_context->physics.is_on_ground = is_on_floor();
 	m_state_context->physics.position = get_position();
 	m_state_context->physics.velocity = get_velocity();
@@ -142,32 +144,22 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	if (!m_state_context) { return; }
 
 	const float delta = get_process_delta_time();
-	Input* input = Input::get_singleton();
-
-	m_state_context->input.movedir = input->get_vector(
-			InputMap::move_left, InputMap::move_right, InputMap::move_forward, InputMap::move_backward, 0.05);
-	if (p_event->is_action_pressed(InputMap::jump)) {
-		m_state_context->input.input_action = InputAction{ EInputAction::JUMP, EInputActionType::PRESSED };
-	}
-	else {
-		m_state_context->input.last_valid_input_action = m_state_context->input.input_action;
-		m_state_context->input.input_action = InputAction{ EInputAction::NONE, EInputActionType::NONE };
-	}
 
 	ASSERT(m_camerapivot != nullptr, "");
-	m_camerapivot->process_input(m_state_context, input, p_event, delta);
+	m_camerapivot->process_input(m_state_context, delta);
 }
 
 void PlayerNode::rotate_towards_velocity(float delta) {
 	const Vector3 g_up(0, 1, 0);
 	const Vector3 g_forward(0, 0, 1);
 	const Vector3 g_right(1, 0, 0);
-	Vector3 input(m_state_context->input.movedir_rotated.x, 0, m_state_context->input.movedir_rotated.y);
-	if (input.length_squared() <= 0) { return; }
-	input.normalize();
+	const Vector2 input_relative = m_state_context->input->input_relative;
+	Vector3 inputvec(input_relative.x, 0, input_relative.y);
+	if (inputvec.length_squared() <= 0) { return; }
+	inputvec.normalize();
 
-	const int angle_dir = (g_right.dot(input) > 0.f) ? 1 : -1;
-	float angle = Math::acos(g_forward.dot(input));
+	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
+	float angle = Math::acos(g_forward.dot(inputvec));
 	angle *= angle_dir;
 	const Quaternion curquat = meshdummy->get_transform().get_basis().get_quaternion();
 	const Quaternion targetquat(g_up, angle);
@@ -198,7 +190,7 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 void PlayerNode::determine_grapple_target() {
 	RETURN_IF_EDITOR
 	ASSERT(m_state_context != nullptr, "")
-	const Vector3 cam3d = m_state_context->input.get_camera3ddir();
+	const Vector3 cam3d = m_state_context->input->get_camera3ddir();
 	float lowest_dot = -1.0f;
 	GrappleComponent* target = nullptr;
 	for (GrappleComponent* gn : m_in_range_grapplenodes) {
