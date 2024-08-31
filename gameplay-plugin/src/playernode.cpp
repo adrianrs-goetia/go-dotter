@@ -142,11 +142,8 @@ void PlayerNode::_physics_process(float delta) {
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (!m_state_context) { return; }
-
-	const float delta = get_process_delta_time();
-
 	ASSERT(m_camerapivot != nullptr, "");
-	m_camerapivot->process_input(m_state_context, delta);
+	m_camerapivot->process_input(m_state_context, get_process_delta_time());
 }
 
 void PlayerNode::rotate_towards_velocity(float delta) {

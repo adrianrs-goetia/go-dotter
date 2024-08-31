@@ -4,7 +4,6 @@
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/character_body3d.hpp>
-#include <godot_cpp/classes/input.hpp>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
@@ -64,8 +63,7 @@ namespace helper {
 StateReturn PlayerOnGroundState::enter_state(StateContext* context) {
 	Super::enter_state(context);
 	// Immediate jump when entering while having just pressed jump
-	if (context->input->last_valid_input_action.is_action_down(EInputAction::JUMP) &&
-			context->input->last_valid_input_action.received_input_within_timeframe(0.1)) {
+	if (context->input->is_action_pressed(EInputAction::JUMP, 0.1f)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(true) };
 	}
@@ -87,13 +85,11 @@ StateReturn PlayerOnGroundState::handle_input(StateContext* context, float delta
 	helper::movement_acceleration(context, ONGROUND_ACCELERATION, ONGROUND_DECELARATION, delta);
 
 	// actions
-	// if (context->input.input_action.is_action_down(EInputAction::JUMP)) { ## TODO improve capturing input. Preferably
-	// avoid this at state level
-	if (godot::Input::get_singleton()->is_action_pressed(InputMap::jump)) {
+	if (context->input->is_action_pressed(EInputAction::JUMP)) {
 		context->physics.velocity.y += JUMP_STRENGTH;
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerInAirState>(false) };
 	}
-	else if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook) && context->grapple.target) {
+	if (context->input->is_action_pressed(EInputAction::GRAPPLE) && context->grapple.target) {
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
 	return {};
@@ -113,17 +109,16 @@ StateReturn PlayerInAirState::physics_process(StateContext* context, float delta
 }
 
 StateReturn PlayerInAirState::handle_input(StateContext* context, float delta) {
-	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::grapplehook) && context->grapple.target) {
+	if (context->input->is_action_pressed(EInputAction::GRAPPLE) && context->grapple.target) {
 		LOG(WARN, "inair grappling time")
 		return StateReturn{ EStateReturn::NEW_STATE, PlayerStateBank::get().state<PlayerPreGrappleLaunchState>(false) };
 	}
-	if (godot::Input::get_singleton()->is_action_just_pressed(InputMap::parry)) {
+	if (context->input->is_action_pressed(EInputAction::PARRY)) {
 		TypedArray<Vector3> close_positions =
 				context->parry.get_parry_physics_query(context->physics.get_gravity_center());
 		if (close_positions.size() > 0) { helper::parry_impulse(context, close_positions, PARRY_LAUNCH_STRENGTH); }
 	}
-
-	return StateReturn();
+	return {};
 }
 
 // PlayerPreGrappleLaunchState

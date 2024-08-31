@@ -7,7 +7,7 @@
 
 using namespace godot;
 
-namespace InputMap {
+namespace InputString {
 
 	constexpr const char* move_left = "move_left";
 	constexpr const char* move_right = "move_right";
@@ -32,7 +32,7 @@ namespace InputMap {
 	constexpr const char* ui_up = "ui_up";
 	constexpr const char* ui_down = "ui_down";
 
-} // namespace InputMap
+} //namespace InputString
 
 enum class EInputMode : uint8_t {
 	NONE = 0,
@@ -46,6 +46,9 @@ enum class EInputAction : uint8_t {
 	// MOVE_LEFT,
 	// MOVE_RIGHT,
 	JUMP,
+	GRAPPLE,
+	PARRY,
+	ATTACK,
 	PAUSE_MENU,
 	TOGGLE_SCREEN_MODE,
 
@@ -67,28 +70,34 @@ enum class EInputActionType : uint8_t {
 	PRESSED,
 	RELEASED,
 	HELD,
-	TEST,
-	TES2,
 };
 
 // Input action passed down to the players fsm->current_state
 // size == 10 bytes + potential padding
 struct InputAction {
 	InputAction() = default;
-	InputAction(EInputAction a, EInputActionType t) : action(a), type(t) {}
-	EInputAction action = EInputAction::NONE;
-	EInputActionType type = EInputActionType::NONE;
-	Timestamp timestamp;
+	InputAction(EInputAction action, EInputActionType type) : _action(action), _type(type) {}
+	bool _consumed = false;
+	EInputAction _action = EInputAction::NONE;
+	EInputActionType _type = EInputActionType::NONE;
+	Timestamp _timestamp;
 
-	bool is_action_pressed(EInputAction action) { return action == action && type == EInputActionType::PRESSED; }
-	bool is_action_released(EInputAction action) { return action == action && type == EInputActionType::RELEASED; }
-	bool is_action_held(EInputAction action) { return action == action && type == EInputActionType::HELD; }
+	bool is_action_pressed(EInputAction action, bool consume = true) {
+		if (!_consumed && _action == action) {
+			_consumed = consume;
+			return _type == EInputActionType::PRESSED;
+		}
+		return false;
+	}
+	bool is_action_released(EInputAction action) { return _action == action && _type == EInputActionType::RELEASED; }
+	bool is_action_held(EInputAction action) { return _action == action && _type == EInputActionType::HELD; }
 	bool is_action_down(EInputAction action) {
-		return action == action && (type == EInputActionType::HELD || type == EInputActionType::PRESSED);
+		return _action == action && (_type == EInputActionType::HELD || _type == EInputActionType::PRESSED);
 	}
 	bool received_input_within_timeframe(float timeframe_seconds) {
-		return timestamp.timestamp_within_timeframe(timeframe_seconds);
+		return _timestamp.timestamp_within_timeframe(timeframe_seconds);
 	}
+	bool is_consumed() const { return _consumed; }
 };
 
 /**
@@ -100,29 +109,29 @@ class InputComponent : public Node {
 public:
 	EInputMode mode;
 
-    /**
-     * Raw input along x/y axis
-     */
+	/**
+	 * Raw input along x/y axis
+	 */
 	Vector2 input_raw;
-    /**
-     * Input in 3D space relative to camera
-     */
+	/**
+	 * Input in 3D space relative to camera
+	 */
 	Vector2 input_relative;
 	Vector2 motion;
 	Vector2 camera2ddir;
 
-	InputAction input_action;
-	InputAction last_valid_input_action;
+	std::list<InputAction> input_actions;
 
 private:
-
 public:
 	GETNAME(InputComponent)
 	static void _bind_methods();
 
-	void _process(float delta);
-    void _input(const Ref<InputEvent>& p_event);
-    void _unhandled_input(const Ref<InputEvent>& p_event);
+	void _physics_process(float delta);
+	void _input(const Ref<InputEvent>& p_event);
+	void _unhandled_input(const Ref<InputEvent>& p_event);
+
+	bool is_action_pressed(EInputAction action, float timeframe = -1.0f);
 
 	static InputComponent* getinput(const Node* referencenode);
 

@@ -41,6 +41,10 @@ void CameraPivot::_process(float delta) {}
 
 void CameraPivot::process(StateContext* context, float delta) {
 	RETURN_IF_EDITOR
+
+	context->input->camera2ddir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
+	context->input->input_relative = context->input->input_raw.rotated(-get_rotation().y);
+
 	switch (context->input->mode) {
 		case EInputMode::JOYPAD: {
 			Vector3 current_rot = get_rotation_degrees();
@@ -79,9 +83,6 @@ void CameraPivot::_physics_process(float delta) {}
 // float CameraPivot::get_length_impl() const { return get_length(); }
 
 void CameraPivot::process_input(StateContext* context, float delta) {
-	context->input->camera2ddir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
-	context->input->input_relative = context->input->input_raw.rotated(-get_rotation().y);
-
 	switch (context->input->mode) {
 		case EInputMode::MOUSE_N_KEYBOARD: {
 			Vector2 motion = context->input->motion;
@@ -99,23 +100,4 @@ void CameraPivot::process_input(StateContext* context, float delta) {
 		}
 		default: break;
 	}
-
-	// if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
-	// 	context->input.mode = EInputMode::MOUSE_N_KEYBOARD;
-	// 	Vector2 motion = p_mousemotion->get_relative();
-
-	// 	Vector3 current_rot = get_rotation_degrees();
-	// 	current_rot.y += motion.x * MNKMOTION_X_MULTIPLIER * delta * (MNK_X_INVERTED ? 1.f : -1.f);
-	// 	current_rot.x += motion.y * MNKMOTION_Y_MULTIPLIER * delta * (MNK_Y_INVERTED ? 1.f : -1.f);
-	// 	current_rot.x = Math::clamp(current_rot.x, X_MIN_ROTATION, X_MAX_ROTATION);
-	// 	set_rotation_degrees(current_rot);
-	// }
-	// else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
-	// 	context->input.mode = EInputMode::JOYPAD;
-	// 	context->input.motion = input->get_vector(
-	// 			InputMap::camera_left, InputMap::camera_right, InputMap::camera_down, InputMap::camera_up, 0.05);
-	// 	context->input.motion.x *= JOYMOTION_X_MULTIPLIER * delta * (JOYMOTION_X_INVERTED ? 1.f : -1.f);
-	// 	context->input.motion.y *= JOYMOTION_Y_MULTIPLIER * delta * (JOYMOTION_Y_INVERTED ? 1.f : -1.f);
-	// }
-	// else { context->input.mode = EInputMode::NONE; }
 }
