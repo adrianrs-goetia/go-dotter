@@ -4,4 +4,4 @@ compatibility_minimum = "4.2.2"
 reloadable = true
 
 [libraries]
-windows.64 = "C:/Users/adria/OneDrive/Documents/Godot-Projects/go-dotter/build/bin/debug-draw-3d-library.dll"
+windows.64 = "debug-draw-3d-library.dll"

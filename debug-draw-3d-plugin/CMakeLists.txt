@@ -51,7 +51,7 @@ target_include_directories(debugdraw3d_api INTERFACE
 string(TOLOWER "${PROJECT_NAME}.gdextension" GDEXTENSION_CONFIGURATION_FILE)
 string(TOLOWER ${PROJECT_NAME} GDEXTENSION_ENTRY_POINT)
 string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
-if (EXPORT)
+if (EXPORT_GODOT_PROJECT)
     set(DLLPATH "")
 else()
     set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
@@ -74,9 +74,9 @@ install(
     CONFIGURATIONS Release Debug
     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
-if (EXPORT_NON_RELOADABLE)
+if (EXPORT_GODOT_PROJECT)
     install(
-        FILES "${CMAKE_CURRENT_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+        FILES "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
         CONFIGURATIONS Release Debug
         DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
     )

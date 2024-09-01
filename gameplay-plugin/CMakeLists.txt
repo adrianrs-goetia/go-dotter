@@ -10,6 +10,7 @@ set(SOURCES
     src/parrycomponent.cpp
     src/playernode.cpp
     src/playerstates.cpp
+
     # src/_translation_unit.cpp
 )
 
@@ -35,7 +36,7 @@ target_include_directories(
 target_compile_definitions(${PROJECT_NAME} PRIVATE HOT_RELOAD_ENABLED)
 
 # Optional links
-if (ENABLE_DD3D)
+if(ENABLE_DD3D)
     target_compile_definitions(${PROJECT_NAME} PRIVATE ENABLE_DD3D)
 endif()
 
@@ -43,11 +44,13 @@ endif()
 string(TOLOWER "${PROJECT_NAME}.gdextension" GDEXTENSION_CONFIGURATION_FILE)
 string(TOLOWER ${PROJECT_NAME} GDEXTENSION_ENTRY_POINT)
 string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
-if (EXPORT)
+
+if(EXPORT_GODOT_PROJECT)
     set(DLLPATH "")
 else()
     set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
 endif()
+
 configure_file(gdextension.in ${GDEXTENSION_CONFIGURATION_FILE})
 
 # Build file locations
@@ -66,8 +69,11 @@ install(
     CONFIGURATIONS Release Debug
     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
-install(
-    FILES "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
-    CONFIGURATIONS Release Debug
-    DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
-)
+
+if(EXPORT_GODOT_PROJECT)
+    install(
+        FILES "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+        CONFIGURATIONS Release Debug
+        DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
+    )
+endif()
