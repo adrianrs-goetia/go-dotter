@@ -60,7 +60,7 @@ void PlayerNode::_enter_tree() {
 	m_state_context->physics.is_on_ground = is_on_floor();
 	m_state_context->physics.position = get_position();
 	m_state_context->physics.velocity = get_velocity();
-	m_fsm.force_set_state<PlayerInAirState>(m_state_context);
+	m_fsm.init(m_state_context, PlayerStateBank::get().state<PlayerInAirState>());
 
 	ASSERT(m_grapplecomponent != nullptr, "")
 	m_state_context->grapple.instigator = m_grapplecomponent;

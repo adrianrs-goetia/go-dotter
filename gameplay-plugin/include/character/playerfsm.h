@@ -33,21 +33,6 @@ struct StatePhysicsContext {
 		return Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 };
-// Data FSM and State receives from an owner regarding _input
-// struct StateInputContext {
-// 	EInputMode mode;
-
-// 	Vector2 movedir;
-// 	Vector2 movedir_rotated;
-// 	Vector2 motion;
-// 	Vector2 camera2ddir;
-
-// 	InputAction input_action;
-// 	InputAction last_valid_input_action;
-
-// 	Vector3 get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
-// 	Vector3 get_movedir_rotated_3d() const { return Vector3(movedir_rotated.x, 0, movedir_rotated.y).normalized(); }
-// };
 struct StateGrappleContext {
 	GrappleComponent* instigator = nullptr;
 	GrappleComponent* target = nullptr;
@@ -79,16 +64,13 @@ struct StateParryContext {
 struct StateContext {
 	StatePhysicsContext physics;
 	InputComponent* input = nullptr;
-	// StateInputContext input; // TODO: make InputComponent
 	StateGrappleContext grapple;
 	StateParryContext parry;
 };
 
 namespace Compiletime {
-	// constexpr int sizeof_statephysicscontext = sizeof(StatePhysicsContext);
-	// constexpr int sizeof_stateinputcontext = sizeof(StateInputContext);
 	constexpr int sizeof_physicscontext = sizeof(StatePhysicsContext);
-	// constexpr int sizeof_inputcontext = sizeof(StateInputContext);
+	// constexpr int sizeof_inputcontext = sizeof(InputComponent);
 	constexpr int sizeof_grapplecontext = sizeof(StateGrappleContext);
 	constexpr int sizeof_parrycontext = sizeof(StateParryContext);
 	constexpr int sizeof_statecontext = sizeof(StateContext);
@@ -98,71 +80,29 @@ namespace Compiletime {
 	// static_assert(sizeof(StateContext) == 136);
 } //namespace Compiletime
 
-enum class EStateReturn : uint8_t {
-	CONTINUE,
-	NEW_STATE,
-};
-struct StateReturn {
-	EStateReturn ret_enum = EStateReturn::CONTINUE;
-	PlayerState* new_state = nullptr;
-};
+#include <fsm/fsm.hpp>
 
-class PlayerState {
-public:
-	// guarantee that frame is processed for a single physics process
-	// TODO: deferr to end of frame somehow in PlayerNode? Not just _physics_process
-	bool m_guarantee_one_frame_processing = false;
-
-	friend class PlayerFSM;
+class PlayerState : public State<StateContext, PlayerState> {
+	// BUG: regarding guarantee one frame processing?
 
 public:
-	void init(bool guarantee_one_frame_processing);
-	virtual StateReturn enter_state(StateContext* context);
-	virtual void exit_state(StateContext* context);
+	// default overrides for PlayerState
+	virtual bool can_enter() const override { return true; }
+	virtual Return enter(StateContext* context) override {
+		LOG(DEBUG, "Entering state ", get_name())
+		return {};
+	}
+	virtual Return exit(StateContext* context) override { return {}; }
+	virtual Return process(StateContext* context, float delta) override { return {}; }
+	virtual Return physics_process(StateContext* context, float delta) override { return {}; }
+	virtual Return handle_input(StateContext* context, float delta) override { return {}; }
+	virtual Return deferred_actions(StateContext* context) override { return {}; }
 
-	virtual StateReturn process(StateContext* context, float delta) = 0;
-	virtual StateReturn physics_process(StateContext* context, float delta) = 0;
-	virtual StateReturn handle_input(StateContext* context, float delta) = 0;
-	virtual const char* get_class_name() = 0;
-
-	virtual void deferred_actions(StateContext* context) { m_guarantee_one_frame_processing = false; }
-
-// Macros to be implemented on each class inheriting this
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* get_class_name() override { return #CLASSNAME; }
-	// CLASSNAME() : PlayerState() {}
-	// CLASSNAME(bool one_frame) : PlayerState(one_frame) {} \
-
+	virtual const char* get_name() override { return #CLASSNAME; }
 };
 
-class PlayerFSM {
-public:
-	PlayerState* m_current_state = nullptr;
-
-public:
-	virtual void _exit_tree();
-
-	void process(StateContext* context, float delta);
-	void physics_process(StateContext* context, float delta);
-	void handle_input(StateContext* context, float delta);
-	void deferred_actions(StateContext* context); // After physics_process and handle input
-
-	template <typename T>
-	void force_set_state(StateContext* context) {
-		static_assert(std::is_base_of_v<PlayerState, T>, "FSM requires class State as base");
-		if (m_current_state) {
-			m_current_state->exit_state(context);
-			delete m_current_state;
-			m_current_state = nullptr;
-		}
-		m_current_state = new T();
-		ASSERT(m_current_state != nullptr, "");
-		m_current_state->enter_state(context);
-	}
-
-protected:
-	void _process_state(StateContext* context, StateReturn state_return);
-};
+class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};
 
 #endif // GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H

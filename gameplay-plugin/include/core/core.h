@@ -8,6 +8,7 @@
 
 #define ASSERT(expr, msg)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
+#define ASSERT_NOTNULL(ptr) ASSERT(ptr != nullptr, "")
 void __m_assert(const char* expr_str, bool expr, const char* file, int line, const char* msg);
 
 // Distinction between editor-mode and in-game
@@ -71,6 +72,5 @@ namespace NodePaths {
 constexpr float PI = 3.14159f;
 constexpr float PI_HALF = 3.14159f / 2.f;
 constexpr float PI_TWO = 3.14159f * 2.f;
-
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H

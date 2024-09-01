@@ -7,7 +7,6 @@ set(SOURCES
     src/grapplecomponent.cpp
     src/inputcomponent.cpp
     src/mainnode.cpp
-    src/playerfsm.cpp
     src/playernode.cpp
     src/playerstates.cpp
     # src/_translation_unit.cpp

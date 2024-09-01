@@ -7,19 +7,18 @@ class PlayerOnGroundState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerOnGroundState)
 
-	StateReturn enter_state(StateContext* context) override;
-	StateReturn process(StateContext* context, float delta) override { return {}; }
-	StateReturn physics_process(StateContext* context, float delta) override;
-	StateReturn handle_input(StateContext* context, float delta) override;
+	Return enter(StateContext* context) override;
+
+	Return physics_process(StateContext* context, float delta) override;
+	Return handle_input(StateContext* context, float delta) override;
 };
 
 class PlayerInAirState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerInAirState)
 
-	StateReturn process(StateContext* context, float delta) override { return {}; }
-	StateReturn physics_process(StateContext* context, float delta) override;
-	StateReturn handle_input(StateContext* context, float delta) override;
+	Return physics_process(StateContext* context, float delta) override;
+	Return handle_input(StateContext* context, float delta) override;
 };
 
 class PlayerPreGrappleLaunchState : public PlayerState {
@@ -29,20 +28,14 @@ public:
 public:
 	PLAYER_STATE_IMPL(PlayerPreGrappleLaunchState)
 
-	StateReturn enter_state(StateContext* context) override;
-	StateReturn process(StateContext* context, float delta) override { return {}; }
-	StateReturn physics_process(StateContext* context, float delta) override { return {}; }
-	StateReturn handle_input(StateContext* context, float delta) override { return {}; }
+	Return enter(StateContext* context) override;
 };
 
 class PlayerGrappleLaunchState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerGrappleLaunchState)
 
-	StateReturn enter_state(StateContext* context) override;
-	StateReturn process(StateContext* context, float delta) override { return {}; }
-	StateReturn physics_process(StateContext* context, float delta) override { return {}; }
-	StateReturn handle_input(StateContext* context, float delta) override { return {}; }
+	Return enter(StateContext* context) override;
 };
 
 /*
@@ -66,24 +59,12 @@ public:
 		return statebank;
 	}
 	template <class T>
-	PlayerState* state(bool guarantee_one_frame_processing = false) {
+	PlayerState* state() {
 		static_assert(std::is_base_of_v<PlayerState, T>, "PlayerStateBank can only handle PlayerStates");
-		if (std::is_same_v<T, PlayerOnGroundState>) {
-			ongroundstate.init(guarantee_one_frame_processing);
-			return &ongroundstate;
-		}
-		if (std::is_same_v<T, PlayerInAirState>) {
-			inairstate.init(guarantee_one_frame_processing);
-			return &inairstate;
-		}
-		if (std::is_same_v<T, PlayerPreGrappleLaunchState>) {
-			pregrapplelaunchstate.init(guarantee_one_frame_processing);
-			return &pregrapplelaunchstate;
-		}
-		if (std::is_same_v<T, PlayerGrappleLaunchState>) {
-			grapplelaunchstate.init(guarantee_one_frame_processing);
-			return &grapplelaunchstate;
-		}
+		if (std::is_same_v<T, PlayerOnGroundState>) { return &ongroundstate; }
+		if (std::is_same_v<T, PlayerInAirState>) { return &inairstate; }
+		if (std::is_same_v<T, PlayerPreGrappleLaunchState>) { return &pregrapplelaunchstate; }
+		if (std::is_same_v<T, PlayerGrappleLaunchState>) { return &grapplelaunchstate; }
 	}
 };
 

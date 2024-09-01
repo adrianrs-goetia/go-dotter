@@ -4,10 +4,10 @@
 
 #include <character/camerapivot.h>
 #include <character/playernode.h>
-#include <mainnode.h>
-#include <nodecomponent.hpp>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
+#include <mainnode.h>
+#include <nodecomponent.hpp>
 
 void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
