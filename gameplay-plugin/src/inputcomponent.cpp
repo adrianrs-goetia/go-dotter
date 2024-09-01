@@ -59,7 +59,7 @@ void InputComponent::_notification(int what) {
 	switch (what) {
 		case NOTIFICATION_WM_CLOSE_REQUEST: {
 			LOG(INFO, "InputComponent WM_CLOSE_REQUEST")
-			exit_game();
+			// exit_game();
 			break;
 		}
 
@@ -91,9 +91,7 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	if (p_event->is_action_pressed(InputString::pause_menu)) {
 		if (SceneTree* tree = get_tree()) {
 			LOG(INFO, "tree notification WM_CLOSE_REQUEST")
-			tree->get_root()->notification(NOTIFICATION_WM_CLOSE_REQUEST);
-			tree->notification(NOTIFICATION_WM_CLOSE_REQUEST);
-			exit_game();
+			notification(NOTIFICATION_WM_CLOSE_REQUEST);
 			return;
 		}
 	}
