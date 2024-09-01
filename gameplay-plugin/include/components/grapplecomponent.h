@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nodecomponent.hpp>
+#include <core/nodecomponent.hpp>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>

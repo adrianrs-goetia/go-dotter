@@ -5,6 +5,7 @@
 #include <functional>
 
 #include <core/core.h>
+#include <core/fsm.hpp>
 
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
@@ -79,8 +80,6 @@ namespace Compiletime {
 	// static_assert(sizeof(StateInputContext) == 56);
 	// static_assert(sizeof(StateContext) == 136);
 } //namespace Compiletime
-
-#include <fsm/fsm.hpp>
 
 class PlayerState : public State<StateContext, PlayerState> {
 	// BUG: regarding guarantee one frame processing?
