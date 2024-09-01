@@ -5,6 +5,7 @@
 #include <character/camerapivot.h>
 #include <character/playernode.h>
 #include <components/grapplecomponent.h>
+#include <components/parrycomponent.h>
 #include <components/inputcomponent.h>
 #include <mainnode.h>
 #include <core/nodecomponent.hpp>
@@ -19,6 +20,7 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	ClassDB::register_class<InputComponent>();
 	ClassDB::register_abstract_class<NodeComponent>();
 	ClassDB::register_class<GrappleComponent>();
+	ClassDB::register_class<ParryComponent>();
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {

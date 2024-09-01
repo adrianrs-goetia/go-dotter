@@ -16,6 +16,7 @@ using namespace godot;
 
 class CameraPivot;
 class GrappleComponent;
+class ParryComponent;
 
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
@@ -25,12 +26,14 @@ public:
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* meshdummy = nullptr;
-	CollisionShape3D* m_capsule = nullptr;
+	// CollisionShape3D* m_capsule = nullptr;
 	Area3D* m_grappledetectionarea = nullptr;
-	Area3D* m_parrydetectionarea = nullptr;
-	CollisionShape3D* m_parrydetectionshape = nullptr;
+
+	// Area3D* m_parrydetectionarea = nullptr;
+	// CollisionShape3D* m_parrydetectionshape = nullptr;
 
 	GrappleComponent* m_grapplecomponent = nullptr;
+	ParryComponent* m_parrycomponent = nullptr;
 
 	std::vector<GrappleComponent*> m_in_range_grapplenodes;
 
@@ -50,9 +53,6 @@ public:
 	void area_entered_grappledetection(Area3D* area);
 	void area_exited_grappledetection(Area3D* area);
 	void determine_grapple_target();
-
-	void area_entered_parrydetection(Area3D* area);
-	void area_exited_parrydetection(Area3D* area);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

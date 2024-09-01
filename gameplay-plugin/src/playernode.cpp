@@ -2,7 +2,9 @@
 #include <character/playernode.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
+#include <components/parrycomponent.h>
 
+#include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
@@ -24,8 +26,6 @@ void PlayerNode::_bind_methods() {
 	DEFAULT_PROPERTY(PlayerNode)
 	ClassDB::bind_method(D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
 	ClassDB::bind_method(D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
-	ClassDB::bind_method(D_METHOD("area_entered_parrydetection", "area"), &PlayerNode::area_entered_parrydetection);
-	ClassDB::bind_method(D_METHOD("area_exited_parrydetection", "area"), &PlayerNode::area_exited_parrydetection);
 }
 
 void PlayerNode::_notification(int what) {
@@ -45,51 +45,40 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
 	m_grapplecomponent = get_child_node_of_type<GrappleComponent>(this);
+	m_parrycomponent = get_child_node_of_type<ParryComponent>(this);
 
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
 	meshdummy = get_node<Node3D>("dummy");
-	m_capsule = get_node<CollisionShape3D>("Capsule");
+	// m_capsule = get_node<CollisionShape3D>("Capsule");
 	m_grappledetectionarea = get_node<Area3D>("GrappleDetection");
-	m_parrydetectionarea = get_node<Area3D>("ParryDetection");
-	m_parrydetectionshape = get_node<CollisionShape3D>("ParryDetection/CollisionShape3D");
+	// m_parrydetectionarea = get_node<Area3D>("ParryDetection");
+	// m_parrydetectionshape = get_node<CollisionShape3D>("ParryDetection/CollisionShape3D");
 	m_camerapivot = get_node<CameraPivot>(NodePaths::camera_pivot);
 
 	ASSERT(m_state_context != nullptr, "")
 	ASSERT(meshdummy != nullptr, "")
-	ASSERT(m_capsule != nullptr, "")
 	ASSERT(m_grappledetectionarea != nullptr, "")
-	ASSERT(m_parrydetectionarea != nullptr, "")
 	ASSERT(m_camerapivot != nullptr, "")
+	ASSERT_NOTNULL(m_grapplecomponent)
+	ASSERT_NOTNULL(m_parrycomponent)
 
 	m_grappledetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
 	m_grappledetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
-	m_parrydetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_parrydetection));
-	m_parrydetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_parrydetection));
 
 	m_state_context->input = InputComponent::getinput(this);
+	m_state_context->parry = m_parrycomponent;
 	m_state_context->physics.is_on_ground = is_on_floor();
 	m_state_context->physics.position = get_position();
 	m_state_context->physics.velocity = get_velocity();
 	m_fsm.init(m_state_context, PlayerStateBank::get().state<PlayerInAirState>());
 
-	ASSERT(m_grapplecomponent != nullptr, "")
 	m_state_context->grapple.instigator = m_grapplecomponent;
 
-	m_parrydetectionarea->set_position(m_state_context->physics.get_gravity_center());
-	auto sphere = cast_to<SphereShape3D>(*m_parrydetectionshape->get_shape());
-	m_state_context->parry.detectionradius = sphere->get_radius();
-	m_state_context->parry.get_rid = [this]() {
-		TypedArray<RID> ignores;
-		ignores.append(this->get_rid());
-		ignores.append(this->m_grappledetectionarea->get_rid());
-		ignores.append(this->m_parrydetectionarea->get_rid());
-		return ignores;
-	};
-	m_state_context->parry.get_shape = [this]() { return this->m_parrydetectionshape->get_shape(); };
-	m_state_context->parry.get_world = [this]() { return this->get_viewport()->get_world_3d(); };
+	m_parrycomponent->m_rid_ignores.append(get_rid());
+	m_parrycomponent->m_rid_ignores.append(m_grappledetectionarea->get_rid());
 }
 
 void PlayerNode::_exit_tree() {
@@ -98,18 +87,14 @@ void PlayerNode::_exit_tree() {
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
 	ASSERT(m_grappledetectionarea != nullptr, "");
-	ASSERT(m_parrydetectionarea != nullptr, "");
 	ASSERT(m_state_context != nullptr, "");
 
 	::free(m_state_context);
 
 	m_grappledetectionarea->disconnect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
 	m_grappledetectionarea->disconnect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
-	m_parrydetectionarea->disconnect("area_entered", callable_mp(this, &PlayerNode::area_entered_parrydetection));
-	m_parrydetectionarea->disconnect("area_exited", callable_mp(this, &PlayerNode::area_exited_parrydetection));
 
 	m_grappledetectionarea = nullptr;
-	m_parrydetectionarea = nullptr;
 	m_state_context = nullptr;
 }
 
@@ -146,11 +131,6 @@ void PlayerNode::_physics_process(float delta) {
 
 	// deferred actions
 	m_fsm.deferred_actions(m_state_context);
-
-	// m_animtree.process_animation(m_state_context, delta);
-
-	// SHAPE COLLISION WITH PHYSICS QUERY
-	ASSERT(m_parrydetectionshape != nullptr, "")
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
@@ -217,7 +197,3 @@ void PlayerNode::determine_grapple_target() {
 	if (target) m_state_context->grapple = { m_grapplecomponent, target };
 	else m_state_context->grapple = { m_grapplecomponent, nullptr };
 }
-
-void PlayerNode::area_entered_parrydetection(Area3D* area) { RETURN_IF_EDITOR }
-
-void PlayerNode::area_exited_parrydetection(Area3D* area) {}

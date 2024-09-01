@@ -13,7 +13,7 @@
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
 void InputComponent::exit_game() {
-	if (auto* tree = get_tree()) {
+	if (SceneTree* tree = get_tree()) {
 		LOG(INFO, "tree->quit(0)")
 		tree->quit(0);
 	}
@@ -89,11 +89,9 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (p_event->is_action_pressed(InputString::pause_menu)) {
-		if (SceneTree* tree = get_tree()) {
-			LOG(INFO, "tree notification WM_CLOSE_REQUEST")
-			notification(NOTIFICATION_WM_CLOSE_REQUEST);
-			return;
-		}
+		LOG(INFO, "tree notification WM_CLOSE_REQUEST")
+		exit_game();
+		return;
 	}
 	else if (p_event->is_action_pressed(InputString::toggle_screen_mode)) {
 		LOG(INFO, "Toggle primary screen mode");
@@ -148,6 +146,6 @@ Vector3 InputComponent::get_camera3ddir() const { return Vector3(camera2ddir.x, 
 
 Vector3 InputComponent::get_input_raw_3d() const { return Vector3(input_raw.x, 0, input_raw.y).normalized(); }
 
-Vector3 InputComponent::get_input_relative_3d() const {
-	return Vector3(input_relative.x, 0, input_relative.y).normalized();
+Vector3 InputComponent::get_input_relative_3d(float y) const {
+	return Vector3(input_relative.x, y, input_relative.y).normalized();
 }

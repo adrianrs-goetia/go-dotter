@@ -8,16 +8,14 @@
 #include <core/fsm.hpp>
 
 #include <godot_cpp/classes/node3d.hpp>
-#include <godot_cpp/classes/physics_direct_space_state3d.hpp>
-#include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
-#include <godot_cpp/classes/shape3d.hpp>
-#include <godot_cpp/classes/world3d.hpp>
+
 
 using namespace godot;
 
 class PlayerState;
 class PlayerFSM;
 class GrappleComponent;
+class ParryComponent;
 class InputComponent;
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
@@ -38,42 +36,43 @@ struct StateGrappleContext {
 	GrappleComponent* instigator = nullptr;
 	GrappleComponent* target = nullptr;
 };
-struct StateParryContext {
-	float detectionradius{};
-	std::function<TypedArray<RID>()> get_rid = nullptr;
-	std::function<Ref<World3D>()> get_world = nullptr;
-	std::function<Ref<Shape3D>()> get_shape = nullptr;
+// struct StateParryContext {
+// 	float detectionradius{};
+// 	std::function<TypedArray<RID>()> get_rid = nullptr;
+// 	std::function<Ref<World3D>()> get_world = nullptr;
+// 	std::function<Ref<Shape3D>()> get_shape = nullptr;
 
-	TypedArray<Vector3> get_parry_physics_query(const Vector3& gravity_center) {
-		ASSERT(get_rid != nullptr, "")
-		ASSERT(get_world != nullptr, "")
-		ASSERT(get_shape != nullptr, "")
+// 	TypedArray<Vector3> get_parry_physics_query(const Vector3& gravity_center) {
+// 		ASSERT(get_rid != nullptr, "")
+// 		ASSERT(get_world != nullptr, "")
+// 		ASSERT(get_shape != nullptr, "")
 
-		Ref<PhysicsShapeQueryParameters3D> query;
-		query.instantiate();
-		query->set_shape(get_shape());
-		query->set_transform(Transform3D(Basis(), gravity_center));
-		query->set_collide_with_areas(true);
-		query->set_collide_with_bodies(true);
-		query->set_exclude(get_rid());
-		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
-		ASSERT(space_state != nullptr, "")
-		return space_state->collide_shape(query);
-	}
-};
+// 		Ref<PhysicsShapeQueryParameters3D> query;
+// 		query.instantiate();
+// 		query->set_shape(get_shape());
+// 		query->set_transform(Transform3D(Basis(), gravity_center));
+// 		query->set_collide_with_areas(true);
+// 		query->set_collide_with_bodies(true);
+// 		query->set_exclude(get_rid());
+// 		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
+// 		ASSERT(space_state != nullptr, "")
+// 		return space_state->collide_shape(query);
+// 	}
+// };
 
 struct StateContext {
-	StatePhysicsContext physics;
-	InputComponent* input = nullptr;
 	StateGrappleContext grapple;
-	StateParryContext parry;
+	InputComponent* input = nullptr;
+	// StateParryContext parry;
+	ParryComponent* parry = nullptr;
+	StatePhysicsContext physics;
 };
 
 namespace Compiletime {
 	constexpr int sizeof_physicscontext = sizeof(StatePhysicsContext);
 	// constexpr int sizeof_inputcontext = sizeof(InputComponent);
 	constexpr int sizeof_grapplecontext = sizeof(StateGrappleContext);
-	constexpr int sizeof_parrycontext = sizeof(StateParryContext);
+	// constexpr int sizeof_parrycontext = sizeof(StateParryContext);
 	constexpr int sizeof_statecontext = sizeof(StateContext);
 
 	// static_assert(sizeof(StatePhysicsContext) == 28);

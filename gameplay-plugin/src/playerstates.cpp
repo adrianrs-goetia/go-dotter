@@ -1,6 +1,7 @@
 #include <character/playerstates.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
+#include <components/parrycomponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/character_body3d.hpp>
@@ -36,23 +37,10 @@ namespace helper {
 	}
 
 	// Expected to only handle collision queries containing at least a single point within the collison shape
-	void parry_impulse(StateContext* context, const TypedArray<Vector3>& positions, float impulse_strength) {
-		ASSERT(positions.size() > 0, "")
+	void parry_impulse(StateContext* context, Vector3 closest_parry_position, float impulse_strength) {
+		DebugDraw::Sphere(closest_parry_position, 0.5f, Color(1, 0, 0.3), 0.2f);
 
-		const float debug_draw_duration = 0.2f;
-		DebugDraw::Sphere(context->physics.get_gravity_center(), context->parry.detectionradius, Color(1.2, 0.2, 0.4),
-				debug_draw_duration);
-
-		Vector3 closest = positions[0];
-		for (int i = 0; i < positions.size(); i++) {
-			const Vector3 v3 = positions[i];
-			if (v3.length_squared() < closest.length_squared()) { closest = v3; }
-		}
-		DebugDraw::Sphere(closest, 0.8f, Color(0, 2, 1, 0), debug_draw_duration);
-
-		const Vector3 impulse_dir = Vector3(context->input->input_relative.x, 1,
-				context->input->input_relative.y)
-											.normalized(); // TODO get better input movedir_rotated
+		const Vector3 impulse_dir = context->input->get_input_relative_3d(1.f);
 		DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
 				Color(1, 0, 0), 2.f);
 		context->physics.velocity = impulse_dir * impulse_strength;
@@ -113,9 +101,7 @@ PlayerState::Return PlayerInAirState::handle_input(StateContext* context, float 
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
 	if (context->input->is_action_pressed(EInputAction::PARRY)) {
-		TypedArray<Vector3> close_positions =
-				context->parry.get_parry_physics_query(context->physics.get_gravity_center());
-		if (close_positions.size() > 0) { helper::parry_impulse(context, close_positions, PARRY_LAUNCH_STRENGTH); }
+		helper::parry_impulse(context, context->parry->get_closest_colliding_position(), PARRY_LAUNCH_STRENGTH);
 	}
 	return {};
 }
