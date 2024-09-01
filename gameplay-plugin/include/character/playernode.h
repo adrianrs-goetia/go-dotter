@@ -38,6 +38,7 @@ public:
 	GETNAME(PlayerNode)
 	static void _bind_methods();
 
+	void _notification(int what);
 	void _enter_tree() override;
 	void _exit_tree() override;
 	void _process(float delta) override;

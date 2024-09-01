@@ -123,10 +123,13 @@ public:
 	std::list<InputAction> input_actions;
 
 private:
+	void exit_game();
+
 public:
 	GETNAME(InputComponent)
 	static void _bind_methods();
 
+	void _notification(int what);
 	void _physics_process(float delta);
 	void _input(const Ref<InputEvent>& p_event);
 	void _unhandled_input(const Ref<InputEvent>& p_event);

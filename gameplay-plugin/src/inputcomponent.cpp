@@ -6,12 +6,24 @@
 #include <godot_cpp/classes/input_event_key.hpp>
 #include <godot_cpp/classes/input_event_mouse_motion.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/window.hpp>
 
 #include <debugdraw3d/api.h>
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
-void InputComponent::_bind_methods() { DEFAULT_PROPERTY(InputComponent) }
+void InputComponent::exit_game() {
+	if (auto* tree = get_tree()) {
+		LOG(INFO, "tree->quit(0)")
+		tree->quit(0);
+	}
+}
+
+void InputComponent::_bind_methods() {
+	DEFAULT_PROPERTY(InputComponent)
+
+	ClassDB::bind_method(D_METHOD("exit_game"), &InputComponent::exit_game);
+}
 
 void InputComponent::_physics_process(float delta) {
 	RETURN_IF_EDITOR
@@ -42,6 +54,19 @@ void InputComponent::_physics_process(float delta) {
 	}
 }
 
+void InputComponent::_notification(int what) {
+	// LOG(INFO, "Notification", (int64_t)what)
+	switch (what) {
+		case NOTIFICATION_WM_CLOSE_REQUEST: {
+			LOG(INFO, "InputComponent WM_CLOSE_REQUEST")
+			exit_game();
+			break;
+		}
+
+		default: break;
+	}
+}
+
 void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
 
@@ -65,8 +90,11 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (p_event->is_action_pressed(InputString::pause_menu)) {
 		if (SceneTree* tree = get_tree()) {
-			LOG(INFO, "tree->quit(0)")
-			tree->quit(0);
+			LOG(INFO, "tree notification WM_CLOSE_REQUEST")
+			tree->get_root()->notification(NOTIFICATION_WM_CLOSE_REQUEST);
+			tree->notification(NOTIFICATION_WM_CLOSE_REQUEST);
+			exit_game();
+			return;
 		}
 	}
 	else if (p_event->is_action_pressed(InputString::toggle_screen_mode)) {

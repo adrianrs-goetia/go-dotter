@@ -28,6 +28,19 @@ void PlayerNode::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("area_exited_parrydetection", "area"), &PlayerNode::area_exited_parrydetection);
 }
 
+void PlayerNode::_notification(int what) {
+	// LOG(INFO, "Notification", (int64_t)what)
+	switch (what) {
+		case NOTIFICATION_WM_CLOSE_REQUEST: {
+			LOG(INFO, "PlayerNode WM_CLOSE_REQUEST")
+			// exit_game();
+			break;
+		}
+
+		default: break;
+	}
+}
+
 void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
@@ -80,6 +93,7 @@ void PlayerNode::_enter_tree() {
 }
 
 void PlayerNode::_exit_tree() {
+	queue_free();
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
