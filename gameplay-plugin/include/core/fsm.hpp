@@ -59,7 +59,7 @@ inline void Fsm<Context, StateClass, StateReturn>::deinit() {
 
 template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::process(Context* context, float delta) {
-	ASSERT_NOTNULL(state)
+	ASSERT_NOTNULL(m_current_state)
 	_process_state(context, m_current_state->process(context, delta));
 }
 

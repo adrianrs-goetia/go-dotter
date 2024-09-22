@@ -5,3 +5,4 @@ reloadable = true
 
 [libraries]
 windows.64 = "debug-draw-3d-library.dll"
+linux.x86_64 = "libdebug-draw-3d-library.so"

@@ -5,18 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "GD: Launch Project Debug",
-            "type": "cppvsdbg",
+            "name": "(gdb) GD: Launch Project Debug",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "C:/dev/godot/bin/Godot_v4.2.2-stable_win64.exe",
+            "program": "/home/ads/godot/v4.3/Godot_v4.3-stable_linux.x86_64",
             "args": [
                 "--path", "${workspaceFolder}/project",
                 // "--verbose"
             ],
             "stopAtEntry": false,
-            // "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
-            "console": "externalTerminal",
             // "preLaunchTask": "cmake build", 
         },
     ]

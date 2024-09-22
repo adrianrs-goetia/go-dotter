@@ -51,11 +51,23 @@ target_include_directories(debugdraw3d_api INTERFACE
 string(TOLOWER "${PROJECT_NAME}.gdextension" GDEXTENSION_CONFIGURATION_FILE)
 string(TOLOWER ${PROJECT_NAME} GDEXTENSION_ENTRY_POINT)
 string(REGEX REPLACE "-" "_" GDEXTENSION_ENTRY_POINT ${GDEXTENSION_ENTRY_POINT})
-if (EXPORT_GODOT_PROJECT)
-    set(DLLPATH "")
+set(LIB_NAME_WINDOWS "${PROJECT_NAME}")
+set(LIB_NAME_LINUX "lib${PROJECT_NAME}")
+
+if(EXPORT_GODOT_PROJECT)
+    if(MSVC)
+        set(DLLPATH "")
+    else() # not windows, assuming linux
+        set(LINUXPATH "")
+    endif()
 else()
-    set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
+    if(MSVC)
+        set(DLLPATH "${CMAKE_BINARY_DIR}/bin/")
+    else() # not windows, assuming linux
+        set(LINUXPATH "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+    endif()
 endif()
+
 configure_file(gdextension.in ${GDEXTENSION_CONFIGURATION_FILE})
 
 # Build file locations
@@ -74,9 +86,16 @@ install(
     CONFIGURATIONS Release Debug
     DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
 )
-if (EXPORT_GODOT_PROJECT)
+
+if(EXPORT_GODOT_PROJECT)
+    if(MSVC)
+        set(LIBINSTALL "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll")
+    else()
+        set(LIBINSTALL "${CMAKE_CURRENT_BINARY_DIR}/bin/lib${PROJECT_NAME}.so")
+    endif()
+
     install(
-        FILES "${CMAKE_BINARY_DIR}/bin/${PROJECT_NAME}.dll"
+        FILES "${LIBINSTALL}"
         CONFIGURATIONS Release Debug
         DESTINATION ${CMAKE_HOME_DIRECTORY}/project/bin
     )

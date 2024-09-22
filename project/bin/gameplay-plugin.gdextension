@@ -5,3 +5,4 @@ reloadable = true
 
 [libraries]
 windows.64 = "gameplay-plugin.dll"
+linux.x86_64 = "libgameplay-plugin.so"
