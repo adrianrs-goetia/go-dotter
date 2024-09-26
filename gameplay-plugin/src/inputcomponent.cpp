@@ -22,7 +22,7 @@ void InputComponent::exit_game() {
 void InputComponent::_bind_methods() {
 	DEFAULT_PROPERTY(InputComponent)
 
-	ClassDB::bind_method(D_METHOD("exit_game"), &InputComponent::exit_game);
+	godot::ClassDB::bind_method(godot::D_METHOD("exit_game"), &InputComponent::exit_game);
 }
 
 void InputComponent::_physics_process(double delta) {

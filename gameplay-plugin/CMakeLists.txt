@@ -22,7 +22,7 @@ add_library(
     ${SOURCES}
 )
 target_link_libraries(${PROJECT_NAME}
-    PRIVATE godot-cpp
+    PRIVATE godot::cpp
     PRIVATE debugdraw3d_api
     PRIVATE debug-draw-3d-library
 )

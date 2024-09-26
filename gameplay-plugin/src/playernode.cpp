@@ -24,8 +24,8 @@ using namespace godot;
 
 void PlayerNode::_bind_methods() {
 	DEFAULT_PROPERTY(PlayerNode)
-	ClassDB::bind_method(D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
-	ClassDB::bind_method(D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
+	godot::ClassDB::bind_method(godot::D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
+	godot::ClassDB::bind_method(godot::D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
 }
 
 void PlayerNode::_notification(int what) {
@@ -51,19 +51,19 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
-	meshAnchor = get_node<Node3D>("meshAnchor");
+	// meshAnchor = get_node<Node3D>("meshAnchor");
 	// m_capsule = get_node<CollisionShape3D>("Capsule");
 	m_grappledetectionarea = get_node<Area3D>("GrappleDetection");
 	// m_parrydetectionarea = get_node<Area3D>("ParryDetection");
 	// m_parrydetectionshape = get_node<CollisionShape3D>("ParryDetection/CollisionShape3D");
 	m_camerapivot = get_node<CameraPivot>(NodePaths::camera_pivot);
 
-	ASSERT(m_state_context != nullptr, "")
-	ASSERT(meshAnchor != nullptr, "")
-	ASSERT(m_grappledetectionarea != nullptr, "")
-	ASSERT(m_camerapivot != nullptr, "")
 	ASSERT_NOTNULL(m_grapplecomponent)
 	ASSERT_NOTNULL(m_parrycomponent)
+	ASSERT(m_state_context != nullptr, "")
+	ASSERT(m_grappledetectionarea != nullptr, "")
+	ASSERT(m_camerapivot != nullptr, "")
+	// ASSERT(meshAnchor != nullptr, "")
 
 	m_grappledetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
 	m_grappledetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
@@ -152,10 +152,10 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
 	float angle = Math::acos(g_forward.dot(inputvec));
 	angle *= angle_dir;
-	const Quaternion curquat = meshAnchor->get_transform().get_basis().get_quaternion();
-	const Quaternion targetquat(g_up, angle);
-	Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
-	meshAnchor->set_basis(Basis(newquat));
+	// const Quaternion curquat = meshAnchor->get_transform().get_basis().get_quaternion();
+	// const Quaternion targetquat(g_up, angle);
+	// Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
+	// meshAnchor->set_basis(Basis(newquat));
 }
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
