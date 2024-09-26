@@ -25,7 +25,7 @@ void InputComponent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("exit_game"), &InputComponent::exit_game);
 }
 
-void InputComponent::_physics_process(float delta) {
+void InputComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	godot::Input* input = Input::get_singleton();
 

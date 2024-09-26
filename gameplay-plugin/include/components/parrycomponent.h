@@ -24,7 +24,7 @@ public:
 	static void _bind_methods();
 
 	void _enter_tree() override;
-	void _physics_process(float delta) override;
+	void _physics_process(double delta) override;
 
 	TypedArray<Vector3> get_colliding_positions() const;
 	Vector3 get_closest_colliding_position() const;

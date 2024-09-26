@@ -22,8 +22,8 @@ public:
 
 	void _ready() override;
 	void _enter_tree() override;
-	void _process(float delta) override;
-	void _physics_process(float delta) override;
+	void _process(double delta) override;
+	void _physics_process(double delta) override;
 
 	// void set_length_impl(float p_length);
 	// float get_length_impl() const;

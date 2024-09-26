@@ -5,4 +5,4 @@ reloadable = true
 
 [libraries]
 windows.64 = "debug-draw-3d-library.dll"
-linux.x86_64 = "libdebug-draw-3d-library.so"
+linux.x86_64 = "/home/ads/dev/go-dotter/build/debug-draw-3d-plugin/bin/libdebug-draw-3d-library.so"

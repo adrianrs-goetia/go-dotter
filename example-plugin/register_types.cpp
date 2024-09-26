@@ -13,7 +13,7 @@ void init_example_plugin_module(godot::ModuleInitializationLevel p_level)
         return;
     }
 
-    GDREGISTER_CLASS(godot::Node3DExtension)
+    godot::ClassDB::register_class<godot::Node3DExtension>();
 }
 
 void uninit_example_plugin_module(godot::ModuleInitializationLevel p_level)

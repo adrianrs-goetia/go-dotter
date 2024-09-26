@@ -33,7 +33,7 @@ void CameraPivot::_ready() {}
 
 void CameraPivot::_enter_tree() { RETURN_IF_EDITOR }
 
-void CameraPivot::_process(float delta) {}
+void CameraPivot::_process(double delta) {}
 
 void CameraPivot::process(StateContext* context, float delta) {
 	RETURN_IF_EDITOR
@@ -55,7 +55,7 @@ void CameraPivot::process(StateContext* context, float delta) {
 	}
 }
 
-void CameraPivot::_physics_process(float delta) {}
+void CameraPivot::_physics_process(double delta) {}
 
 // void CameraPivot::set_length_impl(float p_length) { // TRIAL WITH EDITOR FUNCTIONALITY
 // 	set_length(p_length);

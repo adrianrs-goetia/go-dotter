@@ -19,7 +19,7 @@ void ParryComponent::_enter_tree() {
 	m_rid_ignores.append(m_area->get_rid());
 }
 
-void ParryComponent::_physics_process(float delta) {
+void ParryComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	m_colliding_positions = _get_collision_query();
 	// for (int i = 0; i < m_colliding_positions.size(); ++i) {

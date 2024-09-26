@@ -51,7 +51,7 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
-	meshdummy = get_node<Node3D>("dummy");
+	meshAnchor = get_node<Node3D>("meshAnchor");
 	// m_capsule = get_node<CollisionShape3D>("Capsule");
 	m_grappledetectionarea = get_node<Area3D>("GrappleDetection");
 	// m_parrydetectionarea = get_node<Area3D>("ParryDetection");
@@ -59,7 +59,7 @@ void PlayerNode::_enter_tree() {
 	m_camerapivot = get_node<CameraPivot>(NodePaths::camera_pivot);
 
 	ASSERT(m_state_context != nullptr, "")
-	ASSERT(meshdummy != nullptr, "")
+	ASSERT(meshAnchor != nullptr, "")
 	ASSERT(m_grappledetectionarea != nullptr, "")
 	ASSERT(m_camerapivot != nullptr, "")
 	ASSERT_NOTNULL(m_grapplecomponent)
@@ -98,7 +98,7 @@ void PlayerNode::_exit_tree() {
 	m_state_context = nullptr;
 }
 
-void PlayerNode::_process(float delta) {
+void PlayerNode::_process(double delta) {
 	RETURN_IF_EDITOR
 	ASSERT(m_camerapivot != nullptr, "");
 	m_camerapivot->process(m_state_context, delta);
@@ -112,7 +112,7 @@ void PlayerNode::_process(float delta) {
 	}
 }
 
-void PlayerNode::_physics_process(float delta) {
+void PlayerNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	ASSERT(m_state_context != nullptr, "");
 	// capture current physics context
@@ -152,10 +152,10 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
 	float angle = Math::acos(g_forward.dot(inputvec));
 	angle *= angle_dir;
-	const Quaternion curquat = meshdummy->get_transform().get_basis().get_quaternion();
+	const Quaternion curquat = meshAnchor->get_transform().get_basis().get_quaternion();
 	const Quaternion targetquat(g_up, angle);
 	Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
-	meshdummy->set_basis(Basis(newquat));
+	meshAnchor->set_basis(Basis(newquat));
 }
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {

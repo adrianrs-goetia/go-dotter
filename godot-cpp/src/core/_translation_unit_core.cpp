@@ -1,5 +1,0 @@
-#include "class_db.cpp"
-#include "error_macros.cpp"
-#include "memory.cpp"
-#include "method_bind.cpp"
-#include "object.cpp"

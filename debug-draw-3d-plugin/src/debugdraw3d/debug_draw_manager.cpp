@@ -17,28 +17,26 @@ GODOT_WARNING_RESTORE()
 using namespace godot;
 
 #ifdef DEV_ENABLED
-Object *DebugDrawManager::default_arg_obj = nullptr;
+Object* DebugDrawManager::default_arg_obj = nullptr;
 #endif
 
 #ifndef DISABLE_DEBUG_RENDERING
-void _DD3D_PhysicsWatcher::init(DebugDrawManager *p_root) {
+void _DD3D_PhysicsWatcher::init(DebugDrawManager* p_root) {
 	root_node = p_root;
 	set_physics_process_priority(INT32_MIN);
 }
 
-void _DD3D_PhysicsWatcher::_physics_process(float p_delta) {
-	root_node->_physics_process_start(p_delta);
-}
+void _DD3D_PhysicsWatcher::_physics_process(double p_delta) { root_node->_physics_process_start(p_delta); }
 #endif
 
-DebugDrawManager *DebugDrawManager::singleton = nullptr;
+DebugDrawManager* DebugDrawManager::singleton = nullptr;
 
-const char *DebugDrawManager::s_initial_state = "initial_debug_state";
-const char *DebugDrawManager::s_manager_aliases = NAMEOF(DebugDrawManager) "_singleton_aliases ";
-const char *DebugDrawManager::s_dd2d_aliases = NAMEOF(DebugDraw2D) "_singleton_aliases";
-const char *DebugDrawManager::s_dd3d_aliases = NAMEOF(DebugDraw3D) "_singleton_aliases";
+const char* DebugDrawManager::s_initial_state = "initial_debug_state";
+const char* DebugDrawManager::s_manager_aliases = NAMEOF(DebugDrawManager) "_singleton_aliases ";
+const char* DebugDrawManager::s_dd2d_aliases = NAMEOF(DebugDraw2D) "_singleton_aliases";
+const char* DebugDrawManager::s_dd3d_aliases = NAMEOF(DebugDraw3D) "_singleton_aliases";
 
-const char *DebugDrawManager::s_extension_unloading = "extension_unloading";
+const char* DebugDrawManager::s_extension_unloading = "extension_unloading";
 
 void DebugDrawManager::_bind_methods() {
 #ifdef DEV_ENABLED
@@ -49,11 +47,29 @@ void DebugDrawManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD(NAMEOF(api_test5)), &DebugDrawManager::api_test5);
 
 	default_arg_obj = memnew(Object);
-	ClassDB::bind_method(D_METHOD(NAMEOF(api_test6)), &DebugDrawManager::api_test6, default_arg_obj, 1, Variant(), true, 2, 4, 3.5f, "String", "StringName", "Node/Path");
-	ClassDB::bind_method(D_METHOD(NAMEOF(api_test7)), &DebugDrawManager::api_test7, Color(1, 2, 3, 4), Vector2(1, 2), Vector2i(3, 4), Vector3(1, 2, 3), Vector3i(4, 5, 6), Vector4(1, 2, 3, 4), Vector4i(5, 6, 7, 8), Rect2(Vector2(1, 2), Vector2(3, 4)), Rect2(Vector2(5, 6), Vector2(7, 8)));
-	ClassDB::bind_method(D_METHOD(NAMEOF(api_test8)), &DebugDrawManager::api_test8, Transform2D(Vector2(1, 2), Vector2(3, 4), Vector2(5, 6)), Transform3D(Vector3(1, 2, 3), Vector3(4, 5, 6), Vector3(7, 8, 9), Vector3(10, 11, 12)), Plane(1, 2, 3, 4), Quaternion(1, 2, 3, 4), AABB(Vector3(1, 2, 3), Vector3(4, 5, 6)), Basis(Vector3(1, 2, 3), Vector3(4, 5, 6), Vector3(7, 8, 9)), Projection(Vector4(1, 2, 3, 4), Vector4(5, 6, 7, 8), Vector4(9, 10, 11, 12), Vector4(13, 14, 15, 16)));
-	ClassDB::bind_method(D_METHOD(NAMEOF(api_test9)), &DebugDrawManager::api_test9, RID(), Callable(), Signal(), Utils::make_dict("test", 2, Vector2(2, 1), Plane(4, 3, 2, 1), "ArrayKey_1", Array::make(2, "test_dict")), Array::make(1, "test", SECOND_VALUE));
-	ClassDB::bind_method(D_METHOD(NAMEOF(api_test10)), &DebugDrawManager::api_test10, PackedByteArray(TypedArray<uint8_t>::make(1, 2, 3, 4)), PackedInt32Array(), PackedInt64Array(TypedArray<int64_t>::make(-1, -2, -3, -4)), PackedFloat32Array(TypedArray<float>::make(0.1f, 0.2f, 0.3f, 0.4f)), PackedFloat64Array(TypedArray<double>::make(10.5, 20.5, 30.5, 40.5)), PackedStringArray(TypedArray<String>::make("1", "2", "3", "4")), PackedVector2Array(TypedArray<String>::make(Vector2(8, 9), Vector2(28, 39))), PackedVector3Array(TypedArray<String>::make(Vector3(7, 8, 9), Vector3(9, 2, 3))), PackedColorArray(TypedArray<String>::make(Color(1, 1, 0, 0.5), Color(1, 0, 1))));
+	ClassDB::bind_method(D_METHOD(NAMEOF(api_test6)), &DebugDrawManager::api_test6, default_arg_obj, 1, Variant(), true,
+			2, 4, 3.5f, "String", "StringName", "Node/Path");
+	ClassDB::bind_method(D_METHOD(NAMEOF(api_test7)), &DebugDrawManager::api_test7, Color(1, 2, 3, 4), Vector2(1, 2),
+			Vector2i(3, 4), Vector3(1, 2, 3), Vector3i(4, 5, 6), Vector4(1, 2, 3, 4), Vector4i(5, 6, 7, 8),
+			Rect2(Vector2(1, 2), Vector2(3, 4)), Rect2(Vector2(5, 6), Vector2(7, 8)));
+	ClassDB::bind_method(D_METHOD(NAMEOF(api_test8)), &DebugDrawManager::api_test8,
+			Transform2D(Vector2(1, 2), Vector2(3, 4), Vector2(5, 6)),
+			Transform3D(Vector3(1, 2, 3), Vector3(4, 5, 6), Vector3(7, 8, 9), Vector3(10, 11, 12)), Plane(1, 2, 3, 4),
+			Quaternion(1, 2, 3, 4), AABB(Vector3(1, 2, 3), Vector3(4, 5, 6)),
+			Basis(Vector3(1, 2, 3), Vector3(4, 5, 6), Vector3(7, 8, 9)),
+			Projection(Vector4(1, 2, 3, 4), Vector4(5, 6, 7, 8), Vector4(9, 10, 11, 12), Vector4(13, 14, 15, 16)));
+	ClassDB::bind_method(D_METHOD(NAMEOF(api_test9)), &DebugDrawManager::api_test9, RID(), Callable(), Signal(),
+			Utils::make_dict("test", 2, Vector2(2, 1), Plane(4, 3, 2, 1), "ArrayKey_1", Array::make(2, "test_dict")),
+			Array::make(1, "test", SECOND_VALUE));
+	ClassDB::bind_method(D_METHOD(NAMEOF(api_test10)), &DebugDrawManager::api_test10,
+			PackedByteArray(TypedArray<uint8_t>::make(1, 2, 3, 4)), PackedInt32Array(),
+			PackedInt64Array(TypedArray<int64_t>::make(-1, -2, -3, -4)),
+			PackedFloat32Array(TypedArray<float>::make(0.1f, 0.2f, 0.3f, 0.4f)),
+			PackedFloat64Array(TypedArray<double>::make(10.5, 20.5, 30.5, 40.5)),
+			PackedStringArray(TypedArray<String>::make("1", "2", "3", "4")),
+			PackedVector2Array(TypedArray<String>::make(Vector2(8, 9), Vector2(28, 39))),
+			PackedVector3Array(TypedArray<String>::make(Vector3(7, 8, 9), Vector3(9, 2, 3))),
+			PackedColorArray(TypedArray<String>::make(Color(1, 1, 0, 0.5), Color(1, 0, 1))));
 
 	BIND_ENUM_CONSTANT(FIRST_VALUE);
 	BIND_ENUM_CONSTANT(SECOND_VALUE);
@@ -63,7 +79,8 @@ void DebugDrawManager::_bind_methods() {
 
 #ifdef TOOLS_ENABLED
 #ifdef TELEMETRY_ENABLED
-	ClassDB::bind_method(D_METHOD(NAMEOF(_on_telemetry_sending_completed)), &DebugDrawManager::_on_telemetry_sending_completed);
+	ClassDB::bind_method(
+			D_METHOD(NAMEOF(_on_telemetry_sending_completed)), &DebugDrawManager::_on_telemetry_sending_completed);
 #endif
 #endif
 
@@ -80,12 +97,10 @@ void DebugDrawManager::_bind_methods() {
 #undef REG_CLASS_NAME
 }
 
-Node *DebugDrawManager::_get_current_scene() {
+Node* DebugDrawManager::_get_current_scene() {
 #ifndef DISABLE_DEBUG_RENDERING
 	auto ST = SCENE_TREE();
-	if (IS_EDITOR_HINT()) {
-		return ST->get_edited_scene_root();
-	}
+	if (IS_EDITOR_HINT()) { return ST->get_edited_scene_root(); }
 	return ST->get_current_scene();
 #else
 	return nullptr;
@@ -96,17 +111,17 @@ void DebugDrawManager::_connect_scene_changed() {
 	ZoneScoped;
 #ifndef DISABLE_DEBUG_RENDERING
 	// Skip when exiting the tree and finish this loop
-	if (is_closing) {
-		return;
-	}
+	if (is_closing) { return; }
 
-	Node *scene = _get_current_scene();
+	Node* scene = _get_current_scene();
 	if (scene) {
-		scene->connect(StringName("tree_exiting"), Callable(this, NAMEOF(_on_scene_changed)).bindv(Array::make(false)), CONNECT_ONE_SHOT | CONNECT_DEFERRED);
+		scene->connect(StringName("tree_exiting"), Callable(this, NAMEOF(_on_scene_changed)).bindv(Array::make(false)),
+				CONNECT_ONE_SHOT | CONNECT_DEFERRED);
 		return;
 	}
 
-	SCENE_TREE()->connect(StringName("tree_changed"), Callable(this, NAMEOF(_on_scene_changed)).bindv(Array::make(true)), CONNECT_ONE_SHOT | CONNECT_DEFERRED);
+	SCENE_TREE()->connect(StringName("tree_changed"),
+			Callable(this, NAMEOF(_on_scene_changed)).bindv(Array::make(true)), CONNECT_ONE_SHOT | CONNECT_DEFERRED);
 #endif
 }
 
@@ -124,8 +139,7 @@ void DebugDrawManager::_on_scene_changed(bool p_is_scene_null) {
 #endif
 }
 
-DebugDrawManager::DebugDrawManager() {
-}
+DebugDrawManager::DebugDrawManager() {}
 
 DebugDrawManager::~DebugDrawManager() {
 	UNASSIGN_SINGLETON(DebugDrawManager);
@@ -138,28 +152,23 @@ DebugDrawManager::~DebugDrawManager() {
 
 void DebugDrawManager::clear_all() {
 	ZoneScoped;
-	if (debug_draw_2d_singleton)
-		debug_draw_2d_singleton->clear_all();
-	if (debug_draw_3d_singleton)
-		debug_draw_3d_singleton->clear_all();
+	if (debug_draw_2d_singleton) debug_draw_2d_singleton->clear_all();
+	if (debug_draw_3d_singleton) debug_draw_3d_singleton->clear_all();
 }
 
 void DebugDrawManager::set_debug_enabled(bool value) {
 	debug_enabled = value;
-	if (!value) {
-		clear_all();
-	}
+	if (!value) { clear_all(); }
 }
 
-bool DebugDrawManager::is_debug_enabled() const {
-	return debug_enabled;
-}
+bool DebugDrawManager::is_debug_enabled() const { return debug_enabled; }
 
 void DebugDrawManager::init() {
 	ZoneScoped;
 	ASSIGN_SINGLETON(DebugDrawManager);
 
-	DEFINE_SETTING_AND_GET(bool initial_debug_state, String(Utils::root_settings_section) + s_initial_state, true, Variant::BOOL);
+	DEFINE_SETTING_AND_GET(
+			bool initial_debug_state, String(Utils::root_settings_section) + s_initial_state, true, Variant::BOOL);
 	set_debug_enabled(initial_debug_state);
 
 	// manager_aliases.push_back(StringName("Dmgr"));
@@ -167,9 +176,12 @@ void DebugDrawManager::init() {
 	// dd3d_aliases.push_back(StringName("Dbg3"));
 
 	root_settings_section = String(Utils::root_settings_section) + "common/";
-	DEFINE_SETTING_AND_GET_HINT(Variant mgr_a, root_settings_section + s_manager_aliases, manager_aliases, Variant::ARRAY, PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
-	DEFINE_SETTING_AND_GET_HINT(Variant dd2d_a, root_settings_section + s_dd2d_aliases, dd2d_aliases, Variant::ARRAY, PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
-	DEFINE_SETTING_AND_GET_HINT(Variant dd3d_a, root_settings_section + s_dd3d_aliases, dd3d_aliases, Variant::ARRAY, PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
+	DEFINE_SETTING_AND_GET_HINT(Variant mgr_a, root_settings_section + s_manager_aliases, manager_aliases,
+			Variant::ARRAY, PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
+	DEFINE_SETTING_AND_GET_HINT(Variant dd2d_a, root_settings_section + s_dd2d_aliases, dd2d_aliases, Variant::ARRAY,
+			PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
+	DEFINE_SETTING_AND_GET_HINT(Variant dd3d_a, root_settings_section + s_dd3d_aliases, dd3d_aliases, Variant::ARRAY,
+			PropertyHint::PROPERTY_HINT_TYPE_STRING, FMT_STR("{0}:", Variant::STRING_NAME));
 
 	manager_aliases = TypedArray<StringName>(mgr_a);
 	dd2d_aliases = TypedArray<StringName>(dd2d_a);
@@ -218,14 +230,14 @@ void DebugDrawManager::deinit() {
 	emit_signal(s_extension_unloading);
 }
 
-void DebugDrawManager::_register_singleton_aliases(const TypedArray<StringName> &p_names, Object *p_instance) {
+void DebugDrawManager::_register_singleton_aliases(const TypedArray<StringName>& p_names, Object* p_instance) {
 	for (int i = 0; i < p_names.size(); i++) {
 		if (!p_names[i].operator godot::StringName().is_empty())
 			Engine::get_singleton()->register_singleton(p_names[i], p_instance);
 	}
 }
 
-void DebugDrawManager::_unregister_singleton_aliases(const TypedArray<StringName> &p_names) {
+void DebugDrawManager::_unregister_singleton_aliases(const TypedArray<StringName>& p_names) {
 	for (int i = 0; i < p_names.size(); i++) {
 		if (!p_names[i].operator godot::StringName().is_empty())
 			Engine::get_singleton()->unregister_singleton(p_names[i]);
@@ -238,20 +250,21 @@ void DebugDrawManager::_integrate_into_engine() {
 	// disable by default for headless
 	{
 		if (Engine::get_singleton()->has_singleton("DisplayServer")) {
-			Object *display_server = Engine::get_singleton()->get_singleton("DisplayServer");
+			Object* display_server = Engine::get_singleton()->get_singleton("DisplayServer");
 			if (display_server) {
 				bool is_enabled = display_server->call("window_can_draw", 0);
 				set_debug_enabled(is_enabled);
 
 #if defined(TOOLS_ENABLED) && defined(TELEMETRY_ENABLED)
 				if (IS_EDITOR_HINT() && is_enabled) {
-					time_usage_reporter = std::make_unique<UsageTimeReporter>(DD3D_VERSION_STR, Utils::root_settings_section, [&]() { call_deferred(NAMEOF(_on_telemetry_sending_completed)); });
+					time_usage_reporter =
+							std::make_unique<UsageTimeReporter>(DD3D_VERSION_STR, Utils::root_settings_section,
+									[&]() { call_deferred(NAMEOF(_on_telemetry_sending_completed)); });
 				}
 #endif
 			}
-		} else {
-			set_debug_enabled(false);
 		}
+		else { set_debug_enabled(false); }
 	}
 
 	// Draw everything after calls from scripts to avoid lagging
@@ -264,7 +277,7 @@ void DebugDrawManager::_integrate_into_engine() {
 #ifndef DISABLE_DEBUG_RENDERING
 	{
 		// will be auto deleted as child
-		_DD3D_PhysicsWatcher *physics_watcher = memnew(_DD3D_PhysicsWatcher);
+		_DD3D_PhysicsWatcher* physics_watcher = memnew(_DD3D_PhysicsWatcher);
 		add_child(physics_watcher);
 		physics_watcher->init(this);
 	}
@@ -277,7 +290,7 @@ void DebugDrawManager::_integrate_into_engine() {
 
 	// Funny hack to get default font
 	{
-		Control *c = memnew(Control);
+		Control* c = memnew(Control);
 		SCENE_ROOT()->add_child(c);
 		debug_draw_2d_singleton->_font = c->get_theme_default_font();
 		memdelete(c);
@@ -289,9 +302,9 @@ void DebugDrawManager::_integrate_into_engine() {
 	if (IS_EDITOR_HINT()) {
 		String editor3d = "Node3DEditorViewportContainer";
 		String subviewport = SubViewport::get_class_static();
-		Node *res = Utils::find_node_by_class(SCENE_ROOT(), editor3d);
+		Node* res = Utils::find_node_by_class(SCENE_ROOT(), editor3d);
 
-		Node *n = res->get_child(0)->get_child(0);
+		Node* n = res->get_child(0)->get_child(0);
 		n->set_meta("UseParentSize", true);
 		debug_draw_2d_singleton->default_control_id = n->get_instance_id();
 
@@ -309,35 +322,32 @@ void DebugDrawManager::_integrate_into_engine() {
 		//					0. SubViewport
 		//  ......
 
-		std::vector<SubViewport *> editor_viewports;
+		std::vector<SubViewport*> editor_viewports;
 		TypedArray<Node> viewports_root = res->get_children();
 		for (int i = 0; i < viewports_root.size(); i++) {
-			Node *node = cast_to<Node>(viewports_root[i]);
+			Node* node = cast_to<Node>(viewports_root[i]);
 			if (node) {
-				SubViewport *sub_view = cast_to<SubViewport>(Utils::find_node_by_class(node, subviewport));
-				if (sub_view) {
-					editor_viewports.push_back(sub_view);
-				}
+				SubViewport* sub_view = cast_to<SubViewport>(Utils::find_node_by_class(node, subviewport));
+				if (sub_view) { editor_viewports.push_back(sub_view); }
 			}
 		}
 		debug_draw_3d_singleton->set_custom_editor_viewport(editor_viewports);
 
-		if (editor_viewports.size()) {
-			debug_draw_3d_singleton->scoped_config()->set_viewport(editor_viewports[0]);
-		}
+		if (editor_viewports.size()) { debug_draw_3d_singleton->scoped_config()->set_viewport(editor_viewports[0]); }
 
 		/*
 		// Used to explore the editor tree.
 		auto f = FileAccess::open("user://tree.txt", FileAccess::WRITE);
 		f->store_string(Utils::get_scene_tree_as_string(res->get_parent()->get_parent()));
 		*/
-	} else {
+	}
+	else {
 		set_layer(64);
 
 		auto default_control = memnew(Control);
 		default_control->set_name("DebugDrawDefaultCanvas");
-		((Control *)default_control)->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
-		((Control *)default_control)->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
+		((Control*)default_control)->set_anchors_and_offsets_preset(Control::PRESET_FULL_RECT);
+		((Control*)default_control)->set_mouse_filter(Control::MOUSE_FILTER_IGNORE);
 		debug_draw_2d_singleton->default_control_id = default_control->get_instance_id();
 
 		// will be auto deleted as child
@@ -351,13 +361,11 @@ void DebugDrawManager::_integrate_into_engine() {
 #endif
 
 #ifdef TOOLS_ENABLED
-	if (IS_EDITOR_HINT()) {
-		_try_to_update_cs_bindings();
-	}
+	if (IS_EDITOR_HINT()) { _try_to_update_cs_bindings(); }
 #endif
 }
 
-void DebugDrawManager::_process(float p_delta) {
+void DebugDrawManager::_process(double p_delta) {
 	// To discover what causes the constant look here:
 	// https://github.com/godotengine/godot/blob/baf6b4634d08bc3e193a38b86e96945052002f64/servers/rendering/rendering_server_default.h#L104
 	// Replace _changes_changed's body with:
@@ -372,9 +380,7 @@ void DebugDrawManager::_process(float p_delta) {
 		DebugDraw3D::get_singleton()->process(p_delta);
 		DebugDraw2D::get_singleton()->process(p_delta);
 
-		if (!DebugDraw2D::get_singleton()->is_drawing_frame()) {
-			FrameMark;
-		}
+		if (!DebugDraw2D::get_singleton()->is_drawing_frame()) { FrameMark; }
 	}
 #endif
 
@@ -385,9 +391,7 @@ void DebugDrawManager::_process(float p_delta) {
 	}
 
 #ifdef TRACY_ENABLE
-	if (!debug_enabled || !DebugDraw2D::get_singleton()->is_debug_enabled()) {
-		FrameMark;
-	}
+	if (!debug_enabled || !DebugDraw2D::get_singleton()->is_debug_enabled()) { FrameMark; }
 #endif
 }
 
@@ -398,7 +402,7 @@ void DebugDrawManager::_physics_process_start(float p_delta) {
 	}
 }
 
-void DebugDrawManager::_physics_process(float p_delta) {
+void DebugDrawManager::_physics_process(double p_delta) {
 #ifndef DISABLE_DEBUG_RENDERING
 	if (debug_enabled) {
 		DebugDraw3D::get_singleton()->physics_process_end(p_delta);
@@ -419,9 +423,7 @@ void DebugDrawManager::_try_to_update_cs_bindings() {
 
 #ifdef TELEMETRY_ENABLED
 void DebugDrawManager::_on_telemetry_sending_completed() {
-	if (time_usage_reporter) {
-		time_usage_reporter->stop_thread();
-	}
+	if (time_usage_reporter) { time_usage_reporter->stop_thread(); }
 }
 #endif
 #endif

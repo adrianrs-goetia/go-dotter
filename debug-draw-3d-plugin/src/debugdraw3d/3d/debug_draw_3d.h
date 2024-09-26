@@ -56,7 +56,7 @@ protected:
 	static void _bind_methods(){};
 
 public:
-	virtual void _process(float p_delta) override;
+	virtual void _process(double p_delta) override;
 	virtual void _notification(int p_what);
 
 	_DD3D_WorldWatcher() :

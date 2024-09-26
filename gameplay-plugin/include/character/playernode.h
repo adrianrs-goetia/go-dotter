@@ -25,7 +25,7 @@ public:
 	PlayerFSM m_fsm;
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
-	Node3D* meshdummy = nullptr;
+	Node3D* meshAnchor = nullptr;
 	// CollisionShape3D* m_capsule = nullptr;
 	Area3D* m_grappledetectionarea = nullptr;
 
@@ -44,8 +44,8 @@ public:
 	void _notification(int what);
 	void _enter_tree() override;
 	void _exit_tree() override;
-	void _process(float delta) override;
-	void _physics_process(float delta) override;
+	void _process(double delta) override;
+	void _physics_process(double delta) override;
 	void _input(const Ref<InputEvent>& p_event);
 
 	void rotate_towards_velocity(float delta);
