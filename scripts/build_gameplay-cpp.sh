@@ -21,7 +21,12 @@ scons $1
 # is assumed to be on level below go-dotter project root
 cd ..
 mkdir -p project/addons/gameplay_cpp
+touch gameplay_cpp/addons/libs/.gdignore
 cp -rf gameplay_cpp/addons/gameplay_cpp/* project/addons/gameplay_cpp/
 chmod +r project/addons/gameplay_cpp/*
+
+# TODO: stop scons from placing .os object files next to .cpp files
+#       tmp method just deleting the .os files
+find $ROOT/gameplay_cpp/src -type f -name '*.os' -exec rm {} +
 
 cd $CWD

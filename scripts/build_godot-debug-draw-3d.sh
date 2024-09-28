@@ -27,6 +27,7 @@ scons $1
 # is assumed to be on one level below go-dotter project root
 cd ..
 mkdir -p project/addons/debug_draw_3d
+touch godot_debug_draw_3d/addons/libs/.gdignore
 cp -rf godot_debug_draw_3d/addons/debug_draw_3d/* project/addons/debug_draw_3d/
 chmod +r project/addons/debug_draw_3d/*
 
