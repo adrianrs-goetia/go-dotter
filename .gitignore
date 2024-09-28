@@ -1,15 +1,10 @@
 # Godot project specific
 .godot
-# Ignore symlinks in project/addons/* for plugins we compile from source
-# these should be populated by each developer as they compile from source
-#
-# !NB: Common addons that are not compiled from source should be added to git
+# ignored compiled binaries
 project/addons/debug_draw_3d
-godot_debug_draw_3d/addons/libs/*
-!gameplay_cpp/addons/libs/.gdignore
 project/addons/gameplay_cpp
-gameplay_cpp/addons/libs/*
-!gameplay_cpp/addons/libs/.gdignore
+godot_debug_draw_3d/addons/debug_draw_3d/libs/*
+gameplay_cpp/addons/gameplay_cpp/libs/*
 
 
 # CMake and work environment stuff
