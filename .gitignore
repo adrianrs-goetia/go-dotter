@@ -17,5 +17,7 @@ project/bin/~*.dll
 # Python virtual environment
 venv/
 # SCons
-obj/
+build_cache/
 .sconsign.dblite
+*.os
+__pycache__
