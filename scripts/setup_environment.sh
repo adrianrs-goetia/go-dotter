@@ -28,5 +28,11 @@ sudo apt-get install -y \
   libxrandr-dev \
   libwayland-dev
 
+# Init submodules, but not recursively. 
+# We remove godot-cpp as a submodule for godot plugins we compile from source,
+# since we will use the common godot-cpp version from PROJECT_ROOT/godot-cpp
+# No need to recursively fetch submodules in that case
+git submodule init
+
 # go back to previous directory
 cd -
