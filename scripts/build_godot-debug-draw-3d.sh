@@ -1,5 +1,14 @@
 #!/bin/bash -e
 
+# Expected scons targets to either be ('editor', 'template_release', 'template_debug')
+# by default use 'editor', but use template_* when exporting project
+if [ -z "$1" ]; then
+    echo "ERROR"
+    echo "Missing argument for scons target, expected to either be (\'editor\', \'template_release\', \'template_debug\')"
+    echo "e.g. target=editor"
+    exit 1
+fi
+
 CWD="$(pwd)"
 
 ROOT="$(git rev-parse --show-toplevel)"
@@ -11,12 +20,12 @@ git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_dr
 git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_draw_3d/sconstruct.patch
 git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_draw_3d/plugin-cpp-api.patch
 
-scons
+scons $1
 
 # godot_debug_draw_3d is assumed to be on level below go-dotter project root
 cd ..
-if [ ! -d project/addons/debug_draw_3d ]; then
-    ln -sr godot_debug_draw_3d/addons/debug_draw_3d/ project/addons/debug_draw_3d
-fi
+mkdir -p project/addons/debug_draw_3d
+cp -rf godot_debug_draw_3d/addons/debug_draw_3d/* project/addons/debug_draw_3d/
+chmod +r project/addons/debug_draw_3d/*
 
 cd $CWD

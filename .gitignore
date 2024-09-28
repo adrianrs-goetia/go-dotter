@@ -1,6 +1,10 @@
 # Godot project specific
-out
 .godot
+# Ignore symlinks in project/addons/* for plugins we compile from source
+# these should be populated by each developer as they compile from source
+#
+# !NB: Common addons that are not compiled from source should be added to git
+project/addons/debug_draw_3d
 
 
 # CMake and work environment stuff
@@ -10,9 +14,3 @@ project/bin/~*.dll
 *.blend2
 *.blend3
 venv/
-
-# Ignore symlinks in project/addons/* for plugins we compile from source
-# these should be populated by each developer as they compile from source
-#
-# !NB: Common addons that are not compiled from source should be added to git
-project/addons/debug_draw_3d
