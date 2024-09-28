@@ -5,6 +5,11 @@ https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2
 https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_export_templates.tpz \
 testing some stuff inside of Godot with GDExtensions for creating plugins. 
 
+## Setup
+### Linux
+```
+source scripts/setup_environment.sh
+```
 
 ## GAME
 3rd person

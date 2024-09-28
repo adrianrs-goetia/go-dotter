@@ -1,11 +1,12 @@
 # Godot project specific
 out
 .godot
-# bin
+
 
 # CMake and work environment stuff
 **/build/
-project/bin/~gameplay-plugin.dll
+project/bin/~*.dll
 *.blend1
 *.blend2
 *.blend3
+venv/
