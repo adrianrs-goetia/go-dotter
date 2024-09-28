@@ -5,6 +5,9 @@
 #
 # !NB: Common addons that are not compiled from source should be added to git
 project/addons/debug_draw_3d
+godot_debug_draw_3d/addons/libs/*
+project/addons/gameplay_cpp
+gameplay_cpp/addons/libs/*
 
 
 # CMake and work environment stuff
@@ -13,4 +16,9 @@ project/bin/~*.dll
 *.blend1
 *.blend2
 *.blend3
+
+# Python virtual environment
 venv/
+# SCons
+obj/
+.sconsign.dblite

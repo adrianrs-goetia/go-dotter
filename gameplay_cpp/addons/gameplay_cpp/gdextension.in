@@ -1,10 +1,29 @@
-TODO REWRITE    !!!!
-
 [configuration]
-entry_symbol = "@GDEXTENSION_ENTRY_POINT@_init"
+entry_symbol = "gameplay_plugin_init"
 compatibility_minimum = "4.2.2"
 reloadable = true
 
-[libraries]
-windows.64 = "@DLLPATH@@LIB_NAME_WINDOWS@.dll"
-linux.x86_64 = "@LINUXPATH@@LIB_NAME_LINUX@.so"
+
+[dependencies]
+macos.template_release = { }
+windows.template_release.x86_64 = { }
+linux.template_release.x86_64 = { }
+
+; -------------------------------------
+; debug
+macos = "libs/libgameplaycpp.macos.editor.universal.framework"
+windows.x86_64 = "libs/libgameplaycpp.windows.editor.x86_64.dll"
+linux.x86_64 = "libs/libgameplaycpp.linux.editor.x86_64.so"
+
+; -------------------------------------
+; export - debug
+macos.template_debug = "libs/libgameplaycpp.macos.template_debug.universal.framework"
+windows.template_debug.x86_64 = "libs/libgameplaycpp.windows.template_debug.x86_64.dll"
+linux.template_debug.x86_64 = "libs/libgameplaycpp.linux.template_debug.x86_64.so"
+
+
+; -------------------------------------
+; export - release 
+macos.template_release = "libs/libgameplaycpp.macos.template_release.universal.framework"
+windows.template_release.x86_64 = "libs/libgameplaycpp.windows.template_release.x86_64.dll"
+linux.template_release.x86_64 = "libs/libgameplaycpp.linux.template_release.x86_64.so"

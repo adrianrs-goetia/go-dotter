@@ -47,7 +47,7 @@ env.Help(opts.GenerateHelpText(env))
 
 env.Default(
     env.SharedLibrary(
-        target=env.File(lib_filename),
+        target=env.File(os.path.join(env["addon_output_dir"], lib_filename)),
         source=src
     )
 )
