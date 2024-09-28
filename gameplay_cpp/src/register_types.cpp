@@ -30,8 +30,6 @@ void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 }
 
 /// Entry point for plugin
-// Name has to match ${PROJECT_NAME} from CMake configuration
-// In the CMake the '-' dashes will be replaced with underscore to match this function name
 extern "C" {
 GDExtensionBool GDE_EXPORT gameplay_plugin_init(GDExtensionInterfaceGetProcAddress p_get_proc_address,
 		const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization* r_initialization) {

@@ -19,20 +19,20 @@ src = [
     "src/parrycomponent.cpp",
     "src/playernode.cpp",
     "src/playerstates.cpp",
+    "src/register_types.cpp",
 ]
 
 env: SConsEnvironment = SConscript("../godot-cpp/SConstruct")
 env = env.Clone()
 
 args = ARGUMENTS
-additional_src = []
 
 env.Append(CPPPATH=['include'])
 
 scons_cache_path = os.environ.get("SCONS_CACHE")
 if scons_cache_path is not None:
     env.CacheDir(scons_cache_path)
-    env.Decider("MD5")
+    # env.Decider("MD5")
 
 lib_filename = "lib{}.{}.{}.{}".format(lib_name, env["platform"], env["target"], env["arch"]) + env["SHLIBSUFFIX"]
 
