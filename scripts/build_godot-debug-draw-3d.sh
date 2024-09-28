@@ -20,9 +20,11 @@ git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_dr
 git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_draw_3d/sconstruct.patch
 git apply --ignore-space-change --ignore-whitespace $ROOT/patches/godot_debug_draw_3d/plugin-cpp-api.patch
 
+mkdir -p $ROOT/obj
+export SCONS_CACHE="$ROOT/obj"
 scons $1
 
-# godot_debug_draw_3d is assumed to be on level below go-dotter project root
+# is assumed to be on one level below go-dotter project root
 cd ..
 mkdir -p project/addons/debug_draw_3d
 cp -rf godot_debug_draw_3d/addons/debug_draw_3d/* project/addons/debug_draw_3d/
