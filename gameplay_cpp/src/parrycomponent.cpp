@@ -5,7 +5,7 @@
 #include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/classes/world3d.hpp>
 
-#include <debugdraw3d/api.h>
+// #include <debugdraw3d/api.h>
 
 void ParryComponent::_bind_methods() { DEFAULT_PROPERTY(ParryComponent) }
 
