@@ -17,6 +17,8 @@ project/bin/~*.dll
 # Python virtual environment
 venv/
 # SCons
+project/addons/vendor/libs/*
+!project/addons/vendor/libs/.gdignore
 build_cache/
 .sconsign.dblite
 *.os
