@@ -48,6 +48,6 @@ def configure_environment(env: SConsEnvironment, libs: list[str], args) -> None:
         # target=env.File(os.path.join(env["addon_output_dir"], lib_filename)),
         target=lib_filename,
         source=src,
-        LIBS=libs,
     )
+    env.Append(LIBS=libs)
     env.Append(LINKFLAGS=['-Wl,-z,defs'])

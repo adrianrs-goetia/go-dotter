@@ -24,7 +24,7 @@ env_dd3d = env.Clone()
 dd3d_libname = dd3d.configure_environment(env_dd3d, ARGUMENTS)
 
 env_godotcpp = env_dd3d.Clone()
-gameplay_cpp.configure_environment(env_godotcpp, [env.File(dd3d_libname), env['libgodot_cpp']], ARGUMENTS)
+gameplay_cpp.configure_environment(env_godotcpp, [env.File(dd3d_libname)], ARGUMENTS)
 
 # Copy .gdextension and .so .a files into project
 copy_targets = [
