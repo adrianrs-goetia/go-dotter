@@ -42,10 +42,7 @@ def configure_environment(env: SConsEnvironment, libs: list[str], args) -> None:
     opts.Update(env)
     env.Help(opts.GenerateHelpText(env))
 
-    # env.Append(LIBS=libs)
-    lib_filename = lib_name
     env.SharedLibrary(
-        # target=env.File(os.path.join(env["addon_output_dir"], lib_filename)),
         target=lib_filename,
         source=src,
     )

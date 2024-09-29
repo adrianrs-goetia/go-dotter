@@ -288,7 +288,7 @@ index 0000000..560e5f3
 +}
 \ No newline at end of file
 diff --git a/lib_utils.py b/lib_utils.py
-index 7b65e53..24b25d7 100644
+index 7b65e53..8ad7e3a 100644
 --- a/lib_utils.py
 +++ b/lib_utils.py
 @@ -1,11 +1,12 @@
@@ -305,7 +305,7 @@ index 7b65e53..24b25d7 100644
  
  def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
      res = [os.path.join(src_folder, file) for file in src]
-@@ -14,42 +15,39 @@ def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
+@@ -14,20 +15,14 @@ def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
  
  
  def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str, extra_tags: str, output_path: str, src_folder: str, additional_src: list) -> str:
@@ -329,11 +329,10 @@ index 7b65e53..24b25d7 100644
      # some additional tags if needed
      additional_tags = ""
  
-     if env["platform"] == "web" and env.get("threads", True):
-         additional_tags = ".threads"
+@@ -36,20 +31,16 @@ def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str,
  
--    lib_filename = "lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"]
--
+     lib_filename = "lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"]
+ 
 -    if env["platform"] == "macos":
 -        generate_framework_folder(env, project_name, lib_name, lib_filename, output_path)
 -        lib_filename = os.path.join(output_path, os.path.splitext(lib_filename)[0] + ".framework", lib_filename)
@@ -345,16 +344,7 @@ index 7b65e53..24b25d7 100644
 -            target=env.File(lib_filename),
 -            source=get_sources(additional_src + src, src_folder, lib_name)
 -        )
-+    lib_filename = "#lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"]
-+    
-+    # if env["platform"] == "macos":
-+    #     generate_framework_folder(env, project_name, lib_name, lib_filename, output_path)
-+    #     lib_filename = os.path.join(output_path, os.path.splitext(lib_filename)[0] + ".framework", lib_filename)
-+    # else:
-+    #     lib_filename = os.path.join(output_path, lib_filename)
-+    lib_filename = lib_name
 +    ret = env.SharedLibrary(
-+        # target=env.File(lib_filename),
 +        target=lib_filename,
 +        source=get_sources(additional_src + src, src_folder, lib_name)
      )

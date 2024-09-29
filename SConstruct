@@ -16,7 +16,6 @@ project_name = "go-dotter"
 env: SConsEnvironment = SConscript("godot-cpp/SConstruct")
 env.CacheDir("build_cache")
 env.Decider("MD5")
-# env["LIBSPATH"] = "/home/ads/dev/go-dotter"
 env.Append(CPPPATH=[])
 env["STATIC_AND_SHARED_OBJECT_ARE_THE_SAME"] = 1
 
