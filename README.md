@@ -11,6 +11,12 @@ testing some stuff inside of Godot with GDExtensions for creating plugins.
 source scripts/setup_environment.sh
 ```
 
+## Build
+### SCons
+```
+scons target=editor|template_release|template_debug
+```
+
 ## GAME
 3rd person
 Canvas for playing around with modelling and physics

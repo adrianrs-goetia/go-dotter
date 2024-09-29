@@ -3,7 +3,7 @@
 #include <components/inputcomponent.h>
 #include <components/parrycomponent.h>
 
-// #include <debugdraw3d/api.h>
+#include <debugdraw3d/api.h>
 #include <godot_cpp/classes/character_body3d.hpp>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
@@ -38,11 +38,11 @@ namespace helper {
 
 	// Expected to only handle collision queries containing at least a single point within the collison shape
 	void parry_impulse(StateContext* context, Vector3 closest_parry_position, float impulse_strength) {
-		// DebugDraw::Sphere(closest_parry_position, 0.5f, Color(1, 0, 0.3), 0.2f);
+		DebugDraw::Sphere(closest_parry_position, 0.5f, Color(1, 0, 0.3), 0.2f);
 
 		const Vector3 impulse_dir = context->input->get_input_relative_3d(1.f);
-		// DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
-		// 		Color(1, 0, 0), 2.f);
+		DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
+				Color(1, 0, 0), 2.f);
 		context->physics.velocity = impulse_dir * impulse_strength;
 	}
 } //namespace helper
@@ -86,7 +86,7 @@ PlayerState::Return PlayerInAirState::physics_process(StateContext* context, flo
 	if (context->physics.is_on_ground) {
 		// if (!m_guarantee_one_frame_processing)
 		{
-			// DebugDraw::Position(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
+			DebugDraw::Position(Transform3D(Basis(), Vector3(context->physics.position)), Color(1, 1, 1), 2.f);
 			return Return{ PlayerStateBank::get().state<PlayerOnGroundState>() };
 		}
 	}

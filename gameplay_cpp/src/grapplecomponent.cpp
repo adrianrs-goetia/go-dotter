@@ -3,7 +3,7 @@
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
-// #include <debugdraw3d/api.h>
+#include <debugdraw3d/api.h>
 
 GrappleComponent::LaunchContext GrappleComponent::launch(GrappleComponent* subject) {
 	LaunchContext context;
@@ -51,7 +51,7 @@ Vector3 GrappleComponent::_determine_launch_direction_atob(const GrappleComponen
 
 Vector3 GrappleComponent::_impulse_owner(const Vector3& direction, float impulse_strength) {
 	const Vector3 impulse = direction * impulse_strength;
-	// DebugDraw::Line(get_global_position(), get_global_position() + (impulse), Color(1, 0, 1), 1.f);
+	DebugDraw::Line(get_global_position(), get_global_position() + (impulse), Color(1, 0, 1), 1.f);
 	if (auto* p = get_parent_node<RigidBody3D>()) { p->set_linear_velocity(impulse); }
 	else if (auto* p = get_parent_node<CharacterBody3D>()) { p->set_velocity(impulse); }
 	else {

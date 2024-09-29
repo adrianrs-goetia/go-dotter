@@ -12,7 +12,7 @@
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
-// #include <debugdraw3d/api.h>
+#include <debugdraw3d/api.h>
 
 extern "C" {
 #include <stdlib.h>
@@ -105,10 +105,10 @@ void PlayerNode::_process(double delta) {
 	determine_grapple_target();
 
 	if (m_state_context->grapple.target) {
-		// DebugDraw::Position(Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)),
-		// 							m_state_context->grapple.target->get_global_position()),
-		// 		Color(0, 0, 1), delta);
-		// DebugDraw::Line(get_position(), m_state_context->grapple.target->get_global_position(), Color(0, 1, 0));
+		DebugDraw::Position(Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)),
+									m_state_context->grapple.target->get_global_position()),
+				Color(0, 0, 1), delta);
+		DebugDraw::Line(get_position(), m_state_context->grapple.target->get_global_position(), Color(0, 1, 0));
 	}
 }
 

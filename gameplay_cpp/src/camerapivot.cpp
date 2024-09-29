@@ -3,8 +3,6 @@
 
 #include <godot_cpp/core/math.hpp>
 
-// #include <debugdraw3d/api.h>
-
 using namespace godot;
 
 constexpr float X_MAX_ROTATION = 20.0f;

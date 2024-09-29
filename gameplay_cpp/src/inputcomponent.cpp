@@ -8,8 +8,6 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
 
-// #include <debugdraw3d/api.h>
-
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
 void InputComponent::exit_game() {
