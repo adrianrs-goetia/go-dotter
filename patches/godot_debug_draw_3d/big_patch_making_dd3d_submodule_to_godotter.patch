@@ -138,7 +138,7 @@ rename from addons/debug_draw_3d/README.md
 rename to addons/godot_debug_draw_3d/README.md
 diff --git a/addons/godot_debug_draw_3d/debug_draw_3d.gdextension b/addons/godot_debug_draw_3d/debug_draw_3d.gdextension
 new file mode 100755
-index 0000000..f8e3f49
+index 0000000..af302b3
 --- /dev/null
 +++ b/addons/godot_debug_draw_3d/debug_draw_3d.gdextension
 @@ -0,0 +1,103 @@
@@ -189,14 +189,14 @@ index 0000000..f8e3f49
 +; -------------------------------------
 +; release forced debug draw
 +
-+macos.template_release.forced_dd3d = { }
-+windows.template_release.x86_64.forced_dd3d = { }
-+linux.template_release.x86_64.forced_dd3d = { }
++macos.template_release.forced_libgodot_debug_draw_3d = { }
++windows.template_release.x86_64.forced_libgodot_debug_draw_3d = { }
++linux.template_release.x86_64.forced_libgodot_debug_draw_3d = { }
 +
-+web.template_release.wasm32.nothreads.forced_dd3d = { }
-+web.template_release.wasm32.forced_dd3d = { }
++web.template_release.wasm32.nothreads.forced_libgodot_debug_draw_3d = { }
++web.template_release.wasm32.forced_libgodot_debug_draw_3d = { }
 +
-+ios.template_release.forced_dd3d = {}
++ios.template_release.forced_libgodot_debug_draw_3d = {}
 +
 +[libraries]
 +
@@ -205,7 +205,7 @@ index 0000000..f8e3f49
 +
 +macos = "libs/libgodot_debug_draw_3d.macos.editor.universal.framework"
 +windows.x86_64 = "libs/libgodot_debug_draw_3d.windows.editor.x86_64.dll"
-+linux.x86_64 = "/home/ads/dev/go-dotter/libgodot_debug_draw_3d.so"
++linux.x86_64 = "libs/libgodot_debug_draw_3d.linux.editor.x86_64.so"
 +
 +web.wasm32.nothreads = "libs/libgodot_debug_draw_3d.web.template_debug.wasm32.wasm"
 +web.wasm32 = "libs/libgodot_debug_draw_3d.web.template_debug.wasm32.threads.wasm"
@@ -237,14 +237,14 @@ index 0000000..f8e3f49
 +; -------------------------------------
 +; release forced debug draw
 +
-+macos.template_release.forced_dd3d = "libs/libgodot_debug_draw_3d.macos.template_release.universal.enabled.framework"
-+windows.template_release.x86_64.forced_dd3d = "libs/libgodot_debug_draw_3d.windows.template_release.x86_64.enabled.dll"
-+linux.template_release.x86_64.forced_dd3d = "libs/libgodot_debug_draw_3d.linux.template_release.x86_64.enabled.so"
++macos.template_release.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.macos.template_release.universal.enabled.framework"
++windows.template_release.x86_64.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.windows.template_release.x86_64.enabled.dll"
++linux.template_release.x86_64.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.linux.template_release.x86_64.enabled.so"
 +
-+web.template_release.wasm32.nothreads.forced_dd3d = "libs/libgodot_debug_draw_3d.web.template_release.wasm32.enabled.wasm"
-+web.template_release.wasm32.forced_dd3d = "libs/libgodot_debug_draw_3d.web.template_release.wasm32.threads.enabled.wasm"
++web.template_release.wasm32.nothreads.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.web.template_release.wasm32.enabled.wasm"
++web.template_release.wasm32.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.web.template_release.wasm32.threads.enabled.wasm"
 +
-+ios.template_release.forced_dd3d = "libs/libgodot_debug_draw_3d.ios.template_release.universal.enabled.dylib"
++ios.template_release.forced_libgodot_debug_draw_3d = "libs/libgodot_debug_draw_3d.ios.template_release.universal.enabled.dylib"
 diff --git a/godot-cpp b/godot-cpp
 deleted file mode 160000
 index a4f9d22..0000000
@@ -288,7 +288,7 @@ index 0000000..560e5f3
 +}
 \ No newline at end of file
 diff --git a/lib_utils.py b/lib_utils.py
-index 7b65e53..8ad7e3a 100644
+index 7b65e53..5a81b2e 100644
 --- a/lib_utils.py
 +++ b/lib_utils.py
 @@ -1,11 +1,12 @@
@@ -305,11 +305,13 @@ index 7b65e53..8ad7e3a 100644
  
  def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
      res = [os.path.join(src_folder, file) for file in src]
-@@ -14,20 +15,14 @@ def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
+@@ -13,42 +14,32 @@ def get_sources(src: list, src_folder: str, lib_name: str = "unity_"):
+     return res
  
  
- def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str, extra_tags: str, output_path: str, src_folder: str, additional_src: list) -> str:
+-def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str, extra_tags: str, output_path: str, src_folder: str, additional_src: list) -> str:
 -    env.Append(CPPPATH=src_folder)
++def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str, extra_tags: str, output_path: str, src_folder: str, additional_src: list):
 +    current_cpppath: list = env['CPPPATH']
 +    public_api = os.path.join(os.path.dirname(src_folder), 'include')
 +    env.Append(CPPPATH=[src_folder, public_api])
@@ -329,35 +331,35 @@ index 7b65e53..8ad7e3a 100644
      # some additional tags if needed
      additional_tags = ""
  
-@@ -36,20 +31,16 @@ def get_library_object(env: SConsEnvironment, project_name: str, lib_name: str,
+     if env["platform"] == "web" and env.get("threads", True):
+         additional_tags = ".threads"
  
-     lib_filename = "lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"]
- 
+-    lib_filename = "lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"]
+-
 -    if env["platform"] == "macos":
 -        generate_framework_folder(env, project_name, lib_name, lib_filename, output_path)
 -        lib_filename = os.path.join(output_path, os.path.splitext(lib_filename)[0] + ".framework", lib_filename)
 -    else:
 -        lib_filename = os.path.join(output_path, lib_filename)
--
++    lib_filename = env.File("lib{}.{}.{}.{}{}".format(lib_name, env["platform"], env["target"], env["arch"], additional_tags + extra_tags) + env["SHLIBSUFFIX"])
+ 
 -    env.Default(
 -        env.SharedLibrary(
 -            target=env.File(lib_filename),
 -            source=get_sources(additional_src + src, src_folder, lib_name)
 -        )
-+    ret = env.SharedLibrary(
++    env.SharedLibrary(
 +        target=lib_filename,
 +        source=get_sources(additional_src + src, src_folder, lib_name)
      )
  
--    return lib_filename
 +    current_cpppath.append(public_api)
 +    current_cpppath.append(src_folder)
 +    env["CPPPATH"] = current_cpppath
 +
-+    return ret
+     return lib_filename
  
  
- def get_library_version():
 diff --git a/SConstruct b/sconstruct.py
 similarity index 73%
 rename from SConstruct

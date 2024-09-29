@@ -9,46 +9,32 @@ import shutil, os
 import gameplay_cpp.sconstruct as gameplay_cpp
 import godot_debug_draw_3d.sconstruct as dd3d
 
-# current_dir = os.path.dirname(os.path.abspath(__file__))
-current_dir = ""
 project_name = "go-dotter"
 
 env: SConsEnvironment = SConscript("godot-cpp/SConstruct")
-env.CacheDir("build_cache")
+env.CacheDir("bin/cache")
 env.Decider("MD5")
 env.Append(CPPPATH=[])
-env["STATIC_AND_SHARED_OBJECT_ARE_THE_SAME"] = 1
+env.Append(LINKFLAGS=['-Wl,-z,defs'])
 
-env_dd3d = env.Clone()
-dd3d_libname = dd3d.configure_environment(env_dd3d, ARGUMENTS)
+# Section for creating and linking shared libraries
+dd3d_libfile = dd3d.configure_environment(env, ARGUMENTS)
+gameplay_cpp_libfile = gameplay_cpp.configure_environment(env, [dd3d_libfile], ARGUMENTS)
 
-env_godotcpp = env_dd3d.Clone()
-gameplay_cpp.configure_environment(env_godotcpp, [env.File(dd3d_libname)], ARGUMENTS)
+# Move shared objects into correct dir after building is done
+def post_build_action(target, source, env):
+    vendor = "project/addons/vendor"
+    libs = f"{vendor}/libs"
+    os.makedirs(libs, exist_ok=True)
+    with open(f"{libs}/.gdignore", "w"):
+        pass
 
-# Copy .gdextension and .so .a files into project
-copy_targets = [
-    'godot_debug_draw_3d',
-    'gameplay_cpp',
-]
-target_dir_base = os.path.join(current_dir, "project", "addons")
-for target in copy_targets:
-    target_dir = os.path.join(target_dir_base, "vendor")
-    # if os.path.exists(target_dir):
-    #     shutil.rmtree(target_dir)
-    
-    src_dir = os.path.join(target, "addons", target)
-    for root, dirs, files in os.walk(src_dir):
-        # Calculate the relative path from the source directory
-        relative_path = os.path.relpath(root, src_dir)
-        # Construct the target directory path
-        target_path = os.path.join(target_dir, relative_path)
-        
-        # Create the target subdirectory
-        os.makedirs(target_path, exist_ok=True)
-        
-        # Copy each file to the corresponding target directory
-        for file_name in files:
-            src_path = os.path.join(root, file_name)
-            os.chmod(src_path, 0o0777)
-            target_file_path = os.path.join(target_path, file_name)
-            shutil.copy2(src_path, target_file_path)  # Copy and preserve metadata
+    shutil.move(gameplay_cpp_libfile.name,  f"{libs}/{gameplay_cpp_libfile.name}")
+    shutil.move(dd3d_libfile.name,          f"{libs}/{dd3d_libfile.name}")
+    # Godot might not be able to load shared object without correct permission. This is a lazy fix
+    os.chmod(f"{libs}/{gameplay_cpp_libfile.name}", 0o0777)
+    os.chmod(f"{libs}/{dd3d_libfile.name}",         0o0777)
+    shutil.copy2(f"godot_debug_draw_3d/addons/godot_debug_draw_3d/debug_draw_3d.gdextension",   f"{vendor}/debug_draw_3d.gdextension")
+    shutil.copy2(f"gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension",                   f"{vendor}/gameplaycpp.gdextension")
+
+env.AddPostAction(gameplay_cpp_libfile, post_build_action)

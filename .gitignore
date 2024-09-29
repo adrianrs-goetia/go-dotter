@@ -1,10 +1,10 @@
 # Godot project specific
 .godot
 # ignored compiled binaries
-project/addons/godebug_draw_3d
-project/addons/gameplay_cpp
-godot_debug_draw_3d/addons/debug_draw_3d/libs/*
-gameplay_cpp/addons/gameplay_cpp/libs/*
+# project/addons/godebug_draw_3d
+# project/addons/gameplay_cpp
+# godot_debug_draw_3d/addons/debug_draw_3d/libs/*
+# gameplay_cpp/addons/gameplay_cpp/libs/*
 
 
 # CMake and work environment stuff
@@ -17,8 +17,8 @@ project/bin/~*.dll
 # Python virtual environment
 venv/
 # SCons
-project/addons/vendor/libs/*
-!project/addons/vendor/libs/.gdignore
+bin/
+project/addons/vendor
 build_cache/
 .sconsign.dblite
 *.os

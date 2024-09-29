@@ -14,7 +14,7 @@ linux.template_release.x86_64 = { }
 ; debug
 macos = "libs/libgameplay_cpp.macos.editor.universal.framework"
 windows.x86_64 = "libs/libgameplay_cpp.windows.editor.x86_64.dll"
-linux.x86_64 = "/home/ads/dev/go-dotter/libgameplay_cpp.so"
+linux.x86_64 = "libs/libgameplay_cpp.linux.editor.x86_64.so"
 
 ; -------------------------------------
 ; export - debug
