@@ -16,7 +16,7 @@ cd $ROOT
 # 
 cd $ROOT/godot_debug_draw_3d
 git reset --hard
-git submodule deinit
+git submodule deinit --all
 git apply --ignore-space-change --ignore-whitespace ../patches/godot_debug_draw_3d/big_patch_making_dd3d_submodule_to_godotter.patch
 cd $ROOT
 #
