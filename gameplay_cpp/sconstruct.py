@@ -22,11 +22,9 @@ src = [os.path.join(current_dir, f) for f in src]
 CPPPATH = ['include']
 
 def configure_environment(env: SConsEnvironment, libs: list[str], args):
-    current_cpppath: list = env["CPPPATH"]
-    current_cpppath.append(os.path.join(current_dir, 'include'))
-    env["CPPPATH"] = current_cpppath
-
     e = env.Clone()
+    e.Append(CPPPATH=os.path.join(current_dir, 'include'))
+    e["use_hot_reload"] = True # hot reload by default for gameplay_cpp
     lib_file = e.File("lib{}.{}.{}.{}".format(lib_name, env["platform"], env["target"], env["arch"]) + env["SHLIBSUFFIX"])
     e.SharedLibrary(
         target=lib_file,
