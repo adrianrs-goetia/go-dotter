@@ -1,18 +1,32 @@
 diff --git a/tools/godotcpp.py b/tools/godotcpp.py
-index 13a57e9..25002df 100644
+index 13a57e9..f1fa329 100644
 --- a/tools/godotcpp.py
 +++ b/tools/godotcpp.py
-@@ -489,13 +489,6 @@ def _godot_cpp(env):
+@@ -207,7 +207,7 @@ def options(opts, env):
+         EnumVariable(
+             key="target",
+             help="Compilation target",
+-            default=env.get("target", "template_debug"),
++            default=env.get("target", "editor"),
+             allowed_values=("editor", "template_release", "template_debug"),
+         )
+     )
+@@ -489,13 +489,13 @@ def _godot_cpp(env):
  
      if env["build_library"]:
          library = env.StaticLibrary(target=env.File("bin/%s" % library_name), source=sources)
 -        default_args = [library]
--
++        # default_args = [library]
+ 
 -        # Add compiledb if the option is set
 -        if env.get("compiledb", False):
 -            default_args += ["compiledb"]
--
++        # # Add compiledb if the option is set
++        # if env.get("compiledb", False):
++        #     default_args += ["compiledb"]
+ 
 -        env.Default(*default_args)
++        # env.Default(*default_args)
  
      env.AppendUnique(LIBS=[env.File("bin/%s" % library_name)])
      return library
