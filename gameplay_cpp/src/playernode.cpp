@@ -24,8 +24,10 @@ using namespace godot;
 
 void PlayerNode::_bind_methods() {
 	DEFAULT_PROPERTY(PlayerNode)
-	godot::ClassDB::bind_method(godot::D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
-	godot::ClassDB::bind_method(godot::D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
+	godot::ClassDB::bind_method(
+			godot::D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
+	godot::ClassDB::bind_method(
+			godot::D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
 }
 
 void PlayerNode::_notification(int what) {

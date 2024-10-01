@@ -33,14 +33,11 @@ private:
 	TypedArray<Vector3> _get_collision_query() const;
 	Ref<PhysicsShapeQueryParameters3D> _get_physicsshapequeryparams() const;
 
-
 	template <typename T>
-	T *get_child_node_of_type(const godot::Node *node) {
+	T* get_child_node_of_type(const godot::Node* node) {
 		TypedArray<godot::Node> children = node->get_children();
 		for (int i = 0; i < children.size(); ++i) {
-			if (T *child = cast_to<T>(children[i])) {
-				return child;
-			}
+			if (T* child = cast_to<T>(children[i])) { return child; }
 		}
 		return nullptr;
 	}
