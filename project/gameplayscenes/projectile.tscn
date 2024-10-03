@@ -1,27 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://b53204e7tdcq8"]
+[gd_scene load_steps=5 format=3 uid="uid://cctxwemvvq4kt"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mtiuw"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_wmjjx"]
+radius = 0.267467
 
-[sub_resource type="BoxMesh" id="BoxMesh_1xi85"]
+[sub_resource type="SphereMesh" id="SphereMesh_tiefc"]
+radial_segments = 16
+rings = 16
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iuh8p"]
 albedo_color = Color(0.419608, 1, 1, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ahihr"]
-radius = 0.820672
+radius = 0.553219
 
 [node name="RigidBody3D" type="RigidBody3D"]
-transform = Transform3D(0.295, 0, 0, 0, 0.295, 0, 0, 0, 0.295, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_mtiuw")
+shape = SubResource("SphereShape3D_wmjjx")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_1xi85")
+transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 0, 0)
+mesh = SubResource("SphereMesh_tiefc")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="GrappleComponent" type="GrappleComponent" parent="."]
-mass = 20.37
+mass = 4.37
 
 [node name="Area3D" type="Area3D" parent="GrappleComponent"]
 

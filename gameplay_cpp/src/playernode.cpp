@@ -143,16 +143,13 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 }
 
 void PlayerNode::rotate_towards_velocity(float delta) {
-	const Vector3 g_up(0, 1, 0);
-	const Vector3 g_forward(0, 0, 1);
-	const Vector3 g_right(1, 0, 0);
 	const Vector2 input_relative = m_state_context->input->input_relative;
 	Vector3 inputvec(input_relative.x, 0, input_relative.y);
 	if (inputvec.length_squared() <= 0) { return; }
 	inputvec.normalize();
 
-	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
 	float angle = Math::acos(g_forward.dot(inputvec));
+	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
 	angle *= angle_dir;
 	// const Quaternion curquat = meshAnchor->get_transform().get_basis().get_quaternion();
 	// const Quaternion targetquat(g_up, angle);

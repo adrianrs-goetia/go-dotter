@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dn7bsvt1xcuws"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_1mjfk"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_dnrli"]
+
+[node name="TurretNode" type="TurretNode"]
+
+[node name="TurretHead" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51616, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TurretHead"]
+transform = Transform3D(-0.49, -4.28372e-08, 0, 4.28372e-08, -0.49, 0, 0, 0, 1.215, 0, 0.041642, 0.434974)
+mesh = SubResource("PrismMesh_1mjfk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_dnrli")

@@ -59,6 +59,11 @@ public:
 	}
 };
 
+// Directions
+static const godot::Vector3 g_up(0, 1, 0);
+static const godot::Vector3 g_forward(0, 0, 1);
+static const godot::Vector3 g_right(1, 0, 0);
+
 // From the context of the MainScene
 namespace NodePaths {
 

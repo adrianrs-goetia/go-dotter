@@ -17,6 +17,7 @@ src = [
     "src/playernode.cpp",
     "src/playerstates.cpp",
     "src/register_types.cpp",
+    "include/npcs/turret/turretnode.cpp"
 ]
 src = [os.path.join(current_dir, f) for f in src]
 CPPPATH = ['include']

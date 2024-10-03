@@ -8,6 +8,7 @@
 #include <components/inputcomponent.h>
 #include <components/parrycomponent.h>
 #include <mainnode.h>
+#include <npcs/turret/turretnode.h>
 #include <core/nodecomponent.hpp>
 
 using namespace godot;
@@ -23,6 +24,9 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_class<GrappleComponent>();
 	godot::ClassDB::register_class<ParryComponent>();
+
+	// npcs
+	godot::ClassDB::register_class<TurretNode>();
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {

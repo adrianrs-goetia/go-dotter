@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://h2pqh1vnci7k"]
+[gd_scene load_steps=10 format=3 uid="uid://h2pqh1vnci7k"]
 
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_o35cu"]
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
+[ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://gameplayscenes/turret.tscn" id="4_5gw1a"]
 [ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://gameplayscenes/grapplenode.tscn" id="4_ii646"]
 [ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://gameplayscenes/rigid_body_3d.tscn" id="4_nem2m"]
 
@@ -17,9 +18,6 @@ albedo_color = Color(0, 0, 1, 1)
 albedo_color = Color(0, 1, 0, 1)
 
 [node name="Mainscene" type="MainNode"]
-
-[node name="PlayerNode" parent="." instance=ExtResource("1_o35cu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.98101, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.642828, 0.647642, 0.409062, -0.499209, -0.0508439, 0.864989, 0.581002, -0.760246, 0.290625, 0, 0, 0)
@@ -123,3 +121,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.06752, -0.556016, -4.07498)
 
 [node name="RigidBody3D3" parent="RigidBodies" instance=ExtResource("4_nem2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3213, -4.94221, 2.71412)
+
+[node name="TurretNode" parent="." instance=ExtResource("4_5gw1a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.99628, 0.61095, -3.75642)
+
+[node name="PlayerNode" parent="." instance=ExtResource("1_o35cu")]
