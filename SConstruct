@@ -13,6 +13,7 @@ project_name = "go-dotter"
 
 env: SConsEnvironment = SConscript("godot-cpp/SConstruct")
 env.CacheDir("bin/cache")
+os.makedirs("bin/export", exist_ok=True)
 env.Decider("MD5")
 env.Append(CPPPATH=[])
 env.Append(LINKFLAGS=['-Wl,-z,defs'])
