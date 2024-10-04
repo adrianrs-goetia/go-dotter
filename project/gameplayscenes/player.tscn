@@ -33,11 +33,11 @@ radius = 2.36218
 
 [node name="meshAnchor" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="meshAnchor"]
+[node name="cylinderbody" type="MeshInstance3D" parent="meshAnchor"]
 transform = Transform3D(0.668602, 0, 0, 0, 1.04701, 0, 0, 0, 0.386157, 0, 0.951921, 0)
 mesh = SubResource("CapsuleMesh_tgyd1")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="meshAnchor"]
+[node name="nose" type="MeshInstance3D" parent="meshAnchor"]
 transform = Transform3D(0.258628, 0, 0, 0, 0.258628, 0, 0, 0, 0.258628, 0, 1.54177, 0.197613)
 mesh = SubResource("SphereMesh_qt8qb")
 
