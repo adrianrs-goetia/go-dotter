@@ -53,7 +53,7 @@ void TurretNode::rotate_head_towards_target(float rotationSpeed) {
 
 void TurretNode::fire_projectile() {
 	ASSERT(m_projectileResource.is_valid(), "");
-	Node* instance = m_projectileResource->instantiate(PackedScene::GEN_EDIT_STATE_INSTANCE);
+	Node* instance = m_projectileResource->instantiate();
 	ASSERT_NOTNULL(instance)
 
 	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
