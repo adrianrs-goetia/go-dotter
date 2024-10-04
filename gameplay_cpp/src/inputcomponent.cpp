@@ -75,13 +75,11 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
 		mode = EInputMode::MOUSE_N_KEYBOARD;
 		m_motion = p_mousemotion->get_relative();
-		LOG(DEBUG, "!!!Mouse motion");
 	}
 	else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
 		mode = EInputMode::JOYPAD;
 		m_motion = input->get_vector(InputString::camera_left, InputString::camera_right, InputString::camera_down,
 				InputString::camera_up, 0.05);
-		LOG(DEBUG, "!!!Joypad motion ", m_motion);
 	}
 	else { mode = EInputMode::NONE; }
 }
