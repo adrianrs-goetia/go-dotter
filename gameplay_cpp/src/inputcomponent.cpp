@@ -74,12 +74,14 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	// Camera motion (mouse or rightstick equivalent)
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
 		mode = EInputMode::MOUSE_N_KEYBOARD;
-		motion = p_mousemotion->get_relative();
+		m_motion = p_mousemotion->get_relative();
+		LOG(DEBUG, "!!!Mouse motion");
 	}
 	else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
 		mode = EInputMode::JOYPAD;
-		motion = input->get_vector(InputString::camera_left, InputString::camera_right, InputString::camera_down,
+		m_motion = input->get_vector(InputString::camera_left, InputString::camera_right, InputString::camera_down,
 				InputString::camera_up, 0.05);
+		LOG(DEBUG, "!!!Joypad motion ", m_motion);
 	}
 	else { mode = EInputMode::NONE; }
 }
@@ -140,10 +142,10 @@ InputComponent* InputComponent::getinput(const Node* referencenode) {
 	return nullptr;
 }
 
-Vector3 InputComponent::get_camera3ddir() const { return Vector3(camera2ddir.x, 0, camera2ddir.y).normalized(); }
+Vector3 InputComponent::get_camera3ddir() const { return Vector3(m_camera2ddir.x, 0, m_camera2ddir.y).normalized(); }
 
 Vector3 InputComponent::get_input_raw_3d() const { return Vector3(input_raw.x, 0, input_raw.y).normalized(); }
 
 Vector3 InputComponent::get_input_relative_3d(float y) const {
-	return Vector3(input_relative.x, y, input_relative.y).normalized();
+	return Vector3(m_input_relative.x, y, m_input_relative.y).normalized();
 }

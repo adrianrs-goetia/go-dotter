@@ -116,9 +116,9 @@ public:
 	/**
 	 * Input in 3D space relative to camera
 	 */
-	Vector2 input_relative;
-	Vector2 motion;
-	Vector2 camera2ddir;
+	Vector2 m_input_relative;
+	Vector2 m_motion;
+	Vector2 m_camera2ddir;
 
 	std::list<InputAction> input_actions;
 

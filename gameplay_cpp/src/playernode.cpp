@@ -143,7 +143,7 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 }
 
 void PlayerNode::rotate_towards_velocity(float delta) {
-	const Vector2 input_relative = m_state_context->input->input_relative;
+	const Vector2 input_relative = m_state_context->input->m_input_relative;
 	Vector3 inputvec(input_relative.x, 0, input_relative.y);
 	if (inputvec.length_squared() <= 0) { return; }
 	inputvec.normalize();

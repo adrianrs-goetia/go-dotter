@@ -26,9 +26,9 @@ namespace helper {
 		// direction
 		if (context->input->input_raw.abs() > Vector2()) {
 			context->physics.velocity.x = Math::move_toward(context->physics.velocity.x,
-					context->input->input_relative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context->input->m_input_relative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
 			context->physics.velocity.z = Math::move_toward(context->physics.velocity.z,
-					context->input->input_relative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context->input->m_input_relative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
 		}
 		else {
 			context->physics.velocity.x = Math::move_toward(context->physics.velocity.x, 0.0f, deceleration * delta);
