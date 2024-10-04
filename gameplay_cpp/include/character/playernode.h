@@ -25,7 +25,7 @@ public:
 	PlayerFSM m_fsm;
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
-	Node3D* meshAnchor = nullptr;
+	Node3D* m_meshAnchor = nullptr;
 	// CollisionShape3D* m_capsule = nullptr;
 	Area3D* m_grappledetectionarea = nullptr;
 

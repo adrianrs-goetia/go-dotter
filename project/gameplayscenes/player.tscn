@@ -1,6 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=9 format=3 uid="uid://cyjfpgx2xna18"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tgyd1"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_qt8qb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
 radius = 0.279674
@@ -34,6 +36,10 @@ radius = 2.36218
 [node name="MeshInstance3D" type="MeshInstance3D" parent="meshAnchor"]
 transform = Transform3D(0.668602, 0, 0, 0, 1.04701, 0, 0, 0, 0.386157, 0, 0.951921, 0)
 mesh = SubResource("CapsuleMesh_tgyd1")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="meshAnchor"]
+transform = Transform3D(0.258628, 0, 0, 0, 0.258628, 0, 0, 0, 0.258628, 0, 1.54177, 0.197613)
+mesh = SubResource("SphereMesh_qt8qb")
 
 [node name="Capsule" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
