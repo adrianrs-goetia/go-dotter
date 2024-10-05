@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dn7bsvt1xcuws"]
+[gd_scene load_steps=4 format=3 uid="uid://dn7bsvt1xcuws"]
+
+[ext_resource type="PackedScene" uid="uid://65su4boe1cns" path="res://models/enemies/turret.blend" id="1_4lbsn"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_1mjfk"]
 
@@ -15,3 +17,6 @@ mesh = SubResource("PrismMesh_1mjfk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_dnrli")
+
+[node name="turret" parent="." instance=ExtResource("1_4lbsn")]
+transform = Transform3D(0.227141, 0, 0, 0, 0.227141, 0, 0, 0, 0.227141, 0, 0, 0)

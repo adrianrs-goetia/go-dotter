@@ -1,4 +1,4 @@
-#include "turretnode.h"
+#include <npcs/turret/turretnode.h>
 
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
