@@ -1,7 +1,7 @@
 #pragma once
 
 #define GODOTTER_MAJOR 0
-#define GODOTTER_MINOR 0
+#define GODOTTER_MINOR 1
 #define GODOTTER_PATCH 0
 #define GODOTTER_VERSION ((GODOTTER_MAJOR << (8 * 3)) + (GODOTTER_MINOR << (8 * 2)) + (GODOTTER_PATCH << (8 * 1)))
 
