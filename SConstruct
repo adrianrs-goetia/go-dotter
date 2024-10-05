@@ -12,9 +12,10 @@ import godot_debug_draw_3d.sconstruct as dd3d
 project_name = "go-dotter"
 
 env: SConsEnvironment = SConscript("godot-cpp/SConstruct")
-env.CacheDir("bin/cache")
-os.makedirs("bin/export", exist_ok=True)
-os.makedirs("bin/obj", exist_ok=True)
+env.CacheDir("build/cache")
+env["build_dir"] = "build"
+env["obj_dir"] = "build/obj"
+os.makedirs("build/export", exist_ok=True)
 env.Decider("MD5")
 env.Append(CPPPATH=[])
 env.Append(LINKFLAGS=['-Wl,-z,defs'])

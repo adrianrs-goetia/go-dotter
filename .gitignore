@@ -12,6 +12,7 @@
 venv/
 # SCons
 bin/
+build/
 project/addons/vendor
 build_cache/
 .sconsign.dblite

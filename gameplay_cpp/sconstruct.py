@@ -6,14 +6,13 @@ import glob
 project_name = "gameplay_cpp"
 lib_name = "gameplay_cpp"
 current_dir = os.path.dirname(os.path.abspath(__file__))
-build_dir = "bin/obj"
 
 def get_object_files(env: SConsEnvironment):
     # Just smooth brain glob all files in src/ and create object files within the build directory
     sources = glob.glob(os.path.join(current_dir, "src/**/**.cpp"), recursive=True)
     objs = []
     for src in sources:
-        obj_target = os.path.join(build_dir, os.path.basename(src) + ".o")
+        obj_target = os.path.join(env.get("obj_dir"), os.path.relpath(src) + ".o")
         objs.append(env.Object(target=obj_target, source=src))
     return objs
 
