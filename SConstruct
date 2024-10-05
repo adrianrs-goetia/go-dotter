@@ -18,6 +18,7 @@ os.makedirs("bin/obj", exist_ok=True)
 env.Decider("MD5")
 env.Append(CPPPATH=[])
 env.Append(LINKFLAGS=['-Wl,-z,defs'])
+env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME']=1
 
 opts = Variables()
 opts.Add(
