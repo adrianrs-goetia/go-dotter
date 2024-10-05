@@ -4,7 +4,15 @@ if [ -z "$1" ]; then
     echo "Missing argument <major|minor|patch>"
     return 1
 fi
+
 BUMP=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+
+TAG_MESSAGE=""
+if [ -n "$2" ]; then
+    TAG_MESSAGE="$2"
+else
+    echo "No tag message added. Using latest commit message."
+fi
 
 if [ ! "$BUMP" = "MAJOR" ] && [ ! "$BUMP" = "MINOR" ] && [ ! "$BUMP" = "PATCH" ]; then
     echo "Incorrect argument. Expected <major|minor|patch>"
@@ -30,6 +38,10 @@ MINOR=$(grep -oP '#define GODOTTER_MINOR \K\d+' "$VERSION_FILE")
 PATCH=$(grep -oP '#define GODOTTER_PATCH \K\d+' "$VERSION_FILE")
 VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
-git tag "v$VERSION"
+if [ -n "$TAG_MESSAGE" ]; then
+    git tag -a "v$VERSION" -m "$TAG_MESSAGE"
+else
+    git tag "v$VERSION"
+fi
 
 echo "New version $VERSION"
