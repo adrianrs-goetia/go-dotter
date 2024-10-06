@@ -21,7 +21,7 @@ void TurretNode::_enter_tree() {
 	//
 
 	// TODO not hardcode get player. Have detection component?
-	m_target = get_node<Node3D>(NodePaths::player);
+	m_target = get_node<Node3D>(nodePaths::player);
 	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint());
 	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint());
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());
@@ -75,7 +75,7 @@ void TurretNode::fire_projectile() {
 	Node* instance = m_projectileResource->instantiate();
 	ASSERT_NOTNULL(instance)
 
-	Node* root = get_node<Node>(NodePaths::root);
+	Node* root = get_node<Node>(nodePaths::root);
 	ASSERT_NOTNULL(root)
 	root->add_child(instance);
 
