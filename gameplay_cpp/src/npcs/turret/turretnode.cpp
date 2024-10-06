@@ -18,8 +18,9 @@ void TurretNode::_bind_methods() {
 
 void TurretNode::_enter_tree() {
 	RETURN_IF_EDITOR
+	//
 
-	// TODO not hardcode get player. have detection system?
+	// TODO not hardcode get player. Have detection component?
 	m_target = get_node<Node3D>(NodePaths::player);
 	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint());
 	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint());
@@ -41,8 +42,8 @@ void TurretNode::_enter_tree() {
 
 void TurretNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR
-
 	//
+
 	rotate_head_towards_target();
 }
 

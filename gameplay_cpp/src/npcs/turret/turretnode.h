@@ -17,14 +17,12 @@ private:
 	Node3D* m_gunRotJoint = nullptr; // Pitch rotation
 	Node3D* m_gunOpening = nullptr; // Projectile spawn location
 	Node3D* m_target = nullptr;
+	Timer* m_firingTimer = nullptr;
 
 	// @todo. PLACE THIS IN A RESOURCE LIBRARY FOR GAMEPLAY_CPP
 	// each instance of a turret loading a resource is pretty shit,
 	// unless godot::ResourceLoader does some caching...
 	Ref<PackedScene> m_projectileResource;
-
-	// float m_firingTimer = 0.f;
-	Timer* m_firingTimer = nullptr;
 
 public:
 	GETNAME(TurretNode)
