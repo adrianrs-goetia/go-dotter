@@ -5,6 +5,7 @@
 #include <chrono>
 #include <godot_cpp/classes/engine.hpp>
 #include <typeinfo>
+#include <random>
 
 #define ASSERT(expr, msg)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
@@ -77,5 +78,12 @@ namespace NodePaths {
 constexpr float PI = 3.14159f;
 constexpr float PI_HALF = 3.14159f / 2.f;
 constexpr float PI_TWO = 3.14159f * 2.f;
+
+
+inline float canonical_random_number(float min, float max) {
+	static std::mt19937 rng(std::random_device{}());
+	std::uniform_real_distribution<> dis(min, max);
+	return dis(rng);
+}
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H

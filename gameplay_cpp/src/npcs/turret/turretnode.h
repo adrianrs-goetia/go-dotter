@@ -26,6 +26,7 @@ public:
 	Ref<PackedScene> m_projectileResource;
 
 	float m_firingTimer = 0.f;
+	float m_firingInterval; // parameter value + variance
 
 	//
 	void _enter_tree() override;

@@ -5,7 +5,8 @@
 
 #include <debugdraw3d/api.h>
 
-static constexpr float FIRING_INTERVAL = 1.5f;
+static constexpr float FIRING_INTERVAL = 2.5f;
+static constexpr float FIRING_INTERVAL_VARIANCE = 0.4f;
 static constexpr float FIRING_STRENGTH = 20.f;
 
 void TurretNode::_bind_methods() {
@@ -15,6 +16,8 @@ void TurretNode::_bind_methods() {
 
 void TurretNode::_enter_tree() {
 	RETURN_IF_EDITOR
+
+	m_firingInterval = FIRING_INTERVAL + canonical_random_number(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
 
 	// TODO not hardcode get player. have detection system?
 	m_target = get_node<Node3D>(NodePaths::player);
@@ -37,7 +40,7 @@ void TurretNode::_physics_process(double delta) {
 	rotate_head_towards_target();
 
 	m_firingTimer += delta;
-	if (m_firingTimer >= FIRING_INTERVAL) {
+	if (m_firingTimer >= m_firingInterval) {
 		m_firingTimer = 0.f;
 		fire_projectile();
 	}
