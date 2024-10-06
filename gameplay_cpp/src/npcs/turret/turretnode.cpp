@@ -17,20 +17,24 @@ void TurretNode::_bind_methods() {
 void TurretNode::_enter_tree() {
 	RETURN_IF_EDITOR
 
-	m_firingInterval = FIRING_INTERVAL + canonical_random_number(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
-
 	// TODO not hardcode get player. have detection system?
 	m_target = get_node<Node3D>(NodePaths::player);
 	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint().c_str());
 	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint().c_str());
 	m_gunOpening = get_node<Node3D>(paths::gunOpening().c_str());
 	m_projectileResource = ResourceLoader::get_singleton()->load("res://gameplayscenes/projectile.tscn");
+	m_firingTimer = memnew(Timer);
 
 	ASSERT(m_projectileResource.is_valid(), "");
 	ASSERT_NOTNULL(m_target)
 	ASSERT_NOTNULL(m_gunRotPoint)
 	ASSERT_NOTNULL(m_gunRotJoint)
 	ASSERT_NOTNULL(m_gunOpening)
+	ASSERT_NOTNULL(m_firingTimer)
+
+	add_child(m_firingTimer);
+	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fire_projectile));
+	m_firingTimer->start(getFiringInterval());
 }
 
 void TurretNode::_physics_process(double delta) {
@@ -38,12 +42,10 @@ void TurretNode::_physics_process(double delta) {
 
 	//
 	rotate_head_towards_target();
+}
 
-	m_firingTimer += delta;
-	if (m_firingTimer >= m_firingInterval) {
-		m_firingTimer = 0.f;
-		fire_projectile();
-	}
+float TurretNode::getFiringInterval() const {
+	return FIRING_INTERVAL + canonical_random_number(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
 }
 
 void TurretNode::rotate_head_towards_target() {
@@ -78,6 +80,7 @@ void TurretNode::fire_projectile() {
 		rigidbody->set_global_position(getGunOpeningLocation());
 		rigidbody->set_linear_velocity(getGunOpeningDirection() * FIRING_STRENGTH);
 	}
+	m_firingTimer->start(getFiringInterval());
 }
 
 Vector3 TurretNode::getDirectionToTarget(const Node3D* source) const {

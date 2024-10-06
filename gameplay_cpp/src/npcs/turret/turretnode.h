@@ -4,16 +4,14 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
+#include <godot_cpp/classes/timer.hpp>
 
 using namespace godot;
 
 class TurretNode : public Node3D {
 	GDCLASS(TurretNode, Node3D)
 
-public:
-	GETNAME(TurretNode)
-	static void _bind_methods();
-
+private:
 	//
 	Node3D* m_gunRotPoint = nullptr; // Yaw rotation
 	Node3D* m_gunRotJoint = nullptr; // Pitch rotation
@@ -25,13 +23,17 @@ public:
 	// unless godot::ResourceLoader does some caching...
 	Ref<PackedScene> m_projectileResource;
 
-	float m_firingTimer = 0.f;
-	float m_firingInterval; // parameter value + variance
+	// float m_firingTimer = 0.f;
+	Timer* m_firingTimer = nullptr;
 
+public:
+	GETNAME(TurretNode)
+	static void _bind_methods();
 	//
 	void _enter_tree() override;
 	void _physics_process(double delta) override;
 
+	float getFiringInterval() const;
 	void rotate_head_towards_target();
 	void fire_projectile();
 
