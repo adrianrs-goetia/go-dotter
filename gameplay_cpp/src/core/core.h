@@ -49,7 +49,7 @@ void Log(ELog level, const char* msg, const godot::Transform3D& t);
 
 // From the context of the MainScene
 namespace NodePaths {
-
+	constexpr const char* root = "/root";
 	constexpr const char* player = "/root/Mainscene/PlayerNode";
 	constexpr const char* camera_pivot = "/root/Mainscene/PlayerNode/CameraPivot";
 	constexpr const char* camera = ("%s/Camera", camera_pivot);

@@ -13,7 +13,7 @@ albedo_color = Color(0.419608, 1, 1, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_ahihr"]
 radius = 0.553219
 
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="Projectile" type="Projectile"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_wmjjx")

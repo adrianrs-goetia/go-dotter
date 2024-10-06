@@ -2,6 +2,8 @@
 
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/window.hpp>
 
 #include <debugdraw3d/api.h>
 
@@ -69,14 +71,14 @@ void TurretNode::rotate_head_towards_target() {
 }
 
 void TurretNode::fire_projectile() {
-	ASSERT(m_projectileResource.is_valid(), "");
 	Node* instance = m_projectileResource->instantiate();
 	ASSERT_NOTNULL(instance)
 
-	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
-		add_child(rigidbody); // is this neccessary?
+	Node* root = get_node<Node>(NodePaths::root);
+	ASSERT_NOTNULL(root)
+	root->add_child(instance);
 
-		ASSERT_NOTNULL(m_gunOpening)
+	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
 		rigidbody->set_global_position(getGunOpeningLocation());
 		rigidbody->set_linear_velocity(getGunOpeningDirection() * FIRING_STRENGTH);
 	}

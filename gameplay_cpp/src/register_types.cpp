@@ -9,6 +9,7 @@
 #include <components/parrycomponent.h>
 #include <mainnode.h>
 #include <npcs/turret/turretnode.h>
+#include <npcs/projectile/projectile.h>
 #include <core/nodecomponent.hpp>
 
 using namespace godot;
@@ -27,6 +28,7 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 
 	// npcs
 	godot::ClassDB::register_class<TurretNode>();
+	godot::ClassDB::register_class<Projectile>();
 }
 
 void uninit_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
