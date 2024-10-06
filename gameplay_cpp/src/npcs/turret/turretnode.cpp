@@ -21,9 +21,9 @@ void TurretNode::_enter_tree() {
 
 	// TODO not hardcode get player. have detection system?
 	m_target = get_node<Node3D>(NodePaths::player);
-	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint().c_str());
-	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint().c_str());
-	m_gunOpening = get_node<Node3D>(paths::gunOpening().c_str());
+	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint());
+	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint());
+	m_gunOpening = get_node<Node3D>(paths::gunOpening());
 	m_projectileResource = ResourceLoader::get_singleton()->load("res://gameplayscenes/projectile.tscn");
 	m_firingTimer = memnew(Timer);
 
