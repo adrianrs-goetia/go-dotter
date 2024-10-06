@@ -2,7 +2,8 @@
 #define GD_CORECORE_PLUGIN_GAMEPLAY_H
 
 #include "godotincludes.h"
-#include <chrono>
+#include "timer.hpp"
+#include "math.hpp"
 #include <godot_cpp/classes/engine.hpp>
 #include <typeinfo>
 #include <random>
@@ -46,25 +47,6 @@ void Log(ELog level, const char* msg, const godot::Vector3& v2);
 void Log(ELog level, const char* msg, const godot::Quaternion& q);
 void Log(ELog level, const char* msg, const godot::Transform3D& t);
 
-class Timestamp {
-	std::chrono::system_clock::time_point timestamp;
-
-public:
-	Timestamp() : timestamp(std::chrono::system_clock::now()) {}
-	bool timestamp_within_timeframe(float timeframe_seconds) {
-		float duration_since_timestamp =
-				std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - timestamp)
-						.count();
-		float sec = (duration_since_timestamp / 1e9);
-		return (duration_since_timestamp / 1e9) < timeframe_seconds;
-	}
-};
-
-// Directions
-static const godot::Vector3 g_up(0, 1, 0);
-static const godot::Vector3 g_forward(0, 0, 1);
-static const godot::Vector3 g_right(1, 0, 0);
-
 // From the context of the MainScene
 namespace NodePaths {
 
@@ -74,16 +56,5 @@ namespace NodePaths {
 
 } //namespace NodePaths
 
-// Math constants
-constexpr float PI = 3.14159f;
-constexpr float PI_HALF = 3.14159f / 2.f;
-constexpr float PI_TWO = 3.14159f * 2.f;
-
-
-inline float canonical_random_number(float min, float max) {
-	static std::mt19937 rng(std::random_device{}());
-	std::uniform_real_distribution<> dis(min, max);
-	return dis(rng);
-}
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
