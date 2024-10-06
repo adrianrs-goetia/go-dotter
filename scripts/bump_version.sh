@@ -32,6 +32,14 @@ BUMP_VALUE=$((BUMP_VALUE+1))
 # Bump value
 sed -i "s|^${PATTERN}.*|${PATTERN} ${BUMP_VALUE}|" "$VERSION_FILE"
 
+# If bump major or minor, change lower values to 0
+if [ "$BUMP" = "MAJOR" ]; then
+    sed -i "s|^#define GODOTTER_MINOR.*|#define GODOTTER_MINOR 0|" "$VERSION_FILE"
+    sed -i "s|^#define GODOTTER_PATCH.*|#define GODOTTER_PATCH 0|" "$VERSION_FILE"
+elif [ "$BUMP" = "MINOR" ];then
+    sed -i "s|^#define GODOTTER_PATCH.*|#define GODOTTER_PATCH 0|" "$VERSION_FILE"
+fi
+
 # Read value from file
 MAJOR=$(grep -oP '#define GODOTTER_MAJOR \K\d+' "$VERSION_FILE")
 MINOR=$(grep -oP '#define GODOTTER_MINOR \K\d+' "$VERSION_FILE")
