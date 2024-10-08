@@ -12,18 +12,22 @@ void ParryTargetComponent::_bind_methods() {
 }
 
 void ParryTargetComponent::_enter_tree() {
-    m_areaPtr = get_node<Area3D>(m_pathToArea3D);
-    if (!m_areaPtr){
-        String msg;
-        msg += get_name();
-        msg += ", failed to fetch m_areaPtr for collision.";
-        ERR_PRINT_ONCE(msg);
-    }
-    
-    RETURN_IF_EDITOR
-    ASSERT_NOTNULL(m_areaPtr)
+	m_areaPtr = get_node<Area3D>(m_pathToArea3D);
+	if (!m_areaPtr) {
+		String msg;
+		msg += get_name();
+		msg += ", failed to fetch m_areaPtr for collision. Please assign a path to a CollisionShape3D to 'Area Path'";
+		ERR_PRINT_ONCE(msg);
+	}
+	else { m_areaPtr->set_collision_layer_value(collisionflags::parrydetection, true); }
 
+	RETURN_IF_EDITOR
+	ASSERT_NOTNULL(m_areaPtr)
+}
 
+void ParryTargetComponent::_exit_tree() {
+	if (m_areaPtr) { m_areaPtr->set_collision_layer_value(collisionflags::parrydetection, true); }
+	m_areaPtr = nullptr;
 }
 
 void ParryTargetComponent::setAreaPath(NodePath path) { m_pathToArea3D = path; }

@@ -57,7 +57,8 @@ namespace nodePaths {
 } //namespace nodePaths
 
 namespace collisionflags {
-	static constexpr uint32_t parrydetection = 0x00000008;
+	// static constexpr uint32_t parrydetection = 0x00000008;
+	static constexpr uint32_t parrydetection = 8;
 } //namespace collisionflags
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
