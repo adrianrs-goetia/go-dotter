@@ -7,6 +7,7 @@
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
 #include <components/parrycomponent.h>
+#include <components/parrytargetcomponent.h>
 #include <mainnode.h>
 #include <npcs/turret/turretnode.h>
 #include <npcs/projectile/projectile.h>
@@ -25,6 +26,7 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_class<GrappleComponent>();
 	godot::ClassDB::register_class<ParryComponent>();
+	godot::ClassDB::register_class<ParryTargetComponent>();
 
 	// npcs
 	godot::ClassDB::register_class<TurretNode>();

@@ -5,7 +5,7 @@
 #include <godot_cpp/classes/viewport.hpp>
 #include <godot_cpp/classes/world3d.hpp>
 
-// #include <debugdraw3d/api.h>
+#include <debugdraw3d/api.h>
 
 void ParryComponent::_bind_methods() { DEFAULT_PROPERTY(ParryComponent) }
 
@@ -22,10 +22,10 @@ void ParryComponent::_enter_tree() {
 void ParryComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	m_colliding_positions = _get_collision_query();
-	// for (int i = 0; i < m_colliding_positions.size(); ++i) {
-	// 	DebugDraw::Position(
-	// 			Transform3D(Basis(Quaternion(), Vector3(2, 2, 2)), m_colliding_positions[i]), Color(0, 1, 0));
-	// }
+	for (int i = 0; i < m_colliding_positions.size(); ++i) {
+		DebugDraw::Position(
+				Transform3D(Basis(Quaternion(), Vector3(2, 2, 2)), m_colliding_positions[i]), Color(0, 1, 0));
+	}
 }
 
 TypedArray<Vector3> ParryComponent::get_colliding_positions() const { return m_colliding_positions; }

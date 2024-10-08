@@ -2,11 +2,11 @@
 #define GD_CORECORE_PLUGIN_GAMEPLAY_H
 
 #include "godotincludes.h"
-#include "timer.hpp"
 #include "math.hpp"
+#include "timer.hpp"
 #include <godot_cpp/classes/engine.hpp>
-#include <typeinfo>
 #include <random>
+#include <typeinfo>
 
 #define ASSERT(expr, msg)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
@@ -56,5 +56,8 @@ namespace nodePaths {
 
 } //namespace nodePaths
 
+namespace collisionflags {
+	static constexpr uint32_t parrydetection = 0x00000008;
+} //namespace collisionflags
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
