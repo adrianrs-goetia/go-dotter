@@ -158,6 +158,10 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 }
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
+	@todo components have to use ...Area3D/CollisionShape3D structure as it is required here for detection of grappleable objects.
+	otherwise have to change how grapple objects are detected. 
+	@todo; look at detection methods for player on other components
+
 	RETURN_IF_EDITOR
 	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
 	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
