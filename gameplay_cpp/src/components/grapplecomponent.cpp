@@ -86,7 +86,7 @@ void GrappleComponent::_enter_tree() {
 	m_area = get_node<Area3D>(m_pathToArea3D);
 	if (!m_area) {
 		String msg;
-		msg += get_name();
+		msg += get_parent()->get_name();
 		msg += ", failed to fetch m_areaPtr for collision. Please assign a path to a CollisionShape3D to 'Area Path'";
 		ERR_PRINT_ONCE(msg);
 	}
