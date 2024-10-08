@@ -8,7 +8,7 @@ void ParryTargetComponent::_bind_methods() {
 
 	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &ParryTargetComponent::getAreaPath);
 	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &ParryTargetComponent::setAreaPath);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "AreaPath"), "setAreaPath", "getAreaPath");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
 }
 
 void ParryTargetComponent::_enter_tree() {

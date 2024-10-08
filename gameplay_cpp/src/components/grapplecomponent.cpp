@@ -62,16 +62,19 @@ Vector3 GrappleComponent::_impulse_owner(const Vector3& direction, float impulse
 }
 
 void GrappleComponent::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_is_anchor"), &GrappleComponent::get_is_anchor);
-	ClassDB::bind_method(D_METHOD("set_is_anchor", "val"), &GrappleComponent::set_is_anchor);
-	ClassDB::bind_method(D_METHOD("get_pull_strength"), &GrappleComponent::get_pull_strength);
-	ClassDB::bind_method(D_METHOD("set_pull_strength", "val"), &GrappleComponent::set_pull_strength);
-	ClassDB::bind_method(D_METHOD("get_mass"), &GrappleComponent::get_mass);
-	ClassDB::bind_method(D_METHOD("set_mass", "val"), &GrappleComponent::set_mass);
+	godot::ClassDB::bind_method(D_METHOD("get_is_anchor"), &GrappleComponent::get_is_anchor);
+	godot::ClassDB::bind_method(D_METHOD("set_is_anchor", "val"), &GrappleComponent::set_is_anchor);
+	godot::ClassDB::bind_method(D_METHOD("get_pull_strength"), &GrappleComponent::get_pull_strength);
+	godot::ClassDB::bind_method(D_METHOD("set_pull_strength", "val"), &GrappleComponent::set_pull_strength);
+	godot::ClassDB::bind_method(D_METHOD("get_mass"), &GrappleComponent::get_mass);
+	godot::ClassDB::bind_method(D_METHOD("set_mass", "val"), &GrappleComponent::set_mass);
+	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &GrappleComponent::getAreaPath);
+	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &GrappleComponent::setAreaPath);
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anchored"), "set_is_anchor", "get_is_anchor");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pull strength"), "set_pull_strength", "get_pull_strength");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mass"), "set_mass", "get_mass");
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
 }
 
 void GrappleComponent::_enter_tree() {
@@ -80,10 +83,12 @@ void GrappleComponent::_enter_tree() {
 		LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");
 	}
 
-	if (!m_area) { m_area = get_child_node_of_type<Area3D>(this); }
-	if (!m_area) { LOG(DEBUG, "Grapplecomponent missing area,", get_name()) }
-	if (m_area && !get_child_node_of_type<CollisionShape3D>(m_area)) {
-		LOG(DEBUG, "Grapplecomponent missing shape,", get_name())
+	m_area = get_node<Area3D>(m_pathToArea3D);
+	if (!m_area) {
+		String msg;
+		msg += get_name();
+		msg += ", failed to fetch m_areaPtr for collision. Please assign a path to a CollisionShape3D to 'Area Path'";
+		ERR_PRINT_ONCE(msg);
 	}
 }
 
@@ -112,3 +117,7 @@ float GrappleComponent::get_pull_strength() const { return m_pull_strength; }
 void GrappleComponent::set_mass(float val) { m_mass = val; }
 
 float GrappleComponent::get_mass() const { return m_mass; }
+
+void GrappleComponent::setAreaPath(NodePath path) { m_pathToArea3D = path; }
+
+NodePath GrappleComponent::getAreaPath() { return m_pathToArea3D; }

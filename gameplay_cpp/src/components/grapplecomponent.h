@@ -12,6 +12,7 @@ struct GrappleEvent;
 class GrappleComponent : public NodeComponent {
 	GDCLASS(GrappleComponent, NodeComponent)
 public:
+	NodePath m_pathToArea3D;
 	Area3D* m_area = nullptr;
 
 	bool anchored = false;
@@ -44,6 +45,9 @@ public:
 	void _enter_tree() override;
 	void _exit_tree() override;
 
+	void setAreaPath(NodePath path);
+    NodePath getAreaPath();
+
 	RID get_rid() const;
 
 	void set_is_anchor(bool val);
@@ -52,13 +56,4 @@ public:
 	float get_pull_strength() const;
 	void set_mass(float val);
 	float get_mass() const;
-
-	template <typename T>
-	T* get_child_node_of_type(const godot::Node* node) {
-		TypedArray<godot::Node> children = node->get_children();
-		for (int i = 0; i < children.size(); ++i) {
-			if (T* child = cast_to<T>(children[i])) { return child; }
-		}
-		return nullptr;
-	}
 };
