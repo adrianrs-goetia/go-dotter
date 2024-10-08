@@ -81,15 +81,13 @@ void GrappleComponent::_enter_tree() {
 	}
 
 	if (!m_area) { m_area = get_child_node_of_type<Area3D>(this); }
-	if (m_area && !m_shape) { m_shape = get_child_node_of_type<CollisionShape3D>(m_area); }
 	if (!m_area) { LOG(DEBUG, "Grapplecomponent missing area,", get_name()) }
-	if (!m_shape) { LOG(DEBUG, "Grapplecomponent missing shape,", get_name()) }
+	if (m_area && !get_child_node_of_type<CollisionShape3D>(m_area)) {
+		LOG(DEBUG, "Grapplecomponent missing shape,", get_name())
+	}
 }
 
-void GrappleComponent::_exit_tree() {
-	m_area = nullptr;
-	m_shape = nullptr;
-}
+void GrappleComponent::_exit_tree() { m_area = nullptr; }
 
 RID GrappleComponent::get_rid() const {
 	if (!m_area) { return RID(); }

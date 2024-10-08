@@ -13,7 +13,6 @@ class GrappleComponent : public NodeComponent {
 	GDCLASS(GrappleComponent, NodeComponent)
 public:
 	Area3D* m_area = nullptr;
-	CollisionShape3D* m_shape = nullptr;
 
 	bool anchored = false;
 	float m_pull_strength = 0.f;
