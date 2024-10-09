@@ -46,7 +46,7 @@ public:
 	void _exit_tree() override;
 
 	void setAreaPath(NodePath path);
-    NodePath getAreaPath();
+	NodePath getAreaPath();
 
 	RID get_rid() const;
 

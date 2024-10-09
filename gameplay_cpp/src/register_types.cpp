@@ -9,8 +9,8 @@
 #include <components/parrycomponent.h>
 #include <components/parrytargetcomponent.h>
 #include <mainnode.h>
-#include <npcs/turret/turretnode.h>
 #include <npcs/projectile/projectile.h>
+#include <npcs/turret/turretnode.h>
 #include <core/nodecomponent.hpp>
 
 using namespace godot;

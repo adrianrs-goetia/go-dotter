@@ -97,8 +97,7 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* get_name() override{ return #CLASSNAME;                                                        \
-	}
+	virtual const char* get_name() override { return #CLASSNAME; }
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};

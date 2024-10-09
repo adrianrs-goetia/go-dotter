@@ -84,7 +84,6 @@ void PlayerNode::_enter_tree() {
 }
 
 void PlayerNode::_exit_tree() {
-	queue_free();
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
@@ -158,13 +157,10 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 }
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
-	@todo components have to use ...Area3D/CollisionShape3D structure as it is required here for detection of grappleable objects.
-	otherwise have to change how grapple objects are detected. 
-	@todo; look at detection methods for player on other components
-
 	RETURN_IF_EDITOR
+	LOG(DEBUG, "Node entered grapple area: ", area->get_parent()->get_name())
 	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
-	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
+	if (auto* gn = getChildOfNode<GrappleComponent>(area->get_parent())) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
 		m_in_range_grapplenodes.push_back(gn);
 	}
@@ -172,8 +168,8 @@ void PlayerNode::area_entered_grappledetection(Area3D* area) {
 
 void PlayerNode::area_exited_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	LOG(DEBUG, "Area left grapple area: ", area->get_name())
-	if (auto* gn = cast_to<GrappleComponent>(area->get_parent())) {
+	LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
+	if (auto* gn = getChildOfNode<GrappleComponent>(area->get_parent())) {
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),
 				[gn](GrappleComponent* a) -> bool { return a->get_rid() == gn->get_rid(); });
 		m_in_range_grapplenodes.erase(it);
