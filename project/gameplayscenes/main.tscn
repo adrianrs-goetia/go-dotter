@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://gameplayscenes/turret.tscn" id="4_5gw1a"]
 [ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://gameplayscenes/grapplenode.tscn" id="4_ii646"]
 [ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://gameplayscenes/rigid_body_3d.tscn" id="4_nem2m"]
-[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="5_yqr2e"]
+[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="5_v1y23"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -131,4 +131,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55074, 1.43657, -7.60296)
 [node name="TurretNode3" parent="." instance=ExtResource("4_5gw1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66189, 0.796983, -20.0561)
 
-[node name="PlayerNode" parent="." instance=ExtResource("5_yqr2e")]
+[node name="PlayerNode" parent="." instance=ExtResource("5_v1y23")]
