@@ -57,8 +57,12 @@ namespace nodePaths {
 } //namespace nodePaths
 
 namespace collisionflags {
-	// static constexpr uint32_t parrydetection = 0x00000008;
-	static constexpr uint32_t parrydetection = 8;
+	static constexpr uint32_t staticWorld = 1;
+	static constexpr uint32_t dynamicWorld = 2;
+	static constexpr uint32_t pickableObjects = 3;
+	static constexpr uint32_t wallWalking = 4;
+	static constexpr uint32_t grapplingTarget = 7;
+	static constexpr uint32_t parryTarget = 8;
 } //namespace collisionflags
 
 #endif // GD_CORECORE_PLUGIN_GAMEPLAY_H
