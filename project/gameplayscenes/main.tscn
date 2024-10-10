@@ -24,6 +24,8 @@ transform = Transform3D(0.642828, 0.647642, 0.409062, -0.499209, -0.0508439, 0.8
 shadow_enabled = true
 shadow_blur = 1.38
 
+[node name="PlayerNode" parent="." instance=ExtResource("5_v1y23")]
+
 [node name="grid" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="grid"]
@@ -130,5 +132,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55074, 1.43657, -7.60296)
 
 [node name="TurretNode3" parent="." instance=ExtResource("4_5gw1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66189, 0.796983, -20.0561)
-
-[node name="PlayerNode" parent="." instance=ExtResource("5_v1y23")]

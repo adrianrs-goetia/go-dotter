@@ -36,7 +36,6 @@ public:
 	ParryInstigatorComponent* m_parrycomponent = nullptr;
 
 	std::vector<GrappleComponent*> m_in_range_grapplenodes;
-	// std::vector<ParryTargetComponent*> m_in_range_grapplenodes;
 
 public:
 	GETNAME(PlayerNode)

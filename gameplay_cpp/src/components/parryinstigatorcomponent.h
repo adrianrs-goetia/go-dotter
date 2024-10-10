@@ -19,33 +19,31 @@ class ParryInstigatorComponent : public NodeComponent {
 	using GodotRID = uint64_t;
 
 public:
+	NodePath m_pathToArea3D; // Path for m_area object
 	Area3D* m_area = nullptr;
-	CollisionShape3D* m_collisionshape = nullptr; // TODO: superfluous ptr?
-	TypedArray<RID> m_rid_ignores;
-
-	TypedArray<Vector3> m_colliding_positions;
-	// std::map<GodotRID, ParryTargetComponent*> m_
+	// CollisionShape3D* m_collisionShape = nullptr;
+	// TypedArray<RID> m_ridIgnores;
+	// TypedArray<Vector3> m_collidingPositions;
+	std::map<GodotRID, ParryTargetComponent*> m_inRangeParryTargets;
 
 public:
 	GETNAME(ParryInstigatorComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;
+	void _exit_tree() override;
 	void _physics_process(double delta) override;
 
-	TypedArray<Vector3> get_colliding_positions() const;
-	Vector3 get_closest_colliding_position() const;
+	void setPathToArea3D(NodePath path);
+	NodePath getPathToArea3D();
+
+	void areaEnteredParryDetection(Area3D* area);
+	void areaExitedParryDetection(Area3D* area);
+
+	// TypedArray<Vector3> getCollidingPositions() const;
+	// Vector3 getClosestCollidingPosition() const;
 
 private:
-	TypedArray<Vector3> _get_collision_query() const;
-	Ref<PhysicsShapeQueryParameters3D> _get_physicsshapequeryparams() const;
-
-	template <typename T>
-	T* get_child_node_of_type(const godot::Node* node) {
-		TypedArray<godot::Node> children = node->get_children();
-		for (int i = 0; i < children.size(); ++i) {
-			if (T* child = cast_to<T>(children[i])) { return child; }
-		}
-		return nullptr;
-	}
+	// TypedArray<Vector3> _getCollisionQuery() const;
+	// Ref<PhysicsShapeQueryParameters3D> _get_physicsshapequeryparams() const;
 };

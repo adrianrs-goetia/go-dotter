@@ -24,10 +24,8 @@ using namespace godot;
 
 void PlayerNode::_bind_methods() {
 	DEFAULT_PROPERTY(PlayerNode)
-	godot::ClassDB::bind_method(
-			godot::D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
-	godot::ClassDB::bind_method(
-			godot::D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
+	ClassDB::bind_method(D_METHOD("area_entered_grappledetection", "area"), &PlayerNode::area_entered_grappledetection);
+	ClassDB::bind_method(D_METHOD("area_exited_grappledetection", "area"), &PlayerNode::area_exited_grappledetection);
 }
 
 void PlayerNode::_notification(int what) {
@@ -62,10 +60,10 @@ void PlayerNode::_enter_tree() {
 
 	ASSERT_NOTNULL(m_grapplecomponent)
 	ASSERT_NOTNULL(m_parrycomponent)
-	ASSERT(m_state_context != nullptr, "")
-	ASSERT(m_grappledetectionarea != nullptr, "")
-	ASSERT(m_camerapivot != nullptr, "")
-	ASSERT(m_meshAnchor != nullptr, "")
+	ASSERT_NOTNULL(m_state_context)
+	ASSERT_NOTNULL(m_grappledetectionarea)
+	ASSERT_NOTNULL(m_camerapivot)
+	ASSERT_NOTNULL(m_meshAnchor)
 
 	m_grappledetectionarea->connect("area_entered", callable_mp(this, &PlayerNode::area_entered_grappledetection));
 	m_grappledetectionarea->connect("area_exited", callable_mp(this, &PlayerNode::area_exited_grappledetection));
@@ -79,16 +77,16 @@ void PlayerNode::_enter_tree() {
 
 	m_state_context->grapple.instigator = m_grapplecomponent;
 
-	m_parrycomponent->m_rid_ignores.append(get_rid());
-	m_parrycomponent->m_rid_ignores.append(m_grappledetectionarea->get_rid());
+	// m_parrycomponent->m_rid_ignores.append(get_rid());
+	// m_parrycomponent->m_rid_ignores.append(m_grappledetectionarea->get_rid());
 }
 
 void PlayerNode::_exit_tree() {
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
-	ASSERT(m_grappledetectionarea != nullptr, "");
-	ASSERT(m_state_context != nullptr, "");
+	ASSERT_NOTNULL(m_grappledetectionarea);
+	ASSERT_NOTNULL(m_state_context);
 
 	::free(m_state_context);
 
@@ -101,7 +99,7 @@ void PlayerNode::_exit_tree() {
 
 void PlayerNode::_process(double delta) {
 	RETURN_IF_EDITOR
-	ASSERT(m_camerapivot != nullptr, "");
+	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->process(m_state_context, delta);
 	determine_grapple_target();
 
@@ -115,7 +113,7 @@ void PlayerNode::_process(double delta) {
 
 void PlayerNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR
-	ASSERT(m_state_context != nullptr, "");
+	ASSERT_NOTNULL(m_state_context);
 	// capture current physics context
 	m_state_context->physics.is_on_ground = is_on_floor();
 	m_state_context->physics.position = get_position();
@@ -137,7 +135,7 @@ void PlayerNode::_physics_process(double delta) {
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
 	if (!m_state_context) { return; }
-	ASSERT(m_camerapivot != nullptr, "");
+	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->process_input(m_state_context, get_process_delta_time());
 }
 
@@ -158,9 +156,9 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	LOG(DEBUG, "Node entered grapple area: ", area->get_parent()->get_name())
+	// LOG(DEBUG, "Node entered grapple area: ", area->get_parent()->get_name())
 	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
-	if (auto* gn = getChildOfNode<GrappleComponent>(area->get_parent())) {
+	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
 		m_in_range_grapplenodes.push_back(gn);
 	}
@@ -168,8 +166,8 @@ void PlayerNode::area_entered_grappledetection(Area3D* area) {
 
 void PlayerNode::area_exited_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
-	if (auto* gn = getChildOfNode<GrappleComponent>(area->get_parent())) {
+	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
+		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),
 				[gn](GrappleComponent* a) -> bool { return a->get_rid() == gn->get_rid(); });
 		m_in_range_grapplenodes.erase(it);
@@ -179,7 +177,7 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 
 void PlayerNode::determine_grapple_target() {
 	RETURN_IF_EDITOR
-	ASSERT(m_state_context != nullptr, "")
+	ASSERT_NOTNULL(m_state_context)
 	const Vector3 cam3d = m_state_context->input->get_camera3ddir();
 	float lowest_dot = -1.0f;
 	GrappleComponent* target = nullptr;

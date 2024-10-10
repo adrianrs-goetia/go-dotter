@@ -26,5 +26,6 @@ git apply --ignore-space-change --ignore-whitespace ../patches/godot-cpp/no_defa
 cd $ROOT
 
 # Run scons
-scons target=editor
+## dev_build=yes allows breakpoints in godot cpp plugin
+scons target=editor dev_build=yes
 scons target=template_debug

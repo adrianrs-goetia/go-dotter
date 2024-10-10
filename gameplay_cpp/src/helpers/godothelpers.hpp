@@ -27,3 +27,9 @@ T* getChildOfNode(const godot::Node* node) {
 	}
 	return nullptr;
 }
+
+template <typename T>
+T* getAdjacentNode(const godot::Node* node) {
+	if (godot::Node* parent = node->get_parent()) { return getChildOfNode<T>(parent); }
+	return nullptr;
+}
