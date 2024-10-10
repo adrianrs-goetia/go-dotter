@@ -14,7 +14,7 @@ source scripts/setup_environment.sh
 ## Build
 ### SCons
 ```
-scons target=editor|template_release|template_debug
+scons target=editor|template_release|template_debug dev_build=yes
 ```
 
 ## GAME

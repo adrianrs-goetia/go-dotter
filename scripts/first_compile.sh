@@ -12,20 +12,7 @@ echo "Running the first compile of go-dotter"
 ROOT="$(git rev-parse --show-toplevel)"
 cd $ROOT
 
-## Apply special git patches
-# 
-cd $ROOT/godot_debug_draw_3d
-git reset --hard
-git submodule deinit --all
-git apply --ignore-space-change --ignore-whitespace ../patches/godot_debug_draw_3d/big_patch_making_dd3d_submodule_to_godotter.patch
-cd $ROOT
-#
-cd $ROOT/godot-cpp
-git reset --hard
-git apply --ignore-space-change --ignore-whitespace ../patches/godot-cpp/no_default_target.patch
-cd $ROOT
-
 # Run scons
-## dev_build=yes allows breakpoints in godot cpp plugin
-scons target=editor dev_build=yes
+## dev_build=yes ensures debug symbols are added for breakpoints
+scons target=editor install_mode=all dev_build=yes
 scons target=template_debug
