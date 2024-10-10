@@ -1,7 +1,7 @@
 #include <character/playerstates.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
-#include <components/parrycomponent.h>
+#include <components/parryinstigatorcomponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/character_body3d.hpp>

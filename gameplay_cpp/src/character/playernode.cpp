@@ -2,7 +2,7 @@
 #include <character/playernode.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
-#include <components/parrycomponent.h>
+#include <components/parryinstigatorcomponent.h>
 
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/engine.hpp>
@@ -47,7 +47,7 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
 	m_grapplecomponent = get_child_node_of_type<GrappleComponent>(this);
-	m_parrycomponent = get_child_node_of_type<ParryComponent>(this);
+	m_parrycomponent = get_child_node_of_type<ParryInstigatorComponent>(this);
 
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");

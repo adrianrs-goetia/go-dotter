@@ -1,5 +1,6 @@
-#include <components/parrycomponent.h>
+#include "parryinstigatorcomponent.h"
 
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
@@ -7,9 +8,9 @@
 
 #include <debugdraw3d/api.h>
 
-void ParryComponent::_bind_methods() { DEFAULT_PROPERTY(ParryComponent) }
+void ParryInstigatorComponent::_bind_methods() { DEFAULT_PROPERTY(ParryInstigatorComponent) }
 
-void ParryComponent::_enter_tree() {
+void ParryInstigatorComponent::_enter_tree() {
 	RETURN_IF_EDITOR
 
 	m_area = get_child_node_of_type<Area3D>(this);
@@ -19,7 +20,7 @@ void ParryComponent::_enter_tree() {
 	m_rid_ignores.append(m_area->get_rid());
 }
 
-void ParryComponent::_physics_process(double delta) {
+void ParryInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	m_colliding_positions = _get_collision_query();
 	for (int i = 0; i < m_colliding_positions.size(); ++i) {
@@ -28,9 +29,9 @@ void ParryComponent::_physics_process(double delta) {
 	}
 }
 
-TypedArray<Vector3> ParryComponent::get_colliding_positions() const { return m_colliding_positions; }
+TypedArray<Vector3> ParryInstigatorComponent::get_colliding_positions() const { return m_colliding_positions; }
 
-Vector3 ParryComponent::get_closest_colliding_position() const {
+Vector3 ParryInstigatorComponent::get_closest_colliding_position() const {
 	if (!m_colliding_positions.is_empty()) {
 		Vector3 closest = m_colliding_positions[0];
 		const Vector3 pos = get_global_position();
@@ -43,13 +44,13 @@ Vector3 ParryComponent::get_closest_colliding_position() const {
 	return Vector3();
 }
 
-TypedArray<Vector3> ParryComponent::_get_collision_query() const {
+TypedArray<Vector3> ParryInstigatorComponent::_get_collision_query() const {
 	PhysicsDirectSpaceState3D* space_state = get_viewport()->get_world_3d()->get_direct_space_state();
 	ASSERT_NOTNULL(space_state)
 	return space_state->collide_shape(_get_physicsshapequeryparams());
 }
 
-Ref<PhysicsShapeQueryParameters3D> ParryComponent::_get_physicsshapequeryparams() const {
+Ref<PhysicsShapeQueryParameters3D> ParryInstigatorComponent::_get_physicsshapequeryparams() const {
 	ASSERT_NOTNULL(m_area)
 	ASSERT_NOTNULL(m_collisionshape)
 

@@ -14,7 +14,7 @@ using namespace godot;
 class PlayerState;
 class PlayerFSM;
 class GrappleComponent;
-class ParryComponent;
+class ParryInstigatorComponent;
 class InputComponent;
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
@@ -63,7 +63,7 @@ struct StateContext {
 	StateGrappleContext grapple;
 	InputComponent* input = nullptr;
 	// StateParryContext parry;
-	ParryComponent* parry = nullptr;
+	ParryInstigatorComponent* parry = nullptr; // ParryComponent == Players ParryDetection/ParryLogic
 	StatePhysicsContext physics;
 };
 
@@ -97,7 +97,8 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* get_name() override { return #CLASSNAME; }
+	virtual const char* get_name() override{ return #CLASSNAME;                                                        \
+	}
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};

@@ -3,14 +3,20 @@
 #include <core/core.h>
 #include <core/nodecomponent.hpp>
 
+#include <map>
+
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
 
 using namespace godot;
 
-class ParryComponent : public NodeComponent {
-	GDCLASS(ParryComponent, NodeComponent)
+class ParryTargetComponent;
+
+class ParryInstigatorComponent : public NodeComponent {
+	GDCLASS(ParryInstigatorComponent, NodeComponent)
+
+	using GodotRID = uint64_t;
 
 public:
 	Area3D* m_area = nullptr;
@@ -18,9 +24,10 @@ public:
 	TypedArray<RID> m_rid_ignores;
 
 	TypedArray<Vector3> m_colliding_positions;
+	// std::map<GodotRID, ParryTargetComponent*> m_
 
 public:
-	GETNAME(ParryComponent)
+	GETNAME(ParryInstigatorComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;
