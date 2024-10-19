@@ -56,14 +56,14 @@ BraceWrapping:
 # BreakBeforeInheritanceComma: false
 # BreakInheritanceList: BeforeColon
 # BreakBeforeTernaryOperators: true
-# BreakConstructorInitializersBeforeComma: false
-BreakConstructorInitializers: AfterColon
+BreakConstructorInitializersBeforeComma: true
+BreakConstructorInitializers: BeforeColon
 BreakStringLiterals: true
 ColumnLimit:     120
 # CommentPragmas:  '^ IWYU pragma:'
 # QualifierAlignment: Leave
 # CompactNamespaces: false
-ConstructorInitializerIndentWidth: 8
+ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 8
 Cpp11BracedListStyle: false
 # DeriveLineEnding: true
@@ -73,7 +73,7 @@ Cpp11BracedListStyle: false
 # EmptyLineBeforeAccessModifier: LogicalBlock
 # ExperimentalAutoDetectBinPacking: false
 # PackConstructorInitializers: BinPack
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
+# ConstructorInitializerAllOnOneLineOrOnePerLine: true
 # AllowAllConstructorInitializersOnNextLine: true
 # FixNamespaceComments: true
 # ForEachMacros:

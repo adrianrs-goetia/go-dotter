@@ -1,7 +1,9 @@
 #include "parryinstigatorcomponent.h"
 
+#include "parryInstance.h"
 #include "parrytargetcomponent.h"
 
+#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/shape3d.hpp>
@@ -19,8 +21,11 @@ void ParryInstigatorComponent::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("setPathToArea3D", "path"), &ParryInstigatorComponent::setPathToArea3D);
 	ClassDB::bind_method(D_METHOD("areaEnteredParryDetection"), &ParryInstigatorComponent::areaEnteredParryDetection);
 	ClassDB::bind_method(D_METHOD("areaExitedParryDetection"), &ParryInstigatorComponent::areaExitedParryDetection);
+	ClassDB::bind_method(D_METHOD("getMass"), &ParryInstigatorComponent::getMass);
+	ClassDB::bind_method(D_METHOD("setMass", "mass"), &ParryInstigatorComponent::setMass);
 
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision area"), "setPathToArea3D", "getPathToArea3D");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Mass"), "setMass", "getMass");
 }
 
 void ParryInstigatorComponent::_enter_tree() {
@@ -32,11 +37,6 @@ void ParryInstigatorComponent::_enter_tree() {
 
 	m_area->connect("area_entered", callable_mp(this, &ParryInstigatorComponent::areaEnteredParryDetection));
 	m_area->connect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
-
-	// m_area = getChildOfNode<Area3D>(this);
-	// m_collisionShape = getChildOfNode<CollisionShape3D>(m_area);
-	// ASSERT_NOTNULL(m_collisionShape)
-	// m_ridIgnores.append(m_area->get_rid());
 }
 
 void ParryInstigatorComponent::_exit_tree() {
@@ -48,18 +48,15 @@ void ParryInstigatorComponent::_exit_tree() {
 	m_area->disconnect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
 }
 
-void ParryInstigatorComponent::_physics_process(double delta) {
-	RETURN_IF_EDITOR
-	// m_collidingPositions = _getCollisionQuery();
-	// for (int i = 0; i < m_collidingPositions.size(); ++i) {
-	// 	DebugDraw::Position(
-	// 			Transform3D(Basis(Quaternion(), Vector3(2, 2, 2)), m_collidingPositions[i]), Color(0, 1, 0));
-	// }
-}
+void ParryInstigatorComponent::_physics_process(double delta) { RETURN_IF_EDITOR }
 
 void ParryInstigatorComponent::setPathToArea3D(NodePath path) { m_pathToArea3D = path; }
 
-NodePath ParryInstigatorComponent::getPathToArea3D() { return m_pathToArea3D; }
+NodePath ParryInstigatorComponent::getPathToArea3D() const { return m_pathToArea3D; }
+
+void ParryInstigatorComponent::setMass(float mass) { m_mass = mass; }
+
+float ParryInstigatorComponent::getMass() const { return m_mass; }
 
 void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 	if (m_area->get_rid() == area->get_rid()) {
@@ -69,7 +66,7 @@ void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 	}
 	if (auto* parrytarget = getAdjacentNode<ParryTargetComponent>(area)) {
 		LOG(DEBUG, "ParryTarget entered area", area->get_parent()->get_name())
-		m_inRangeParryTargets.emplace(area->get_rid().get_id(), parrytarget);
+		m_inRangeParryTargets.emplace(area->get_rid().get_id(), *parrytarget);
 	}
 }
 
@@ -85,43 +82,41 @@ void ParryInstigatorComponent::activateParry() {
 	RETURN_IF_EDITOR
 	ASSERT_NOTNULL(m_area)
 
-	const Vector3 instigatorPosition = m_area->get_global_position();
-	for(const auto& [rid, parryTarget] : m_inRangeParryTargets){
-		DebugDraw::Line(instigatorPosition, parryTarget->getPosition(), Color(1,0,0), 1.f);
+	if (m_inRangeParryTargets.empty()) {
+		LOG(DEBUG, "No in range parry targets");
+		return;
 	}
+
+	// get closest in range parry target
+	const Vector3 instigatorPosition = m_area->get_global_position();
+	Vector3 closest = m_inRangeParryTargets.begin()->second.getPosition();
+	ParryTargetComponent* target = &m_inRangeParryTargets.begin()->second;
+	for (const auto& [rid, parryTarget] : m_inRangeParryTargets) {
+		DebugDraw::Line(instigatorPosition, parryTarget.getPosition(), Color(1, 0, 0), 1.f);
+		if (Vector3(instigatorPosition - parryTarget.getPosition()).length_squared() < closest.length_squared()) {
+			closest = parryTarget.getPosition();
+			target = &parryTarget;
+		}
+	}
+	ASSERT_NOTNULL(target)
+	ParryInstance instance(*this, *target);
+	target->getParried(instance);
 }
 
-// TypedArray<Vector3> ParryInstigatorComponent::getCollidingPositions() const { return m_collidingPositions; }
+Vector3 ParryInstigatorComponent::getPosition() const {
+	RETURN_IF_EDITOR_RET(Vector3)
+	ASSERT_NOTNULL(m_area)
+	return m_area->get_global_position();
+}
 
-// Vector3 ParryInstigatorComponent::getClosestCollidingPosition() const {
-// 	if (!m_collidingPositions.is_empty()) {
-// 		Vector3 closest = m_collidingPositions[0];
-// 		const Vector3 pos = get_global_position();
-// 		for (int i = 0; i < m_collidingPositions.size(); i++) {
-// 			const Vector3 v3 = m_collidingPositions[i];
-// 			if (Vector3(pos - v3).length_squared() < Vector3(pos - closest).length_squared()) { closest = v3; }
-// 		}
-// 		return closest;
-// 	}
-// 	return Vector3();
-// }
+Vector3 ParryInstigatorComponent::getVelocity() const {
+	RETURN_IF_EDITOR_RET(Vector3)
+	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) { return characterBody->get_velocity(); }
+	return {};
+}
 
-// TypedArray<Vector3> ParryInstigatorComponent::_getCollisionQuery() const {
-// 	PhysicsDirectSpaceState3D* space_state = get_viewport()->get_world_3d()->get_direct_space_state();
-// 	ASSERT_NOTNULL(space_state)
-// 	return space_state->collide_shape(_get_physicsshapequeryparams());
-// }
-
-// Ref<PhysicsShapeQueryParameters3D> ParryInstigatorComponent::_get_physicsshapequeryparams() const {
-// 	ASSERT_NOTNULL(m_area)
-// 	ASSERT_NOTNULL(m_collisionShape)
-
-// 	Ref<PhysicsShapeQueryParameters3D> query;
-// 	query.instantiate();
-// 	query->set_shape(m_collisionShape->get_shape());
-// 	query->set_transform(get_global_transform());
-// 	query->set_collide_with_areas(true);
-// 	query->set_collide_with_bodies(true);
-// 	query->set_exclude(m_ridIgnores);
-// 	return query;
-// }
+Vector3 ParryInstigatorComponent::getDesiredDirection() const {
+	if (m_getDesiredDirectionCb) { return m_getDesiredDirectionCb(); }
+	LOG(ERROR, "ParryInstigatorComponent does not have getDesiredDirectionCb set: ", get_parent()->get_name())
+	return {};
+}

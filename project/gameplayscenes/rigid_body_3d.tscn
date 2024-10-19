@@ -20,7 +20,7 @@ mesh = SubResource("BoxMesh_1xi85")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="GrappleComponent" type="GrappleComponent" parent="."]
-mass = 20.37
+mass = 1.0
 "Collision AreaPath" = NodePath("../Area3D")
 
 [node name="Area3D" type="Area3D" parent="."]
@@ -32,3 +32,5 @@ shape = SubResource("SphereShape3D_ahihr")
 
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
 "Collision AreaPath" = NodePath("../Area3D")
+"Is Heavy" = false
+Mass = 1.0

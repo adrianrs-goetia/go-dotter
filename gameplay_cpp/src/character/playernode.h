@@ -26,11 +26,7 @@ public:
 	StateContext* m_state_context = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* m_meshAnchor = nullptr;
-	// CollisionShape3D* m_capsule = nullptr;
 	Area3D* m_grappledetectionarea = nullptr;
-
-	// Area3D* m_parrydetectionarea = nullptr;
-	// CollisionShape3D* m_parrydetectionshape = nullptr;
 
 	GrappleComponent* m_grapplecomponent = nullptr;
 	ParryInstigatorComponent* m_parrycomponent = nullptr;

@@ -52,10 +52,7 @@ void PlayerNode::_enter_tree() {
 
 	m_state_context = (StateContext*)calloc(1, sizeof(StateContext));
 	m_meshAnchor = get_node<Node3D>("meshAnchor");
-	// m_capsule = get_node<CollisionShape3D>("Capsule");
 	m_grappledetectionarea = get_node<Area3D>("GrappleDetection");
-	// m_parrydetectionarea = get_node<Area3D>("ParryDetection");
-	// m_parrydetectionshape = get_node<CollisionShape3D>("ParryDetection/CollisionShape3D");
 	m_camerapivot = get_node<CameraPivot>(nodePaths::camera_pivot);
 
 	ASSERT_NOTNULL(m_grapplecomponent)
@@ -77,8 +74,11 @@ void PlayerNode::_enter_tree() {
 
 	m_state_context->grapple.instigator = m_grapplecomponent;
 
-	// m_parrycomponent->m_rid_ignores.append(get_rid());
-	// m_parrycomponent->m_rid_ignores.append(m_grappledetectionarea->get_rid());
+	m_parrycomponent->m_getDesiredDirectionCb = [this]() -> Vector3 {
+		Vector3 desiredDir = m_state_context->input->get_input_relative_3d();
+		if (desiredDir.length_squared() < 0.2f) { desiredDir = m_state_context->input->get_camera3ddir(); }
+		return desiredDir;
+	};
 }
 
 void PlayerNode::_exit_tree() {
@@ -156,7 +156,6 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	// LOG(DEBUG, "Node entered grapple area: ", area->get_parent()->get_name())
 	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
 	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())

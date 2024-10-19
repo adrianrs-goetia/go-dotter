@@ -4,6 +4,7 @@
 #include <core/nodecomponent.hpp>
 
 #include <map>
+#include <functional>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
@@ -16,15 +17,15 @@ class ParryTargetComponent;
 class ParryInstigatorComponent : public NodeComponent {
 	GDCLASS(ParryInstigatorComponent, NodeComponent)
 
+public:
 	using GodotRID = uint64_t;
 
 public:
 	NodePath m_pathToArea3D; // Path for m_area object
 	Area3D* m_area = nullptr;
-	// CollisionShape3D* m_collisionShape = nullptr;
-	// TypedArray<RID> m_ridIgnores;
-	// TypedArray<Vector3> m_collidingPositions;
-	std::map<GodotRID, ParryTargetComponent*> m_inRangeParryTargets;
+	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
+	std::function<Vector3()> m_getDesiredDirectionCb;
+	float m_mass = 1.f;
 
 public:
 	GETNAME(ParryInstigatorComponent)
@@ -35,17 +36,16 @@ public:
 	void _physics_process(double delta) override;
 
 	void setPathToArea3D(NodePath path);
-	NodePath getPathToArea3D();
+	NodePath getPathToArea3D() const;
+	void setMass(float mass);
+	float getMass() const;
 
 	void areaEnteredParryDetection(Area3D* area);
 	void areaExitedParryDetection(Area3D* area);
 
 	void activateParry();
 
-	// TypedArray<Vector3> getCollidingPositions() const;
-	// Vector3 getClosestCollidingPosition() const;
-
-private:
-	// TypedArray<Vector3> _getCollisionQuery() const;
-	// Ref<PhysicsShapeQueryParameters3D> _get_physicsshapequeryparams() const;
+	Vector3 getPosition() const;
+	Vector3 getVelocity() const;
+	Vector3 getDesiredDirection() const;
 };

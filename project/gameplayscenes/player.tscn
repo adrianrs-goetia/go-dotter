@@ -65,9 +65,11 @@ shape = SubResource("SphereShape3D_6du44")
 
 [node name="GrappleComponent" type="GrappleComponent" parent="."]
 "pull strength" = 20.0
+mass = 100.0
 
 [node name="ParryInstigatorComponent" type="ParryInstigatorComponent" parent="."]
 "Collision area" = NodePath("ParryDetection")
+Mass = 100.0
 
 [node name="ParryDetection" type="Area3D" parent="ParryInstigatorComponent"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
