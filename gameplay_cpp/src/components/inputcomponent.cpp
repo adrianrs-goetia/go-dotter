@@ -69,7 +69,10 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
 
 	ASSERT(DisplayServer::get_singleton() != nullptr, "");
-	if (DisplayServer::get_singleton()->window_is_focused()) input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED);
+	if (DisplayServer::get_singleton()->window_is_focused()) {
+		m_additionalStates.application_mouse_lock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
+												  : input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+	}
 
 	// Camera motion (mouse or rightstick equivalent)
 	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
@@ -104,6 +107,9 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 			ds->window_set_position(size / 4, prime_screen);
 		}
 		else { ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN); }
+	}
+	else if (p_event->is_action_pressed(InputString::toggle_application_mouse_lock)) {
+		m_additionalStates.application_mouse_lock = !m_additionalStates.application_mouse_lock;
 	}
 	else if (p_event->is_action_pressed(InputString::restart)) {
 		if (SceneTree* tree = get_tree()) {

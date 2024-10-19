@@ -26,6 +26,7 @@ namespace InputString {
 
 	constexpr const char* pause_menu = "pause_menu";
 	constexpr const char* toggle_screen_mode = "toggle_screen_mode";
+	constexpr const char* toggle_application_mouse_lock = "toggle_application_mouse_lock";
 	constexpr const char* restart = "restart";
 
 	// Some Built-in actions
@@ -50,19 +51,18 @@ enum class EInputAction : uint8_t {
 	PARRY,
 	ATTACK,
 	PAUSE_MENU,
-	TOGGLE_SCREEN_MODE,
 
 	// Some Built-in Actions
-	UI_ACCEPT,
-	UI_SELECT,
-	UI_CANCEL,
-	UI_FOCUS_NEXT,
-	UI_FOCUS_PREV,
-	UI_LEFT,
-	UI_RIGHT,
-	UI_UP,
-	UI_DOWN,
-	UI_MENU,
+	// UI_ACCEPT,
+	// UI_SELECT,
+	// UI_CANCEL,
+	// UI_FOCUS_NEXT,
+	// UI_FOCUS_PREV,
+	// UI_LEFT,
+	// UI_RIGHT,
+	// UI_UP,
+	// UI_DOWN,
+	// UI_MENU,
 };
 
 enum class EInputActionType : uint8_t {
@@ -121,6 +121,10 @@ public:
 	Vector2 m_camera2ddir;
 
 	std::list<InputAction> input_actions;
+
+	struct AdditionalStates {
+		bool application_mouse_lock{ true };
+	} m_additionalStates;
 
 private:
 	void exit_game();
