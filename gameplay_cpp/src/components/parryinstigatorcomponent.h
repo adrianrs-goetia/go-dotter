@@ -40,6 +40,8 @@ public:
 	void areaEnteredParryDetection(Area3D* area);
 	void areaExitedParryDetection(Area3D* area);
 
+	void activateParry();
+
 	// TypedArray<Vector3> getCollidingPositions() const;
 	// Vector3 getClosestCollidingPosition() const;
 

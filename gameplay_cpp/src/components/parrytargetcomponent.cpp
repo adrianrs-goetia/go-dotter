@@ -21,7 +21,7 @@ void ParryTargetComponent::_enter_tree() {
 	}
 	else { m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true); }
 
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR_RET(void)
 	ASSERT_NOTNULL(m_areaPtr)
 }
 
@@ -35,3 +35,9 @@ void ParryTargetComponent::setAreaPath(NodePath path) { m_pathToArea3D = path; }
 NodePath ParryTargetComponent::getAreaPath() { return m_pathToArea3D; }
 
 void ParryTargetComponent::setOnParriedCb(OnParriedCb&& cb) { m_onParriedCb = cb; }
+
+Vector3 ParryTargetComponent::getPosition() const {
+	RETURN_IF_EDITOR_RET(Vector3)
+	ASSERT_NOTNULL(m_areaPtr)
+	return m_areaPtr->get_global_position();
+}

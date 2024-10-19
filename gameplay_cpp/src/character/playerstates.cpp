@@ -35,16 +35,6 @@ namespace helper {
 			context->physics.velocity.z = Math::move_toward(context->physics.velocity.z, 0.0f, deceleration * delta);
 		}
 	}
-
-	// Expected to only handle collision queries containing at least a single point within the collison shape
-	// void parry_impulse(StateContext* context, Vector3 closest_parry_position, float impulse_strength) {
-	// 	DebugDraw::Sphere(closest_parry_position, 0.5f, Color(1, 0, 0.3), 0.2f);
-
-	// 	const Vector3 impulse_dir = context->input->get_input_relative_3d(1.f);
-	// 	DebugDraw::Line(context->physics.position, context->physics.position + (impulse_dir * impulse_strength),
-	// 			Color(1, 0, 0), 2.f);
-	// 	context->physics.velocity = impulse_dir * impulse_strength;
-	// }
 } //namespace helper
 
 // PlayerOnGroundState
@@ -78,6 +68,10 @@ PlayerState::Return PlayerOnGroundState::handle_input(StateContext* context, flo
 	if (context->input->is_action_pressed(EInputAction::GRAPPLE) && context->grapple.target) {
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
+	if (context->input->is_action_pressed(EInputAction::PARRY)){
+		context->parry->activateParry();
+		// TODO return new state??
+	}
 	return {};
 }
 
@@ -100,9 +94,10 @@ PlayerState::Return PlayerInAirState::handle_input(StateContext* context, float 
 		LOG(WARN, "inair grappling time")
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
-	// if (context->input->is_action_pressed(EInputAction::PARRY)) {
-	// 	helper::parry_impulse(context, context->parry->getClosestCollidingPosition(), PARRY_LAUNCH_STRENGTH);
-	// }
+	if (context->input->is_action_pressed(EInputAction::PARRY)){
+		context->parry->activateParry();
+		// TODO return new state??
+	}
 	return {};
 }
 

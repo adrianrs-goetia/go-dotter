@@ -81,6 +81,16 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
+void ParryInstigatorComponent::activateParry() {
+	RETURN_IF_EDITOR
+	ASSERT_NOTNULL(m_area)
+
+	const Vector3 instigatorPosition = m_area->get_global_position();
+	for(const auto& [rid, parryTarget] : m_inRangeParryTargets){
+		DebugDraw::Line(instigatorPosition, parryTarget->getPosition(), Color(1,0,0), 1.f);
+	}
+}
+
 // TypedArray<Vector3> ParryInstigatorComponent::getCollidingPositions() const { return m_collidingPositions; }
 
 // Vector3 ParryInstigatorComponent::getClosestCollidingPosition() const {

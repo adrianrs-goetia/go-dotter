@@ -31,5 +31,5 @@ public:
 
 	void setOnParriedCb(OnParriedCb&& cb);
 
-	void bindTest(Node3D* other) { LOG(DEBUG, "parried by", other->get_name()); }
+	Vector3 getPosition() const;
 };
