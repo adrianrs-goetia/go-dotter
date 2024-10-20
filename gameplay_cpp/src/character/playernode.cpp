@@ -156,7 +156,7 @@ void PlayerNode::rotate_towards_velocity(float delta) {
 
 void PlayerNode::area_entered_grappledetection(Area3D* area) {
 	RETURN_IF_EDITOR
-	if (area->get_rid() == m_grapplecomponent->get_rid()) { return; }
+	if (area->get_rid() == m_grapplecomponent->getRid()) { return; }
 	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
 		m_in_range_grapplenodes.push_back(gn);
@@ -168,7 +168,7 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		auto it = std::find_if(m_in_range_grapplenodes.begin(), m_in_range_grapplenodes.end(),
-				[gn](GrappleComponent* a) -> bool { return a->get_rid() == gn->get_rid(); });
+				[gn](GrappleComponent* a) -> bool { return a->getRid() == gn->getRid(); });
 		m_in_range_grapplenodes.erase(it);
 		if (gn == m_state_context->grapple.target) { m_state_context->grapple = { m_grapplecomponent, nullptr }; }
 	}

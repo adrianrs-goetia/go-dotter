@@ -15,8 +15,8 @@ public:
 	NodePath m_pathToArea3D;
 	Area3D* m_area = nullptr;
 
-	bool anchored = false;
-	float m_pull_strength = 0.f;
+	bool m_anchored = false;
+	float m_pullStrength = 0.f;
 	float m_mass = 10.f;
 
 public:
@@ -35,9 +35,9 @@ public:
 	LaunchContext launch(GrappleComponent* subject);
 
 protected:
-	LaunchType _determine_launch_type(const GrappleComponent* subject);
-	Vector3 _determine_launch_direction_atob(const GrappleComponent* a, const GrappleComponent* b);
-	Vector3 _impulse_owner(const Vector3& direction, float impulse_strength);
+	LaunchType _determineLaunchType(const GrappleComponent* subject);
+	Vector3 _determineLaunchDirectionAtob(const GrappleComponent* a, const GrappleComponent* b);
+	Vector3 _impulseOwner(const Vector3& direction, float impulse_strength);
 
 public:
 	static void _bind_methods();
@@ -48,12 +48,12 @@ public:
 	void setAreaPath(NodePath path);
 	NodePath getAreaPath();
 
-	RID get_rid() const;
+	RID getRid() const;
 
-	void set_is_anchor(bool val);
-	bool get_is_anchor() const;
-	void set_pull_strength(float val);
-	float get_pull_strength() const;
-	void set_mass(float val);
-	float get_mass() const;
+	void setIsAnchor(bool val);
+	bool getIsAnchor() const;
+	void setPullStrength(float val);
+	float getPullStrength() const;
+	void setMass(float val);
+	float getMass() const;
 };

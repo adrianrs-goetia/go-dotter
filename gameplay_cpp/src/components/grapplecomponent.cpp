@@ -7,49 +7,49 @@
 
 GrappleComponent::LaunchContext GrappleComponent::launch(GrappleComponent* subject) {
 	LaunchContext context;
-	context.type = _determine_launch_type(subject);
+	context.type = _determineLaunchType(subject);
 	switch (context.type) {
 		case LaunchType::BOTH_ANCHOR: {
 			LOG(WARN, "GrappleComponent launch between two anchors. This shouldn't happen")
 			break;
 		}
 		case LaunchType::BOTH_NON_ANCHOR: {
-			const float max_mass = get_mass() + subject->get_mass();
-			const float subject_weight = get_mass() / max_mass;
-			const float instigator_weight = subject->get_mass() / max_mass;
+			const float max_mass = getMass() + subject->getMass();
+			const float subject_weight = getMass() / max_mass;
+			const float instigator_weight = subject->getMass() / max_mass;
 			LOG(DEBUG, "Grapple launch -- BOTH_NON_ANCHOR")
-			std::ignore = subject->_impulse_owner(
-					_determine_launch_direction_atob(subject, this), get_pull_strength() * subject_weight);
-			context.impulse = _impulse_owner(
-					_determine_launch_direction_atob(this, subject), get_pull_strength() * instigator_weight);
+			std::ignore = subject->_impulseOwner(
+					_determineLaunchDirectionAtob(subject, this), getPullStrength() * subject_weight);
+			context.impulse = _impulseOwner(
+					_determineLaunchDirectionAtob(this, subject), getPullStrength() * instigator_weight);
 			break;
 		}
 		case LaunchType::INSTIGATOR_ANCHOR: {
 			LOG(DEBUG, "Grapple launch -- INSTIGATOR_ANCHOR")
-			std::ignore = subject->_impulse_owner(_determine_launch_direction_atob(subject, this), get_pull_strength());
+			std::ignore = subject->_impulseOwner(_determineLaunchDirectionAtob(subject, this), getPullStrength());
 			break;
 		}
 		case LaunchType::SUBJECT_ANCHOR: {
 			LOG(DEBUG, "Grapple launch -- SUBJECT_ANCHOR")
-			context.impulse = _impulse_owner(_determine_launch_direction_atob(this, subject), get_pull_strength());
+			context.impulse = _impulseOwner(_determineLaunchDirectionAtob(this, subject), getPullStrength());
 			break;
 		}
 	}
 	return context;
 }
 
-GrappleComponent::LaunchType GrappleComponent::_determine_launch_type(const GrappleComponent* subject) {
-	if (get_is_anchor() && subject->get_is_anchor()) { return LaunchType::BOTH_ANCHOR; }
-	else if (!get_is_anchor() && subject->get_is_anchor()) { return LaunchType::SUBJECT_ANCHOR; }
-	else if (get_is_anchor() && !subject->get_is_anchor()) { return LaunchType::INSTIGATOR_ANCHOR; }
+GrappleComponent::LaunchType GrappleComponent::_determineLaunchType(const GrappleComponent* subject) {
+	if (getIsAnchor() && subject->getIsAnchor()) { return LaunchType::BOTH_ANCHOR; }
+	else if (!getIsAnchor() && subject->getIsAnchor()) { return LaunchType::SUBJECT_ANCHOR; }
+	else if (getIsAnchor() && !subject->getIsAnchor()) { return LaunchType::INSTIGATOR_ANCHOR; }
 	return LaunchType::BOTH_NON_ANCHOR;
 }
 
-Vector3 GrappleComponent::_determine_launch_direction_atob(const GrappleComponent* a, const GrappleComponent* b) {
+Vector3 GrappleComponent::_determineLaunchDirectionAtob(const GrappleComponent* a, const GrappleComponent* b) {
 	return Vector3(b->get_global_position() - a->get_global_position()).normalized();
 }
 
-Vector3 GrappleComponent::_impulse_owner(const Vector3& direction, float impulse_strength) {
+Vector3 GrappleComponent::_impulseOwner(const Vector3& direction, float impulse_strength) {
 	const Vector3 impulse = direction * impulse_strength;
 	DebugDraw::Line(get_global_position(), get_global_position() + (impulse), Color(1, 0, 1), 1.f);
 	if (auto* p = get_parent_node<RigidBody3D>()) { p->set_linear_velocity(impulse); }
@@ -62,24 +62,24 @@ Vector3 GrappleComponent::_impulse_owner(const Vector3& direction, float impulse
 }
 
 void GrappleComponent::_bind_methods() {
-	godot::ClassDB::bind_method(D_METHOD("get_is_anchor"), &GrappleComponent::get_is_anchor);
-	godot::ClassDB::bind_method(D_METHOD("set_is_anchor", "val"), &GrappleComponent::set_is_anchor);
-	godot::ClassDB::bind_method(D_METHOD("get_pull_strength"), &GrappleComponent::get_pull_strength);
-	godot::ClassDB::bind_method(D_METHOD("set_pull_strength", "val"), &GrappleComponent::set_pull_strength);
-	godot::ClassDB::bind_method(D_METHOD("get_mass"), &GrappleComponent::get_mass);
-	godot::ClassDB::bind_method(D_METHOD("set_mass", "val"), &GrappleComponent::set_mass);
+	godot::ClassDB::bind_method(D_METHOD("getIsAnchor"), &GrappleComponent::getIsAnchor);
+	godot::ClassDB::bind_method(D_METHOD("setIsAnchor", "val"), &GrappleComponent::setIsAnchor);
+	godot::ClassDB::bind_method(D_METHOD("getPullStrength"), &GrappleComponent::getPullStrength);
+	godot::ClassDB::bind_method(D_METHOD("setPullStrength", "val"), &GrappleComponent::setPullStrength);
+	godot::ClassDB::bind_method(D_METHOD("getMass"), &GrappleComponent::getMass);
+	godot::ClassDB::bind_method(D_METHOD("setMass", "val"), &GrappleComponent::setMass);
 	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &GrappleComponent::getAreaPath);
 	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &GrappleComponent::setAreaPath);
 
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anchored"), "set_is_anchor", "get_is_anchor");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pull strength"), "set_pull_strength", "get_pull_strength");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mass"), "set_mass", "get_mass");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anchored"), "setIsAnchor", "getIsAnchor");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pull strength"), "setPullStrength", "getPullStrength");
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mass"), "setMass", "getMass");
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
 }
 
 void GrappleComponent::_enter_tree() {
-	if (!get_parent_node<RigidBody3D>() && !get_parent_node<CharacterBody3D>() && !anchored) {
-		anchored = true;
+	if (!get_parent_node<RigidBody3D>() && !get_parent_node<CharacterBody3D>() && !m_anchored) {
+		m_anchored = true;
 		LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");
 	}
 
@@ -99,29 +99,29 @@ void GrappleComponent::_enter_tree() {
 
 void GrappleComponent::_exit_tree() { m_area = nullptr; }
 
-RID GrappleComponent::get_rid() const {
+RID GrappleComponent::getRid() const {
 	if (!m_area) { return RID(); }
 	return m_area->get_rid();
 }
 
-void GrappleComponent::set_is_anchor(bool val) {
+void GrappleComponent::setIsAnchor(bool val) {
 	if (get_parent() && !get_parent_node<RigidBody3D>() && !get_parent_node<CharacterBody3D>() && !val) {
-		anchored = true;
+		m_anchored = true;
 		LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");
 		return;
 	}
-	anchored = val;
+	m_anchored = val;
 }
 
-bool GrappleComponent::get_is_anchor() const { return anchored; }
+bool GrappleComponent::getIsAnchor() const { return m_anchored; }
 
-void GrappleComponent::set_pull_strength(float val) { m_pull_strength = val; }
+void GrappleComponent::setPullStrength(float val) { m_pullStrength = val; }
 
-float GrappleComponent::get_pull_strength() const { return m_pull_strength; }
+float GrappleComponent::getPullStrength() const { return m_pullStrength; }
 
-void GrappleComponent::set_mass(float val) { m_mass = val; }
+void GrappleComponent::setMass(float val) { m_mass = val; }
 
-float GrappleComponent::get_mass() const { return m_mass; }
+float GrappleComponent::getMass() const { return m_mass; }
 
 void GrappleComponent::setAreaPath(NodePath path) { m_pathToArea3D = path; }
 

@@ -37,12 +37,12 @@ struct StateGrappleContext {
 };
 // struct StateParryContext {
 // 	float detectionradius{};
-// 	std::function<TypedArray<RID>()> get_rid = nullptr;
+// 	std::function<TypedArray<RID>()> getRid = nullptr;
 // 	std::function<Ref<World3D>()> get_world = nullptr;
 // 	std::function<Ref<Shape3D>()> get_shape = nullptr;
 
 // 	TypedArray<Vector3> get_parry_physics_query(const Vector3& gravity_center) {
-// 		ASSERT(get_rid != nullptr, "")
+// 		ASSERT(getRid != nullptr, "")
 // 		ASSERT(get_world != nullptr, "")
 // 		ASSERT(get_shape != nullptr, "")
 
@@ -52,7 +52,7 @@ struct StateGrappleContext {
 // 		query->set_transform(Transform3D(Basis(), gravity_center));
 // 		query->set_collide_with_areas(true);
 // 		query->set_collide_with_bodies(true);
-// 		query->set_exclude(get_rid());
+// 		query->set_exclude(getRid());
 // 		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
 // 		ASSERT(space_state != nullptr, "")
 // 		return space_state->collide_shape(query);

@@ -36,5 +36,3 @@ shape = SubResource("SphereShape3D_ahihr")
 
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
 "Collision AreaPath" = NodePath("../Area3D")
-"Is Heavy" = false
-Mass = 1.0
