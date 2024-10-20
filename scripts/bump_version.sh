@@ -5,6 +5,7 @@ if [ -z "$1" ]; then
     return 1
 fi
 
+ROOT=$(git rev-parse --show-toplevel)
 BUMP=$(echo "$1" | tr '[:lower:]' '[:upper:]')
 
 TAG_MESSAGE=""
@@ -47,8 +48,8 @@ PATCH=$(grep -oP '#define GODOTTER_PATCH \K\d+' "$VERSION_FILE")
 VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
 git add \
-    gameplay_cpp/version.h \
-    gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension
+    $ROOT/gameplay_cpp/version.h \
+    $ROOT/gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension
 git commit -m "Version $VERSION"
 
 if [ -n "$TAG_MESSAGE" ]; then
