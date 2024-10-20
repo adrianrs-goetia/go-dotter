@@ -121,7 +121,7 @@ PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 
 // PlayerParryState
 bool PlayerParryState::can_enter() const {
-	const bool canEnter = !m_exitTimestamp.timestamp_within_timeframe(PARRY_STATE_COOLDOWN);
+	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(PARRY_STATE_COOLDOWN);
 	if (!canEnter) { LOG(DEBUG, "Tried entering parryState before cooldown was ready") }
 	LOG(INFO, "Player parrying")
 	return canEnter;
@@ -129,19 +129,19 @@ bool PlayerParryState::can_enter() const {
 
 PlayerState::Return PlayerParryState::enter(StateContext& context) {
 	Super::enter(context);
-	m_enterTimestamp.set_timestamp();
-	context.physics.velocity = Vector3(); // zero out velocity while in 
+	m_enterTimestamp.setTimestamp();
+	context.physics.velocity = Vector3(); // zero out velocity while in
 	return {};
 }
 
 PlayerState::Return PlayerParryState::exit(StateContext& context) {
-	m_exitTimestamp.set_timestamp();
+	m_exitTimestamp.setTimestamp();
 	return {};
 }
 
 PlayerState::Return PlayerParryState::physics_process(StateContext& context, float delta) {
 	// Parry state timed out
-	if (!m_enterTimestamp.timestamp_within_timeframe(PARRY_STATE_TIME_LENGTH)) {
+	if (!m_enterTimestamp.timestampWithinTimeframe(PARRY_STATE_TIME_LENGTH)) {
 		// Enter on ground by default, should discern if in air or onGround?
 		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
 	}

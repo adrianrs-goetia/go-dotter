@@ -76,7 +76,9 @@ enum class EInputActionType : uint8_t {
 // size == 10 bytes + potential padding
 struct InputAction {
 	InputAction() = default;
-	InputAction(EInputAction action, EInputActionType type) : _action(action), _type(type) {}
+	InputAction(EInputAction action, EInputActionType type)
+		: _action(action)
+		, _type(type) {}
 	bool _consumed = false;
 	EInputAction _action = EInputAction::NONE;
 	EInputActionType _type = EInputActionType::NONE;
@@ -95,7 +97,7 @@ struct InputAction {
 		return _action == action && (_type == EInputActionType::HELD || _type == EInputActionType::PRESSED);
 	}
 	bool received_input_within_timeframe(float timeframe_seconds) {
-		return _timestamp.timestamp_within_timeframe(timeframe_seconds);
+		return _timestamp.timestampWithinTimeframe(timeframe_seconds);
 	}
 	bool is_consumed() const { return _consumed; }
 };
