@@ -25,6 +25,9 @@ void TurretNode::_enter_tree() {
 	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint());
 	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint());
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());
+	// ResourceLoader should cache this between each load.
+	// Still ugly way of getting the desired scene, only option I have seen so far is
+	// having a string property to fetch the scene...
 	m_projectileResource = ResourceLoader::get_singleton()->load("res://gameplayscenes/projectile.tscn");
 	m_firingTimer = memnew(Timer);
 
