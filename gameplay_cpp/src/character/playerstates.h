@@ -9,16 +9,16 @@ public:
 
 	Return enter(StateContext& context) override;
 
-	Return physics_process(StateContext& context, float delta) override;
-	Return handle_input(StateContext& context, float delta) override;
+	Return physicsProcess(StateContext& context, float delta) override;
+	Return handleInput(StateContext& context, float delta) override;
 };
 
 class PlayerInAirState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerInAirState)
 
-	Return physics_process(StateContext& context, float delta) override;
-	Return handle_input(StateContext& context, float delta) override;
+	Return physicsProcess(StateContext& context, float delta) override;
+	Return handleInput(StateContext& context, float delta) override;
 };
 
 class PlayerPreGrappleLaunchState : public PlayerState {
@@ -42,15 +42,15 @@ class PlayerParryState : public PlayerState {
 private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;
-	
+
 public:
 	PLAYER_STATE_IMPL(PlayerParryState)
 
-	bool can_enter() const;
+	bool canEnter() const;
 	Return enter(StateContext& context) override;
 	Return exit(StateContext& context) override;
-	Return physics_process(StateContext& context, float delta) override;
-	Return handle_input(StateContext& context, float delta) override;
+	Return physicsProcess(StateContext& context, float delta) override;
+	Return handleInput(StateContext& context, float delta) override;
 };
 
 /*

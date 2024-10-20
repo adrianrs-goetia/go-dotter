@@ -49,7 +49,7 @@ PlayerState::Return PlayerOnGroundState::enter(StateContext& context) {
 	return {};
 }
 
-PlayerState::Return PlayerOnGroundState::physics_process(StateContext& context, float delta) {
+PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, float delta) {
 	context.physics.velocity.y -= GRAVITY * delta;
 
 	// walking off edge
@@ -57,7 +57,7 @@ PlayerState::Return PlayerOnGroundState::physics_process(StateContext& context, 
 
 	return {};
 }
-PlayerState::Return PlayerOnGroundState::handle_input(StateContext& context, float delta) {
+PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, float delta) {
 	// direction
 	helper::movement_acceleration(context, ONGROUND_ACCELERATION, ONGROUND_DECELARATION, delta);
 
@@ -76,7 +76,7 @@ PlayerState::Return PlayerOnGroundState::handle_input(StateContext& context, flo
 }
 
 // PlayerInAirState
-PlayerState::Return PlayerInAirState::physics_process(StateContext& context, float delta) {
+PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, float delta) {
 	if (context.physics.is_on_ground) {
 		// if (!m_guarantee_one_frame_processing)
 		{
@@ -89,7 +89,7 @@ PlayerState::Return PlayerInAirState::physics_process(StateContext& context, flo
 	return {};
 }
 
-PlayerState::Return PlayerInAirState::handle_input(StateContext& context, float delta) {
+PlayerState::Return PlayerInAirState::handleInput(StateContext& context, float delta) {
 	if (context.input->is_action_pressed(EInputAction::GRAPPLE) && context.grapple.target) {
 		LOG(WARN, "inair grappling time")
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
@@ -120,7 +120,7 @@ PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 }
 
 // PlayerParryState
-bool PlayerParryState::can_enter() const {
+bool PlayerParryState::canEnter() const {
 	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(PARRY_STATE_COOLDOWN);
 	if (!canEnter) { LOG(DEBUG, "Tried entering parryState before cooldown was ready") }
 	LOG(INFO, "Player parrying")
@@ -139,7 +139,7 @@ PlayerState::Return PlayerParryState::exit(StateContext& context) {
 	return {};
 }
 
-PlayerState::Return PlayerParryState::physics_process(StateContext& context, float delta) {
+PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, float delta) {
 	// Parry state timed out
 	if (!m_enterTimestamp.timestampWithinTimeframe(PARRY_STATE_TIME_LENGTH)) {
 		// Enter on ground by default, should discern if in air or onGround?
@@ -149,7 +149,7 @@ PlayerState::Return PlayerParryState::physics_process(StateContext& context, flo
 	return {};
 }
 
-PlayerState::Return PlayerParryState::handle_input(StateContext& context, float delta) {
+PlayerState::Return PlayerParryState::handleInput(StateContext& context, float delta) {
 	if (context.input->is_action_pressed(EInputAction::JUMP)) {
 		return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}

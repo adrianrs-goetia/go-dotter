@@ -9,13 +9,13 @@ struct State {
 		Ret* new_state = nullptr;
 	};
 	virtual const char* get_name() = 0;
-	virtual bool can_enter() const = 0;
+	virtual bool canEnter() const = 0;
 	virtual Return enter(Context& context) = 0;
 	virtual Return exit(Context& context) = 0;
 	virtual Return process(Context& context, float delta) = 0;
-	virtual Return physics_process(Context& context, float delta) = 0;
-	virtual Return handle_input(Context& context, float delta) = 0;
-	virtual Return deferred_actions(Context& context) = 0;
+	virtual Return physicsProcess(Context& context, float delta) = 0;
+	virtual Return handleInput(Context& context, float delta) = 0;
+	virtual Return deferredActions(Context& context) = 0;
 };
 
 /////////////////////////////////////
@@ -27,20 +27,20 @@ private:
 	StateClass* m_current_state = nullptr;
 
 public:
-	const char* get_current_state_name();
+	const char* getCurrentStateName();
 	void init(Context& context, StateClass* state);
 	void deinit();
 	void process(Context& context, float delta);
-	void physics_process(Context& context, float delta);
-	void handle_input(Context& context, float delta);
-	void deferred_actions(Context& context);
+	void physicsProcess(Context& context, float delta);
+	void handleInput(Context& context, float delta);
+	void deferredActions(Context& context);
 
 protected:
-	void _process_state(Context& context, StateReturn state_return);
+	void _processState(Context& context, StateReturn state_return);
 };
 
 template <typename Context, typename StateClass, typename StateReturn>
-inline const char* Fsm<Context, StateClass, StateReturn>::get_current_state_name() {
+inline const char* Fsm<Context, StateClass, StateReturn>::getCurrentStateName() {
 	ASSERT_NOTNULL(m_current_state)
 	return m_current_state->get_name();
 }
@@ -49,7 +49,7 @@ template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::init(Context& context, StateClass* state) {
 	ASSERT_NOTNULL(state)
 	m_current_state = state;
-	_process_state(context, m_current_state->enter(context));
+	_processState(context, m_current_state->enter(context));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
@@ -60,32 +60,32 @@ inline void Fsm<Context, StateClass, StateReturn>::deinit() {
 template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::process(Context& context, float delta) {
 	ASSERT_NOTNULL(m_current_state)
-	_process_state(context, m_current_state->process(context, delta));
+	_processState(context, m_current_state->process(context, delta));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
-inline void Fsm<Context, StateClass, StateReturn>::physics_process(Context& context, float delta) {
+inline void Fsm<Context, StateClass, StateReturn>::physicsProcess(Context& context, float delta) {
 	ASSERT_NOTNULL(m_current_state)
-	_process_state(context, m_current_state->physics_process(context, delta));
+	_processState(context, m_current_state->physicsProcess(context, delta));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
-inline void Fsm<Context, StateClass, StateReturn>::handle_input(Context& context, float delta) {
+inline void Fsm<Context, StateClass, StateReturn>::handleInput(Context& context, float delta) {
 	ASSERT_NOTNULL(m_current_state)
-	_process_state(context, m_current_state->handle_input(context, delta));
+	_processState(context, m_current_state->handleInput(context, delta));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
-inline void Fsm<Context, StateClass, StateReturn>::deferred_actions(Context& context) {
+inline void Fsm<Context, StateClass, StateReturn>::deferredActions(Context& context) {
 	ASSERT_NOTNULL(m_current_state)
-	_process_state(context, m_current_state->deferred_actions(context));
+	_processState(context, m_current_state->deferredActions(context));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
-inline void Fsm<Context, StateClass, StateReturn>::_process_state(Context& context, StateReturn state_return) {
-	if (state_return.new_state && state_return.new_state->can_enter()) {
+inline void Fsm<Context, StateClass, StateReturn>::_processState(Context& context, StateReturn state_return) {
+	if (state_return.new_state && state_return.new_state->canEnter()) {
 		m_current_state->exit(context);
 		m_current_state = state_return.new_state;
-		_process_state(context, m_current_state->enter(context));
+		_processState(context, m_current_state->enter(context));
 	}
 }

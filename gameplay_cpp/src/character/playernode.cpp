@@ -120,8 +120,8 @@ void PlayerNode::_physics_process(double delta) {
 	m_state_context->physics.velocity = get_velocity();
 
 	// Let FSM deal with physics and input context
-	m_fsm.physics_process(*m_state_context, delta);
-	m_fsm.handle_input(*m_state_context, delta);
+	m_fsm.physicsProcess(*m_state_context, delta);
+	m_fsm.handleInput(*m_state_context, delta);
 
 	// set data from context
 	set_velocity(m_state_context->physics.velocity);
@@ -129,7 +129,7 @@ void PlayerNode::_physics_process(double delta) {
 	rotate_towards_velocity(delta);
 
 	// deferred actions
-	m_fsm.deferred_actions(*m_state_context);
+	m_fsm.deferredActions(*m_state_context);
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
