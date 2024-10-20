@@ -43,7 +43,7 @@ public:
 	void areaEnteredParryDetection(Area3D* area);
 	void areaExitedParryDetection(Area3D* area);
 
-	void activateParry();
+	bool activateParry();
 
 	Vector3 getPosition() const;
 	Vector3 getVelocity() const;

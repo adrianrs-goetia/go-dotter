@@ -12,19 +12,19 @@ linux.template_release.x86_64 = { }
 [libraries]
 ; -------------------------------------
 ; debug
-macos = "libs/libgameplay_cpp_v0.1.2_macos.editor.universal.framework"
-windows.x86_64 = "libs/libgameplay_cpp_v0.1.2_windows.editor.x86_64.dll"
-linux.x86_64 = "libs/libgameplay_cpp_v0.1.2_linux.editor.x86_64.so"
+macos = "libs/libgameplay_cpp_v0.2.0_macos.editor.universal.framework"
+windows.x86_64 = "libs/libgameplay_cpp_v0.2.0_windows.editor.x86_64.dll"
+linux.x86_64 = "libs/libgameplay_cpp_v0.2.0_linux.editor.x86_64.so"
 
 ; -------------------------------------
 ; export - debug
-macos.template_debug = "libs/libgameplay_cpp_v0.1.2_macos.template_debug.universal.framework"
-windows.template_debug.x86_64 = "libs/libgameplay_cpp_v0.1.2_windows.template_debug.x86_64.dll"
-linux.template_debug.x86_64 = "libs/libgameplay_cpp_v0.1.2_linux.template_debug.x86_64.so"
+macos.template_debug = "libs/libgameplay_cpp_v0.2.0_macos.template_debug.universal.framework"
+windows.template_debug.x86_64 = "libs/libgameplay_cpp_v0.2.0_windows.template_debug.x86_64.dll"
+linux.template_debug.x86_64 = "libs/libgameplay_cpp_v0.2.0_linux.template_debug.x86_64.so"
 
 
 ; -------------------------------------
 ; export - release 
-macos.template_release = "libs/libgameplay_cpp_v0.1.2_macos.template_release.universal.framework"
-windows.template_release.x86_64 = "libs/libgameplay_cpp_v0.1.2_windows.template_release.x86_64.dll"
-linux.template_release.x86_64 = "libs/libgameplay_cpp_v0.1.2_linux.template_release.x86_64.so"
+macos.template_release = "libs/libgameplay_cpp_v0.2.0_macos.template_release.universal.framework"
+windows.template_release.x86_64 = "libs/libgameplay_cpp_v0.2.0_windows.template_release.x86_64.dll"
+linux.template_release.x86_64 = "libs/libgameplay_cpp_v0.2.0_linux.template_release.x86_64.so"

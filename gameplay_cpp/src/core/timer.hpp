@@ -6,8 +6,9 @@ class Timestamp {
 	std::chrono::system_clock::time_point timestamp;
 
 public:
-	Timestamp() : timestamp(std::chrono::system_clock::now()) {}
-	bool timestamp_within_timeframe(float timeframe_seconds) {
+	Timestamp() { set_timestamp(); }
+	void set_timestamp() { timestamp = std::chrono::system_clock::now(); }
+	bool timestamp_within_timeframe(float timeframe_seconds) const {
 		float duration_since_timestamp =
 				std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now() - timestamp)
 						.count();

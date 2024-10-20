@@ -19,7 +19,8 @@ constexpr float GRAVITY = GRAVITY_CONSTANT * GRAVITY_SCALE;
 
 constexpr float GRAPPLE_LAUNCH_STRENGTH = 20.0f;
 
-constexpr float PARRY_LAUNCH_STRENGTH = 8.0f;
+constexpr float PARRY_STATE_COOLDOWN = 1.0f;
+constexpr float PARRY_STATE_TIME_LENGTH = 1.5f;
 
 namespace helper {
 	void movement_acceleration(StateContext* context, float acceleration, float deceleration, float delta) {
@@ -68,9 +69,8 @@ PlayerState::Return PlayerOnGroundState::handle_input(StateContext* context, flo
 	if (context->input->is_action_pressed(EInputAction::GRAPPLE) && context->grapple.target) {
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
-	if (context->input->is_action_pressed(EInputAction::PARRY)){
-		context->parry->activateParry();
-		// TODO return new state??
+	if (context->input->is_action_pressed(EInputAction::PARRY)) {
+		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
 	return {};
 }
@@ -94,9 +94,8 @@ PlayerState::Return PlayerInAirState::handle_input(StateContext* context, float 
 		LOG(WARN, "inair grappling time")
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
-	if (context->input->is_action_pressed(EInputAction::PARRY)){
-		context->parry->activateParry();
-		// TODO return new state??
+	if (context->input->is_action_pressed(EInputAction::PARRY)) {
+		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
 	return {};
 }
@@ -118,4 +117,41 @@ PlayerState::Return PlayerGrappleLaunchState::enter(StateContext* context) {
 		context->physics.velocity = launch.impulse;
 	}
 	return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
+}
+
+// PlayerParryState
+bool PlayerParryState::can_enter() const {
+	const bool canEnter = !m_exitTimestamp.timestamp_within_timeframe(PARRY_STATE_COOLDOWN);
+	if (!canEnter) { LOG(DEBUG, "Tried entering parryState before cooldown was ready") }
+	LOG(INFO, "Player parrying")
+	return canEnter;
+}
+
+PlayerState::Return PlayerParryState::enter(StateContext* context) {
+	Super::enter(context);
+	m_enterTimestamp.set_timestamp();
+	context->physics.velocity = Vector3(); // zero out velocity while in 
+	return {};
+}
+
+PlayerState::Return PlayerParryState::exit(StateContext* context) {
+	m_exitTimestamp.set_timestamp();
+	return {};
+}
+
+PlayerState::Return PlayerParryState::physics_process(StateContext* context, float delta) {
+	// Parry state timed out
+	if (!m_enterTimestamp.timestamp_within_timeframe(PARRY_STATE_TIME_LENGTH)) {
+		// Enter on ground by default, should discern if in air or onGround?
+		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
+	}
+	if (context->parry->activateParry()) { return { PlayerStateBank::get().state<PlayerOnGroundState>() }; }
+	return {};
+}
+
+PlayerState::Return PlayerParryState::handle_input(StateContext* context, float delta) {
+	if (context->input->is_action_pressed(EInputAction::JUMP)) {
+		return { PlayerStateBank::get().state<PlayerInAirState>() };
+	}
+	return {};
 }

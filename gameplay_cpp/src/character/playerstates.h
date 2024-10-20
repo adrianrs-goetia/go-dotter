@@ -38,6 +38,21 @@ public:
 	Return enter(StateContext* context) override;
 };
 
+class PlayerParryState : public PlayerState {
+private:
+	Timestamp m_enterTimestamp;
+	Timestamp m_exitTimestamp;
+	
+public:
+	PLAYER_STATE_IMPL(PlayerParryState)
+
+	bool can_enter() const;
+	Return enter(StateContext* context) override;
+	Return exit(StateContext* context) override;
+	Return physics_process(StateContext* context, float delta) override;
+	Return handle_input(StateContext* context, float delta) override;
+};
+
 /*
  * Static PlayerStateBank with memory baked into the binary.
  * Avoid allocating memory on heap when switching between states;
@@ -52,6 +67,7 @@ class PlayerStateBank {
 	PlayerInAirState inairstate;
 	PlayerPreGrappleLaunchState pregrapplelaunchstate;
 	PlayerGrappleLaunchState grapplelaunchstate;
+	PlayerParryState parrystate;
 
 public:
 	static PlayerStateBank& get() {
@@ -61,10 +77,11 @@ public:
 	template <class T>
 	PlayerState* state() {
 		static_assert(std::is_base_of_v<PlayerState, T>, "PlayerStateBank can only handle PlayerStates");
-		if (std::is_same_v<T, PlayerOnGroundState>) { return &ongroundstate; }
-		if (std::is_same_v<T, PlayerInAirState>) { return &inairstate; }
-		if (std::is_same_v<T, PlayerPreGrappleLaunchState>) { return &pregrapplelaunchstate; }
-		if (std::is_same_v<T, PlayerGrappleLaunchState>) { return &grapplelaunchstate; }
+		if constexpr (std::is_same_v<T, PlayerOnGroundState>) { return &ongroundstate; }
+		if constexpr (std::is_same_v<T, PlayerInAirState>) { return &inairstate; }
+		if constexpr (std::is_same_v<T, PlayerPreGrappleLaunchState>) { return &pregrapplelaunchstate; }
+		if constexpr (std::is_same_v<T, PlayerGrappleLaunchState>) { return &grapplelaunchstate; }
+		if constexpr (std::is_same_v<T, PlayerParryState>) { return &parrystate; }
 	}
 };
 

@@ -78,13 +78,13 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
-void ParryInstigatorComponent::activateParry() {
-	RETURN_IF_EDITOR
+bool ParryInstigatorComponent::activateParry() {
+	RETURN_IF_EDITOR_RET(bool)
 	ASSERT_NOTNULL(m_area)
 
 	if (m_inRangeParryTargets.empty()) {
 		LOG(DEBUG, "No in range parry targets");
-		return;
+		return false;
 	}
 
 	// get closest in range parry target
@@ -101,6 +101,7 @@ void ParryInstigatorComponent::activateParry() {
 	ASSERT_NOTNULL(target)
 	ParryInstance instance(*this, *target);
 	target->getParried(instance);
+	return true;
 }
 
 Vector3 ParryInstigatorComponent::getPosition() const {
