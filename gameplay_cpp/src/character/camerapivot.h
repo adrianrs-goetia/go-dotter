@@ -28,8 +28,8 @@ public:
 	// void set_length_impl(float p_length);
 	// float get_length_impl() const;
 
-	void process(StateContext* context, float delta);
-	void process_input(StateContext* context, float delta);
+	void process(StateContext& context, float delta);
+	void processInput(StateContext& context, float delta);
 };
 
 #endif // GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H

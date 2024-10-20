@@ -8,7 +8,7 @@ struct State {
 	struct Return {
 		Ret* new_state = nullptr;
 	};
-	virtual const char* get_name() = 0;
+	virtual const char* getName() = 0;
 	virtual bool canEnter() const = 0;
 	virtual Return enter(Context& context) = 0;
 	virtual Return exit(Context& context) = 0;

@@ -19,7 +19,7 @@ const char* color_from_level(ELog level) {
 		default: return "";
 	}
 }
-const char* get_string(ELog level) {
+const char* getString(ELog level) {
 	switch (level) {
 		case ELog::DEBUG: return "DEBUG";
 		case ELog::INFO: return "INFO";
@@ -28,9 +28,9 @@ const char* get_string(ELog level) {
 		default: return "";
 	}
 }
-void set_log_level(ELog level) {
+void setLogLevel(ELog level) {
 	g_loglevel = ELog::DEBUG;
-	LOG(DEBUG, "Setting log level -> ", get_string(level));
+	LOG(DEBUG, "Setting log level -> ", getString(level));
 	g_loglevel = level;
 }
 void log_impl(ELog level, const char* msg, const char* arg) {

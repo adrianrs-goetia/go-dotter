@@ -23,15 +23,15 @@ class PlayerNode : public CharacterBody3D {
 
 public:
 	PlayerFSM m_fsm;
-	StateContext* m_state_context = nullptr;
+	StateContext* m_stateContext = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* m_meshAnchor = nullptr;
-	Area3D* m_grappledetectionarea = nullptr;
+	Area3D* m_grappleDetectionArea = nullptr;
 
-	GrappleComponent* m_grapplecomponent = nullptr;
-	ParryInstigatorComponent* m_parrycomponent = nullptr;
+	GrappleComponent* m_grappleComponent = nullptr;
+	ParryInstigatorComponent* m_parryComponent = nullptr;
 
-	std::vector<GrappleComponent*> m_in_range_grapplenodes;
+	std::vector<GrappleComponent*> m_inRangeGrapplenodes;
 
 public:
 	GETNAME(PlayerNode)
@@ -44,11 +44,11 @@ public:
 	void _physics_process(double delta) override;
 	void _input(const Ref<InputEvent>& p_event);
 
-	void rotate_towards_velocity(float delta);
+	void rotateTowardsVelocity(float delta);
 
-	void area_entered_grappledetection(Area3D* area);
-	void area_exited_grappledetection(Area3D* area);
-	void determine_grapple_target();
+	void areaEnteredGrappledetection(Area3D* area);
+	void areaExitedGrappledetection(Area3D* area);
+	void determineGrappleTarget();
 
 	template <typename T>
 	T* get_child_node_of_type(const godot::Node* node) {

@@ -10,8 +10,8 @@ enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };
 		Log(ELog::level, message, ##__VA_ARGS__);                                                                      \
 	}
 
-void set_log_level(ELog level);
-const char* get_string(ELog level);
+void setLogLevel(ELog level);
+const char* getString(ELog level);
 void Log(ELog level, const char* msg);
 void Log(ELog level, const char* msg, const char* arg);
 void Log(ELog level, const char* msg, const char* arg, const char* arg2);

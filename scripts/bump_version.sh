@@ -46,7 +46,9 @@ MINOR=$(grep -oP '#define GODOTTER_MINOR \K\d+' "$VERSION_FILE")
 PATCH=$(grep -oP '#define GODOTTER_PATCH \K\d+' "$VERSION_FILE")
 VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
-git add gameplay_cpp/version.h gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension
+git add \
+    gameplay_cpp/version.h \
+    gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension
 git commit -m "Version $VERSION"
 
 if [ -n "$TAG_MESSAGE" ]; then

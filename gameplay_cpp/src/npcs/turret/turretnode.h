@@ -32,8 +32,8 @@ public:
 	void _physics_process(double delta) override;
 
 	float getFiringInterval() const;
-	void rotate_head_towards_target();
-	void fire_projectile();
+	void rotateHeadTowardsTarget();
+	void fireProjectile();
 
 	Vector3 getDirectionToTarget(const Node3D* source) const;
 	Vector3 getGunOpeningLocation() const;

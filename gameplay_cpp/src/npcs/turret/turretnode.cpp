@@ -36,7 +36,7 @@ void TurretNode::_enter_tree() {
 	ASSERT_NOTNULL(m_firingTimer)
 
 	add_child(m_firingTimer);
-	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fire_projectile));
+	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fireProjectile));
 	m_firingTimer->start(getFiringInterval());
 }
 
@@ -44,14 +44,14 @@ void TurretNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR
 	//
 
-	rotate_head_towards_target();
+	rotateHeadTowardsTarget();
 }
 
 float TurretNode::getFiringInterval() const {
-	return FIRING_INTERVAL + canonical_random_number(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
+	return FIRING_INTERVAL + canonicalRandomNumber(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
 }
 
-void TurretNode::rotate_head_towards_target() {
+void TurretNode::rotateHeadTowardsTarget() {
 	ASSERT_NOTNULL(m_gunRotPoint)
 	ASSERT_NOTNULL(m_gunRotJoint)
 	// Yaw rotation
@@ -71,7 +71,7 @@ void TurretNode::rotate_head_towards_target() {
 	}
 }
 
-void TurretNode::fire_projectile() {
+void TurretNode::fireProjectile() {
 	Node* instance = m_projectileResource->instantiate();
 	ASSERT_NOTNULL(instance)
 

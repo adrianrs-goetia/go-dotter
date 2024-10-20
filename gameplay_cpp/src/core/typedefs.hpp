@@ -6,8 +6,8 @@
 namespace nodePaths {
 	constexpr const char* root = "/root";
 	constexpr const char* player = "/root/Mainscene/PlayerNode";
-	constexpr const char* camera_pivot = "/root/Mainscene/PlayerNode/CameraPivot";
-	constexpr const char* camera = ("%s/Camera", camera_pivot);
+	constexpr const char* cameraPivot = "/root/Mainscene/PlayerNode/CameraPivot";
+	constexpr const char* camera = ("%s/Camera", cameraPivot);
 
 } //namespace nodePaths
 
@@ -19,4 +19,3 @@ namespace collisionflags {
 	static constexpr uint32_t grapplingTarget = 7;
 	static constexpr uint32_t parryTarget = 8;
 } //namespace collisionflags
-

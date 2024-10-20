@@ -35,49 +35,13 @@ struct StateGrappleContext {
 	GrappleComponent* instigator = nullptr;
 	GrappleComponent* target = nullptr;
 };
-// struct StateParryContext {
-// 	float detectionradius{};
-// 	std::function<TypedArray<RID>()> getRid = nullptr;
-// 	std::function<Ref<World3D>()> get_world = nullptr;
-// 	std::function<Ref<Shape3D>()> get_shape = nullptr;
-
-// 	TypedArray<Vector3> get_parry_physics_query(const Vector3& gravity_center) {
-// 		ASSERT(getRid != nullptr, "")
-// 		ASSERT(get_world != nullptr, "")
-// 		ASSERT(get_shape != nullptr, "")
-
-// 		Ref<PhysicsShapeQueryParameters3D> query;
-// 		query.instantiate();
-// 		query->set_shape(get_shape());
-// 		query->set_transform(Transform3D(Basis(), gravity_center));
-// 		query->set_collide_with_areas(true);
-// 		query->set_collide_with_bodies(true);
-// 		query->set_exclude(getRid());
-// 		PhysicsDirectSpaceState3D* space_state = get_world()->get_direct_space_state();
-// 		ASSERT(space_state != nullptr, "")
-// 		return space_state->collide_shape(query);
-// 	}
-// };
 
 struct StateContext {
 	StateGrappleContext grapple;
 	InputComponent* input = nullptr;
-	// StateParryContext parry;
-	ParryInstigatorComponent* parry = nullptr; // ParryComponent == Players ParryDetection/ParryLogic
+	ParryInstigatorComponent* parry = nullptr;
 	StatePhysicsContext physics;
 };
-
-namespace Compiletime {
-	constexpr int sizeof_physicscontext = sizeof(StatePhysicsContext);
-	// constexpr int sizeof_inputcontext = sizeof(InputComponent);
-	constexpr int sizeof_grapplecontext = sizeof(StateGrappleContext);
-	// constexpr int sizeof_parrycontext = sizeof(StateParryContext);
-	constexpr int sizeof_statecontext = sizeof(StateContext);
-
-	// static_assert(sizeof(StatePhysicsContext) == 28);
-	// static_assert(sizeof(StateInputContext) == 56);
-	// static_assert(sizeof(StateContext) == 136);
-} //namespace Compiletime
 
 class PlayerState : public State<StateContext, PlayerState> {
 	// BUG: regarding guarantee one frame processing?
@@ -86,7 +50,7 @@ public:
 	// default overrides for PlayerState
 	virtual bool canEnter() const override { return true; }
 	virtual Return enter(StateContext& context) override {
-		LOG(DEBUG, "Entering state ", get_name())
+		LOG(DEBUG, "Entering state ", getName())
 		return {};
 	}
 	virtual Return exit(StateContext& context) override { return {}; }
@@ -97,7 +61,7 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* get_name() override{ return #CLASSNAME;                                                        \
+	virtual const char* getName() override{ return #CLASSNAME;                                                         \
 	}
 };
 
