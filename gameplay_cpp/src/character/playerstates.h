@@ -7,18 +7,18 @@ class PlayerOnGroundState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerOnGroundState)
 
-	Return enter(StateContext* context) override;
+	Return enter(StateContext& context) override;
 
-	Return physics_process(StateContext* context, float delta) override;
-	Return handle_input(StateContext* context, float delta) override;
+	Return physics_process(StateContext& context, float delta) override;
+	Return handle_input(StateContext& context, float delta) override;
 };
 
 class PlayerInAirState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerInAirState)
 
-	Return physics_process(StateContext* context, float delta) override;
-	Return handle_input(StateContext* context, float delta) override;
+	Return physics_process(StateContext& context, float delta) override;
+	Return handle_input(StateContext& context, float delta) override;
 };
 
 class PlayerPreGrappleLaunchState : public PlayerState {
@@ -28,14 +28,14 @@ public:
 public:
 	PLAYER_STATE_IMPL(PlayerPreGrappleLaunchState)
 
-	Return enter(StateContext* context) override;
+	Return enter(StateContext& context) override;
 };
 
 class PlayerGrappleLaunchState : public PlayerState {
 public:
 	PLAYER_STATE_IMPL(PlayerGrappleLaunchState)
 
-	Return enter(StateContext* context) override;
+	Return enter(StateContext& context) override;
 };
 
 class PlayerParryState : public PlayerState {
@@ -47,10 +47,10 @@ public:
 	PLAYER_STATE_IMPL(PlayerParryState)
 
 	bool can_enter() const;
-	Return enter(StateContext* context) override;
-	Return exit(StateContext* context) override;
-	Return physics_process(StateContext* context, float delta) override;
-	Return handle_input(StateContext* context, float delta) override;
+	Return enter(StateContext& context) override;
+	Return exit(StateContext& context) override;
+	Return physics_process(StateContext& context, float delta) override;
+	Return handle_input(StateContext& context, float delta) override;
 };
 
 /*

@@ -85,15 +85,15 @@ class PlayerState : public State<StateContext, PlayerState> {
 public:
 	// default overrides for PlayerState
 	virtual bool can_enter() const override { return true; }
-	virtual Return enter(StateContext* context) override {
+	virtual Return enter(StateContext& context) override {
 		LOG(DEBUG, "Entering state ", get_name())
 		return {};
 	}
-	virtual Return exit(StateContext* context) override { return {}; }
-	virtual Return process(StateContext* context, float delta) override { return {}; }
-	virtual Return physics_process(StateContext* context, float delta) override { return {}; }
-	virtual Return handle_input(StateContext* context, float delta) override { return {}; }
-	virtual Return deferred_actions(StateContext* context) override { return {}; }
+	virtual Return exit(StateContext& context) override { return {}; }
+	virtual Return process(StateContext& context, float delta) override { return {}; }
+	virtual Return physics_process(StateContext& context, float delta) override { return {}; }
+	virtual Return handle_input(StateContext& context, float delta) override { return {}; }
+	virtual Return deferred_actions(StateContext& context) override { return {}; }
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
