@@ -75,8 +75,8 @@ void PlayerNode::_enter_tree() {
 	m_state_context->grapple.instigator = m_grapplecomponent;
 
 	m_parrycomponent->m_getDesiredDirectionCb = [this]() -> Vector3 {
-		Vector3 desiredDir = m_state_context->input->get_input_relative_3d();
-		if (desiredDir.length_squared() < 0.2f) { desiredDir = m_state_context->input->get_camera3ddir(); }
+		Vector3 desiredDir = m_state_context->input->getInputRelative3d();
+		if (desiredDir.length_squared() < 0.2f) { desiredDir = m_state_context->input->getCamera3dDir(); }
 		return desiredDir;
 	};
 }
@@ -140,7 +140,7 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 }
 
 void PlayerNode::rotate_towards_velocity(float delta) {
-	const Vector2 input_relative = m_state_context->input->m_input_relative;
+	const Vector2 input_relative = m_state_context->input->m_inputCameraRelative;
 	Vector3 inputvec(input_relative.x, 0, input_relative.y);
 	if (inputvec.length_squared() <= 0) { return; }
 	inputvec.normalize();
@@ -177,7 +177,7 @@ void PlayerNode::area_exited_grappledetection(Area3D* area) {
 void PlayerNode::determine_grapple_target() {
 	RETURN_IF_EDITOR
 	ASSERT_NOTNULL(m_state_context)
-	const Vector3 cam3d = m_state_context->input->get_camera3ddir();
+	const Vector3 cam3d = m_state_context->input->getCamera3dDir();
 	float lowest_dot = -1.0f;
 	GrappleComponent* target = nullptr;
 	for (GrappleComponent* gn : m_in_range_grapplenodes) {

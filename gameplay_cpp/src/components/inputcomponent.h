@@ -9,29 +9,29 @@ using namespace godot;
 
 namespace InputString {
 
-	constexpr const char* move_left = "move_left";
-	constexpr const char* move_right = "move_right";
-	constexpr const char* move_forward = "move_forward";
-	constexpr const char* move_backward = "move_backward";
+	constexpr const char* moveLeft = "move_left";
+	constexpr const char* moveRight = "move_right";
+	constexpr const char* moveForward = "move_forward";
+	constexpr const char* moveBackward = "move_backward";
 
 	constexpr const char* jump = "jump";
 	constexpr const char* attack = "attack";
 	constexpr const char* parry = "parry";
 	constexpr const char* grapplehook = "grapplehook";
 
-	constexpr const char* camera_left = "camera_left";
-	constexpr const char* camera_right = "camera_right";
-	constexpr const char* camera_up = "camera_up";
-	constexpr const char* camera_down = "camera_down";
+	constexpr const char* cameraLeft = "camera_left";
+	constexpr const char* cameraRight = "camera_right";
+	constexpr const char* cameraUp = "camera_up";
+	constexpr const char* cameraDown = "camera_down";
 
-	constexpr const char* pause_menu = "pause_menu";
-	constexpr const char* toggle_screen_mode = "toggle_screen_mode";
-	constexpr const char* toggle_application_mouse_lock = "toggle_application_mouse_lock";
+	constexpr const char* pauseMenu = "pause_menu";
+	constexpr const char* toggleScreenMode = "toggle_screen_mode";
+	constexpr const char* toggleApplicationMouseLock = "toggle_application_mouse_lock";
 	constexpr const char* restart = "restart";
 
 	// Some Built-in actions
-	constexpr const char* ui_up = "ui_up";
-	constexpr const char* ui_down = "ui_down";
+	constexpr const char* uiUp = "ui_up";
+	constexpr const char* uiDown = "ui_down";
 
 } //namespace InputString
 
@@ -72,34 +72,34 @@ enum class EInputActionType : uint8_t {
 	HELD,
 };
 
-// Input action passed down to the players fsm->current_state
-// size == 10 bytes + potential padding
-struct InputAction {
+class InputAction {
+	bool m_consumed = false;
+	EInputAction m_action = EInputAction::NONE;
+	EInputActionType m_type = EInputActionType::NONE;
+	Timestamp m_timestamp;
+
+public:
 	InputAction() = default;
 	InputAction(EInputAction action, EInputActionType type)
-		: _action(action)
-		, _type(type) {}
-	bool _consumed = false;
-	EInputAction _action = EInputAction::NONE;
-	EInputActionType _type = EInputActionType::NONE;
-	Timestamp _timestamp;
+		: m_action(action)
+		, m_type(type) {}
 
-	bool is_action_pressed(EInputAction action, bool consume = true) {
-		if (!_consumed && _action == action) {
-			_consumed = consume;
-			return _type == EInputActionType::PRESSED;
+	bool isActionPressed(EInputAction action, bool consume = true) {
+		if (!m_consumed && m_action == action) {
+			m_consumed = consume;
+			return m_type == EInputActionType::PRESSED;
 		}
 		return false;
 	}
-	bool is_action_released(EInputAction action) { return _action == action && _type == EInputActionType::RELEASED; }
-	bool is_action_held(EInputAction action) { return _action == action && _type == EInputActionType::HELD; }
-	bool is_action_down(EInputAction action) {
-		return _action == action && (_type == EInputActionType::HELD || _type == EInputActionType::PRESSED);
+	bool isActionReleased(EInputAction action) { return m_action == action && m_type == EInputActionType::RELEASED; }
+	bool isActionHeld(EInputAction action) { return m_action == action && m_type == EInputActionType::HELD; }
+	bool isActionDown(EInputAction action) {
+		return m_action == action && (m_type == EInputActionType::HELD || m_type == EInputActionType::PRESSED);
 	}
-	bool received_input_within_timeframe(float timeframe_seconds) {
-		return _timestamp.timestampWithinTimeframe(timeframe_seconds);
+	bool receivedInputWithinTimeframe(float timeframe_seconds) {
+		return m_timestamp.timestampWithinTimeframe(timeframe_seconds);
 	}
-	bool is_consumed() const { return _consumed; }
+	bool isConsumed() const { return m_consumed; }
 };
 
 /**
@@ -112,24 +112,24 @@ public:
 	EInputMode mode;
 
 	/**
-	 * Raw input along x/y axis
+	 * Raw input along XY axis
 	 */
-	Vector2 input_raw;
+	Vector2 m_inputRaw;
 	/**
-	 * Input in 3D space relative to camera
+	 * Input in 3D space relative to camera XZ
 	 */
-	Vector2 m_input_relative;
-	Vector2 m_motion;
-	Vector2 m_camera2ddir;
+	Vector2 m_inputCameraRelative;
+	Vector2 m_motion; // Mouse motion
+	Vector2 m_camera2dDir;
 
-	std::list<InputAction> input_actions;
+	std::list<InputAction> m_inputActions;
 
 	struct AdditionalStates {
-		bool application_mouse_lock{ true };
+		bool applicationMouseLock{ true };
 	} m_additionalStates;
 
 private:
-	void exit_game();
+	void exitGame();
 
 public:
 	GETNAME(InputComponent)
@@ -140,11 +140,11 @@ public:
 	void _input(const Ref<InputEvent>& p_event);
 	void _unhandled_input(const Ref<InputEvent>& p_event);
 
-	bool is_action_pressed(EInputAction action, float timeframe = -1.0f);
+	bool isActionPressed(EInputAction action, float timeframe = -1.0f);
 
 	static InputComponent* getinput(const Node* referencenode);
 
-	Vector3 get_camera3ddir() const;
-	Vector3 get_input_raw_3d() const;
-	Vector3 get_input_relative_3d(float y = 0.f) const;
+	Vector3 getCamera3dDir() const;
+	Vector3 getInputRaw3d() const;
+	Vector3 getInputRelative3d(float y = 0.f) const;
 };

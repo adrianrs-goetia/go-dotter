@@ -10,7 +10,7 @@
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
-void InputComponent::exit_game() {
+void InputComponent::exitGame() {
 	if (SceneTree* tree = get_tree()) {
 		LOG(INFO, "tree->quit(0)")
 		tree->quit(0);
@@ -20,7 +20,7 @@ void InputComponent::exit_game() {
 void InputComponent::_bind_methods() {
 	DEFAULT_PROPERTY(InputComponent)
 
-	godot::ClassDB::bind_method(godot::D_METHOD("exit_game"), &InputComponent::exit_game);
+	godot::ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame);
 }
 
 void InputComponent::_physics_process(double delta) {
@@ -28,24 +28,24 @@ void InputComponent::_physics_process(double delta) {
 	godot::Input* input = Input::get_singleton();
 
 	// Input movement direction (wasd or leftstick equivalent)
-	input_raw = input->get_vector(InputString::move_left, InputString::move_right, InputString::move_forward,
-			InputString::move_backward, 0.05);
+	m_inputRaw = input->get_vector(
+			InputString::moveLeft, InputString::moveRight, InputString::moveForward, InputString::moveBackward, 0.05);
 
 	// Input actions
 	if (input->is_action_just_pressed(InputString::jump)) {
-		input_actions.emplace_back(InputAction{ EInputAction::JUMP, EInputActionType::PRESSED });
+		m_inputActions.emplace_back(InputAction{ EInputAction::JUMP, EInputActionType::PRESSED });
 	}
 	if (input->is_action_just_pressed(InputString::grapplehook)) {
-		input_actions.emplace_back(InputAction{ EInputAction::GRAPPLE, EInputActionType::PRESSED });
+		m_inputActions.emplace_back(InputAction{ EInputAction::GRAPPLE, EInputActionType::PRESSED });
 	}
 	if (input->is_action_just_pressed(InputString::parry)) {
-		input_actions.emplace_back(InputAction{ EInputAction::PARRY, EInputActionType::PRESSED });
+		m_inputActions.emplace_back(InputAction{ EInputAction::PARRY, EInputActionType::PRESSED });
 	}
 
 	// Clear inputs
-	for (auto it = input_actions.begin(); it != input_actions.end();) {
-		if (it->is_consumed() || !it->received_input_within_timeframe(MAX_INPUT_LIFETIME)) {
-			it = input_actions.erase(it);
+	for (auto it = m_inputActions.begin(); it != m_inputActions.end();) {
+		if (it->isConsumed() || !it->receivedInputWithinTimeframe(MAX_INPUT_LIFETIME)) {
+			it = m_inputActions.erase(it);
 			continue;
 		}
 		++it;
@@ -57,7 +57,7 @@ void InputComponent::_notification(int what) {
 	switch (what) {
 		case NOTIFICATION_WM_CLOSE_REQUEST: {
 			LOG(INFO, "InputComponent WM_CLOSE_REQUEST")
-			// exit_game();
+			// exitGame();
 			break;
 		}
 
@@ -70,8 +70,8 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 
 	ASSERT(DisplayServer::get_singleton() != nullptr, "");
 	if (DisplayServer::get_singleton()->window_is_focused()) {
-		m_additionalStates.application_mouse_lock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
-												  : input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+		m_additionalStates.applicationMouseLock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
+												: input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 	}
 
 	// Camera motion (mouse or rightstick equivalent)
@@ -81,20 +81,20 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	}
 	else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
 		mode = EInputMode::JOYPAD;
-		m_motion = input->get_vector(InputString::camera_left, InputString::camera_right, InputString::camera_down,
-				InputString::camera_up, 0.05);
+		m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight, InputString::cameraDown,
+				InputString::cameraUp, 0.05);
 	}
 	else { mode = EInputMode::NONE; }
 }
 
 void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR
-	if (p_event->is_action_pressed(InputString::pause_menu)) {
+	if (p_event->is_action_pressed(InputString::pauseMenu)) {
 		LOG(INFO, "tree notification WM_CLOSE_REQUEST")
-		exit_game();
+		exitGame();
 		return;
 	}
-	else if (p_event->is_action_pressed(InputString::toggle_screen_mode)) {
+	else if (p_event->is_action_pressed(InputString::toggleScreenMode)) {
 		LOG(INFO, "Toggle primary screen mode");
 		DisplayServer* ds = DisplayServer::get_singleton();
 		int prime_screen = ds->get_primary_screen();
@@ -108,8 +108,8 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 		}
 		else { ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN); }
 	}
-	else if (p_event->is_action_pressed(InputString::toggle_application_mouse_lock)) {
-		m_additionalStates.application_mouse_lock = !m_additionalStates.application_mouse_lock;
+	else if (p_event->is_action_pressed(InputString::toggleApplicationMouseLock)) {
+		m_additionalStates.applicationMouseLock = !m_additionalStates.applicationMouseLock;
 	}
 	else if (p_event->is_action_pressed(InputString::restart)) {
 		if (SceneTree* tree = get_tree()) {
@@ -128,16 +128,16 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	}
 }
 
-bool InputComponent::is_action_pressed(EInputAction action, float timeframe) {
+bool InputComponent::isActionPressed(EInputAction action, float timeframe) {
 	if (timeframe > 0.f) {
-		for (auto it = input_actions.begin(); it != input_actions.end(); it++) {
-			if (it->is_action_pressed(action) && it->received_input_within_timeframe(timeframe)) {
-				input_actions.erase(it);
+		for (auto it = m_inputActions.begin(); it != m_inputActions.end(); it++) {
+			if (it->isActionPressed(action) && it->receivedInputWithinTimeframe(timeframe)) {
+				m_inputActions.erase(it);
 				return true;
 			}
 		}
 	}
-	if (!input_actions.empty()) { return input_actions.begin()->is_action_pressed(action); }
+	if (!m_inputActions.empty()) { return m_inputActions.begin()->isActionPressed(action); }
 	return false;
 }
 
@@ -146,10 +146,10 @@ InputComponent* InputComponent::getinput(const Node* referencenode) {
 	return nullptr;
 }
 
-Vector3 InputComponent::get_camera3ddir() const { return Vector3(m_camera2ddir.x, 0, m_camera2ddir.y).normalized(); }
+Vector3 InputComponent::getCamera3dDir() const { return Vector3(m_camera2dDir.x, 0, m_camera2dDir.y).normalized(); }
 
-Vector3 InputComponent::get_input_raw_3d() const { return Vector3(input_raw.x, 0, input_raw.y).normalized(); }
+Vector3 InputComponent::getInputRaw3d() const { return Vector3(m_inputRaw.x, 0, m_inputRaw.y).normalized(); }
 
-Vector3 InputComponent::get_input_relative_3d(float y) const {
-	return Vector3(m_input_relative.x, y, m_input_relative.y).normalized();
+Vector3 InputComponent::getInputRelative3d(float y) const {
+	return Vector3(m_inputCameraRelative.x, y, m_inputCameraRelative.y).normalized();
 }

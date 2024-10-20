@@ -32,8 +32,8 @@ void CameraPivot::_process(double delta) {}
 void CameraPivot::process(StateContext* context, float delta) {
 	RETURN_IF_EDITOR
 
-	context->input->m_camera2ddir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
-	context->input->m_input_relative = context->input->input_raw.rotated(-get_rotation().y);
+	context->input->m_camera2dDir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
+	context->input->m_inputCameraRelative = context->input->m_inputRaw.rotated(-get_rotation().y);
 
 	switch (context->input->mode) {
 		case EInputMode::JOYPAD: {

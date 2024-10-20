@@ -25,11 +25,11 @@ constexpr float PARRY_STATE_TIME_LENGTH = 1.5f;
 namespace helper {
 	void movement_acceleration(StateContext& context, float acceleration, float deceleration, float delta) {
 		// direction
-		if (context.input->input_raw.abs() > Vector2()) {
+		if (context.input->m_inputRaw.abs() > Vector2()) {
 			context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
-					context.input->m_input_relative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context.input->m_inputCameraRelative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
 			context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
-					context.input->m_input_relative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
+					context.input->m_inputCameraRelative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
 		}
 		else {
 			context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
@@ -42,7 +42,7 @@ namespace helper {
 PlayerState::Return PlayerOnGroundState::enter(StateContext& context) {
 	Super::enter(context);
 	// Immediate jump when entering while having just pressed jump
-	if (context.input->is_action_pressed(EInputAction::JUMP, 0.1f)) {
+	if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
 		context.physics.velocity.y += JUMP_STRENGTH;
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
@@ -62,14 +62,14 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 	helper::movement_acceleration(context, ONGROUND_ACCELERATION, ONGROUND_DECELARATION, delta);
 
 	// actions
-	if (context.input->is_action_pressed(EInputAction::JUMP)) {
+	if (context.input->isActionPressed(EInputAction::JUMP)) {
 		context.physics.velocity.y += JUMP_STRENGTH;
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
-	if (context.input->is_action_pressed(EInputAction::GRAPPLE) && context.grapple.target) {
+	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple.target) {
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
-	if (context.input->is_action_pressed(EInputAction::PARRY)) {
+	if (context.input->isActionPressed(EInputAction::PARRY)) {
 		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
 	return {};
@@ -90,11 +90,11 @@ PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, floa
 }
 
 PlayerState::Return PlayerInAirState::handleInput(StateContext& context, float delta) {
-	if (context.input->is_action_pressed(EInputAction::GRAPPLE) && context.grapple.target) {
+	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple.target) {
 		LOG(WARN, "inair grappling time")
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
-	if (context.input->is_action_pressed(EInputAction::PARRY)) {
+	if (context.input->isActionPressed(EInputAction::PARRY)) {
 		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
 	return {};
@@ -150,7 +150,7 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 }
 
 PlayerState::Return PlayerParryState::handleInput(StateContext& context, float delta) {
-	if (context.input->is_action_pressed(EInputAction::JUMP)) {
+	if (context.input->isActionPressed(EInputAction::JUMP)) {
 		return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
