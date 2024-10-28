@@ -5,6 +5,7 @@
 
 #include <map>
 #include <functional>
+#include <optional>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
@@ -13,6 +14,7 @@
 using namespace godot;
 
 class ParryTargetComponent;
+class ParryInstance;
 
 class ParryInstigatorComponent : public NodeComponent {
 	GDCLASS(ParryInstigatorComponent, NodeComponent)
@@ -43,7 +45,7 @@ public:
 	void areaEnteredParryDetection(Area3D* area);
 	void areaExitedParryDetection(Area3D* area);
 
-	bool activateParry();
+	std::optional<ParryInstance> activateParry();
 
 	Vector3 getPosition() const;
 	Vector3 getVelocity() const;

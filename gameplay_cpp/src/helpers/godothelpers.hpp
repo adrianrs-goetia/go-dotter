@@ -11,7 +11,7 @@
 #define RETURN_IF_EDITOR                                                                                               \
 	if (godot::Engine::get_singleton()->is_editor_hint()) { return; }
 #define RETURN_IF_EDITOR_RET(ret)                                                                                      \
-	if (godot::Engine::get_singleton()->is_editor_hint()) { return ret(); }
+	if (godot::Engine::get_singleton()->is_editor_hint()) { return ret; }
 
 #define GETNAME(class_name)                                                                                            \
 	String get_class_name() const { return #class_name; }

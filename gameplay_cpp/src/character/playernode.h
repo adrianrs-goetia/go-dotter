@@ -17,6 +17,7 @@ using namespace godot;
 class CameraPivot;
 class GrappleComponent;
 class ParryInstigatorComponent;
+class ParryInstance;
 
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)

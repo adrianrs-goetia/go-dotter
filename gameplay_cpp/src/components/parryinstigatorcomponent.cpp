@@ -78,13 +78,13 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
-bool ParryInstigatorComponent::activateParry() {
-	RETURN_IF_EDITOR_RET(bool)
+std::optional<ParryInstance> ParryInstigatorComponent::activateParry() {
+	RETURN_IF_EDITOR_RET(std::nullopt)
 	ASSERT_NOTNULL(m_area)
 
 	if (m_inRangeParryTargets.empty()) {
 		LOG(DEBUG, "No in range parry targets");
-		return false;
+		return std::nullopt;
 	}
 
 	// get closest in range parry target
@@ -99,19 +99,20 @@ bool ParryInstigatorComponent::activateParry() {
 		}
 	}
 	ASSERT_NOTNULL(target)
+
 	ParryInstance instance(*this, *target);
 	target->getParried(instance);
-	return true;
+	return std::move(instance);
 }
 
 Vector3 ParryInstigatorComponent::getPosition() const {
-	RETURN_IF_EDITOR_RET(Vector3)
+	RETURN_IF_EDITOR_RET(Vector3())
 	ASSERT_NOTNULL(m_area)
 	return m_area->get_global_position();
 }
 
 Vector3 ParryInstigatorComponent::getVelocity() const {
-	RETURN_IF_EDITOR_RET(Vector3)
+	RETURN_IF_EDITOR_RET(Vector3())
 	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) { return characterBody->get_velocity(); }
 	return {};
 }

@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3n3xim7m6ie7"]
+
+[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="1_h2f3p"]
+[ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://gameplayscenes/turret.tscn" id="2_1hdsi"]
+[ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="3_l8t2t"]
+
+[node name="Mainscene" type="Node3D"]
+
+[node name="PlayerNode" parent="." instance=ExtResource("1_h2f3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.61976, 7.35603, -26.1011)
+
+[node name="Turrets" type="Node" parent="."]
+
+[node name="TurretNode" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.98203, 4.57363, -6.81031)
+
+[node name="TurretNode2" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -11.5857)
+
+[node name="TurretNode3" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -16.8064)
+
+[node name="TurretNode4" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -26.1094)
+
+[node name="TurretNode5" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -7.36796)
+
+[node name="TurretNode6" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -11.694)
+
+[node name="TurretNode7" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -17.5704)
+
+[node name="TurretNode8" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -24.9772)
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="TerrainBlock" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.31392, 0)
+
+[node name="TerrainBlock2" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.77905, -0.499024, -9.12624)
+
+[node name="TerrainBlock3" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0908, -0.499025, -18.9793)
+
+[node name="TerrainBlock4" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.83817, -0.499025, -28.2301)
+
+[node name="TerrainBlock5" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9306, -0.499025, -10.3763)
+
+[node name="TerrainBlock6" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9306, -0.499025, -20.0093)
+
+[node name="TerrainBlock7" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9306, -0.499025, -29.8899)
+
+[node name="TerrainBlock8" parent="Terrain" instance=ExtResource("3_l8t2t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.698877, -4.93035, -37.3669)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.728263, 0.172233, 0.663301, -0.685297, 0.183032, 0.704888, 0, -0.967902, 0.251326, 8.25608, 0.0140181, -2.26032)
+shadow_enabled = true

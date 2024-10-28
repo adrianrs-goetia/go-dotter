@@ -77,7 +77,8 @@ void PlayerNode::_enter_tree() {
 	m_parryComponent->m_getDesiredDirectionCb = [this]() -> Vector3 {
 		Vector3 desiredDir = m_stateContext->input->getInputRelative3d();
 		if (desiredDir.length_squared() < 0.2f) { desiredDir = m_stateContext->input->getCamera3dDir(); }
-		return desiredDir;
+		// desiredDir is flipped to launch player and object in the opposite directions
+		return desiredDir * -1.f;
 	};
 }
 

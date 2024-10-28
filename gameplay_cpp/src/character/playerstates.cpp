@@ -1,6 +1,7 @@
 #include <character/playerstates.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
+#include <components/parryInstance.h>
 #include <components/parryinstigatorcomponent.h>
 
 #include <debugdraw3d/api.h>
@@ -19,8 +20,10 @@ constexpr float GRAVITY = GRAVITY_CONSTANT * GRAVITY_SCALE;
 
 constexpr float GRAPPLE_LAUNCH_STRENGTH = 20.0f;
 
-constexpr float PARRY_STATE_COOLDOWN = 1.0f;
-constexpr float PARRY_STATE_TIME_LENGTH = 1.5f;
+constexpr float PARRY_STATE_COOLDOWN = 0.5f;
+constexpr float PARRY_STATE_TIME_LENGTH = 0.7f;
+constexpr float PARRY_STATE_LAUNCH_UP_ANGLE = 60.0f;
+constexpr float PARRY_STATE_LAUNCH_STRENGTH = 10.0f;
 
 namespace helper {
 	void movement_acceleration(StateContext& context, float acceleration, float deceleration, float delta) {
@@ -145,7 +148,15 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		// Enter on ground by default, should discern if in air or onGround?
 		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
 	}
-	if (context.parry->activateParry()) { return { PlayerStateBank::get().state<PlayerOnGroundState>() }; }
+	if (auto pi = context.parry->activateParry()) {
+		LOG(INFO, "PARRY LAUNCH")
+		Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
+		const Vector3 orthoRight = g_up.cross(launchDir);
+		launchDir.rotate(orthoRight, Math::deg_to_rad(PARRY_STATE_LAUNCH_UP_ANGLE) * -1.f);
+		context.physics.velocity = launchDir * PARRY_STATE_LAUNCH_STRENGTH;
+		DebugDraw::Line(context.physics.position, context.physics.position + (launchDir), Color(1, 1, 1), 1.f);
+		return { PlayerStateBank::get().state<PlayerInAirState>() };
+	}
 	return {};
 }
 
