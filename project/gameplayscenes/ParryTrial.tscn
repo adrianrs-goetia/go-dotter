@@ -4,36 +4,39 @@
 [ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://gameplayscenes/turret.tscn" id="2_1hdsi"]
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="3_l8t2t"]
 
-[node name="Mainscene" type="Node3D"]
+[node name="Mainscene" type="MainNode"]
 
 [node name="PlayerNode" parent="." instance=ExtResource("1_h2f3p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.61976, 7.35603, -26.1011)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.764677, 0.57717, 1.55421)
 
 [node name="Turrets" type="Node" parent="."]
 
-[node name="TurretNode" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.98203, 4.57363, -6.81031)
-
 [node name="TurretNode2" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -11.5857)
+transform = Transform3D(0.059498, 0, 0.998228, -0.107583, 0.994175, 0.00641232, -0.992414, -0.107774, 0.0591515, -5.30573, 4.4903, -6.98789)
 
 [node name="TurretNode3" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -16.8064)
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.03283, 4.44208, -11.7698)
 
 [node name="TurretNode4" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.97466, 4.57363, -26.1094)
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.66366, 4.50133, -18.5056)
 
 [node name="TurretNode5" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -7.36796)
+transform = Transform3D(0.059498, 0, 0.998228, 0, 1, 0, -0.998228, 0, 0.059498, -5.38397, 4.66158, -27.7855)
 
 [node name="TurretNode6" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -11.694)
+transform = Transform3D(0.271155, 0, -0.962535, 0, 1, 0, 0.962535, 0, 0.271155, 5.90453, 4.04315, -31.9245)
 
 [node name="TurretNode7" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -17.5704)
+transform = Transform3D(0.028951, 0, -0.99958, 0, 1, 0, 0.99958, 0, 0.028951, 6.25051, 4.50395, -24.1113)
 
 [node name="TurretNode8" parent="Turrets" instance=ExtResource("2_1hdsi")]
-transform = Transform3D(-0.0594981, 0, -0.998228, 0, 1, 0, 0.998228, 0, -0.0594981, 7.14673, 4.57363, -24.9772)
+transform = Transform3D(0.028951, 0, -0.99958, 0, 1, 0, 0.99958, 0, 0.028951, 6.35604, 4.57587, -16.0563)
+
+[node name="TurretNode9" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.028951, 0, -0.99958, 0, 1, 0, 0.99958, 0, 0.028951, 6.26427, 4.55852, -9.03201)
+
+[node name="TurretNode10" parent="Turrets" instance=ExtResource("2_1hdsi")]
+transform = Transform3D(0.028951, 0, -0.99958, 0, 1, 0, 0.99958, 0, 0.028951, 6.26427, 4.55852, -5.53464)
 
 [node name="Terrain" type="Node" parent="."]
 

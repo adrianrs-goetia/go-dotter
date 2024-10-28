@@ -124,11 +124,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.06752, -0.556016, -4.07498)
 [node name="RigidBody3D3" parent="RigidBodies" instance=ExtResource("4_nem2m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3213, -4.94221, 2.71412)
 
-[node name="TurretNode" parent="." instance=ExtResource("4_5gw1a")]
+[node name="Node" type="Node" parent="."]
+
+[node name="TurretNode" parent="Node" instance=ExtResource("4_5gw1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9496, 0.036884, -3.01129)
 
-[node name="TurretNode2" parent="." instance=ExtResource("4_5gw1a")]
+[node name="TurretNode2" parent="Node" instance=ExtResource("4_5gw1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55074, 1.43657, -7.60296)
 
-[node name="TurretNode3" parent="." instance=ExtResource("4_5gw1a")]
+[node name="TurretNode3" parent="Node" instance=ExtResource("4_5gw1a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66189, 0.796983, -20.0561)
+
+[node name="TurretNode4" parent="Node" instance=ExtResource("4_5gw1a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35773, 0, -5.46976)

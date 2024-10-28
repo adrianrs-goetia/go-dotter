@@ -7,9 +7,9 @@
 
 #include <debugdraw3d/api.h>
 
-static constexpr float FIRING_INTERVAL = 2.5f;
-static constexpr float FIRING_INTERVAL_VARIANCE = 0.4f;
-static constexpr float FIRING_STRENGTH = 20.f;
+static constexpr float FIRING_INTERVAL = 2.0f;
+static constexpr float FIRING_INTERVAL_VARIANCE = 1.0f;
+static constexpr float FIRING_STRENGTH = 24.f;
 
 void TurretNode::_bind_methods() {
 	DEFAULT_PROPERTY(TurretNode)
@@ -57,13 +57,18 @@ float TurretNode::getFiringInterval() const {
 void TurretNode::rotateHeadTowardsTarget() {
 	ASSERT_NOTNULL(m_gunRotPoint)
 	ASSERT_NOTNULL(m_gunRotJoint)
+	/**
+	 * These rotations are highly dependent on transform of the child pieces in the model
+	 */
 	// Yaw rotation
 	{
 		const Vector3 toTarget3D = getDirectionToTarget(m_gunRotPoint);
-		const Vector2 toTarget(toTarget3D.z, toTarget3D.x);
-		const float yaw = toTarget.angle();
-		const Vector3 currentRotation = m_gunRotPoint->get_rotation();
-		m_gunRotPoint->set_rotation(Vector3(currentRotation.x, yaw, currentRotation.z));
+		const Vector3 toTarget = Vector3(toTarget3D.x, 0, toTarget3D.z).normalized();
+		Basis basis = m_gunRotPoint->get_global_basis();
+		basis.set_column(0, g_up.cross(toTarget) * basis.get_column(0).length()); // x
+		basis.set_column(1, g_up * basis.get_column(1).length()); // y
+		basis.set_column(2, toTarget * basis.get_column(2).length()); // z
+		m_gunRotPoint->set_global_basis(basis);
 	}
 	// Pitch rotation
 	{
