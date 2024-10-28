@@ -9,7 +9,11 @@ if [ -z "$1" ] || [ -z "$2" ]; then
     return 1
 fi
 GODOT_EXECUTABLE=$1
-MODE=$2
+MODE=$(echo "$2" | tr '[:upper:]' '[:lower:]')
+
+# Build template version of code
+scons install_mode=all
+scons target=template_$MODE install_mode=all
 
 # Get version
 VERSION_FILE="gameplay_cpp/version.h"
