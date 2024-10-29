@@ -37,7 +37,8 @@ T* getAdjacentNode(const godot::Node* node) {
 }
 
 /**
- * Get basis pointing towards a direction, with up aligning with global up, g_up
+ * Get basis pointing towards a direction
+ * Up is going towards global up
  * Assumes that direction is a unit vector
  */
 inline godot::Basis getBasisTowardsDirection(
