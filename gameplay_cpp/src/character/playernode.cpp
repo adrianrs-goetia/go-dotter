@@ -11,6 +11,8 @@
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
+#include <godot_cpp/classes/audio_stream_player3d.hpp>
+#include <godot_cpp/classes/gpu_particles3d.hpp>
 
 #include <debugdraw3d/api.h>
 
@@ -44,8 +46,10 @@ void PlayerNode::_notification(int what) {
 void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
-	m_grappleComponent = get_child_node_of_type<GrappleComponent>(this);
-	m_parryComponent = get_child_node_of_type<ParryInstigatorComponent>(this);
+	m_grappleComponent = getChildOfNode<GrappleComponent>(this);
+	m_parryComponent = getChildOfNode<ParryInstigatorComponent>(this);
+	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
+	auto* particles = getChildOfNode<GPUParticles3D>(this);
 
 	RETURN_IF_EDITOR
 	Log(ELog::DEBUG, "PlayerNode entering tree");
@@ -61,6 +65,8 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(m_grappleDetectionArea)
 	ASSERT_NOTNULL(m_camerapivot)
 	ASSERT_NOTNULL(m_meshAnchor)
+	ASSERT_NOTNULL(audio)
+	ASSERT_NOTNULL(particles)
 
 	m_grappleDetectionArea->connect("area_entered", callable_mp(this, &PlayerNode::areaEnteredGrappledetection));
 	m_grappleDetectionArea->connect("area_exited", callable_mp(this, &PlayerNode::areaExitedGrappledetection));
@@ -70,6 +76,8 @@ void PlayerNode::_enter_tree() {
 	m_stateContext->physics.is_on_ground = is_on_floor();
 	m_stateContext->physics.position = get_position();
 	m_stateContext->physics.velocity = get_velocity();
+	m_stateContext->audioVisual.audio = audio;
+	m_stateContext->audioVisual.particles = particles;
 	m_fsm.init(*m_stateContext, PlayerStateBank::get().state<PlayerInAirState>());
 
 	m_stateContext->grapple.instigator = m_grappleComponent;

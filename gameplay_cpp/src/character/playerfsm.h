@@ -16,6 +16,10 @@ class PlayerFSM;
 class GrappleComponent;
 class ParryInstigatorComponent;
 class InputComponent;
+namespace godot {
+	class AudioStreamPlayer3D;
+	class GPUParticles3D;
+}
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
@@ -35,12 +39,17 @@ struct StateGrappleContext {
 	GrappleComponent* instigator = nullptr;
 	GrappleComponent* target = nullptr;
 };
+struct AudioVisualContext {
+	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
+	godot::GPUParticles3D* particles = nullptr;
+};
 
 struct StateContext {
 	StateGrappleContext grapple;
 	InputComponent* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;
 	StatePhysicsContext physics;
+	AudioVisualContext audioVisual;
 };
 
 class PlayerState : public State<StateContext, PlayerState> {

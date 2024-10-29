@@ -70,7 +70,7 @@ transform = Transform3D(0.978967, 0, 0.204018, 0, 1, 0, -0.204018, 0, 0.978967, 
 transform = Transform3D(0.862964, -0.0591862, -0.501787, 0, 0.993116, -0.117139, 0.505266, 0.101086, 0.857023, -6.75958, -2.16684, -26.8579)
 
 [node name="TerrainBlock8" parent="Terrain" instance=ExtResource("2_we13y")]
-transform = Transform3D(0.862964, -0.167979, -0.476526, 0, 0.943118, -0.332457, 0.505266, 0.286899, 0.813877, -3.62542, -0.695928, -32.4337)
+transform = Transform3D(0.862964, -0.167979, -0.476526, 0, 0.943118, -0.332457, 0.505266, 0.286899, 0.813877, -3.67307, -0.695928, -32.4337)
 
 [node name="TerrainBlock9" parent="Terrain" instance=ExtResource("2_we13y")]
 transform = Transform3D(0.862964, -0.282819, -0.418697, 7.45058e-09, 0.828667, -0.559743, 0.505266, 0.483038, 0.715109, -0.675145, 1.9088, -37.4726)
@@ -130,10 +130,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3213, -4.94221, 2.71412)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.9496, 0.036884, -3.01129)
 
 [node name="TurretNode2" parent="Node" instance=ExtResource("4_5gw1a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55074, 1.43657, -7.60296)
-
-[node name="TurretNode3" parent="Node" instance=ExtResource("4_5gw1a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.66189, 0.796983, -20.0561)
-
-[node name="TurretNode4" parent="Node" instance=ExtResource("4_5gw1a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35773, 0, -5.46976)
+transform = Transform3D(-0.477327, 0, -0.878726, 0, 1, 0, 0.878726, 0, -0.477327, -4.81933, 0.036884, -5.13752)

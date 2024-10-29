@@ -64,11 +64,8 @@ void TurretNode::rotateHeadTowardsTarget() {
 	{
 		const Vector3 toTarget3D = getDirectionToTarget(m_gunRotPoint);
 		const Vector3 toTarget = Vector3(toTarget3D.x, 0, toTarget3D.z).normalized();
-		Basis basis = m_gunRotPoint->get_global_basis();
-		basis.set_column(0, g_up.cross(toTarget) * basis.get_column(0).length()); // x
-		basis.set_column(1, g_up * basis.get_column(1).length()); // y
-		basis.set_column(2, toTarget * basis.get_column(2).length()); // z
-		m_gunRotPoint->set_global_basis(basis);
+		m_gunRotPoint->set_global_basis(
+				getBasisTowardsDirection(toTarget, getScaleFromBasis(m_gunRotPoint->get_global_basis())));
 	}
 	// Pitch rotation
 	{

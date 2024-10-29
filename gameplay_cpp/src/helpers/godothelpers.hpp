@@ -35,3 +35,21 @@ T* getAdjacentNode(const godot::Node* node) {
 	if (godot::Node* parent = node->get_parent()) { return getChildOfNode<T>(parent); }
 	return nullptr;
 }
+
+/**
+ * Get basis pointing towards a direction, with up aligning with global up, g_up
+ * Assumes that direction is a unit vector
+ */
+inline godot::Basis getBasisTowardsDirection(
+		const godot::Vector3& direction, const godot::Vector3& scale = godot::Vector3(1, 1, 1)) {
+	godot::Basis basis;
+	const godot::Vector3 right = g_up.cross(direction);
+	basis.set_column(0, right * scale.x); // x - right
+	basis.set_column(1, direction.cross(right) * scale.y); // y - up
+	basis.set_column(2, direction * scale.z); // z - forward
+	return basis;
+}
+
+inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
+	return godot::Vector3(basis.get_column(0).length(), basis.get_column(1).length(), basis.get_column(2).length());
+}

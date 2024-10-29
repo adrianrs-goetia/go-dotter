@@ -50,15 +50,6 @@ public:
 	void areaEnteredGrappledetection(Area3D* area);
 	void areaExitedGrappledetection(Area3D* area);
 	void determineGrappleTarget();
-
-	template <typename T>
-	T* get_child_node_of_type(const godot::Node* node) {
-		TypedArray<godot::Node> children = node->get_children();
-		for (int i = 0; i < children.size(); ++i) {
-			if (T* child = cast_to<T>(children[i])) { return child; }
-		}
-		return nullptr;
-	}
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

@@ -5,7 +5,9 @@
 #include <components/parryinstigatorcomponent.h>
 
 #include <debugdraw3d/api.h>
+#include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
+#include <godot_cpp/classes/gpu_particles3d.hpp>
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
@@ -148,13 +150,19 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		// Enter on ground by default, should discern if in air or onGround?
 		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
 	}
-	if (auto pi = context.parry->activateParry()) {
-		LOG(INFO, "PARRY LAUNCH")
+	if (const auto pi = context.parry->activateParry()) {
+		// Play effects
+		context.audioVisual.audio->play();
+		context.audioVisual.particles->set_global_position(pi->targetPosition);
+		context.audioVisual.particles->set_global_basis(getBasisTowardsDirection(pi->instigatorDesiredDirection));
+		context.audioVisual.particles->restart();
+
+		// Launch player
 		Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
 		const Vector3 orthoRight = g_up.cross(launchDir);
 		launchDir.rotate(orthoRight, Math::deg_to_rad(PARRY_STATE_LAUNCH_UP_ANGLE) * -1.f);
 		context.physics.velocity = launchDir * PARRY_STATE_LAUNCH_STRENGTH;
-		DebugDraw::Line(context.physics.position, context.physics.position + (launchDir), Color(1, 1, 1), 1.f);
+
 		return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
