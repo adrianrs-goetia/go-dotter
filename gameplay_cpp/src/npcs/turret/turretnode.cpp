@@ -19,8 +19,9 @@ void TurretNode::_bind_methods() {
 }
 
 void TurretNode::_enter_tree() {
-	m_audioPlayer = getChildOfNode<AudioStreamPlayer3D>(this);
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());
+	m_gunOpeningAudioPlayer = getChildOfNode<AudioStreamPlayer3D>(this);
+	m_gunOpeningGpuParticles = getChildOfNode<GPUParticles3D>(this);
 
 	RETURN_IF_EDITOR
 	//
@@ -41,7 +42,7 @@ void TurretNode::_enter_tree() {
 	ASSERT_NOTNULL(m_gunRotJoint)
 	ASSERT_NOTNULL(m_gunOpening)
 	ASSERT_NOTNULL(m_firingTimer)
-	ASSERT_NOTNULL(m_audioPlayer)
+	ASSERT_NOTNULL(m_gunOpeningAudioPlayer)
 
 	add_child(m_firingTimer);
 	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fireProjectile));
@@ -49,10 +50,12 @@ void TurretNode::_enter_tree() {
 }
 
 void TurretNode::_physics_process(double delta) {
-	if (m_audioPlayer && m_gunOpening) {
+	if (m_gunOpening) {
 		const Vector3 direction = getGunOpeningDirection() * -1.f;
-		Basis basis = createBasisFromDirection(direction);
-		m_audioPlayer->set_global_transform(Transform3D(basis, getGunOpeningLocation() + (direction * 0.5)));
+		Transform3D gunOpeningAudioVisualTransform(
+				createBasisFromDirection(direction), getGunOpeningLocation() + (direction * 0.5));
+		if (m_gunOpeningAudioPlayer) m_gunOpeningAudioPlayer->set_global_transform(gunOpeningAudioVisualTransform);
+		if (m_gunOpeningGpuParticles) m_gunOpeningGpuParticles->set_global_transform(gunOpeningAudioVisualTransform);
 	}
 
 	RETURN_IF_EDITOR
@@ -101,7 +104,8 @@ void TurretNode::fireProjectile() {
 	}
 	m_firingTimer->start(getFiringInterval());
 
-	m_audioPlayer->play();
+	m_gunOpeningAudioPlayer->play();
+	m_gunOpeningGpuParticles->restart();
 }
 
 Vector3 TurretNode::getDirectionToTarget(const Node3D* source) const {

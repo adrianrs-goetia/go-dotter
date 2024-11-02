@@ -10,7 +10,8 @@ using namespace godot;
 
 namespace godot {
 	class AudioStreamPlayer3D;
-}
+	class GPUParticles3D;
+} //namespace godot
 
 class TurretNode : public Node3D {
 	GDCLASS(TurretNode, Node3D)
@@ -22,7 +23,8 @@ private:
 	Node3D* m_gunOpening = nullptr; // Projectile spawn location
 	Node3D* m_target = nullptr;
 	Timer* m_firingTimer = nullptr;
-	AudioStreamPlayer3D* m_audioPlayer = nullptr;
+	AudioStreamPlayer3D* m_gunOpeningAudioPlayer = nullptr;
+	GPUParticles3D* m_gunOpeningGpuParticles = nullptr;
 
 	Ref<PackedScene> m_projectileResource;
 
