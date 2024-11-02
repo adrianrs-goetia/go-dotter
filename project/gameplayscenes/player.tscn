@@ -28,9 +28,6 @@ sky = SubResource("Sky_j0wsn")
 [sub_resource type="SphereShape3D" id="SphereShape3D_6du44"]
 radius = 2.89418
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_en38a"]
-radius = 2.36218
-
 [sub_resource type="Curve" id="Curve_unhab"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]
 point_count = 2
@@ -90,6 +87,9 @@ grow_amount = 3.0
 [sub_resource type="BoxMesh" id="BoxMesh_xmue6"]
 material = SubResource("StandardMaterial3D_ghqc7")
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_en38a"]
+radius = 1.521
+
 [node name="PlayerNode" type="PlayerNode"]
 
 [node name="meshAnchor" type="Node3D" parent="."]
@@ -129,16 +129,8 @@ shape = SubResource("SphereShape3D_6du44")
 mass = 100.0
 
 [node name="ParryInstigatorComponent" type="ParryInstigatorComponent" parent="."]
-"Collision area" = NodePath("ParryDetection")
+"Collision area" = NodePath("../ParryDetection")
 Mass = 100.0
-
-[node name="ParryDetection" type="Area3D" parent="ParryInstigatorComponent"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-collision_layer = 0
-collision_mask = 195
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ParryInstigatorComponent/ParryDetection"]
-shape = SubResource("SphereShape3D_en38a")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1_j0ubi")
@@ -153,3 +145,11 @@ explosiveness = 0.94
 visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
 process_material = SubResource("ParticleProcessMaterial_hrn33")
 draw_pass_1 = SubResource("BoxMesh_xmue6")
+
+[node name="ParryDetection" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 192
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParryDetection"]
+shape = SubResource("SphereShape3D_en38a")
