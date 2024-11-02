@@ -41,7 +41,7 @@ T* getAdjacentNode(const godot::Node* node) {
  * Up is going towards global up
  * Assumes that direction is a unit vector
  */
-inline godot::Basis getBasisTowardsDirection(
+inline godot::Basis createBasisFromDirection(
 		const godot::Vector3& direction, const godot::Vector3& scale = godot::Vector3(1, 1, 1)) {
 	godot::Basis basis;
 	const godot::Vector3 right = g_up.cross(direction);

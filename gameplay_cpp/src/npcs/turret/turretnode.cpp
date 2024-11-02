@@ -1,5 +1,7 @@
 #include <npcs/turret/turretnode.h>
 
+#include <godot_cpp/classes/audio_stream_player3d.hpp>
+#include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
@@ -17,6 +19,9 @@ void TurretNode::_bind_methods() {
 }
 
 void TurretNode::_enter_tree() {
+	m_audioPlayer = getChildOfNode<AudioStreamPlayer3D>(this);
+	m_gunOpening = get_node<Node3D>(paths::gunOpening());
+
 	RETURN_IF_EDITOR
 	//
 
@@ -24,7 +29,6 @@ void TurretNode::_enter_tree() {
 	m_target = get_node<Node3D>(nodePaths::player);
 	m_gunRotPoint = get_node<Node3D>(paths::gunRotPoint());
 	m_gunRotJoint = get_node<Node3D>(paths::gunRotJoint());
-	m_gunOpening = get_node<Node3D>(paths::gunOpening());
 	// ResourceLoader should cache this between each load.
 	// Still ugly way of getting the desired scene, only option I have seen so far is
 	// having a string property to fetch the scene...
@@ -37,6 +41,7 @@ void TurretNode::_enter_tree() {
 	ASSERT_NOTNULL(m_gunRotJoint)
 	ASSERT_NOTNULL(m_gunOpening)
 	ASSERT_NOTNULL(m_firingTimer)
+	ASSERT_NOTNULL(m_audioPlayer)
 
 	add_child(m_firingTimer);
 	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fireProjectile));
@@ -44,6 +49,12 @@ void TurretNode::_enter_tree() {
 }
 
 void TurretNode::_physics_process(double delta) {
+	if (m_audioPlayer && m_gunOpening) {
+		const Vector3 direction = getGunOpeningDirection() * -1.f;
+		Basis basis = createBasisFromDirection(direction);
+		m_audioPlayer->set_global_transform(Transform3D(basis, getGunOpeningLocation() + (direction * 0.5)));
+	}
+
 	RETURN_IF_EDITOR
 	//
 
@@ -65,7 +76,7 @@ void TurretNode::rotateHeadTowardsTarget() {
 		const Vector3 toTarget3D = getDirectionToTarget(m_gunRotPoint);
 		const Vector3 toTarget = Vector3(toTarget3D.x, 0, toTarget3D.z).normalized();
 		m_gunRotPoint->set_global_basis(
-				getBasisTowardsDirection(toTarget, getScaleFromBasis(m_gunRotPoint->get_global_basis())));
+				createBasisFromDirection(toTarget, getScaleFromBasis(m_gunRotPoint->get_global_basis())));
 	}
 	// Pitch rotation
 	{
@@ -89,6 +100,8 @@ void TurretNode::fireProjectile() {
 		rigidbody->set_linear_velocity(getGunOpeningDirection() * FIRING_STRENGTH);
 	}
 	m_firingTimer->start(getFiringInterval());
+
+	m_audioPlayer->play();
 }
 
 Vector3 TurretNode::getDirectionToTarget(const Node3D* source) const {

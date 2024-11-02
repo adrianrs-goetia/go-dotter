@@ -4,15 +4,15 @@
 #include <components/inputcomponent.h>
 #include <components/parryinstigatorcomponent.h>
 
+#include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
-#include <godot_cpp/classes/audio_stream_player3d.hpp>
-#include <godot_cpp/classes/gpu_particles3d.hpp>
 
 #include <debugdraw3d/api.h>
 

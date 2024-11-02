@@ -154,7 +154,7 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		// Play effects
 		context.audioVisual.audio->play();
 		context.audioVisual.particles->set_global_position(pi->targetPosition);
-		context.audioVisual.particles->set_global_basis(getBasisTowardsDirection(pi->instigatorDesiredDirection));
+		context.audioVisual.particles->set_global_basis(createBasisFromDirection(pi->instigatorDesiredDirection));
 		context.audioVisual.particles->restart();
 
 		// Launch player
