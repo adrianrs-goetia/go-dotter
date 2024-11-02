@@ -1,12 +1,11 @@
 #pragma once
 
 #include "godotincludes.h"
+#include "godotutils.hpp"
 #include "log.h"
 #include "math.hpp"
 #include "timer.hpp"
 #include "typedefs.hpp"
-
-#include <helpers/godothelpers.hpp>
 
 #define ASSERT(expr, msg)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }

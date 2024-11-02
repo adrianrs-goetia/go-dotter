@@ -1,7 +1,12 @@
-#pragma onc
+#pragma once
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/node.hpp>
+
+// Directions
+static const godot::Vector3 g_up(0, 1, 0);
+static const godot::Vector3 g_forward(0, 0, 1);
+static const godot::Vector3 g_right(1, 0, 0);
 
 /**
  * Helper functions or macros that relate to godot, but do not belong to any specific module or class
