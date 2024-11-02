@@ -12,6 +12,8 @@ class MainNode : public Node {
 public:
 	GETNAME(MainNode)
 	static void _bind_methods();
+
+	void _enter_tree() override;
 };
 
 #endif // GD_MAINNODE_PLUGIN_GAMEPLAY_H
