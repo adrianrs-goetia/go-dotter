@@ -1,6 +1,6 @@
 #include "parrytargetcomponent.h"
 
-#include "parryInstance.h"
+#include <components/dataObjects/parryInstance.hpp>
 
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>

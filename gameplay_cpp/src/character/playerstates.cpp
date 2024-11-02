@@ -1,7 +1,7 @@
 #include <character/playerstates.h>
 #include <components/grapplecomponent.h>
 #include <components/inputcomponent.h>
-#include <components/parryInstance.h>
+#include <components/dataObjects/parryInstance.hpp>
 #include <components/parryinstigatorcomponent.h>
 
 #include <debugdraw3d/api.h>
