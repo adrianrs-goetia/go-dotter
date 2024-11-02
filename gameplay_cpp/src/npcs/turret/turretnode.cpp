@@ -23,7 +23,7 @@ void TurretNode::_enter_tree() {
 	m_gunOpeningAudioPlayer = getChildOfNode<AudioStreamPlayer3D>(this);
 	m_gunOpeningGpuParticles = getChildOfNode<GPUParticles3D>(this);
 
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	//
 
 	// TODO not hardcode get player. Have detection component?
@@ -58,7 +58,7 @@ void TurretNode::_physics_process(double delta) {
 		if (m_gunOpeningGpuParticles) m_gunOpeningGpuParticles->set_global_transform(gunOpeningAudioVisualTransform);
 	}
 
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	//
 
 	rotateHeadTowardsTarget();

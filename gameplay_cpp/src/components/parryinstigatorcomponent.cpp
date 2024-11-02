@@ -29,7 +29,7 @@ void ParryInstigatorComponent::_bind_methods() {
 }
 
 void ParryInstigatorComponent::_enter_tree() {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 
 	m_area = get_node<Area3D>(m_pathToArea3D);
 
@@ -40,7 +40,7 @@ void ParryInstigatorComponent::_enter_tree() {
 }
 
 void ParryInstigatorComponent::_exit_tree() {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 
 	ASSERT_NOTNULL(m_area)
 
@@ -48,7 +48,7 @@ void ParryInstigatorComponent::_exit_tree() {
 	m_area->disconnect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
 }
 
-void ParryInstigatorComponent::_physics_process(double delta) { RETURN_IF_EDITOR }
+void ParryInstigatorComponent::_physics_process(double delta) { RETURN_IF_EDITOR(void()) }
 
 void ParryInstigatorComponent::setPathToArea3D(NodePath path) { m_pathToArea3D = path; }
 
@@ -79,7 +79,7 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 }
 
 std::optional<ParryInstance> ParryInstigatorComponent::activateParry() {
-	RETURN_IF_EDITOR_RET(std::nullopt)
+	RETURN_IF_EDITOR(std::nullopt)
 	ASSERT_NOTNULL(m_area)
 
 	if (m_inRangeParryTargets.empty()) {
@@ -106,13 +106,13 @@ std::optional<ParryInstance> ParryInstigatorComponent::activateParry() {
 }
 
 Vector3 ParryInstigatorComponent::getPosition() const {
-	RETURN_IF_EDITOR_RET(Vector3())
+	RETURN_IF_EDITOR(Vector3())
 	ASSERT_NOTNULL(m_area)
 	return m_area->get_global_position();
 }
 
 Vector3 ParryInstigatorComponent::getVelocity() const {
-	RETURN_IF_EDITOR_RET(Vector3())
+	RETURN_IF_EDITOR(Vector3())
 	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) { return characterBody->get_velocity(); }
 	return {};
 }

@@ -33,7 +33,7 @@ void ParryTargetComponent::_enter_tree() {
 	}
 	else { m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true); }
 
-	RETURN_IF_EDITOR_RET(void())
+	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_areaPtr)
 }
 
@@ -68,13 +68,13 @@ void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
 }
 
 Vector3 ParryTargetComponent::getPosition() const {
-	RETURN_IF_EDITOR_RET(Vector3())
+	RETURN_IF_EDITOR(Vector3())
 	ASSERT_NOTNULL(m_areaPtr)
 	return m_areaPtr->get_global_position();
 }
 
 Vector3 ParryTargetComponent::getVelocity() const {
-	RETURN_IF_EDITOR_RET(Vector3())
+	RETURN_IF_EDITOR(Vector3())
 
 	if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) { return rigidBody->get_linear_velocity(); }
 	return {};

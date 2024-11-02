@@ -83,7 +83,7 @@ void GrappleComponent::_enter_tree() {
 		LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");
 	}
 
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	if (m_pathToArea3D.is_empty()) {
 		LOG(INFO, "Path to area3D is empty for", get_parent()->get_name())
 		return;

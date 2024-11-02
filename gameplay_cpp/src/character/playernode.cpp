@@ -51,7 +51,7 @@ void PlayerNode::_enter_tree() {
 	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getChildOfNode<GPUParticles3D>(this);
 
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	m_stateContext = (StateContext*)calloc(1, sizeof(StateContext));
@@ -91,7 +91,7 @@ void PlayerNode::_enter_tree() {
 }
 
 void PlayerNode::_exit_tree() {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
 	ASSERT_NOTNULL(m_grappleDetectionArea);
@@ -107,7 +107,7 @@ void PlayerNode::_exit_tree() {
 }
 
 void PlayerNode::_process(double delta) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->process(*m_stateContext, delta);
 	determineGrappleTarget();
@@ -121,7 +121,7 @@ void PlayerNode::_process(double delta) {
 }
 
 void PlayerNode::_physics_process(double delta) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_stateContext);
 	// capture current physics context
 	m_stateContext->physics.is_on_ground = is_on_floor();
@@ -142,7 +142,7 @@ void PlayerNode::_physics_process(double delta) {
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	if (!m_stateContext) { return; }
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());
@@ -164,7 +164,7 @@ void PlayerNode::rotateTowardsVelocity(float delta) {
 }
 
 void PlayerNode::areaEnteredGrappledetection(Area3D* area) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	if (area->get_rid() == m_grappleComponent->getRid()) { return; }
 	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
@@ -173,7 +173,7 @@ void PlayerNode::areaEnteredGrappledetection(Area3D* area) {
 }
 
 void PlayerNode::areaExitedGrappledetection(Area3D* area) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
 		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		auto it = std::find_if(m_inRangeGrapplenodes.begin(), m_inRangeGrapplenodes.end(),
@@ -184,7 +184,7 @@ void PlayerNode::areaExitedGrappledetection(Area3D* area) {
 }
 
 void PlayerNode::determineGrappleTarget() {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_stateContext)
 	const Vector3 cam3d = m_stateContext->input->getCamera3dDir();
 	float lowest_dot = -1.0f;

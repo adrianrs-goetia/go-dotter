@@ -8,7 +8,7 @@ void Projectile::_bind_methods() {
 }
 
 void Projectile::_enter_tree() {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	//
 
 	m_timer = memnew(Timer);

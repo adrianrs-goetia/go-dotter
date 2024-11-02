@@ -25,12 +25,12 @@ void CameraPivot::_bind_methods() {
 
 void CameraPivot::_ready() {}
 
-void CameraPivot::_enter_tree() { RETURN_IF_EDITOR }
+void CameraPivot::_enter_tree() { RETURN_IF_EDITOR(void()) }
 
 void CameraPivot::_process(double delta) {}
 
 void CameraPivot::process(StateContext& context, float delta) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 
 	context.input->m_camera2dDir = Vector2::from_angle(-get_rotation().y - (PI_HALF));
 	context.input->m_inputCameraRelative = context.input->m_inputRaw.rotated(-get_rotation().y);

@@ -24,7 +24,7 @@ void InputComponent::_bind_methods() {
 }
 
 void InputComponent::_physics_process(double delta) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	godot::Input* input = Input::get_singleton();
 
 	// Input movement direction (wasd or leftstick equivalent)
@@ -88,7 +88,7 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 }
 
 void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
-	RETURN_IF_EDITOR
+	RETURN_IF_EDITOR(void())
 	if (p_event->is_action_pressed(InputString::pauseMenu)) {
 		LOG(INFO, "tree notification WM_CLOSE_REQUEST")
 		exitGame();
