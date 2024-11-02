@@ -3,8 +3,8 @@
 #include <core/core.h>
 #include <core/nodecomponent.hpp>
 
-#include <map>
 #include <functional>
+#include <map>
 #include <optional>
 
 #include <godot_cpp/classes/area3d.hpp>

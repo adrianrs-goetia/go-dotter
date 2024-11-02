@@ -19,7 +19,7 @@ class InputComponent;
 namespace godot {
 	class AudioStreamPlayer3D;
 	class GPUParticles3D;
-}
+} //namespace godot
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
@@ -70,8 +70,7 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* getName() override{ return #CLASSNAME;                                                         \
-	}
+	virtual const char* getName() override { return #CLASSNAME; }
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};

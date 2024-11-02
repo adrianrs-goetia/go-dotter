@@ -24,5 +24,5 @@ struct ParryInstance {
 
 	ParryInstance(const ParryInstigatorComponent& instigator, const ParryTargetComponent& target);
 
-    godot::Vector3 getNewTargetVelocity() const;
+	godot::Vector3 getNewTargetVelocity() const;
 };

@@ -20,8 +20,8 @@ GrappleComponent::LaunchContext GrappleComponent::launch(GrappleComponent* subje
 			LOG(DEBUG, "Grapple launch -- BOTH_NON_ANCHOR")
 			std::ignore = subject->_impulseOwner(
 					_determineLaunchDirectionAtob(subject, this), getPullStrength() * subject_weight);
-			context.impulse = _impulseOwner(
-					_determineLaunchDirectionAtob(this, subject), getPullStrength() * instigator_weight);
+			context.impulse =
+					_impulseOwner(_determineLaunchDirectionAtob(this, subject), getPullStrength() * instigator_weight);
 			break;
 		}
 		case LaunchType::INSTIGATOR_ANCHOR: {

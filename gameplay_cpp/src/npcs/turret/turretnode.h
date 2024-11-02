@@ -8,7 +8,7 @@
 
 using namespace godot;
 
-namespace godot{
+namespace godot {
 	class AudioStreamPlayer3D;
 }
 
