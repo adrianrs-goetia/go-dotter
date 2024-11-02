@@ -1,7 +1,7 @@
 #ifndef GD_CHARACTER_PLAYERSTATES_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_PLAYERSTATES_PLUGIN_GAMEPLAY_H
 
-#include <character/playerfsm.h>
+#include <character/playerfsm.hpp>
 
 class PlayerOnGroundState : public PlayerState {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "godotincludes.h"
+#include "godotincludes.hpp"
 #include <cstdint>
 
 enum class ELog : uint8_t { DEBUG, INFO, WARN, ERROR };

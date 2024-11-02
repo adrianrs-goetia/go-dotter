@@ -1,6 +1,6 @@
 #pragma once
 
-#include "godotincludes.h"
+#include "godotincludes.hpp"
 #include "godotutils.hpp"
 #include "log.h"
 #include "math.hpp"

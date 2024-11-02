@@ -1,7 +1,7 @@
 #ifndef GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 
-#include <character/playerfsm.h>
+#include <character/playerfsm.hpp>
 #include <core/core.h>
 
 #include <godot_cpp/classes/input.hpp>
