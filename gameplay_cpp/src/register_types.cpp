@@ -2,16 +2,16 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include <character/camerapivot.h>
-#include <character/playernode.h>
-#include <components/grapplecomponent.h>
-#include <components/inputcomponent.h>
-#include <components/parryinstigatorcomponent.h>
-#include <components/parrytargetcomponent.h>
-#include <mainnode.h>
+#include <character/cameraPivot.h>
+#include <character/playerNode.h>
+#include <components/grappleComponent.h>
+#include <components/inputComponent.h>
+#include <components/parryInstigatorComponent.h>
+#include <components/parryTargetComponent.h>
+#include <mainNode.h>
 #include <npcs/projectile/projectile.h>
-#include <npcs/turret/turretnode.h>
-#include <core/nodecomponent.hpp>
+#include <npcs/turret/turretNode.h>
+#include <core/nodeComponent.hpp>
 
 using namespace godot;
 

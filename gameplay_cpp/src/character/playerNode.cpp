@@ -1,8 +1,8 @@
-#include <character/camerapivot.h>
-#include <character/playernode.h>
-#include <components/grapplecomponent.h>
-#include <components/inputcomponent.h>
-#include <components/parryinstigatorcomponent.h>
+#include <character/cameraPivot.h>
+#include <character/playerNode.h>
+#include <components/grappleComponent.h>
+#include <components/inputComponent.h>
+#include <components/parryInstigatorComponent.h>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>

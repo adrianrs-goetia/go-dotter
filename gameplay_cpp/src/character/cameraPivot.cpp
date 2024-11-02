@@ -1,5 +1,5 @@
-#include <character/camerapivot.h>
-#include <character/playernode.h>
+#include <character/cameraPivot.h>
+#include <character/playerNode.h>
 
 #include <godot_cpp/core/math.hpp>
 

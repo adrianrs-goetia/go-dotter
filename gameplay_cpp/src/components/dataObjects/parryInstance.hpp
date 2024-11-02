@@ -2,8 +2,8 @@
 
 #include <core/core.h>
 
-#include <components/parryinstigatorcomponent.h>
-#include <components/parrytargetcomponent.h>
+#include <components/parryInstigatorComponent.h>
+#include <components/parryTargetComponent.h>
 
 /**
  * weight of 0 means instigator 100% overrides targets velocity

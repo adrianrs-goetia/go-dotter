@@ -1,4 +1,4 @@
-#include <components/grapplecomponent.h>
+#include <components/grappleComponent.h>
 
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>

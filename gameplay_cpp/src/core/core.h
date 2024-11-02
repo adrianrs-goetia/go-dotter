@@ -1,7 +1,7 @@
 #pragma once
 
-#include "godotincludes.hpp"
-#include "godotutils.hpp"
+#include "godotIncludes.hpp"
+#include "godotUtils.hpp"
 #include "log.h"
 #include "math.hpp"
 #include "timer.hpp"

@@ -1,4 +1,4 @@
-#include "parrytargetcomponent.h"
+#include "parryTargetComponent.h"
 
 #include <components/dataObjects/parryInstance.hpp>
 

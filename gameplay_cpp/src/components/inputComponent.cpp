@@ -1,4 +1,4 @@
-#include <components/inputcomponent.h>
+#include <components/inputComponent.h>
 
 #include <godot_cpp/classes/display_server.hpp>
 #include <godot_cpp/classes/input.hpp>

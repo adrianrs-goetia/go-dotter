@@ -1,8 +1,8 @@
-#include <character/playerstates.h>
-#include <components/grapplecomponent.h>
-#include <components/inputcomponent.h>
+#include <character/playerStates.h>
+#include <components/grappleComponent.h>
+#include <components/inputComponent.h>
 #include <components/dataObjects/parryInstance.hpp>
-#include <components/parryinstigatorcomponent.h>
+#include <components/parryInstigatorComponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/audio_stream_player3d.hpp>

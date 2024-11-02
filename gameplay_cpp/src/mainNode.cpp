@@ -1,4 +1,4 @@
-#include <mainnode.h>
+#include <mainNode.h>
 
 using namespace godot;
 

@@ -1,4 +1,4 @@
-#include <npcs/turret/turretnode.h>
+#include <npcs/turret/turretNode.h>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>

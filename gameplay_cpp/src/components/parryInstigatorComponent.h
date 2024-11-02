@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/core.h>
-#include <core/nodecomponent.hpp>
+#include <core/nodeComponent.hpp>
 
 #include <functional>
 #include <map>
