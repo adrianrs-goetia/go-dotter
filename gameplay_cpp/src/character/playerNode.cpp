@@ -1,7 +1,7 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
-#include <components/grappleTargetComponent.h>
 #include <components/grappleInstigatorComponent.h>
+#include <components/grappleTargetComponent.h>
 #include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
 

@@ -19,9 +19,7 @@ void InputComponent::exitGame() {
 	}
 }
 
-void InputComponent::_bind_methods() {
-	ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame);
-}
+void InputComponent::_bind_methods() { ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame); }
 
 void InputComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())

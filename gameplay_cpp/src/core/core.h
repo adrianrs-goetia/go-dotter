@@ -10,5 +10,5 @@
 #define ASSERT(expr, msg)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
 #define ASSERT_NOTNULL(ptr) ASSERT(ptr != nullptr, "")
-#define ASSERT_NOTNULL_MSG(ptr, msg) ASSERT(ptr != nullptr, msg) 
+#define ASSERT_NOTNULL_MSG(ptr, msg) ASSERT(ptr != nullptr, msg)
 void __m_assert(const char* expr_str, bool expr, const char* file, int line, const char* msg);
