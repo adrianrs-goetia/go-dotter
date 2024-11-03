@@ -36,7 +36,7 @@ struct ParryInstance {
 		else if (instigator.getMass() < massLimit) { weight = 1.f; }
 		else if (target.getMass() < massLimit) { weight = 0.f; }
 		else {
-			float exp = Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) * 100.f; // Magic values attached to
+			float exp = godot::Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) * 100.f; // Magic values attached to
 																							 // logistic sigmoid / soft
 																							 // step To ensure we get a
 																							 // value in range of 0-1

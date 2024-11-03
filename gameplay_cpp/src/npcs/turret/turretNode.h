@@ -6,27 +6,25 @@
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/timer.hpp>
 
-using namespace godot;
-
 namespace godot {
 	class AudioStreamPlayer3D;
 	class GPUParticles3D;
 } //namespace godot
 
-class TurretNode : public Node3D {
-	GDCLASS(TurretNode, Node3D)
+class TurretNode : public godot::Node3D {
+	GDCLASS(TurretNode, godot::Node3D)
 
 private:
 	//
-	Node3D* m_gunRotPoint = nullptr; // Yaw rotation
-	Node3D* m_gunRotJoint = nullptr; // Pitch rotation
-	Node3D* m_gunOpening = nullptr; // Projectile spawn location
-	Node3D* m_target = nullptr;
-	Timer* m_firingTimer = nullptr;
-	AudioStreamPlayer3D* m_gunOpeningAudioPlayer = nullptr;
-	GPUParticles3D* m_gunOpeningGpuParticles = nullptr;
+	godot::Node3D* m_gunRotPoint = nullptr; // Yaw rotation
+	godot::Node3D* m_gunRotJoint = nullptr; // Pitch rotation
+	godot::Node3D* m_gunOpening = nullptr; // Projectile spawn location
+	godot::Node3D* m_target = nullptr;
+	godot::Timer* m_firingTimer = nullptr;
+	godot::AudioStreamPlayer3D* m_gunOpeningAudioPlayer = nullptr;
+	godot::GPUParticles3D* m_gunOpeningGpuParticles = nullptr;
 
-	Ref<PackedScene> m_projectileResource;
+	godot::Ref<godot::PackedScene> m_projectileResource;
 
 public:
 	GETNAME(TurretNode)
@@ -39,9 +37,9 @@ public:
 	void rotateHeadTowardsTarget();
 	void fireProjectile();
 
-	Vector3 getDirectionToTarget(const Node3D* source) const;
-	Vector3 getGunOpeningLocation() const;
-	Vector3 getGunOpeningDirection() const;
+	godot::Vector3 getDirectionToTarget(const Node3D* source) const;
+	godot::Vector3 getGunOpeningLocation() const;
+	godot::Vector3 getGunOpeningDirection() const;
 
 	struct paths {
 		static godot::String gunRotPoint() { return "turret/GunRotCylinder/GunRotPoint"; }

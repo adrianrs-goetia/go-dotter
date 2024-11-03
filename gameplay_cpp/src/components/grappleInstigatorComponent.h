@@ -7,7 +7,7 @@
 #include <functional>
 #include <vector>
 
-class GrappleComponent;
+class GrappleTargetComponent;
 namespace godot {
 	class Area3D;
 }
@@ -15,19 +15,19 @@ namespace godot {
 class GrappleInstigatorComponent : public NodeComponent {
 	GDCLASS(GrappleInstigatorComponent, NodeComponent)
 
-    using InstigatorDirection = std::function<godot::Vector3(const Node& node)>;
-    
-private:
-	NodePath m_pathToGrappleDetectionArea;
-	Area3D* m_detectionArea = nullptr;
+	using InstigatorDirection = std::function<godot::Vector3(const Node& node)>;
 
-	std::vector<GrappleComponent*> m_inRangeTargets; // Should never be nullptrs
-	std::set<RID> m_ignoredRids;
+private:
+	godot::NodePath m_pathToGrappleDetectionArea;
+	godot::Area3D* m_detectionArea = nullptr;
+
+	std::vector<GrappleTargetComponent*> m_inRangeTargets; // Should never be nullptrs
+	std::set<godot::RID> m_ignoredRids;
 	InstigatorDirection m_getInstigatorDirection;
 
-	GrappleComponent* m_instigatorsGrappleComponent =
+	GrappleTargetComponent* m_instigatorsGrappleComponent =
 			nullptr; // tmp workaround to keep current shared instigator/target implementation of grappleLaunch
-	GrappleComponent* m_currentTarget = nullptr;
+	GrappleTargetComponent* m_currentTarget = nullptr;
 
 public:
 	GETNAME(GrappleInstigatorComponent)
@@ -36,16 +36,16 @@ public:
 	void _enter_tree() override;
 	void _physics_process(double delta) override;
 
-	void areaEnteredDetection(Area3D* area);
-	void areaExitedDetection(Area3D* area);
+	void areaEnteredDetection(godot::Area3D* area);
+	void areaExitedDetection(godot::Area3D* area);
 	void determineTarget();
 
 public: // getters-setters
-	GrappleComponent* getTarget() const { return m_currentTarget; }
-	GrappleComponent* getInstigatorComponent() const { return m_instigatorsGrappleComponent; }
+	GrappleTargetComponent* getTarget() const { return m_currentTarget; }
+	GrappleTargetComponent* getInstigatorComponent() const { return m_instigatorsGrappleComponent; }
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {
 		m_getInstigatorDirection = getInstigatorDirection;
 	}
-	void setPathToArea3D(NodePath path) { m_pathToGrappleDetectionArea = path; }
-	NodePath getPathToArea3D() const { return m_pathToGrappleDetectionArea; }
+	void setPathToArea3D(godot::NodePath path) { m_pathToGrappleDetectionArea = path; }
+	godot::NodePath getPathToArea3D() const { return m_pathToGrappleDetectionArea; }
 };

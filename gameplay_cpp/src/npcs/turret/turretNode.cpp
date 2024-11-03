@@ -9,6 +9,8 @@
 
 #include <debugdraw3d/api.h>
 
+using namespace godot;
+
 static constexpr float FIRING_INTERVAL = 2.0f;
 static constexpr float FIRING_INTERVAL_VARIANCE = 1.0f;
 static constexpr float FIRING_STRENGTH = 24.f;

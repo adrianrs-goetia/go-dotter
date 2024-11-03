@@ -5,8 +5,6 @@
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/node.hpp>
 
-using namespace godot;
-
 namespace InputString {
 
 	constexpr const char* moveLeft = "move_left";
@@ -105,8 +103,8 @@ public:
 /**
  * Is automatically added to root of the running scene
  */
-class InputComponent : public Node {
-	GDCLASS(InputComponent, Node)
+class InputComponent : public godot::Node {
+	GDCLASS(InputComponent, godot::Node)
 
 public:
 	EInputMode mode;
@@ -114,13 +112,13 @@ public:
 	/**
 	 * Raw input along XY axis
 	 */
-	Vector2 m_inputRaw;
+	godot::Vector2 m_inputRaw;
 	/**
 	 * Input in 3D space relative to camera XZ
 	 */
-	Vector2 m_inputCameraRelative;
-	Vector2 m_motion; // Mouse motion
-	Vector2 m_camera2dDir;
+	godot::Vector2 m_inputCameraRelative;
+	godot::Vector2 m_motion; // Mouse motion
+	godot::Vector2 m_camera2dDir;
 
 	std::list<InputAction> m_inputActions;
 
@@ -137,14 +135,14 @@ public:
 
 	void _notification(int what);
 	void _physics_process(double delta);
-	void _input(const Ref<InputEvent>& p_event);
-	void _unhandled_input(const Ref<InputEvent>& p_event);
+	void _input(const godot::Ref<godot::InputEvent>& p_event);
+	void _unhandled_input(const godot::Ref<godot::InputEvent>& p_event);
 
 	bool isActionPressed(EInputAction action, float timeframe = -1.0f);
 
-	static InputComponent* getinput(const Node* referencenode);
+	static InputComponent* getinput(const godot::Node* referencenode);
 
-	Vector3 getCamera3dDir() const;
-	Vector3 getInputRaw3d() const;
-	Vector3 getInputRelative3d(float y = 0.f) const;
+	godot::Vector3 getCamera3dDir() const;
+	godot::Vector3 getInputRaw3d() const;
+	godot::Vector3 getInputRelative3d(float y = 0.f) const;
 };

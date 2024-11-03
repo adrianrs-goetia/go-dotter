@@ -9,12 +9,10 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 
-using namespace godot;
-
 // Forward declarations
 class PlayerState;
 class PlayerFSM;
-class GrappleComponent;
+class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
 class InputComponent;
@@ -30,16 +28,16 @@ constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 //  Forer inn en ny struct som dette i hver _physics_process
 struct StatePhysicsContext {
 	bool is_on_ground;
-	Vector3 position;
-	Vector3 velocity;
+	godot::Vector3 position;
+	godot::Vector3 velocity;
 
-	Vector3 get_gravity_center() const {
-		return Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
+	godot::Vector3 get_gravity_center() const {
+		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 };
 // struct StateGrappleContext {
-// 	GrappleComponent* instigator = nullptr;
-// 	GrappleComponent* target = nullptr;
+// 	GrappleTargetComponent* instigator = nullptr;
+// 	GrappleTargetComponent* target = nullptr;
 // };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?

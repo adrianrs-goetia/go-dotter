@@ -1,5 +1,7 @@
 #pragma once
 
+#include "log.h"
+
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/node.hpp>
 
@@ -17,7 +19,7 @@ static const godot::Vector3 g_right(1, 0, 0);
 	if (godot::Engine::get_singleton()->is_editor_hint()) { return ret; }
 
 #define GETNAME(class_name)                                                                                            \
-	String get_class_name() const { return #class_name; }
+	godot::String get_class_name() const { return #class_name; }
 #define DEFAULT_PROPERTY(class_name)                                                                                   \
 	godot::ClassDB::bind_method(D_METHOD("get_class_name"), &class_name::get_class_name);                              \
 	godot::ClassDB::add_property(#class_name,                                                                          \
@@ -35,7 +37,18 @@ T* getChildOfNode(const godot::Node* node) {
 
 template <typename T>
 T* getAdjacentNode(const godot::Node* node) {
+	if (!node->get_parent()) { LOG(ERROR, "Node did not have parent: ", node->get_path()) }
 	if (godot::Node* parent = node->get_parent()) { return getChildOfNode<T>(parent); }
+	return nullptr;
+}
+
+/**
+ * Asserts parent of node is of a given type
+ */
+template <typename T>
+T* getParentNode(const godot::Node* node) {
+	if (!node->get_parent()) { LOG(ERROR, "Node did not have parent: ", node->get_path()) }
+	if (T* parent = node->cast_to<T>(node->get_parent())) { return parent; }
 	return nullptr;
 }
 

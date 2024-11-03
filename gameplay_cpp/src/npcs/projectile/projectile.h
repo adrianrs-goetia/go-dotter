@@ -5,12 +5,10 @@
 #include <godot_cpp/classes/rigid_body3d.hpp>
 #include <godot_cpp/classes/timer.hpp>
 
-using namespace godot;
-
-class Projectile : public RigidBody3D {
-	GDCLASS(Projectile, RigidBody3D)
+class Projectile : public godot::RigidBody3D {
+	GDCLASS(Projectile, godot::RigidBody3D)
 private:
-	Timer* m_timer = nullptr;
+	godot::Timer* m_timer = nullptr;
 
 public:
 	GETNAME(TurretNode)

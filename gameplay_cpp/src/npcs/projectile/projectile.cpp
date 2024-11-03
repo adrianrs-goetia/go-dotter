@@ -1,5 +1,7 @@
 #include "projectile.h"
 
+using namespace godot;
+
 static constexpr float LIFETIME = 2.f;
 
 void Projectile::_bind_methods() {

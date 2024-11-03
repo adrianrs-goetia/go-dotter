@@ -7,6 +7,8 @@
 
 #include <debugdraw3d/api.h>
 
+using namespace godot;
+
 void ParryTargetComponent::_bind_methods() {
 	DEFAULT_PROPERTY(ParryTargetComponent)
 	//
@@ -24,6 +26,7 @@ void ParryTargetComponent::_bind_methods() {
 }
 
 void ParryTargetComponent::_enter_tree() {
+	set_name(get_class());
 	m_areaPtr = get_node<Area3D>(m_pathToArea3D);
 	if (!m_areaPtr) {
 		String msg;

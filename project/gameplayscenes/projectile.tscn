@@ -23,7 +23,7 @@ transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 0, 0)
 mesh = SubResource("SphereMesh_tiefc")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
-[node name="GrappleComponent" type="GrappleComponent" parent="."]
+[node name="GrappleComponent" type="GrappleTargetComponent" parent="."]
 mass = 4.37
 "Collision AreaPath" = NodePath("../Area3D")
 

@@ -15,7 +15,7 @@
 using namespace godot;
 
 class CameraPivot;
-class GrappleComponent;
+class GrappleTargetComponent;
 class ParryInstigatorComponent;
 class ParryInstance;
 
@@ -30,7 +30,7 @@ public:
 
 	ParryInstigatorComponent* m_parryComponent = nullptr;
 
-	std::vector<GrappleComponent*> m_inRangeGrapplenodes;
+	std::vector<GrappleTargetComponent*> m_inRangeGrapplenodes;
 
 public:
 	GETNAME(PlayerNode)

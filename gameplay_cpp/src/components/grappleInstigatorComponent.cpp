@@ -1,14 +1,12 @@
 #include "grappleInstigatorComponent.h"
 
-#include <components/grappleComponent.h>
+#include <components/grappleTargetComponent.h>
 #include <components/inputComponent.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/area3d.hpp>
 
 #include <algorithm>
-
-constexpr const char* g_grappleInstigatorComponentName = "GrappleInstigatorComponent";
 
 void GrappleInstigatorComponent::_bind_methods() {
 	DEFAULT_PROPERTY(GrappleInstigatorComponent)
@@ -24,11 +22,11 @@ void GrappleInstigatorComponent::_bind_methods() {
 }
 
 void GrappleInstigatorComponent::_enter_tree() {
-	set_name(g_grappleInstigatorComponentName);
+	set_name(get_class());
 
 	RETURN_IF_EDITOR(void())
 
-	m_instigatorsGrappleComponent = getAdjacentNode<GrappleComponent>(this);
+	m_instigatorsGrappleComponent = getAdjacentNode<GrappleTargetComponent>(this);
 	m_detectionArea = get_node<Area3D>(m_pathToGrappleDetectionArea);
 
 	ASSERT_NOTNULL(m_instigatorsGrappleComponent)
@@ -53,7 +51,7 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 	RETURN_IF_EDITOR(void())
 	// if (area->get_rid() == getRid()) { return; }
-	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
+	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
 		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
 		m_inRangeTargets.push_back(gn);
 	}
@@ -61,10 +59,10 @@ void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 
 void GrappleInstigatorComponent::areaExitedDetection(Area3D* area) {
 	RETURN_IF_EDITOR(void())
-	if (auto* gn = getAdjacentNode<GrappleComponent>(area)) {
+	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
 		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		auto it = std::find_if(m_inRangeTargets.begin(), m_inRangeTargets.end(),
-				[gn](GrappleComponent* a) -> bool { return a->getRid() == gn->getRid(); });
+				[gn](GrappleTargetComponent* a) -> bool { return a->getRid() == gn->getRid(); });
 		m_inRangeTargets.erase(it);
 		if (gn == m_currentTarget) { m_currentTarget = nullptr; }
 	}
@@ -77,8 +75,8 @@ void GrappleInstigatorComponent::determineTarget() {
 
 	const Vector3 cam3d = m_getInstigatorDirection(*this);
 	float lowest_dot = -1.0f;
-	GrappleComponent* target = nullptr;
-	for (GrappleComponent* gn : m_inRangeTargets) {
+	GrappleTargetComponent* target = nullptr;
+	for (GrappleTargetComponent* gn : m_inRangeTargets) {
 		Vector3 dir_2d = gn->get_global_position() - get_global_position();
 		dir_2d.y = 0;
 		dir_2d.normalize();

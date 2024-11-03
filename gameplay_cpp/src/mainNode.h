@@ -4,10 +4,8 @@
 #include <core/core.h>
 #include <godot_cpp/classes/node.hpp>
 
-using namespace godot;
-
-class MainNode : public Node {
-	GDCLASS(MainNode, Node)
+class MainNode : public godot::Node {
+	GDCLASS(MainNode, godot::Node)
 
 public:
 	GETNAME(MainNode)

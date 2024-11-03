@@ -7,7 +7,7 @@ radius = 0.31118
 
 [node name="grapplepoint" type="Node3D"]
 
-[node name="GrappleComponent" type="GrappleComponent" parent="."]
+[node name="GrappleComponent" type="GrappleTargetComponent" parent="."]
 anchored = true
 "Collision AreaPath" = NodePath("../Area3D")
 

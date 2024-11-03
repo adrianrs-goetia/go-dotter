@@ -8,12 +8,10 @@
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/spring_arm3d.hpp>
 
-using namespace godot;
-
 class PlayerNode;
 
-class CameraPivot : public SpringArm3D {
-	GDCLASS(CameraPivot, SpringArm3D)
+class CameraPivot : public godot::SpringArm3D {
+	GDCLASS(CameraPivot, godot::SpringArm3D)
 
 public:
 public:

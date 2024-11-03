@@ -1,5 +1,5 @@
 #include <character/playerStates.h>
-#include <components/grappleComponent.h>
+#include <components/grappleTargetComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -9,6 +9,8 @@
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
+
+using namespace godot;
 
 constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
@@ -117,10 +119,10 @@ PlayerState::Return PlayerPreGrappleLaunchState::enter(StateContext& context) {
 // PlayerGrappleLaunchState
 PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 	// TODO... What to do here other than launch?
-	GrappleComponent::LaunchContext launch =
+	GrappleTargetComponent::LaunchContext launch =
 			context.grapple->getInstigatorComponent()->launch(context.grapple->getTarget());
-	if (launch.type != GrappleComponent::LaunchType::INSTIGATOR_ANCHOR &&
-			launch.type != GrappleComponent::LaunchType::BOTH_ANCHOR) {
+	if (launch.type != GrappleTargetComponent::LaunchType::INSTIGATOR_ANCHOR &&
+			launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
 		context.physics.velocity = launch.impulse;
 	}
 	return Return{ PlayerStateBank::get().state<PlayerInAirState>() };

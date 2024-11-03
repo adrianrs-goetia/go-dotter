@@ -1,6 +1,6 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
-#include <components/grappleComponent.h>
+#include <components/grappleTargetComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -21,9 +21,9 @@ extern "C" {
 #include <stdlib.h>
 }
 
-constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
-
 using namespace godot;
+
+constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
 
 void PlayerNode::_bind_methods() { DEFAULT_PROPERTY(PlayerNode) }
 

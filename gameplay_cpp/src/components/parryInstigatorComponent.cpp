@@ -29,6 +29,7 @@ void ParryInstigatorComponent::_bind_methods() {
 }
 
 void ParryInstigatorComponent::_enter_tree() {
+	set_name(get_class());
 	RETURN_IF_EDITOR(void())
 
 	m_area = get_node<Area3D>(m_pathToArea3D);

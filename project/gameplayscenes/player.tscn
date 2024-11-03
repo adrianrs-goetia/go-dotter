@@ -124,7 +124,7 @@ collision_mask = 64
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrappleDetection"]
 shape = SubResource("SphereShape3D_6du44")
 
-[node name="GrappleComponent" type="GrappleComponent" parent="."]
+[node name="GrappleComponent" type="GrappleTargetComponent" parent="."]
 "pull strength" = 20.0
 mass = 100.0
 
