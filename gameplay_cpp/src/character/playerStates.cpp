@@ -1,8 +1,9 @@
 #include <character/playerStates.h>
 #include <components/grappleComponent.h>
+#include <components/grappleInstigatorComponent.h>
 #include <components/inputComponent.h>
-#include <components/dataObjects/parryInstance.hpp>
 #include <components/parryInstigatorComponent.h>
+#include <components/dataObjects/parryInstance.hpp>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
@@ -71,7 +72,7 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 		context.physics.velocity.y += JUMP_STRENGTH;
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
-	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple.target) {
+	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
 	if (context.input->isActionPressed(EInputAction::PARRY)) {
@@ -95,7 +96,7 @@ PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, floa
 }
 
 PlayerState::Return PlayerInAirState::handleInput(StateContext& context, float delta) {
-	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple.target) {
+	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
 		LOG(WARN, "inair grappling time")
 		return Return{ PlayerStateBank::get().state<PlayerPreGrappleLaunchState>() };
 	}
@@ -116,7 +117,8 @@ PlayerState::Return PlayerPreGrappleLaunchState::enter(StateContext& context) {
 // PlayerGrappleLaunchState
 PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 	// TODO... What to do here other than launch?
-	GrappleComponent::LaunchContext launch = context.grapple.instigator->launch(context.grapple.target);
+	GrappleComponent::LaunchContext launch =
+			context.grapple->getInstigatorComponent()->launch(context.grapple->getTarget());
 	if (launch.type != GrappleComponent::LaunchType::INSTIGATOR_ANCHOR &&
 			launch.type != GrappleComponent::LaunchType::BOTH_ANCHOR) {
 		context.physics.velocity = launch.impulse;

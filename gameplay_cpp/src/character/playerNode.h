@@ -27,9 +27,7 @@ public:
 	StateContext* m_stateContext = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	Node3D* m_meshAnchor = nullptr;
-	Area3D* m_grappleDetectionArea = nullptr;
 
-	GrappleComponent* m_grappleComponent = nullptr;
 	ParryInstigatorComponent* m_parryComponent = nullptr;
 
 	std::vector<GrappleComponent*> m_inRangeGrapplenodes;
@@ -46,10 +44,6 @@ public:
 	void _input(const Ref<InputEvent>& p_event);
 
 	void rotateTowardsVelocity(float delta);
-
-	void areaEnteredGrappledetection(Area3D* area);
-	void areaExitedGrappledetection(Area3D* area);
-	void determineGrappleTarget();
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

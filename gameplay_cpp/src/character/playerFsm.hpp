@@ -11,9 +11,11 @@
 
 using namespace godot;
 
+// Forward declarations
 class PlayerState;
 class PlayerFSM;
 class GrappleComponent;
+class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
 class InputComponent;
 namespace godot {
@@ -35,17 +37,18 @@ struct StatePhysicsContext {
 		return Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 };
-struct StateGrappleContext {
-	GrappleComponent* instigator = nullptr;
-	GrappleComponent* target = nullptr;
-};
+// struct StateGrappleContext {
+// 	GrappleComponent* instigator = nullptr;
+// 	GrappleComponent* target = nullptr;
+// };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
 	godot::GPUParticles3D* particles = nullptr;
 };
 
 struct StateContext {
-	StateGrappleContext grapple;
+	// StateGrappleContext grapple;
+	GrappleInstigatorComponent* grapple = nullptr;
 	InputComponent* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;
 	StatePhysicsContext physics;
