@@ -106,6 +106,8 @@ public:
 class InputManager : public godot::Node {
 	GDCLASS(InputManager, godot::Node)
 
+	static constexpr const char* g_inputManagerNodePath = "/root/InputManager";
+
 public:
 	EInputMode mode;
 
@@ -134,14 +136,16 @@ public:
 
 	void _notification(int what);
 	void _enter_tree() override;
-	void _exit_tree() override;
 	void _physics_process(double delta);
 	void _input(const godot::Ref<godot::InputEvent>& p_event);
 	void _unhandled_input(const godot::Ref<godot::InputEvent>& p_event);
 
 	bool isActionPressed(EInputAction action, float timeframe = -1.0f);
 
-	static InputManager* getinput(const godot::Node* referencenode);
+	/**
+	 * Reference node needed as we don't have a handle on the scene itself otherwise
+	 */
+	static InputManager* get(const Node& referenceNode);
 
 	godot::Vector3 getCamera3dDir() const;
 	godot::Vector3 getInputRaw3d() const;

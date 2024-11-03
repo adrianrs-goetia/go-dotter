@@ -12,8 +12,6 @@ using namespace godot;
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
-static Node* s_sceneNode = nullptr;
-
 void InputManager::exitGame() {
 	if (SceneTree* tree = get_tree()) {
 		LOG(INFO, "tree->quit(0)")
@@ -67,11 +65,9 @@ void InputManager::_notification(int what) {
 
 void InputManager::_enter_tree() {
 	set_name(get_class());
-	s_sceneNode = get_tree()->get_current_scene();
-	if (!s_sceneNode) { LOG(ERROR, "InputManager failed to fetch current_scene") }
-}
 
-void InputManager::_exit_tree() { s_sceneNode = nullptr; }
+	RETURN_IF_EDITOR(void())
+}
 
 void InputManager::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
@@ -149,8 +145,8 @@ bool InputManager::isActionPressed(EInputAction action, float timeframe) {
 	return false;
 }
 
-InputManager* InputManager::getinput(const Node* referencenode) {
-	if (auto* input = referencenode->get_node<InputManager>("/root/Inputcomponent")) { return input; }
+InputManager* InputManager::get(const Node& referenceNode) {
+	if (auto* input = referenceNode.get_node<InputManager>(g_inputManagerNodePath)) { return input; }
 	return nullptr;
 }
 
