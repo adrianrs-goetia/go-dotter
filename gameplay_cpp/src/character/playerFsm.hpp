@@ -15,7 +15,7 @@ class PlayerFSM;
 class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
-class InputComponent;
+class InputManager;
 namespace godot {
 	class AudioStreamPlayer3D;
 	class GPUParticles3D;
@@ -47,7 +47,7 @@ struct AudioVisualContext {
 struct StateContext {
 	// StateGrappleContext grapple;
 	GrappleInstigatorComponent* grapple = nullptr;
-	InputComponent* input = nullptr;
+	InputManager* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;
 	StatePhysicsContext physics;
 	AudioVisualContext audioVisual;

@@ -1,7 +1,7 @@
 #include "grappleInstigatorComponent.h"
 
 #include <components/grappleTargetComponent.h>
-#include <components/inputComponent.h>
+#include <managers/inputManager.h>
 
 #include <debugdraw3d/api.h>
 #include <godot_cpp/classes/area3d.hpp>

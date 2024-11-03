@@ -103,8 +103,8 @@ public:
 /**
  * Is automatically added to root of the running scene
  */
-class InputComponent : public godot::Node {
-	GDCLASS(InputComponent, godot::Node)
+class InputManager : public godot::Node {
+	GDCLASS(InputManager, godot::Node)
 
 public:
 	EInputMode mode;
@@ -133,13 +133,15 @@ public:
 	static void _bind_methods();
 
 	void _notification(int what);
+	void _enter_tree() override;
+	void _exit_tree() override;
 	void _physics_process(double delta);
 	void _input(const godot::Ref<godot::InputEvent>& p_event);
 	void _unhandled_input(const godot::Ref<godot::InputEvent>& p_event);
 
 	bool isActionPressed(EInputAction action, float timeframe = -1.0f);
 
-	static InputComponent* getinput(const godot::Node* referencenode);
+	static InputManager* getinput(const godot::Node* referencenode);
 
 	godot::Vector3 getCamera3dDir() const;
 	godot::Vector3 getInputRaw3d() const;

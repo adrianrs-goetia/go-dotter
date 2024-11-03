@@ -2,8 +2,8 @@
 #include <character/playerNode.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
+#include <managers/inputManager.h>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
@@ -63,7 +63,7 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(audio)
 	ASSERT_NOTNULL(particles)
 
-	m_stateContext->input = InputComponent::getinput(this);
+	m_stateContext->input = InputManager::getinput(this);
 	m_stateContext->parry = m_parryComponent;
 	m_stateContext->physics.is_on_ground = is_on_floor();
 	m_stateContext->physics.position = get_position();
@@ -73,7 +73,7 @@ void PlayerNode::_enter_tree() {
 	m_fsm.init(*m_stateContext, PlayerStateBank::get().state<PlayerInAirState>());
 
 	grappleInstigator->setInstigatorDirection(
-			[](const Node& node) -> Vector3 { return InputComponent::getinput(&node)->getCamera3dDir(); });
+			[](const Node& node) -> Vector3 { return InputManager::getinput(&node)->getCamera3dDir(); });
 	m_stateContext->grapple = grappleInstigator;
 
 	m_parryComponent->m_getDesiredDirectionCb = [this]() -> Vector3 {

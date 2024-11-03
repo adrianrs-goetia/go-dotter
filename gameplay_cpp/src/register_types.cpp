@@ -6,10 +6,10 @@
 #include <character/playerNode.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
 #include <mainNode.h>
+#include <managers/inputManager.h>
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
 #include <core/nodeComponent.hpp>
@@ -23,7 +23,7 @@ void init_gameplay_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<PlayerNode>();
 
 	// Components
-	godot::ClassDB::register_class<InputComponent>();
+	godot::ClassDB::register_class<InputManager>();
 	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();

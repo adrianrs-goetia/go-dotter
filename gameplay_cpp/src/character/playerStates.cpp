@@ -1,8 +1,8 @@
 #include <character/playerStates.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/inputComponent.h>
 #include <components/parryInstigatorComponent.h>
+#include <managers/inputManager.h>
 #include <components/dataObjects/parryInstance.hpp>
 
 #include <debugdraw3d/api.h>

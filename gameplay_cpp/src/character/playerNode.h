@@ -2,8 +2,8 @@
 #define GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H
 
 #include <character/playerStates.h>
-#include <components/inputComponent.h>
 #include <core/core.h>
+#include <managers/inputManager.h>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>

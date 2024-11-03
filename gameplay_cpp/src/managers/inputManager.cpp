@@ -1,4 +1,4 @@
-#include <components/inputComponent.h>
+#include "inputManager.h"
 
 #include <godot_cpp/classes/display_server.hpp>
 #include <godot_cpp/classes/input.hpp>
@@ -12,16 +12,18 @@ using namespace godot;
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
-void InputComponent::exitGame() {
+static Node* s_sceneNode = nullptr;
+
+void InputManager::exitGame() {
 	if (SceneTree* tree = get_tree()) {
 		LOG(INFO, "tree->quit(0)")
 		tree->quit(0);
 	}
 }
 
-void InputComponent::_bind_methods() { ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame); }
+void InputManager::_bind_methods() { ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputManager::exitGame); }
 
-void InputComponent::_physics_process(double delta) {
+void InputManager::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 	Input* input = Input::get_singleton();
 
@@ -50,11 +52,11 @@ void InputComponent::_physics_process(double delta) {
 	}
 }
 
-void InputComponent::_notification(int what) {
+void InputManager::_notification(int what) {
 	// LOG(INFO, "Notification", (int64_t)what)
 	switch (what) {
 		case NOTIFICATION_WM_CLOSE_REQUEST: {
-			LOG(INFO, "InputComponent WM_CLOSE_REQUEST")
+			LOG(INFO, "InputManager WM_CLOSE_REQUEST")
 			// exitGame();
 			break;
 		}
@@ -63,7 +65,15 @@ void InputComponent::_notification(int what) {
 	}
 }
 
-void InputComponent::_input(const Ref<InputEvent>& p_event) {
+void InputManager::_enter_tree() {
+	set_name(get_class());
+	s_sceneNode = get_tree()->get_current_scene();
+	if (!s_sceneNode) { LOG(ERROR, "InputManager failed to fetch current_scene") }
+}
+
+void InputManager::_exit_tree() { s_sceneNode = nullptr; }
+
+void InputManager::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
 
 	ASSERT(DisplayServer::get_singleton() != nullptr, "");
@@ -85,7 +95,7 @@ void InputComponent::_input(const Ref<InputEvent>& p_event) {
 	else { mode = EInputMode::NONE; }
 }
 
-void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
+void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR(void())
 	if (p_event->is_action_pressed(InputString::pauseMenu)) {
 		LOG(INFO, "tree notification WM_CLOSE_REQUEST")
@@ -126,7 +136,7 @@ void InputComponent::_unhandled_input(const Ref<InputEvent>& p_event) {
 	}
 }
 
-bool InputComponent::isActionPressed(EInputAction action, float timeframe) {
+bool InputManager::isActionPressed(EInputAction action, float timeframe) {
 	if (timeframe > 0.f) {
 		for (auto it = m_inputActions.begin(); it != m_inputActions.end(); it++) {
 			if (it->isActionPressed(action) && it->receivedInputWithinTimeframe(timeframe)) {
@@ -139,15 +149,15 @@ bool InputComponent::isActionPressed(EInputAction action, float timeframe) {
 	return false;
 }
 
-InputComponent* InputComponent::getinput(const Node* referencenode) {
-	if (auto* input = referencenode->get_node<InputComponent>("/root/Inputcomponent")) { return input; }
+InputManager* InputManager::getinput(const Node* referencenode) {
+	if (auto* input = referencenode->get_node<InputManager>("/root/Inputcomponent")) { return input; }
 	return nullptr;
 }
 
-Vector3 InputComponent::getCamera3dDir() const { return Vector3(m_camera2dDir.x, 0, m_camera2dDir.y).normalized(); }
+Vector3 InputManager::getCamera3dDir() const { return Vector3(m_camera2dDir.x, 0, m_camera2dDir.y).normalized(); }
 
-Vector3 InputComponent::getInputRaw3d() const { return Vector3(m_inputRaw.x, 0, m_inputRaw.y).normalized(); }
+Vector3 InputManager::getInputRaw3d() const { return Vector3(m_inputRaw.x, 0, m_inputRaw.y).normalized(); }
 
-Vector3 InputComponent::getInputRelative3d(float y) const {
+Vector3 InputManager::getInputRelative3d(float y) const {
 	return Vector3(m_inputCameraRelative.x, y, m_inputCameraRelative.y).normalized();
 }
