@@ -30,7 +30,6 @@ private:
 	GrappleTargetComponent* m_currentTarget = nullptr;
 
 public:
-	GETNAME(GrappleInstigatorComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;

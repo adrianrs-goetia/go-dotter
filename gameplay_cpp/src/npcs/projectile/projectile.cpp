@@ -4,10 +4,7 @@ using namespace godot;
 
 static constexpr float LIFETIME = 2.f;
 
-void Projectile::_bind_methods() {
-	DEFAULT_PROPERTY(Projectile)
-	//
-}
+void Projectile::_bind_methods() {}
 
 void Projectile::_enter_tree() {
 	RETURN_IF_EDITOR(void())

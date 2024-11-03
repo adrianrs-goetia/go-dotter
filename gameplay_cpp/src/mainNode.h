@@ -8,7 +8,6 @@ class MainNode : public godot::Node {
 	GDCLASS(MainNode, godot::Node)
 
 public:
-	GETNAME(MainNode)
 	static void _bind_methods();
 
 	void _enter_tree() override;

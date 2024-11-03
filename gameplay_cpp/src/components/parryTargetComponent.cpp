@@ -10,9 +10,6 @@
 using namespace godot;
 
 void ParryTargetComponent::_bind_methods() {
-	DEFAULT_PROPERTY(ParryTargetComponent)
-	//
-
 	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &ParryTargetComponent::getAreaPath);
 	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &ParryTargetComponent::setAreaPath);
 	godot::ClassDB::bind_method(D_METHOD("getIsHeavy"), &ParryTargetComponent::getIsHeavy);

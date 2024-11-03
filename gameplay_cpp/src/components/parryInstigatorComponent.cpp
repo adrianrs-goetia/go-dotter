@@ -15,8 +15,6 @@
 using namespace godot;
 
 void ParryInstigatorComponent::_bind_methods() {
-	DEFAULT_PROPERTY(ParryInstigatorComponent)
-
 	ClassDB::bind_method(D_METHOD("getPathToArea3D"), &ParryInstigatorComponent::getPathToArea3D);
 	ClassDB::bind_method(D_METHOD("setPathToArea3D", "path"), &ParryInstigatorComponent::setPathToArea3D);
 	ClassDB::bind_method(D_METHOD("areaEnteredParryDetection"), &ParryInstigatorComponent::areaEnteredParryDetection);

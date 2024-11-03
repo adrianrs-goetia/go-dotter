@@ -33,7 +33,6 @@ public:
 	std::vector<GrappleTargetComponent*> m_inRangeGrapplenodes;
 
 public:
-	GETNAME(PlayerNode)
 	static void _bind_methods();
 
 	void _notification(int what);

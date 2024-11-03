@@ -18,10 +18,7 @@ constexpr bool JOYMOTION_Y_INVERTED = true;
 constexpr float JOYMOTION_X_MULTIPLIER = 100.f;
 constexpr float JOYMOTION_Y_MULTIPLIER = 100.f;
 
-void CameraPivot::_bind_methods() {
-	DEFAULT_PROPERTY(CameraPivot)
-	//
-}
+void CameraPivot::_bind_methods() {}
 
 void CameraPivot::_ready() {}
 

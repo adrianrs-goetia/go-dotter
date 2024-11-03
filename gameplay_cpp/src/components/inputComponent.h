@@ -130,7 +130,6 @@ private:
 	void exitGame();
 
 public:
-	GETNAME(InputComponent)
 	static void _bind_methods();
 
 	void _notification(int what);

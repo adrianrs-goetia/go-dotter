@@ -11,7 +11,6 @@ private:
 	godot::Timer* m_timer = nullptr;
 
 public:
-	GETNAME(TurretNode)
 	static void _bind_methods();
 
 	//

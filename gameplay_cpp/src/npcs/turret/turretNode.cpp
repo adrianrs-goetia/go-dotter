@@ -15,10 +15,7 @@ static constexpr float FIRING_INTERVAL = 2.0f;
 static constexpr float FIRING_INTERVAL_VARIANCE = 1.0f;
 static constexpr float FIRING_STRENGTH = 24.f;
 
-void TurretNode::_bind_methods() {
-	DEFAULT_PROPERTY(TurretNode)
-	//
-}
+void TurretNode::_bind_methods() {}
 
 void TurretNode::_enter_tree() {
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());

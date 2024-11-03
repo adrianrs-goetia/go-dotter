@@ -18,14 +18,6 @@ static const godot::Vector3 g_right(1, 0, 0);
 #define RETURN_IF_EDITOR(ret)                                                                                          \
 	if (godot::Engine::get_singleton()->is_editor_hint()) { return ret; }
 
-#define GETNAME(class_name)                                                                                            \
-	godot::String get_class_name() const { return #class_name; }
-#define DEFAULT_PROPERTY(class_name)                                                                                   \
-	godot::ClassDB::bind_method(D_METHOD("get_class_name"), &class_name::get_class_name);                              \
-	godot::ClassDB::add_property(#class_name,                                                                          \
-			PropertyInfo(Variant::STRING, "class_name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT), "",           \
-			"get_class_name");
-
 template <typename T>
 T* getChildOfNode(const godot::Node* node) {
 	godot::TypedArray<godot::Node> children = node->get_children();

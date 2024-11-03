@@ -20,14 +20,12 @@ void InputComponent::exitGame() {
 }
 
 void InputComponent::_bind_methods() {
-	DEFAULT_PROPERTY(InputComponent)
-
-	godot::ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame);
+	ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputComponent::exitGame);
 }
 
 void InputComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
-	godot::Input* input = Input::get_singleton();
+	Input* input = Input::get_singleton();
 
 	// Input movement direction (wasd or leftstick equivalent)
 	m_inputRaw = input->get_vector(

@@ -22,7 +22,6 @@ public:
 	float m_mass = 1.f;
 
 public:
-	GETNAME(ParryTargetComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;

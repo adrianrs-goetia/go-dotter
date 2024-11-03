@@ -9,8 +9,6 @@
 #include <algorithm>
 
 void GrappleInstigatorComponent::_bind_methods() {
-	DEFAULT_PROPERTY(GrappleInstigatorComponent)
-	//
 	ClassDB::bind_method(D_METHOD("getPathToArea3D"), &GrappleInstigatorComponent::getPathToArea3D);
 	ClassDB::bind_method(D_METHOD("setPathToArea3D", "path"), &GrappleInstigatorComponent::setPathToArea3D);
 	ClassDB::bind_method(

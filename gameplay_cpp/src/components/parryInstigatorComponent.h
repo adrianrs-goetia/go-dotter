@@ -28,7 +28,6 @@ public:
 	float m_mass = 1.f;
 
 public:
-	GETNAME(ParryInstigatorComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;

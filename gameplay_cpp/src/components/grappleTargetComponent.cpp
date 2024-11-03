@@ -81,7 +81,7 @@ void GrappleTargetComponent::_bind_methods() {
 }
 
 void GrappleTargetComponent::_enter_tree() {
-	set_name(get_class_name());
+	set_name(get_class());
 	if (!getParentNode<RigidBody3D>(this) && !getParentNode<CharacterBody3D>(this) && !m_anchored) {
 		m_anchored = true;
 		LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");

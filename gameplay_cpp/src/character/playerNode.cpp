@@ -25,7 +25,7 @@ using namespace godot;
 
 constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
 
-void PlayerNode::_bind_methods() { DEFAULT_PROPERTY(PlayerNode) }
+void PlayerNode::_bind_methods() {}
 
 void PlayerNode::_notification(int what) {
 	// LOG(INFO, "Notification", (int64_t)what)

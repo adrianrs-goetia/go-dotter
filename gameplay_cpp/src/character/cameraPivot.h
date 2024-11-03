@@ -15,7 +15,6 @@ class CameraPivot : public godot::SpringArm3D {
 
 public:
 public:
-	GETNAME(CameraPivot)
 	static void _bind_methods();
 
 	void _ready() override;

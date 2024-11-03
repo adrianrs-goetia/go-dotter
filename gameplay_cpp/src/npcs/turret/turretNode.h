@@ -27,7 +27,6 @@ private:
 	godot::Ref<godot::PackedScene> m_projectileResource;
 
 public:
-	GETNAME(TurretNode)
 	static void _bind_methods();
 	//
 	void _enter_tree() override;

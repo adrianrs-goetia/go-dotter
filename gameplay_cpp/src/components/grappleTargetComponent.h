@@ -29,7 +29,6 @@ private:
 	float m_mass = 10.f;
 
 public:
-	GETNAME(GrappleTargetComponent)
 	static void _bind_methods();
 
 	void _enter_tree() override;
