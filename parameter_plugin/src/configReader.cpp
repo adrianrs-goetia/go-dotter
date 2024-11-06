@@ -1,5 +1,7 @@
 #include "configReader.h"
 
+#include <nlohmann/json.hpp>
+
 #include <filesystem>
 
 bool ConfigReader::checkFileChanged(const std::string& file) {
@@ -15,4 +17,9 @@ bool ConfigReader::checkFileChanged(const std::string& file) {
 	return false;
 }
 
-bool ConfigReader::parseFile(const std::string& file) { return false; }
+bool ConfigReader::parseFile(const std::string& file) {
+	// compile test
+	nlohmann::json j;
+	j.begin();
+	return false;
+}
