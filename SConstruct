@@ -8,6 +8,7 @@ import shutil, os
 
 import gameplay_cpp.sconstruct as gameplay_cpp
 import godot_debug_draw_3d.sconstruct as dd3d
+import parameter_plugin.sconstruct as paramplug
 
 project_name = "go-dotter"
 
@@ -35,7 +36,8 @@ opts.Update(env)
 
 # Section for creating and linking shared libraries
 dd3d_libfile = dd3d.configure_environment(env, ARGUMENTS)
-gameplay_cpp_libfile = gameplay_cpp.configure_environment(env, [dd3d_libfile], ARGUMENTS)
+parameterplugin_libfile = paramplug.configure_environment(env, ARGUMENTS)
+gameplay_cpp_libfile = gameplay_cpp.configure_environment(env, [dd3d_libfile, parameterplugin_libfile], ARGUMENTS)
 
 # Move shared objects into correct dir after building is done
 def post_build_action(target, source, env):
@@ -50,6 +52,10 @@ def post_build_action(target, source, env):
         shutil.move(dd3d_libfile.name, f"{libs}/{dd3d_libfile.name}")
         os.chmod(f"{libs}/{dd3d_libfile.name}", 0o0777)
         shutil.copy2(f"godot_debug_draw_3d/addons/godot_debug_draw_3d/debug_draw_3d.gdextension", f"{vendor}/debug_draw_3d.gdextension")
+
+        shutil.move(parameterplugin_libfile.name, f"{libs}/{parameterplugin_libfile.name}")
+        os.chmod(f"{libs}/{parameterplugin_libfile.name}", 0o0777)
+        shutil.copy2(f"parameter_plugin/addons/parameter_plugin/parameter_plugin.gdextension", f"{vendor}/parameter_plugin.gdextension")
         
     shutil.move(gameplay_cpp_libfile.name,  f"{libs}/{gameplay_cpp_libfile.name}")
     # Godot might not be able to load shared object without correct permission. This is a lazy fix

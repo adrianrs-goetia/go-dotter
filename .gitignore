@@ -18,5 +18,5 @@ build_cache/
 .sconsign.dblite
 *.os
 *.so
-__pycache__
+__pycache__/
 compile_commands.json

@@ -1,0 +1,30 @@
+[configuration]
+entry_symbol = "parameter_plugin_init"
+compatibility_minimum = "4.2.2"
+reloadable = false
+
+
+[dependencies]
+macos.template_release = { }
+windows.template_release.x86_64 = { }
+linux.template_release.x86_64 = { }
+
+[libraries]
+; -------------------------------------
+; debug
+macos = "libs/libparameter_v0.1.0_macos.editor.universal.framework"
+windows.x86_64 = "libs/libparameter_v0.1.0_windows.editor.x86_64.dll"
+linux.x86_64 = "libs/libparameter_v0.1.0_linux.editor.x86_64.so"
+
+; -------------------------------------
+; export - debug
+macos.template_debug = "libs/libparameter_v0.1.0_macos.template_debug.universal.framework"
+windows.template_debug.x86_64 = "libs/libparameter_v0.1.0_windows.template_debug.x86_64.dll"
+linux.template_debug.x86_64 = "libs/libparameter_v0.1.0_linux.template_debug.x86_64.so"
+
+
+; -------------------------------------
+; export - release 
+macos.template_release = "libs/libparameter_v0.1.0_macos.template_release.universal.framework"
+windows.template_release.x86_64 = "libs/libparameter_v0.1.0_windows.template_release.x86_64.dll"
+linux.template_release.x86_64 = "libs/libparameter_v0.1.0_linux.template_release.x86_64.so"

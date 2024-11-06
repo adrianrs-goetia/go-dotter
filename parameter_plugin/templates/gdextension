@@ -1,0 +1,30 @@
+[configuration]
+entry_symbol = "parameter_plugin_init"
+compatibility_minimum = "4.2.2"
+reloadable = false
+
+
+[dependencies]
+macos.template_release = { }
+windows.template_release.x86_64 = { }
+linux.template_release.x86_64 = { }
+
+[libraries]
+; -------------------------------------
+; debug
+macos = "libs/@libname_editor@macos.editor.universal.framework"
+windows.x86_64 = "libs/@libname_editor@windows.editor.x86_64.dll"
+linux.x86_64 = "libs/@libname_editor@linux.editor.x86_64.so"
+
+; -------------------------------------
+; export - debug
+macos.template_debug = "libs/@libname_debug@macos.template_debug.universal.framework"
+windows.template_debug.x86_64 = "libs/@libname_debug@windows.template_debug.x86_64.dll"
+linux.template_debug.x86_64 = "libs/@libname_debug@linux.template_debug.x86_64.so"
+
+
+; -------------------------------------
+; export - release 
+macos.template_release = "libs/@libname_release@macos.template_release.universal.framework"
+windows.template_release.x86_64 = "libs/@libname_release@windows.template_release.x86_64.dll"
+linux.template_release.x86_64 = "libs/@libname_release@linux.template_release.x86_64.so"
