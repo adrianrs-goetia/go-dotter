@@ -4,7 +4,7 @@
 
 #include <functional>
 
-#include <core/core.h>
+#include <core/core.hpp>
 #include <core/fsm.hpp>
 
 #include <godot_cpp/classes/node3d.hpp>
@@ -71,7 +71,8 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* getName() override { return #CLASSNAME; }
+	virtual const char* getName() override{ return #CLASSNAME;                                                         \
+	}
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};

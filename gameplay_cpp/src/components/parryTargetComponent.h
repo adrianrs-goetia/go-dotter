@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/core.h>
+#include <core/core.hpp>
 #include <functional>
 
 #include <godot_cpp/classes/area3d.hpp>

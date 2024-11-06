@@ -1,7 +1,7 @@
 #ifndef GD_MAINNODE_PLUGIN_GAMEPLAY_H
 #define GD_MAINNODE_PLUGIN_GAMEPLAY_H
 
-#include <core/core.h>
+#include <core/core.hpp>
 #include <godot_cpp/classes/node.hpp>
 
 class MainNode : public godot::Node {
