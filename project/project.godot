@@ -18,7 +18,7 @@ config/features=PackedStringArray("4.2")
 
 DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
 inputManager="*res://autoload/inputManager.tscn"
-GlobalConfigReader="*res://autoload/configReader.tscn"
+GlobalConfigReader="*res://autoload/configHandler.tscn"
 
 [debug_draw_3d]
 

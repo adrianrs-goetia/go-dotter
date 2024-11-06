@@ -2,12 +2,12 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include <configReader/configReader.h>
+#include "configHandler.h"
 
 void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
 
-	godot::ClassDB::register_class<ConfigReader>();
+	godot::ClassDB::register_class<ConfigHandler>();
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
