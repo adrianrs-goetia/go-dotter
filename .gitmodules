@@ -4,3 +4,6 @@
 [submodule "godot_debug_draw_3d"]
 	path = godot_debug_draw_3d
 	url = https://github.com/adrianrs-goetia/godot_debug_draw_3d.git
+[submodule "parameter_plugin/nlohmann"]
+	path = parameter_plugin/nlohmann
+	url = https://github.com/nlohmann/json.git

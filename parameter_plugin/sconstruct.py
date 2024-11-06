@@ -51,7 +51,8 @@ def generate_gdextension_file():
 def configure_environment(env: SConsEnvironment, args):
     src_folder = os.path.join(current_dir, 'src')
     public_api = os.path.join(os.path.dirname(src_folder), 'include')
-    env.Append(CPPPATH=[src_folder, public_api])
+    nlohmann_api = os.path.join(os.path.dirname(src_folder), 'nlohmann/single_include')
+    env.Append(CPPPATH=[src_folder, public_api, nlohmann_api])
 
     generate_gdextension_file()
     lib_file = env.File(get_libname(env, env["target"]))
