@@ -9,7 +9,7 @@ kan også være litt vanskelig å se forskjellene mellom to verdier når en play
 
             Ønsker
 - Alle spillets parametere/konfigurasjoner ligger i en enkelt json fil. 
-- Ha en autoload node, godot sin Singleton, som sjekker om det har skjedd forandringer på filen innen en tids periode. Forandringer skrives inn i ConfigHandler.
+- Ha en autoload node, godot sin Singleton, som sjekker om det har skjedd forandringer på filen innen en tids periode. Forandringer skrives inn i ConfigHandler. For å kunne oppdatere spillet under runtime. 
 - All bruk av parametere i kode leser den fra en ConfigHandler.
     - Alle parametere få registreres hos ConfigHandler
 - Skriving til json filen skjer via:
