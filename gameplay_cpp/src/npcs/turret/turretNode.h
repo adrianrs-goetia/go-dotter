@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/core.h>
+#include <core/core.hpp>
 
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>

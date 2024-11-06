@@ -18,7 +18,7 @@ env["build_dir"] = "build"
 env["obj_dir"] = "build/obj"
 os.makedirs("build/export", exist_ok=True)
 env.Decider("MD5")
-env.Append(CPPPATH=[])
+env.Append(CPPPATH=['libraries/'])
 env.Append(LINKFLAGS=['-Wl,-z,defs'])
 env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME']=1
 

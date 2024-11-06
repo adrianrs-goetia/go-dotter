@@ -1,6 +1,6 @@
 #pragma once
 
-#include <core/core.h>
+#include <core/core.hpp>
 
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
@@ -36,10 +36,11 @@ struct ParryInstance {
 		else if (instigator.getMass() < massLimit) { weight = 1.f; }
 		else if (target.getMass() < massLimit) { weight = 0.f; }
 		else {
-			float exp = godot::Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) * 100.f; // Magic values attached to
-																							 // logistic sigmoid / soft
-																							 // step To ensure we get a
-																							 // value in range of 0-1
+			float exp = godot::Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) *
+					100.f; // Magic values attached to
+						   // logistic sigmoid / soft
+						   // step To ensure we get a
+						   // value in range of 0-1
 			weight = 1.f / (1 + exp);
 		}
 	}
