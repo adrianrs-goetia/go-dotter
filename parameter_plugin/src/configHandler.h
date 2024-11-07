@@ -21,6 +21,8 @@ private:
 	ConfigReader m_reader;
 	std::string m_file = "config.json";
 
+	ParameterRegistry m_paramRegistry;
+
 public:
 public:
 	static void _bind_methods();

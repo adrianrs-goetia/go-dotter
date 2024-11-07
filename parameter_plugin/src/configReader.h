@@ -31,10 +31,8 @@ public:
 	 * \param args have to be of a standard character type, string char[] etc...
 	 * Does not assert that return type is correct 
 	 */
-	template <typename T, typename... Args>
-	T getValue(const json& jsonParams, const Args&... args) {
-		const std::vector<std::string> arguments = { args... };
-		const size_t size = arguments.size();
+	template <typename T>
+	T getValue(const json& jsonParams, const std::vector<std::string>& arguments) {
 		try {
 			switch (arguments.size()) {
 				case 1: return jsonParams.at(arguments.at(0));
@@ -48,14 +46,14 @@ public:
 		catch (const std::exception& e) {
 			std::stringstream ss;
 			{
-				ss << "At [ ";
+				ss << "[ ";
 				for (const auto& arg : arguments){
 					ss << "\'" << arg << "\'" << " ";
 				}
 				ss << "]";
 			}
-			ss << "\n" << "Exception message: " << e.what();
-			LOG(ERROR, "Could not access value: ", ss.str().c_str())
+			// ss << "\n" << "Exception message: " << e.what();
+			LOG(ERROR, "Could not access value at:", ss.str().c_str())
 		}
 		return {};
 	}
