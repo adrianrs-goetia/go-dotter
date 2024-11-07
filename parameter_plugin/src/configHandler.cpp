@@ -46,7 +46,7 @@ void ConfigHandler::_setReadStatusTrue() {
 
 void ConfigHandler::_fillParameterRegistry(const json& parsedJson) {
 	float f = m_reader.getValue<float>(parsedJson, "player");
-	// f = m_reader.getValue<float>(parsedJson, "none");
-	// f = m_reader.getValue<float>("player", "parry");
-	// f = m_reader.getValue<float>("player", "parry", "timing");
+	f = m_reader.getValue<float>(parsedJson, "none");
+	f = m_reader.getValue<float>(parsedJson, "player", "parry");
+	f = m_reader.getValue<float>(parsedJson, "player", "parry", "timing");
 }

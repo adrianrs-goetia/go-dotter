@@ -15,6 +15,10 @@ class ConfigReader {
 	std::unordered_map<std::string, std::filesystem::file_time_type> m_lastWriteTime;
 
 private:
+	auto getJsonField(const json& obj, const std::string& field) {
+		if (obj.contains(field)) { return obj.at(field); }
+	}
+
 public:
 	bool checkFileChanged(const std::string& filePath);
 	/**
@@ -25,7 +29,7 @@ public:
 
 	/**
 	 * \param args have to be of a standard character type, string char[] etc...
-	 * Will currently use nlohmann::json assert if element does not exist and cause a crash
+	 * Does not assert that return type is correct 
 	 */
 	template <typename T, typename... Args>
 	T getValue(const json& jsonParams, const Args&... args) {
@@ -33,15 +37,25 @@ public:
 		const size_t size = arguments.size();
 		try {
 			switch (arguments.size()) {
-				case 1: return jsonParams[arguments.at(0)];
-				case 2: return jsonParams[arguments.at(0)][arguments.at(1)];
-				case 3: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)];
-				case 4: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)][arguments.at(3)];
+				case 1: return jsonParams.at(arguments.at(0));
+				case 2: return jsonParams.at(arguments.at(0)).at(arguments.at(1));
+				case 3: return jsonParams.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2));
+				case 4:
+					return jsonParams.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(4));
 				default: break;
 			}
 		}
-		catch (const json::parse_error& e) {
-			LOG(ERROR, "Could not access value: ", e.what())
+		catch (const std::exception& e) {
+			std::stringstream ss;
+			{
+				ss << "At [ ";
+				for (const auto& arg : arguments){
+					ss << "\'" << arg << "\'" << " ";
+				}
+				ss << "]";
+			}
+			ss << "\n" << "Exception message: " << e.what();
+			LOG(ERROR, "Could not access value: ", ss.str().c_str())
 		}
 		return {};
 	}
