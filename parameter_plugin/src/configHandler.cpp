@@ -24,10 +24,10 @@ void ConfigHandler::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
 	if (_readerCheckConfig()) {
-		if (m_reader.parseFile(m_file)) {
+		if (auto parsedFile =  m_reader.parseFile(m_file)) {
 			// Reader successfully parsed file
+			_fillParameterRegistry(parsedFile.value());
 		}
-		//
 	}
 }
 
@@ -42,4 +42,10 @@ bool ConfigHandler::_readerCheckConfig() {
 void ConfigHandler::_setReadStatusTrue() {
 	m_readNextFrame = true;
 	m_readerTimer->start(g_readingInterval);
+}
+
+void ConfigHandler::_fillParameterRegistry(const json& parsedJson) {
+	float f = m_reader.getValue<float>(parsedJson, "player");
+	// f = m_reader.getValue<float>("player", "parry");
+	// f = m_reader.getValue<float>("player", "parry", "timing");
 }

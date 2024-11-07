@@ -1,25 +1,37 @@
 #include "configReader.h"
 
-#include <nlohmann/json.hpp>
-
 #include <filesystem>
+#include <fstream>
 
-bool ConfigReader::checkFileChanged(const std::string& file) {
-	if (std::filesystem::exists(file)) {
-		const auto writeTime = std::filesystem::last_write_time(file);
-		if (writeTime != m_lastWriteTime) {
-			LOG(INFO, "Config file changed")
-			m_lastWriteTime = writeTime;
+bool ConfigReader::checkFileChanged(const std::string& filePath) {
+	if (std::filesystem::exists(filePath)) {
+		const auto writeTime = std::filesystem::last_write_time(filePath);
+		if (writeTime != m_lastWriteTime[filePath]) {
+			LOG(INFO, "Config filePath changed")
+			m_lastWriteTime[filePath] = writeTime;
 			return true;
 		}
 	}
-	else { LOG(ERROR, "Config file was not found!") }
+	else { LOG(ERROR, "Config filePath was not found!") }
 	return false;
 }
 
-bool ConfigReader::parseFile(const std::string& file) {
-	// compile test
-	nlohmann::json j;
-	j.begin();
-	return false;
+std::optional<json> ConfigReader::parseFile(const std::string& filePath) {
+	std::ifstream ifstream(filePath, std::ios_base::in);
+	if (ifstream.is_open()) {
+		std::stringstream ss;
+		ss << ifstream.rdbuf();
+		LOG(INFO, "ss:::", ss.str().c_str())
+		try {
+			return json::parse(ss.str(), nullptr, true, true);
+			// json data;
+			// ifstream >> data;
+			// return data;
+		}
+		catch (const json::parse_error& e) {
+			LOG(WARN, "ConfigHandler could not parse config.json: ", e.what())
+		}
+	}
+	else { LOG(ERROR, "SHOULD NEVER HAPPEN. ConfigReader could not open file: ", filePath.c_str()) }
+	return std::nullopt;
 }

@@ -49,6 +49,7 @@ def generate_gdextension_file():
             gdextension.write(template_buffer)
             
 def configure_environment(env: SConsEnvironment, args):
+    env.Append(CXXFLAGS=['-fexceptions']) # nlohmann throws exceptions
     src_folder = os.path.join(current_dir, 'src')
     public_api = os.path.join(os.path.dirname(src_folder), 'include')
     nlohmann_api = os.path.join(os.path.dirname(src_folder), 'nlohmann/single_include')
