@@ -1,6 +1,7 @@
 #pragma once
 
 #include "configReader.h"
+#include "parameterRegistry.h"
 
 #include <core/core.hpp>
 
@@ -13,6 +14,7 @@ namespace godot {
 class ConfigHandler : public godot::Node {
 	GDCLASS(ConfigHandler, godot::Node)
 
+private:
 	godot::Timer* m_readerTimer = nullptr;
 	bool m_readNextFrame = false;
 
@@ -29,4 +31,5 @@ public:
 private:
 	bool _readerCheckConfig();
 	void _setReadStatusTrue();
+	void _fillParameterRegistry(const json& parsedJson);
 };
