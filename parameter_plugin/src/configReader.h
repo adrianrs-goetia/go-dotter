@@ -31,16 +31,18 @@ public:
 	T getValue(const json& jsonParams, const Args&... args) {
 		const std::vector<std::string> arguments = { args... };
 		const size_t size = arguments.size();
-		switch (arguments.size()) {
-			case 1: return jsonParams[arguments.at(0)];
-			case 2: return jsonParams[arguments.at(0)][arguments.at(1)];
-			case 3: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)];
-			case 4: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)][arguments.at(3)];
-			default: break;
+		try {
+			switch (arguments.size()) {
+				case 1: return jsonParams[arguments.at(0)];
+				case 2: return jsonParams[arguments.at(0)][arguments.at(1)];
+				case 3: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)];
+				case 4: return jsonParams[arguments.at(0)][arguments.at(1)][arguments.at(2)][arguments.at(3)];
+				default: break;
+			}
 		}
-
-		// @todo print error string
-		LOG(ERROR, "ConfigReader could not get value from ...")
+		catch (const json::parse_error& e) {
+			LOG(ERROR, "Could not access value: ", e.what())
+		}
 		return {};
 	}
 };

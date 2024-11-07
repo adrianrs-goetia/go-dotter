@@ -19,14 +19,10 @@ bool ConfigReader::checkFileChanged(const std::string& filePath) {
 std::optional<json> ConfigReader::parseFile(const std::string& filePath) {
 	std::ifstream ifstream(filePath, std::ios_base::in);
 	if (ifstream.is_open()) {
-		std::stringstream ss;
-		ss << ifstream.rdbuf();
-		LOG(INFO, "ss:::", ss.str().c_str())
 		try {
+			std::stringstream ss;
+			ss << ifstream.rdbuf();
 			return json::parse(ss.str(), nullptr, true, true);
-			// json data;
-			// ifstream >> data;
-			// return data;
 		}
 		catch (const json::parse_error& e) {
 			LOG(WARN, "ConfigHandler could not parse config.json: ", e.what())
