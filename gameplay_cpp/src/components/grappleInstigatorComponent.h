@@ -9,7 +9,7 @@
 
 class GrappleTargetComponent;
 namespace godot {
-	class Area3D;
+class Area3D;
 }
 
 class GrappleInstigatorComponent : public NodeComponent {

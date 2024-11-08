@@ -31,19 +31,19 @@ constexpr float PARRY_STATE_LAUNCH_UP_ANGLE = 60.0f;
 constexpr float PARRY_STATE_LAUNCH_STRENGTH = 10.0f;
 
 namespace helper {
-	void movement_acceleration(StateContext& context, float acceleration, float deceleration, float delta) {
-		// direction
-		if (context.input->m_inputRaw.abs() > Vector2()) {
-			context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
-					context.input->m_inputCameraRelative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
-			context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
-					context.input->m_inputCameraRelative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
-		}
-		else {
-			context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
-			context.physics.velocity.z = Math::move_toward(context.physics.velocity.z, 0.0f, deceleration * delta);
-		}
+void movement_acceleration(StateContext& context, float acceleration, float deceleration, float delta) {
+	// direction
+	if (context.input->m_inputRaw.abs() > Vector2()) {
+		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
+				context.input->m_inputCameraRelative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
+		context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
+				context.input->m_inputCameraRelative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
 	}
+	else {
+		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
+		context.physics.velocity.z = Math::move_toward(context.physics.velocity.z, 0.0f, deceleration * delta);
+	}
+}
 } //namespace helper
 
 // PlayerOnGroundState

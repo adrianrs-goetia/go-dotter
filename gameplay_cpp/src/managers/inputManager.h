@@ -7,29 +7,29 @@
 
 namespace InputString {
 
-	constexpr const char* moveLeft = "move_left";
-	constexpr const char* moveRight = "move_right";
-	constexpr const char* moveForward = "move_forward";
-	constexpr const char* moveBackward = "move_backward";
+constexpr const char* moveLeft = "move_left";
+constexpr const char* moveRight = "move_right";
+constexpr const char* moveForward = "move_forward";
+constexpr const char* moveBackward = "move_backward";
 
-	constexpr const char* jump = "jump";
-	constexpr const char* attack = "attack";
-	constexpr const char* parry = "parry";
-	constexpr const char* grapplehook = "grapplehook";
+constexpr const char* jump = "jump";
+constexpr const char* attack = "attack";
+constexpr const char* parry = "parry";
+constexpr const char* grapplehook = "grapplehook";
 
-	constexpr const char* cameraLeft = "camera_left";
-	constexpr const char* cameraRight = "camera_right";
-	constexpr const char* cameraUp = "camera_up";
-	constexpr const char* cameraDown = "camera_down";
+constexpr const char* cameraLeft = "camera_left";
+constexpr const char* cameraRight = "camera_right";
+constexpr const char* cameraUp = "camera_up";
+constexpr const char* cameraDown = "camera_down";
 
-	constexpr const char* pauseMenu = "pause_menu";
-	constexpr const char* toggleScreenMode = "toggle_screen_mode";
-	constexpr const char* toggleApplicationMouseLock = "toggle_application_mouse_lock";
-	constexpr const char* restart = "restart";
+constexpr const char* pauseMenu = "pause_menu";
+constexpr const char* toggleScreenMode = "toggle_screen_mode";
+constexpr const char* toggleApplicationMouseLock = "toggle_application_mouse_lock";
+constexpr const char* restart = "restart";
 
-	// Some Built-in actions
-	constexpr const char* uiUp = "ui_up";
-	constexpr const char* uiDown = "ui_down";
+// Some Built-in actions
+constexpr const char* uiUp = "ui_up";
+constexpr const char* uiDown = "ui_down";
 
 } //namespace InputString
 

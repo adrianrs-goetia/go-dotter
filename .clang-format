@@ -38,7 +38,7 @@ BraceWrapping:
   # AfterControlStatement: Never
 #   AfterEnum:       false
 #   AfterFunction:   false
-#   AfterNamespace:  false
+  # AfterNamespace:  false
 #   AfterObjCDeclaration: false
 #   AfterStruct:     false
 #   AfterUnion:      false
@@ -109,7 +109,7 @@ KeepEmptyLinesAtTheStartOfBlocks: false
 # MacroBlockBegin: ''
 # MacroBlockEnd:   ''
 # MaxEmptyLinesToKeep: 1
-NamespaceIndentation: All
+NamespaceIndentation: None
 # PenaltyBreakAssignment: 2
 # PenaltyBreakBeforeFirstCallParameter: 19
 # PenaltyBreakComment: 300

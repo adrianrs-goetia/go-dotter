@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a PATHS=("gameplay_cpp")
+declare -a PATHS=("gameplay_cpp" "parameter_plugin/src")
 
 for path in ${PATHS[@]}
 do
