@@ -8,7 +8,7 @@
 #include <godot_cpp/classes/node.hpp>
 
 namespace godot {
-	class Timer;
+class Timer;
 }
 
 class ConfigHandler : public godot::Node {
@@ -21,9 +21,11 @@ private:
 	ConfigReader m_reader;
 	std::string m_file = "config.json";
 
-	ParameterRegistry m_paramRegistry;
+	static parameter::Registry m_paramRegistry;
 
 public:
+	static parameter::Registry& getRegistry();
+
 public:
 	static void _bind_methods();
 
@@ -33,5 +35,5 @@ public:
 private:
 	bool _readerCheckConfig();
 	void _setReadStatusTrue();
-	void _fillParameterRegistry(const json& parsedJson);
+	void _updateParameterRegistry(const json& parsedJson);
 };

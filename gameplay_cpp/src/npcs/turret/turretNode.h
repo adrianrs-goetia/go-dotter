@@ -7,8 +7,8 @@
 #include <godot_cpp/classes/timer.hpp>
 
 namespace godot {
-	class AudioStreamPlayer3D;
-	class GPUParticles3D;
+class AudioStreamPlayer3D;
+class GPUParticles3D;
 } //namespace godot
 
 class TurretNode : public godot::Node3D {

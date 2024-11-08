@@ -6,6 +6,7 @@
 #include "math.hpp"
 #include "timer.hpp"
 #include "typedefs.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 
