@@ -29,7 +29,7 @@ void __m_assert(const char* expr_str, bool expr, const char* file, int line, con
     // #ifdef LIBRARY_EXPORTS
         #define DD3D_API __declspec(dllexport)
     // #else
-        // #define DD3D_API __declspec(dllimport)
+        // #define API __declspec(dllimport)
     // #endif
 #else
     #define API __attribute__((visibility("default")))
