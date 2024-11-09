@@ -6,14 +6,26 @@
 #include <unordered_map>
 #include <variant>
 
+class ConfigReader;
+
 namespace parameter {
 
 struct Variant {
+	enum EType { BOOL, DOUBLE, INT, STRING };
+
 	using Type = std::variant<bool, double, int, std::string>;
 
 	Variant() = default;
 	Variant(Type v)
 		: value(v) {}
+	Variant(EType type) {
+		switch (type) {
+			case BOOL: value = bool(); break;
+			case DOUBLE: value = double(); break;
+			case INT: value = int(); break;
+			case STRING: value = std::string(); break;
+		}
+	}
 
 	//
 	Type value;
@@ -34,54 +46,22 @@ using StringKey = std::vector<std::string>;
 using HashKey = size_t;
 using Callback = std::function<void(const Variant&)>;
 
-struct Registry {
+struct API Registry {
 	using Entry = std::tuple<Variant, Callback>;
 
 private:
 	std::unordered_map<HashKey, Entry> m_entries;
 
 public:
-	template <typename T>
-	bool addEntry(const StringKey& key, const Callback&& callback) {
-		auto hash = _getHashOfKey(key);
-		auto [it, inserted] = m_entries.emplace(hash, Entry{ Variant{T()}, std::move(callback) });
-		if (!inserted) {
-			LOG(ERROR, "Failed insertion attempt at existing value:", toString(key).c_str())
-			return false;
-		}
-		return true;
-	}
+	bool addEntry(const StringKey& key, const Variant::EType type, const Callback&& callback);
 
-	bool updateEntry(const StringKey& key, const Variant& newValue) {
-		if (m_entries.empty()) { return false; }
+	bool removeEntry(const StringKey& key);
 
-		auto it = m_entries.find(_getHashOfKey(key));
-		if (it == m_entries.end()) {
-			LOG(ERROR, "Failed to update registry at non-existing entry:", toString(key).c_str())
-			return false;
-		}
-		auto& [value, callback] = (it->second);
-		value.set(std::move(newValue));
-		callback(value);
-		return true;
-	}
-
-	// template <typename T>
-	// T getEntry(const StringKey& key) {
-	// 	auto it = m_entries.find(_getHashOfKey(key));
-	// 	if (it == m_entries.end()) { LOG(ERROR, "Entry not found on getEntry:", toString(key).c_str()) }
-	// 	auto& [var, cb] = it->second;
-	// 	return var.get<T>();
-	// }
+	bool updateEntry(const StringKey& key, const Variant& newValue);
 
 private:
-	HashKey _getHashOfKey(const StringKey& val) {
-		std::stringstream ss;
-		for (const auto& v : val) {
-			ss << v;
-		}
-		return std::hash<std::string>{}(ss.str());
-	}
+	// void _setValue(const StringKey& key, std::unordered_map<HashKey, Entry>::iterator& it);
+	HashKey _getHashOfKey(const StringKey& val);
 };
 
 } //namespace parameter

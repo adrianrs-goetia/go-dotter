@@ -87,15 +87,15 @@ void PlayerNode::_enter_tree() {
 		return desiredDir * -1.f;
 	};
 
-	auto& registry = ConfigHandler::getRegistry();
 	auto& params = m_stateContext->params;
-	registry.addEntry<double>({ "walkspeed" }, [&params](const parameter::Variant& var) {
-		// float v = var.get<double>();
-		// LOG(INFO, "Setting Walkspeed param:", v)
+	ConfigHandler::addEntry({ "walkspeed" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
+		LOG(INFO, "Setting walkspeed", (float)var.get<double>());
 		params.MAX_HORIZONTAL_SPEED = var.get<double>();
 	});
-	registry.addEntry<double>(
-			{ "jumpstrength" }, [&params](const parameter::Variant& var) { params.JUMP_STRENGTH = var.get<double>(); });
+	ConfigHandler::addEntry({ "jumpstrength" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
+		LOG(INFO, "Setting jumpstrength", (float)var.get<double>());
+		params.JUMP_STRENGTH = var.get<double>();
+	});
 }
 
 void PlayerNode::_exit_tree() {
@@ -104,8 +104,10 @@ void PlayerNode::_exit_tree() {
 
 	ASSERT_NOTNULL(m_stateContext);
 
-	::free(m_stateContext);
+	ConfigHandler::removeEntry({ "jumpstrength" });
+	ConfigHandler::removeEntry({ "walkspeed" });
 
+	::free(m_stateContext);
 	m_stateContext = nullptr;
 }
 
