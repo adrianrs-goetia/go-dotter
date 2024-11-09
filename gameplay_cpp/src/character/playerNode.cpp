@@ -90,8 +90,8 @@ void PlayerNode::_enter_tree() {
 	auto& registry = ConfigHandler::getRegistry();
 	auto& params = m_stateContext->params;
 	registry.addEntry<double>({ "walkspeed" }, [&params](const parameter::Variant& var) {
-		float v = var.get<double>();
-		LOG(INFO, "Setting Walkspeed param:", v)
+		// float v = var.get<double>();
+		// LOG(INFO, "Setting Walkspeed param:", v)
 		params.MAX_HORIZONTAL_SPEED = var.get<double>();
 	});
 	registry.addEntry<double>(

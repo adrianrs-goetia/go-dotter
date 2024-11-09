@@ -57,15 +57,21 @@ void ConfigHandler::_setReadStatusTrue() {
 void ConfigHandler::_updateParameterRegistry(const json& parsedJson) {
 	// Parse json for all keys an objects
 	parameter::StringKey key;
-	for (const auto& entry : parsedJson.items()) {
+	_parseJsonObject(key, parsedJson);
+
+}
+
+void ConfigHandler::_parseJsonObject(parameter::StringKey& key, const json& object) {
+	for (const auto& entry : object.items()) {
 		key.push_back(entry.key());
 
-		// updateEntry in registry at the given key
 		const auto& val = entry.value();
 		if (val.is_boolean() || val.is_number_float() || val.is_number_integer() || val.is_string()) {
-			auto val = m_reader.getValue(parsedJson, key);
+			auto val = m_reader.getValue(object, key);
 			m_paramRegistry.updateEntry(key, val);
-			key.clear();
+			key.pop_back();
 		}
+		else if (val.is_object()) { _parseJsonObject(key, entry.value()); }
 	}
+	if (!key.empty()) { key.pop_back(); }
 }
