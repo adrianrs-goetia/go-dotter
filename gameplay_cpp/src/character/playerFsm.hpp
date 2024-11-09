@@ -16,9 +16,10 @@ class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
 class InputManager;
+
 namespace godot {
-	class AudioStreamPlayer3D;
-	class GPUParticles3D;
+class AudioStreamPlayer3D;
+class GPUParticles3D;
 } //namespace godot
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
@@ -44,8 +45,15 @@ struct AudioVisualContext {
 	godot::GPUParticles3D* particles = nullptr;
 };
 
+struct StateContextParameters {
+	// float MAX_HORIZONTAL_SPEED = 6.5f;
+	// float JUMP_STRENGTH = 9.0f;
+	float MAX_HORIZONTAL_SPEED;
+	float JUMP_STRENGTH;
+};
+
 struct StateContext {
-	// StateGrappleContext grapple;
+	StateContextParameters params;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;
@@ -71,8 +79,7 @@ public:
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* getName() override{ return #CLASSNAME;                                                         \
-	}
+	virtual const char* getName() override { return #CLASSNAME; }
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};

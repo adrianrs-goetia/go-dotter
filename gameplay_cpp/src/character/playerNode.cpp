@@ -15,6 +15,7 @@
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
+#include <configHandler.h>
 #include <debugdraw3d/api.h>
 
 extern "C" {
@@ -43,13 +44,14 @@ void PlayerNode::_notification(int what) {
 void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
+	RETURN_IF_EDITOR(void())
+
 	auto* input = InputManager::get(*this);
 	m_parryComponent = getChildOfNode<ParryInstigatorComponent>(this);
 	auto* grappleInstigator = getChildOfNode<GrappleInstigatorComponent>(this);
 	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getChildOfNode<GPUParticles3D>(this);
 
-	RETURN_IF_EDITOR(void())
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	m_stateContext = (StateContext*)calloc(1, sizeof(StateContext));
@@ -84,6 +86,16 @@ void PlayerNode::_enter_tree() {
 		// desiredDir is flipped to launch player and object in the opposite directions
 		return desiredDir * -1.f;
 	};
+
+	auto& registry = ConfigHandler::getRegistry();
+	auto& params = m_stateContext->params;
+	registry.addEntry<double>({ "walkspeed" }, [&params](const parameter::Variant& var) {
+		float v = var.get<double>();
+		LOG(INFO, "Setting Walkspeed param:", v)
+		params.MAX_HORIZONTAL_SPEED = var.get<double>();
+	});
+	registry.addEntry<double>(
+			{ "jumpstrength" }, [&params](const parameter::Variant& var) { params.JUMP_STRENGTH = var.get<double>(); });
 }
 
 void PlayerNode::_exit_tree() {
