@@ -25,7 +25,7 @@ struct Variant {
 	}
 
 	template <typename T>
-	T& get() const {
+	T get() const {
 		return std::get<T>(value);
 	}
 };
@@ -41,9 +41,10 @@ private:
 	std::unordered_map<HashKey, Entry> m_entries;
 
 public:
+	template <typename T>
 	bool addEntry(const StringKey& key, const Callback&& callback) {
 		auto hash = _getHashOfKey(key);
-		auto [it, inserted] = m_entries.emplace(hash, Entry{ Variant{}, std::move(callback) });
+		auto [it, inserted] = m_entries.emplace(hash, Entry{ Variant{T()}, std::move(callback) });
 		if (!inserted) {
 			LOG(ERROR, "Failed insertion attempt at existing value:", toString(key).c_str())
 			return false;
@@ -51,7 +52,9 @@ public:
 		return true;
 	}
 
-	bool updateEntry(const StringKey& key, const Variant&& newValue) {
+	bool updateEntry(const StringKey& key, const Variant& newValue) {
+		if (m_entries.empty()) { return false; }
+
 		auto it = m_entries.find(_getHashOfKey(key));
 		if (it == m_entries.end()) {
 			LOG(ERROR, "Failed to update registry at non-existing entry:", toString(key).c_str())
@@ -62,6 +65,14 @@ public:
 		callback(value);
 		return true;
 	}
+
+	// template <typename T>
+	// T getEntry(const StringKey& key) {
+	// 	auto it = m_entries.find(_getHashOfKey(key));
+	// 	if (it == m_entries.end()) { LOG(ERROR, "Entry not found on getEntry:", toString(key).c_str()) }
+	// 	auto& [var, cb] = it->second;
+	// 	return var.get<T>();
+	// }
 
 private:
 	HashKey _getHashOfKey(const StringKey& val) {

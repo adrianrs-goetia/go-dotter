@@ -12,10 +12,10 @@
 
 using namespace godot;
 
-constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
+// constexpr float MAX_HORIZONTAL_SPEED = 6.5f;
 constexpr float ONGROUND_ACCELERATION = 40.0f;
 constexpr float ONGROUND_DECELARATION = 30.0f;
-constexpr float JUMP_STRENGTH = 9.0f;
+// constexpr float JUMP_STRENGTH = 9.0f;
 constexpr float INAIR_ACCELERATION = 10.0f;
 constexpr float INAIR_DECELARATION = 10.0f;
 
@@ -35,9 +35,9 @@ void movement_acceleration(StateContext& context, float acceleration, float dece
 	// direction
 	if (context.input->m_inputRaw.abs() > Vector2()) {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
-				context.input->m_inputCameraRelative.x * MAX_HORIZONTAL_SPEED, acceleration * delta);
+				context.input->m_inputCameraRelative.x * context.params.MAX_HORIZONTAL_SPEED, acceleration * delta);
 		context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
-				context.input->m_inputCameraRelative.y * MAX_HORIZONTAL_SPEED, acceleration * delta);
+				context.input->m_inputCameraRelative.y * context.params.MAX_HORIZONTAL_SPEED, acceleration * delta);
 	}
 	else {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
@@ -51,7 +51,7 @@ PlayerState::Return PlayerOnGroundState::enter(StateContext& context) {
 	Super::enter(context);
 	// Immediate jump when entering while having just pressed jump
 	if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-		context.physics.velocity.y += JUMP_STRENGTH;
+		context.physics.velocity.y += context.params.JUMP_STRENGTH;
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
@@ -71,7 +71,7 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
-		context.physics.velocity.y += JUMP_STRENGTH;
+		context.physics.velocity.y += context.params.JUMP_STRENGTH;
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {

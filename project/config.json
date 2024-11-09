@@ -1,5 +1,7 @@
 {
     "player": 100.3,
+    "walkspeed": 10,
+    "jumpstrength": 9.5,
     "test": 91230,
     "turret": {
         "active": true,

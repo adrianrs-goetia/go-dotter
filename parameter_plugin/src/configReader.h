@@ -35,11 +35,12 @@ public:
 		json param;
 		try {
 			switch (arguments.size()) {
-				case 1: param = jsonParams.at(arguments.at(0));
-				case 2: param = jsonParams.at(arguments.at(0)).at(arguments.at(1));
-				case 3: param = jsonParams.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2));
+				case 1: param = jsonParams.at(arguments.at(0)); break;
+				case 2: param = jsonParams.at(arguments.at(0)).at(arguments.at(1)); break;
+				case 3: param = jsonParams.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)); break;
 				case 4:
 					param = jsonParams.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(4));
+					break;
 				default: {
 					LOG(ERROR, "Unexpected amount of arguments when getting config.json value:", arguments.size())
 					return {};

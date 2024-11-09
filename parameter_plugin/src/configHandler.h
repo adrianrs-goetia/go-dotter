@@ -15,6 +15,8 @@ class ConfigHandler : public godot::Node {
 	GDCLASS(ConfigHandler, godot::Node)
 
 private:
+	bool m_isReady = false;
+
 	godot::Timer* m_readerTimer = nullptr;
 	bool m_readNextFrame = false;
 
@@ -24,15 +26,17 @@ private:
 	static parameter::Registry m_paramRegistry;
 
 public:
-	static parameter::Registry& getRegistry();
+	API static parameter::Registry& getRegistry();
 
 public:
 	static void _bind_methods();
 
 	void _enter_tree() override;
+	void _ready() override;
 	void _physics_process(double delta) override;
 
 private:
+	void _configUpdate();
 	bool _readerCheckConfig();
 	void _setReadStatusTrue();
 	void _updateParameterRegistry(const json& parsedJson);

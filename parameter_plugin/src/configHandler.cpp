@@ -6,7 +6,7 @@ constexpr float g_readingInterval = 1.5f;
 
 using namespace godot;
 
-parameter::Registry ConfigHandler::m_paramRegistry = {};
+parameter::Registry ConfigHandler::m_paramRegistry;
 
 parameter::Registry& ConfigHandler::getRegistry() { return m_paramRegistry; }
 
@@ -24,14 +24,20 @@ void ConfigHandler::_enter_tree() {
 	_setReadStatusTrue();
 }
 
+void ConfigHandler::_ready() {
+	m_isReady = true;
+	_configUpdate();
+}
+
 void ConfigHandler::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
-	if (_readerCheckConfig()) {
-		if (auto parsedFile = m_reader.parseFile(m_file)) {
-			// Reader successfully parsed file
-			_updateParameterRegistry(parsedFile.value());
-		}
+	_configUpdate();
+}
+
+void ConfigHandler::_configUpdate() {
+	if (m_isReady && _readerCheckConfig()) {
+		if (auto parsedFile = m_reader.parseFile(m_file)) { _updateParameterRegistry(parsedFile.value()); }
 	}
 }
 
@@ -57,7 +63,8 @@ void ConfigHandler::_updateParameterRegistry(const json& parsedJson) {
 		// updateEntry in registry at the given key
 		const auto& val = entry.value();
 		if (val.is_boolean() || val.is_number_float() || val.is_number_integer() || val.is_string()) {
-			m_paramRegistry.updateEntry(key, m_reader.getValue(parsedJson, key));
+			auto val = m_reader.getValue(parsedJson, key);
+			m_paramRegistry.updateEntry(key, val);
 			key.clear();
 		}
 	}
