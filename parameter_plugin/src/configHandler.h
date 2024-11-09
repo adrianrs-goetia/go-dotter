@@ -40,4 +40,5 @@ private:
 	bool _readerCheckConfig();
 	void _setReadStatusTrue();
 	void _updateParameterRegistry(const json& parsedJson);
+	void _parseJsonObject(parameter::StringKey& key, const json& object);
 };
