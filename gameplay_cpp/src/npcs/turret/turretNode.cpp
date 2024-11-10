@@ -8,12 +8,9 @@
 #include <godot_cpp/classes/window.hpp>
 
 #include <debugdraw3d/api.h>
+#include <configHandler.h>
 
 using namespace godot;
-
-static constexpr float FIRING_INTERVAL = 2.0f;
-static constexpr float FIRING_INTERVAL_VARIANCE = 1.0f;
-static constexpr float FIRING_STRENGTH = 24.f;
 
 void TurretNode::_bind_methods() {}
 
@@ -64,7 +61,8 @@ void TurretNode::_physics_process(double delta) {
 }
 
 float TurretNode::getFiringInterval() const {
-	return FIRING_INTERVAL + canonicalRandomNumber(-FIRING_INTERVAL_VARIANCE, FIRING_INTERVAL_VARIANCE);
+	const auto variance = GETPARAM_D("npcs", "turret", "firingIntervalVariance");
+	return GETPARAM_D("npcs", "turret", "firingInterval") + canonicalRandomNumber(-variance, variance);
 }
 
 void TurretNode::rotateHeadTowardsTarget() {
@@ -99,7 +97,7 @@ void TurretNode::fireProjectile() {
 
 	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
 		rigidbody->set_global_position(getGunOpeningLocation());
-		rigidbody->set_linear_velocity(getGunOpeningDirection() * FIRING_STRENGTH);
+		rigidbody->set_linear_velocity(getGunOpeningDirection() * GETPARAM_D("npcs", "turret", "firingStrength"));
 	}
 	m_firingTimer->start(getFiringInterval());
 
