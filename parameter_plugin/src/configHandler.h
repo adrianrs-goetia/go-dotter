@@ -26,11 +26,9 @@ private:
 
 public:
 	template <typename T>
-	API static T getParam(const parameter::StringKey& key){
+	API static T getParam(const parameter::StringKey& key) {
 		return ConfigHandler::_getParamImpl(key).get<T>();
 	}
-	// API static void addEntry(const parameter::StringKey& key, const parameter::Variant::EType type, const
-	// parameter::Callback&& callback); API static void removeEntry(const parameter::StringKey& key);
 	API static parameter::Variant _getParamImpl(const parameter::StringKey& key);
 
 public:
