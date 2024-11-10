@@ -8,9 +8,9 @@
         "inAirAcceleration": 10.0,
         "inAirDeceleration": 10.0,
         "gravityScale": 1.8,
-        // "grapple":{
-        //     "grappleLaunchStrength": 20.0
-        // },
+        "grapple":{
+            "launchStrength": 28.0
+        },
         "parry":{
             "cooldown": 0.5,
             "stateLength": 0.7,

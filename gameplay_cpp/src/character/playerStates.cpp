@@ -103,7 +103,7 @@ PlayerState::Return PlayerPreGrappleLaunchState::enter(StateContext& context) {
 PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 	// TODO... What to do here other than launch?
 	GrappleTargetComponent::LaunchContext launch =
-			context.grapple->getInstigatorComponent()->launch(context.grapple->getTarget());
+			context.grapple->getInstigatorComponent()->launch(GETPARAM_D("player", "grapple", "launchStrength"), context.grapple->getTarget());
 	if (launch.type != GrappleTargetComponent::LaunchType::INSTIGATOR_ANCHOR &&
 			launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
 		context.physics.velocity = launch.impulse;
