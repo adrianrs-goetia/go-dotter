@@ -8,19 +8,24 @@
         "inAirAcceleration": 10.0,
         "inAirDeceleration": 10.0,
         "gravityScale": 1.8,
-        "grapple":{
-            "launchStrength": 28.0
+        "grapple": {
+            "launchStrength": 18.0
         },
-        "parry":{
+        "parry": {
             "cooldown": 0.5,
             "stateLength": 0.7,
             "launchUpAngle": 60.0,
             "launchStrength": 10.0
         }
     },
-    "test": 91230,
-    "turret": {
-        "active": true,
-        "firingInterval": 1.0
+    "npcs": {
+        "turret": {
+            "firingInterval": 1.4,
+            "firingIntervalVariance": 0.7,
+            "firingStrength": 29.0
+        },
+        "projectile": {
+            "lifetime": 4.0
+        }
     }
 }

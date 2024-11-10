@@ -1,8 +1,8 @@
 #include "projectile.h"
 
-using namespace godot;
+#include <configHandler.h>
 
-static constexpr float LIFETIME = 2.f;
+using namespace godot;
 
 void Projectile::_bind_methods() {}
 
@@ -16,7 +16,7 @@ void Projectile::_enter_tree() {
 
 	add_child(m_timer);
 	m_timer->connect("timeout", callable_mp(this, &Projectile::onTimeout));
-	m_timer->start(LIFETIME);
+	m_timer->start(GETPARAM_D("npcs", "projectile", "lifetime"));
 }
 
 void Projectile::_physics_process(double delta) {}
