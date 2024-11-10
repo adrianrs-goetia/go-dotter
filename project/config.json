@@ -1,7 +1,22 @@
 {
+    "gravityConstant": -9.81,
     "player": {
-        "walkspeed": 4.0,
-        "jumpstrength": 8.4
+        "walkSpeed": 4.0,
+        "onGroundAcceleration": 40.0,
+        "onGroundDeceleration": 30.0,
+        "jumpStrength": 8.4,
+        "inAirAcceleration": 10.0,
+        "inAirDeceleration": 10.0,
+        "gravityScale": 1.8,
+        // "grapple":{
+        //     "grappleLaunchStrength": 20.0
+        // },
+        "parry":{
+            "cooldown": 0.5,
+            "stateLength": 0.7,
+            "launchUpAngle": 60.0,
+            "launchStrength": 10.0
+        }
     },
     "test": 91230,
     "turret": {
