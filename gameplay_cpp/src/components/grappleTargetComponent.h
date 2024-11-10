@@ -34,7 +34,7 @@ public:
 	void _enter_tree() override;
 	void _exit_tree() override;
 
-	LaunchContext launch(GrappleTargetComponent* subject);
+	LaunchContext launch(double launchStrength, GrappleTargetComponent* subject);
 
 	godot::RID getRid() const;
 

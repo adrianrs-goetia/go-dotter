@@ -7,7 +7,7 @@
 
 using namespace godot;
 
-GrappleTargetComponent::LaunchContext GrappleTargetComponent::launch(GrappleTargetComponent* subject) {
+GrappleTargetComponent::LaunchContext GrappleTargetComponent::launch(double launchStrength, GrappleTargetComponent* subject) {
 	LaunchContext context;
 	context.type = _determineLaunchType(subject);
 	switch (context.type) {
@@ -33,7 +33,7 @@ GrappleTargetComponent::LaunchContext GrappleTargetComponent::launch(GrappleTarg
 		}
 		case LaunchType::SUBJECT_ANCHOR: {
 			LOG(DEBUG, "Grapple launch -- SUBJECT_ANCHOR")
-			context.impulse = _impulseOwner(_determineLaunchDirectionAtob(this, subject), getPullStrength());
+			context.impulse = _impulseOwner(_determineLaunchDirectionAtob(this, subject), launchStrength);
 			break;
 		}
 	}
