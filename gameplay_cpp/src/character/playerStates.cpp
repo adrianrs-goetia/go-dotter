@@ -36,11 +36,9 @@ void movement_acceleration(StateContext& context, float acceleration, float dece
 	// direction
 	if (context.input->m_inputRaw.abs() > Vector2()) {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
-				context.input->m_inputCameraRelative.x * (float)ConfigHandler::getParam<double>({ "walkspeed" }),
-				acceleration * delta);
+				context.input->m_inputCameraRelative.x * GETPARAM_F("player", "walkspeed"), acceleration * delta);
 		context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
-				context.input->m_inputCameraRelative.y * (float)ConfigHandler::getParam<double>({ "walkspeed" }),
-				acceleration * delta);
+				context.input->m_inputCameraRelative.y * GETPARAM_F("player", "walkspeed"), acceleration * delta);
 	}
 	else {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
@@ -54,7 +52,7 @@ PlayerState::Return PlayerOnGroundState::enter(StateContext& context) {
 	Super::enter(context);
 	// Immediate jump when entering while having just pressed jump
 	if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-		context.physics.velocity.y += ConfigHandler::getParam<double>({ "jumpstrength" });
+		context.physics.velocity.y += GETPARAM_D("player", "jumpstrength");
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
@@ -74,7 +72,7 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
-		context.physics.velocity.y += ConfigHandler::getParam<double>({ "jumpstrength" });
+		context.physics.velocity.y += GETPARAM_D("player", "jumpstrength");
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {

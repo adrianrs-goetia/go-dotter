@@ -44,3 +44,8 @@ private:
 	bool _readerCheckConfig();
 	void _setReadStatusTrue();
 };
+
+#define GETPARAM_D(...) ConfigHandler::getParam<double>({ __VA_ARGS__ })
+#define GETPARAM_F(...) (float)ConfigHandler::getParam<double>({ __VA_ARGS__ })
+#define GETPARAM_I(...) ConfigHandler::getParam<int>({ __VA_ARGS__ })
+#define GETPARAM_S(...) ConfigHandler::getParam<std::string>({ __VA_ARGS__ })
