@@ -10,16 +10,29 @@ parameter::Registry ConfigHandler::m_paramRegistry;
 ConfigReader ConfigHandler::m_reader;
 std::string ConfigHandler::m_file = "config.json";
 
-void ConfigHandler::addEntry(
-		const parameter::StringKey& key, const parameter::Variant::EType type, const parameter::Callback&& callback) {
-	m_paramRegistry.addEntry(key, type, std::move(callback));
-	if (!m_reader.hasCachedFile()) {
-		if (m_reader.parseFile(m_file)) { m_reader.updateParameterRegistry(m_paramRegistry); }
-	}
-	m_paramRegistry.updateEntry(key, m_reader.getValue(key));
-}
+// void ConfigHandler::addEntry(
+// 		const parameter::StringKey& key, const parameter::Variant::EType type, const parameter::Callback&& callback) {
+// 	m_paramRegistry.addEntry(key, type, std::move(callback));
+// 	if (!m_reader.hasCachedFile()) {
+// 		if (m_reader.parseFile(m_file)) { m_reader.updateParameterRegistry(m_paramRegistry); }
+// 	}
+// 	m_paramRegistry.updateEntry(key, m_reader.getValue(key));
+// }
 
-API void ConfigHandler::removeEntry(const parameter::StringKey& key) { m_paramRegistry.removeEntry(key); }
+// API void ConfigHandler::removeEntry(const parameter::StringKey& key) { m_paramRegistry.removeEntry(key); }
+
+// API void ConfigHandler::getEntry(const parameter::StringKey& key, const parameter::Variant::EType type) {
+
+// }
+
+API parameter::Variant ConfigHandler::_getParamImpl(const parameter::StringKey& key) {
+	if (m_reader.hasEmptyCache()) {
+		if (m_reader.parseFile(m_file)) { 
+			m_reader.updateParameterRegistry(m_paramRegistry); 
+		}
+	}
+	return m_paramRegistry.getEntry(key);
+}
 
 void ConfigHandler::_bind_methods() {}
 
@@ -59,7 +72,9 @@ void ConfigHandler::_physics_process(double delta) {
 
 void ConfigHandler::_configUpdate() {
 	if (m_isReady && _readerCheckConfig()) {
-		if (m_reader.parseFile(m_file)) { m_reader.updateParameterRegistry(m_paramRegistry); }
+		if (m_reader.parseFile(m_file)) { 
+			m_reader.updateParameterRegistry(m_paramRegistry); 
+		}
 	}
 }
 

@@ -1,6 +1,8 @@
 #include "configReader.h"
 
-bool ConfigReader::hasCachedFile() const { return !m_cachedJson.empty(); }
+bool ConfigReader::hasEmptyCache() const { 
+    return m_cachedJson.empty(); 
+}
 
 bool ConfigReader::checkFileChanged(const std::string& filePath) {
 	if (std::filesystem::exists(filePath)) {
@@ -80,7 +82,7 @@ void ConfigReader::_parseJsonObject(parameter::Registry& registry, parameter::St
 		const auto& val = entry.value();
 		if (val.is_boolean() || val.is_number_float() || val.is_number_integer() || val.is_string()) {
 			auto val = getValue(key);
-			registry.updateEntry(key, val);
+			registry.updateEntry(key, std::move(val));
 			key.pop_back();
 		}
 		else if (val.is_object()) { _parseJsonObject(registry, key, entry.value()); }

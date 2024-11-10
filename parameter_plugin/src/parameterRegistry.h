@@ -10,7 +10,7 @@ class ConfigReader;
 
 namespace parameter {
 
-struct Variant {
+struct API Variant {
 	enum EType { BOOL, DOUBLE, INT, STRING };
 
 	using Type = std::variant<bool, double, int, std::string>;
@@ -27,12 +27,10 @@ struct Variant {
 		}
 	}
 
-	//
 	Type value;
 
-	//
 	void set(const Variant&& v) {
-		ASSERT(value.index() == v.value.index(), "")
+		// ASSERT(value.index() == v.value.index(), "")
 		value = v.value;
 	}
 
@@ -53,11 +51,13 @@ private:
 	std::unordered_map<HashKey, Entry> m_entries;
 
 public:
-	bool addEntry(const StringKey& key, const Variant::EType type, const Callback&& callback);
+	// bool addEntry(const StringKey& key, const Variant::EType type, const Callback&& callback);
 
-	bool removeEntry(const StringKey& key);
+	// bool removeEntry(const StringKey& key);
 
-	bool updateEntry(const StringKey& key, const Variant& newValue);
+	bool updateEntry(const StringKey& key, const Variant&& newValue);
+
+	Variant getEntry(const StringKey& key);
 
 private:
 	// void _setValue(const StringKey& key, std::unordered_map<HashKey, Entry>::iterator& it);

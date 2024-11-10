@@ -19,15 +19,19 @@ class ConfigReader {
 	json m_cachedJson;
 
 public:
-	bool hasCachedFile() const;
- 
+	ConfigReader(){
+		m_cachedJson.clear();
+	}
+
+	bool hasEmptyCache() const;
+
 	bool checkFileChanged(const std::string& filePath);
 
 	/**
 	 * If parse comes at awkward timing, the parsing would always fail so
 	 * no reason to read the values at that exact moment
 	 */
-	bool parseFile(const std::string& filePath); 	
+	bool parseFile(const std::string& filePath);
 	/**
 	 */
 	parameter::Variant getValue(const parameter::StringKey& arguments);
@@ -35,6 +39,5 @@ public:
 	void updateParameterRegistry(parameter::Registry& registry);
 
 private:
-
 	void _parseJsonObject(parameter::Registry& registry, parameter::StringKey& key, const json& object);
 };
