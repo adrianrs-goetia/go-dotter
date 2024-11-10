@@ -45,15 +45,15 @@ struct AudioVisualContext {
 	godot::GPUParticles3D* particles = nullptr;
 };
 
-struct StateContextParameters {
-	// float MAX_HORIZONTAL_SPEED = 6.5f;
-	// float JUMP_STRENGTH = 9.0f;
-	float MAX_HORIZONTAL_SPEED;
-	float JUMP_STRENGTH;
-};
+// struct StateContextParameters {
+// 	// float MAX_HORIZONTAL_SPEED = 6.5f;
+// 	// float JUMP_STRENGTH = 9.0f;
+// 	float MAX_HORIZONTAL_SPEED;
+// 	float JUMP_STRENGTH;
+// };
 
 struct StateContext {
-	StateContextParameters params;
+	// StateContextParameters params;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;

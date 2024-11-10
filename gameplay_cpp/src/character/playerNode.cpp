@@ -15,7 +15,7 @@
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
-#include <configHandler.h>
+// #include <configHandler.h>
 #include <debugdraw3d/api.h>
 
 extern "C" {
@@ -87,15 +87,15 @@ void PlayerNode::_enter_tree() {
 		return desiredDir * -1.f;
 	};
 
-	auto& params = m_stateContext->params;
-	ConfigHandler::addEntry({ "walkspeed" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
-		LOG(INFO, "Setting walkspeed", (float)var.get<double>());
-		params.MAX_HORIZONTAL_SPEED = var.get<double>();
-	});
-	ConfigHandler::addEntry({ "jumpstrength" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
-		LOG(INFO, "Setting jumpstrength", (float)var.get<double>());
-		params.JUMP_STRENGTH = var.get<double>();
-	});
+	// auto& params = m_stateContext->params;
+	// ConfigHandler::addEntry({ "walkspeed" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
+	// 	LOG(INFO, "Setting walkspeed", (float)var.get<double>());
+	// 	params.MAX_HORIZONTAL_SPEED = var.get<double>();
+	// });
+	// ConfigHandler::addEntry({ "jumpstrength" }, parameter::Variant::DOUBLE, [&params](const parameter::Variant& var) {
+	// 	LOG(INFO, "Setting jumpstrength", (float)var.get<double>());
+	// 	params.JUMP_STRENGTH = var.get<double>();
+	// });
 }
 
 void PlayerNode::_exit_tree() {
@@ -104,8 +104,8 @@ void PlayerNode::_exit_tree() {
 
 	ASSERT_NOTNULL(m_stateContext);
 
-	ConfigHandler::removeEntry({ "jumpstrength" });
-	ConfigHandler::removeEntry({ "walkspeed" });
+	// ConfigHandler::removeEntry({ "jumpstrength" });
+	// ConfigHandler::removeEntry({ "walkspeed" });
 
 	::free(m_stateContext);
 	m_stateContext = nullptr;
