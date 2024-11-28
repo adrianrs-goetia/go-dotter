@@ -56,6 +56,10 @@ Filling the seameter by parrying the player gains access to charged abilities su
 isagrapplehook
 
 ## Story & Setting
+### Intro
+i morket, to headlights staar forran. \
+Bossbar, immovable force, et tog kommer mot deg. Parrier den, skutt ut av tunnelen, tilted slik at den vinkler mot sola. Flyr opp mot den, MEN ... PARRY THE SUN \
+Destroyed the real world or matrix moment? 
 
 
 ## Level design
