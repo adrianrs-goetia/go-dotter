@@ -3,7 +3,7 @@
 ## Overview
 
 ### Title
-Go Dotter
+Parrier
 
 ### Elevator pitch
 Play as a fragile cowboy doll in who wants to fortify his body. Deflect attacks from enemies, 'friendly' characters, and even the world itself on the way to the newest wonder of the wild westerns world. A hydrolic textile primer press. Capable of hardening even the softest of textiles into bullet proof materials. 
