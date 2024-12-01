@@ -9,6 +9,7 @@
         "inAirDeceleration": 10.0,
         "gravityScale": 1.8,
         "grapple": {
+            "enabled": false,
             "launchStrength": 18.0
         },
         "parry": {

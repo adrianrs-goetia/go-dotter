@@ -4,6 +4,7 @@
 #include <managers/inputManager.h>
 
 #include <debugdraw3d/api.h>
+#include <configHandler.h>
 #include <godot_cpp/classes/area3d.hpp>
 
 #include <algorithm>
@@ -17,6 +18,17 @@ void GrappleInstigatorComponent::_bind_methods() {
 			D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
 
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Detection area"), "setPathToArea3D", "getPathToArea3D");
+}
+
+void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {
+	if (!_setComponentEnabledImpl(enabled)) { return; }
+
+	if (!enabled)
+	{
+		m_currentTarget = nullptr;
+		m_inRangeTargets.clear();
+
+	}
 }
 
 void GrappleInstigatorComponent::_enter_tree() {
@@ -36,6 +48,9 @@ void GrappleInstigatorComponent::_enter_tree() {
 
 void GrappleInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
+
+	setComponentEnabled(GETPARAM_B("player", "grapple", "enabled")); // maybe a callback?
+	if (!isComponentEnabled()){ return;}
 
 	determineTarget();
 	if (getTarget()) {

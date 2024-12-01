@@ -1,6 +1,8 @@
 #pragma once
 
 #include <core/core.hpp>
+#include <core/nodeComponent.hpp>
+
 #include <functional>
 
 #include <godot_cpp/classes/area3d.hpp>
@@ -8,8 +10,8 @@
 
 class ParryInstance;
 
-class ParryTargetComponent : public godot::Node3D {
-	GDCLASS(ParryTargetComponent, godot::Node3D)
+class ParryTargetComponent : public NodeComponent {
+	GDCLASS(ParryTargetComponent, NodeComponent)
 
 public:
 	using OnParriedCb = std::function<void()>;
@@ -23,6 +25,8 @@ public:
 
 public:
 	static void _bind_methods();
+
+	void setComponentEnabled(bool enabled) override {}
 
 	void _enter_tree() override;
 	void _exit_tree() override;
