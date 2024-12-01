@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=20 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
+[ext_resource type="PackedScene" uid="uid://dyqkj2uljp1f2" path="res://models/character/character.blend" id="1_s8c4i"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_tgyd1"]
 
@@ -92,7 +93,11 @@ radius = 1.521
 
 [node name="PlayerNode" type="PlayerNode"]
 
+[node name="character" parent="." instance=ExtResource("1_s8c4i")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+
 [node name="meshAnchor" type="Node3D" parent="."]
+visible = false
 
 [node name="cylinderbody" type="MeshInstance3D" parent="meshAnchor"]
 transform = Transform3D(0.668602, 0, 0, 0, 1.04701, 0, 0, 0, 0.386157, 0, 0.951921, 0)
