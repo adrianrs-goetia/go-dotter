@@ -89,6 +89,7 @@ void PlayerNode::_enter_tree() {
 
 void PlayerNode::_exit_tree() {
 	RETURN_IF_EDITOR(void())
+
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
 	ASSERT_NOTNULL(m_stateContext);
@@ -99,12 +100,14 @@ void PlayerNode::_exit_tree() {
 
 void PlayerNode::_process(double delta) {
 	RETURN_IF_EDITOR(void())
+
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->process(*m_stateContext, delta);
 }
 
 void PlayerNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
+
 	ASSERT_NOTNULL(m_stateContext);
 	// capture current physics context
 	m_stateContext->physics.is_on_ground = is_on_floor();
@@ -126,6 +129,7 @@ void PlayerNode::_physics_process(double delta) {
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR(void())
+
 	if (!m_stateContext) { return; }
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());

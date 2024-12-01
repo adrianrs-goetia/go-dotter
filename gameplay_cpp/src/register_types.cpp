@@ -4,6 +4,7 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+#include <components/baseClasses/grapple.hpp>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -25,6 +26,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	// Components
 	godot::ClassDB::register_class<InputManager>();
 	godot::ClassDB::register_abstract_class<NodeComponent>();
+	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();
 	godot::ClassDB::register_class<ParryInstigatorComponent>();

@@ -1,10 +1,12 @@
 #pragma once
 
-#include <core/core.hpp>
+#include "baseClasses/grapple.hpp"
 
-#include <core/nodeComponent.hpp>
+#include "grappleTargetComponent.h"
 
 #include <functional>
+#include <map>
+#include <memory>
 #include <vector>
 
 class GrappleTargetComponent;
@@ -12,21 +14,27 @@ namespace godot {
 class Area3D;
 }
 
-class GrappleInstigatorComponent : public NodeComponent {
-	GDCLASS(GrappleInstigatorComponent, NodeComponent)
+class GrappleInstigatorComponent : public GrappleBaseComponent {
+	GDCLASS(GrappleInstigatorComponent, GrappleBaseComponent)
 
 	using InstigatorDirection = std::function<godot::Vector3(const Node& node)>;
+	using InRangeTargetMap = std::map<godot::RID, GrappleTargetComponent*>;
 
 private:
 	godot::NodePath m_pathToGrappleDetectionArea;
 	godot::Area3D* m_detectionArea = nullptr;
 
-	std::vector<GrappleTargetComponent*> m_inRangeTargets; // Should never be nullptrs
+	/**
+	 * Shared ptr to allow for weakptrs in NodeComponent onDestruction callback.
+	 * No other object is meant to have a shared ptr to this field
+	 * 
+	 * godot::Node are not refcounted so each intance that is transient cannot be blindly derefenced
+	 * and so it has to 'track its own' entry within this map and remove it onDestruction. 
+	 */
+	std::shared_ptr<InRangeTargetMap> m_inRangeTargets; // Should never be nullptrs
 	std::set<godot::RID> m_ignoredRids;
 	InstigatorDirection m_getInstigatorDirection;
 
-	GrappleTargetComponent* m_instigatorsGrappleComponent =
-			nullptr; // tmp workaround to keep current shared instigator/target implementation of grappleLaunch
 	GrappleTargetComponent* m_currentTarget = nullptr;
 
 public:
@@ -41,9 +49,14 @@ public:
 	void areaExitedDetection(godot::Area3D* area);
 	void determineTarget();
 
+	LaunchContext launch(double launchStrength);
+
+private:
+	LaunchType _determineLaunchType(const GrappleBaseComponent* subject);
+	godot::Vector3 _determineLaunchDirectionAtob(const GrappleBaseComponent* a, const GrappleBaseComponent* b);
+
 public: // getters-setters
 	GrappleTargetComponent* getTarget() const { return m_currentTarget; }
-	GrappleTargetComponent* getInstigatorComponent() const { return m_instigatorsGrappleComponent; }
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {
 		m_getInstigatorDirection = getInstigatorDirection;
 	}
