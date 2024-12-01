@@ -7,8 +7,8 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
 
-#include <debugdraw3d/api.h>
 #include <configHandler.h>
+#include <debugdraw3d/api.h>
 
 using namespace godot;
 
@@ -57,6 +57,8 @@ void TurretNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 	//
 
+	m_isEnabled = GETPARAM_B("npcs", "turret", "enabled");
+
 	rotateHeadTowardsTarget();
 }
 
@@ -88,6 +90,9 @@ void TurretNode::rotateHeadTowardsTarget() {
 }
 
 void TurretNode::fireProjectile() {
+	if (!m_isEnabled) {
+		return;
+	}
 	Node* instance = m_projectileResource->instantiate();
 	ASSERT_NOTNULL(instance)
 

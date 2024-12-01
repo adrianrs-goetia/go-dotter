@@ -3,16 +3,9 @@
 #include <core/core.hpp>
 
 #include <functional>
+#include <map>
 
 #include <godot_cpp/classes/node3d.hpp>
-
-// /**
-//  * Entry for keeping raw pointers to Nodes that are not refcounted by godot
-//  */
-// template <typename T>
-// struct RawPointerEntry {
-// 	T* ptr{ nullptr };
-// };
 
 /**
  * NodeComponent for Godot
@@ -23,10 +16,13 @@ class NodeComponent : public godot::Node3D {
 
 public:
 	using OnDestructionCb = std::function<void()>;
+	enum DestructionId : uint16_t {
+		GRAPPLECOMPONENT_INRANGE,
+	};
 
 private:
 	bool m_isEnabled{ true };
-	std::vector<OnDestructionCb> m_onDestructionCbs;
+	std::map<DestructionId, OnDestructionCb> m_onDestructionCbs;
 
 protected:
 	// Return true of state changed
@@ -36,7 +32,7 @@ protected:
 		return true;
 	}
 	virtual void _onExitTree() {
-		for (auto&& cb : m_onDestructionCbs) {
+		for (auto&& [_, cb] : m_onDestructionCbs) {
 			cb();
 		}
 	}
@@ -46,7 +42,9 @@ public:
 
 	void _exit_tree() { _onExitTree(); }
 
-	void addOnDestructionCb(OnDestructionCb&& cb) { m_onDestructionCbs.emplace_back(std::move(cb)); }
+	void addOnDestructionCb(DestructionId id, OnDestructionCb&& cb) {
+		m_onDestructionCbs.insert({ id, std::move(cb) });
+	}
 	virtual void setComponentEnabled(bool enabled) = 0;
 	bool isComponentEnabled() const { return m_isEnabled; }
 };

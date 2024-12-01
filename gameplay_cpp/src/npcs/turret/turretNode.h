@@ -25,6 +25,7 @@ private:
 	godot::GPUParticles3D* m_gunOpeningGpuParticles = nullptr;
 
 	godot::Ref<godot::PackedScene> m_projectileResource;
+	bool m_isEnabled{};
 
 public:
 	static void _bind_methods();
@@ -45,4 +46,6 @@ public:
 		static godot::String gunRotJoint() { return gunRotPoint() + "/GunRotCylinder_001/GunRotJoint"; }
 		static godot::String gunOpening() { return gunRotJoint() + "/GunRotCylinder_002/GunRotJoint_001/Gun"; }
 	};
+
+private:
 };

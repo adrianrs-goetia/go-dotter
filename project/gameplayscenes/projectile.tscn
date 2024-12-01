@@ -24,8 +24,8 @@ mesh = SubResource("SphereMesh_tiefc")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="GrappleTargetComponent" type="GrappleTargetComponent" parent="."]
-mass = 4.37
 "Collision AreaPath" = NodePath("../Area3D")
+mass = 4.37
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 192

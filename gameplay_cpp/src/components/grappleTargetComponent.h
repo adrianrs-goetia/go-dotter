@@ -21,7 +21,6 @@ public:
 	void _exit_tree() override;
 
 	godot::RID getRid() const;
-	godot::Vector3 getGlobalPosition() const;
 
 public: // get/set editor-properties
 	void setAreaPath(godot::NodePath path);

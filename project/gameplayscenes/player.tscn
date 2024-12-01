@@ -129,10 +129,6 @@ collision_mask = 64
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrappleDetection"]
 shape = SubResource("SphereShape3D_6du44")
 
-[node name="GrappleTargetComponent" type="GrappleTargetComponent" parent="."]
-"pull strength" = 20.0
-mass = 100.0
-
 [node name="ParryInstigatorComponent" type="ParryInstigatorComponent" parent="."]
 "Collision area" = NodePath("../ParryDetection")
 Mass = 100.0
@@ -161,4 +157,6 @@ shape = SubResource("SphereShape3D_en38a")
 
 [node name="GrappleInstigatorComponent" type="GrappleInstigatorComponent" parent="."]
 "Detection area" = NodePath("../GrappleDetection")
+"pull strength" = 20.0
+mass = 100.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00901, 0)

@@ -47,10 +47,14 @@ void GrappleInstigatorComponent::_enter_tree() {
 void GrappleInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
-	setComponentEnabled(GETPARAM_B("player", "grapple", "enabled")); // maybe a callback?
+	// maybe a callback instead of checking each frame?
+	setComponentEnabled(GETPARAM_B("player", "grapple", "enabled"));
 	if (!isComponentEnabled()) { return; }
 
 	determineTarget();
+	
+	// @TODO remove 
+	// tmp targeting system for grappling
 	if (getTarget()) {
 		DebugDraw::Position(
 				Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), getTarget()->get_global_position()),
@@ -62,11 +66,11 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 	RETURN_IF_EDITOR(void())
 	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
-		LOG(DEBUG, "Component entered grapple area: ", gn->get_name())
+		LOG(DEBUG, "Component entered grapple area: ", gn->get_parent()->get_name())
 		auto rid = gn->getRid();
-		m_inRangeTargets->emplace(rid, gn);
+		m_inRangeTargets->insert({ rid, gn });
 		auto wp = std::weak_ptr<InRangeTargetMap>(m_inRangeTargets);
-		gn->addOnDestructionCb([wp, rid]() {
+		gn->addOnDestructionCb(NodeComponent::DestructionId::GRAPPLECOMPONENT_INRANGE, [wp, rid]() {
 			auto lock = wp.lock();
 			if (lock) { lock->erase(rid); }
 		});

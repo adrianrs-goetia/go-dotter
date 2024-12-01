@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <map>
 
 inline std::string toString(const std::vector<std::string>& vec) {
 	std::stringstream ss;

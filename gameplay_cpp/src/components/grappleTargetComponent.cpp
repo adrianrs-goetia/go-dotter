@@ -8,6 +8,7 @@ using namespace godot;
 void GrappleTargetComponent::_bind_methods() {
 	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &GrappleTargetComponent::getAreaPath);
 	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &GrappleTargetComponent::setAreaPath);
+	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
 }
 
 void GrappleTargetComponent::_enter_tree() {
@@ -39,15 +40,6 @@ void GrappleTargetComponent::_exit_tree() {
 RID GrappleTargetComponent::getRid() const {
 	if (!m_area || !is_inside_tree()) { return RID(); }
 	return m_area->get_rid();
-}
-
-godot::Vector3 GrappleTargetComponent::getGlobalPosition() const {
-	if (!is_inside_tree()) {
-		LOG(ERROR,
-				"GrappleTargetComponent is no longer insideTree: ", get_name().to_utf8_buffer().get_string_from_utf8())
-		return Vector3();
-	}
-	return get_global_position();
 }
 
 void GrappleTargetComponent::setAreaPath(godot::NodePath path) { m_pathToArea3D = path; }
