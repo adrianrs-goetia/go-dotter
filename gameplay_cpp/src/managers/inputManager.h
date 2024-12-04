@@ -80,7 +80,8 @@ public:
 	InputAction() = default;
 	InputAction(EInputAction action, EInputActionType type)
 		: m_action(action)
-		, m_type(type) {}
+		, m_type(type) {
+	}
 
 	bool isActionPressed(EInputAction action, bool consume = true) {
 		if (!m_consumed && m_action == action) {
@@ -89,15 +90,21 @@ public:
 		}
 		return false;
 	}
-	bool isActionReleased(EInputAction action) { return m_action == action && m_type == EInputActionType::RELEASED; }
-	bool isActionHeld(EInputAction action) { return m_action == action && m_type == EInputActionType::HELD; }
+	bool isActionReleased(EInputAction action) {
+		return m_action == action && m_type == EInputActionType::RELEASED;
+	}
+	bool isActionHeld(EInputAction action) {
+		return m_action == action && m_type == EInputActionType::HELD;
+	}
 	bool isActionDown(EInputAction action) {
 		return m_action == action && (m_type == EInputActionType::HELD || m_type == EInputActionType::PRESSED);
 	}
 	bool receivedInputWithinTimeframe(float timeframe_seconds) {
 		return m_timestamp.timestampWithinTimeframe(timeframe_seconds);
 	}
-	bool isConsumed() const { return m_consumed; }
+	bool isConsumed() const {
+		return m_consumed;
+	}
 };
 
 /**

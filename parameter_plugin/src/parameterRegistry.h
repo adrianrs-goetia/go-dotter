@@ -15,11 +15,14 @@ struct API Variant {
 
 	Variant() = default;
 	Variant(Type v)
-		: value(v) {}
+		: value(v) {
+	}
 
 	Type value;
 
-	void set(const Variant&& v) { value = v.value; }
+	void set(const Variant&& v) {
+		value = v.value;
+	}
 
 	template <typename T>
 	T get() const {

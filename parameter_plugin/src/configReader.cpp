@@ -1,6 +1,8 @@
 #include "configReader.h"
 
-bool ConfigReader::hasEmptyCache() const { return m_cachedJson.empty(); }
+bool ConfigReader::hasEmptyCache() const {
+	return m_cachedJson.empty();
+}
 
 bool ConfigReader::checkFileChanged(const std::string& filePath) {
 	if (std::filesystem::exists(filePath)) {

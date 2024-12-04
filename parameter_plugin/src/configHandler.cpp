@@ -19,7 +19,8 @@ API parameter::Variant ConfigHandler::_getParamImpl(const parameter::StringKey& 
 	return m_paramRegistry.getEntry(key);
 }
 
-void ConfigHandler::_bind_methods() {}
+void ConfigHandler::_bind_methods() {
+}
 
 void ConfigHandler::_enter_tree() {
 	RETURN_IF_EDITOR(void())

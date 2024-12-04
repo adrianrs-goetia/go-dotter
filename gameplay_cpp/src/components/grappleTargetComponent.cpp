@@ -44,6 +44,10 @@ RID GrappleTargetComponent::getRid() const {
 	return m_area->get_rid();
 }
 
-void GrappleTargetComponent::setAreaPath(godot::NodePath path) { m_pathToArea3D = path; }
+void GrappleTargetComponent::setAreaPath(godot::NodePath path) {
+	m_pathToArea3D = path;
+}
 
-godot::NodePath GrappleTargetComponent::getAreaPath() { return m_pathToArea3D; }
+godot::NodePath GrappleTargetComponent::getAreaPath() {
+	return m_pathToArea3D;
+}

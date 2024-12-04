@@ -56,10 +56,16 @@ private:
 	godot::Vector3 _determineLaunchDirectionAtob(const GrappleBaseComponent* a, const GrappleBaseComponent* b);
 
 public: // getters-setters
-	GrappleTargetComponent* getTarget() const { return m_currentTarget; }
+	GrappleTargetComponent* getTarget() const {
+		return m_currentTarget;
+	}
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {
 		m_getInstigatorDirection = getInstigatorDirection;
 	}
-	void setPathToArea3D(godot::NodePath path) { m_pathToGrappleDetectionArea = path; }
-	godot::NodePath getPathToArea3D() const { return m_pathToGrappleDetectionArea; }
+	void setPathToArea3D(godot::NodePath path) {
+		m_pathToGrappleDetectionArea = path;
+	}
+	godot::NodePath getPathToArea3D() const {
+		return m_pathToGrappleDetectionArea;
+	}
 };

@@ -42,9 +42,15 @@ public:
 	godot::Vector3 getGunOpeningDirection() const;
 
 	struct paths {
-		static godot::String gunRotPoint() { return "turret/GunRotCylinder/GunRotPoint"; }
-		static godot::String gunRotJoint() { return gunRotPoint() + "/GunRotCylinder_001/GunRotJoint"; }
-		static godot::String gunOpening() { return gunRotJoint() + "/GunRotCylinder_002/GunRotJoint_001/Gun"; }
+		static godot::String gunRotPoint() {
+			return "turret/GunRotCylinder/GunRotPoint";
+		}
+		static godot::String gunRotJoint() {
+			return gunRotPoint() + "/GunRotCylinder_001/GunRotJoint";
+		}
+		static godot::String gunOpening() {
+			return gunRotJoint() + "/GunRotCylinder_002/GunRotJoint_001/Gun";
+		}
 	};
 
 private:

@@ -47,15 +47,25 @@ void ParryInstigatorComponent::_exit_tree() {
 	m_area->disconnect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
 }
 
-void ParryInstigatorComponent::_physics_process(double delta) { RETURN_IF_EDITOR(void()) }
+void ParryInstigatorComponent::_physics_process(double delta) {
+	RETURN_IF_EDITOR(void())
+}
 
-void ParryInstigatorComponent::setPathToArea3D(NodePath path) { m_pathToArea3D = path; }
+void ParryInstigatorComponent::setPathToArea3D(NodePath path) {
+	m_pathToArea3D = path;
+}
 
-NodePath ParryInstigatorComponent::getPathToArea3D() const { return m_pathToArea3D; }
+NodePath ParryInstigatorComponent::getPathToArea3D() const {
+	return m_pathToArea3D;
+}
 
-void ParryInstigatorComponent::setMass(float mass) { m_mass = mass; }
+void ParryInstigatorComponent::setMass(float mass) {
+	m_mass = mass;
+}
 
-float ParryInstigatorComponent::getMass() const { return m_mass; }
+float ParryInstigatorComponent::getMass() const {
+	return m_mass;
+}
 
 void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 	if (m_area->get_rid() == area->get_rid()) {

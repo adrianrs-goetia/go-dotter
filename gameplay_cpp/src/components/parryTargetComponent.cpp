@@ -46,19 +46,33 @@ void ParryTargetComponent::_exit_tree() {
 	m_areaPtr = nullptr;
 }
 
-void ParryTargetComponent::setAreaPath(NodePath path) { m_pathToArea3D = path; }
+void ParryTargetComponent::setAreaPath(NodePath path) {
+	m_pathToArea3D = path;
+}
 
-NodePath ParryTargetComponent::getAreaPath() const { return m_pathToArea3D; }
+NodePath ParryTargetComponent::getAreaPath() const {
+	return m_pathToArea3D;
+}
 
-void ParryTargetComponent::setIsHeavy(bool isHeavy) { m_isHeavy = isHeavy; }
+void ParryTargetComponent::setIsHeavy(bool isHeavy) {
+	m_isHeavy = isHeavy;
+}
 
-bool ParryTargetComponent::getIsHeavy() const { return m_isHeavy; }
+bool ParryTargetComponent::getIsHeavy() const {
+	return m_isHeavy;
+}
 
-void ParryTargetComponent::setMass(float mass) { m_mass = mass; }
+void ParryTargetComponent::setMass(float mass) {
+	m_mass = mass;
+}
 
-float ParryTargetComponent::getMass() const { return m_mass; }
+float ParryTargetComponent::getMass() const {
+	return m_mass;
+}
 
-void ParryTargetComponent::setOnParriedCb(OnParriedCb&& cb) { m_onParriedCb = cb; }
+void ParryTargetComponent::setOnParriedCb(OnParriedCb&& cb) {
+	m_onParriedCb = cb;
+}
 
 void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
 	if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) {

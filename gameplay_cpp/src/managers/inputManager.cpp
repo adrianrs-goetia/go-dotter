@@ -19,7 +19,9 @@ void InputManager::exitGame() {
 	}
 }
 
-void InputManager::_bind_methods() { ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputManager::exitGame); }
+void InputManager::_bind_methods() {
+	ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputManager::exitGame);
+}
 
 void InputManager::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
@@ -158,9 +160,13 @@ InputManager* InputManager::get(const Node& referenceNode) {
 	return nullptr;
 }
 
-Vector3 InputManager::getCamera3dDir() const { return Vector3(m_camera2dDir.x, 0, m_camera2dDir.y).normalized(); }
+Vector3 InputManager::getCamera3dDir() const {
+	return Vector3(m_camera2dDir.x, 0, m_camera2dDir.y).normalized();
+}
 
-Vector3 InputManager::getInputRaw3d() const { return Vector3(m_inputRaw.x, 0, m_inputRaw.y).normalized(); }
+Vector3 InputManager::getInputRaw3d() const {
+	return Vector3(m_inputRaw.x, 0, m_inputRaw.y).normalized();
+}
 
 Vector3 InputManager::getInputRelative3d(float y) const {
 	return Vector3(m_inputCameraRelative.x, y, m_inputCameraRelative.y).normalized();
