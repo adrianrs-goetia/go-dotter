@@ -42,7 +42,7 @@ public:
 	void _physics_process(double delta) override;
 	void _input(const Ref<InputEvent>& p_event);
 
-	void rotateTowardsVelocity(float delta);
+	void rotateTowardsVelocity(Vector3 inputvec, float delta, float slerpWeight);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

@@ -15,8 +15,8 @@
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
-#include <debugdraw3d/api.h>
 #include <configHandler.h>
+#include <debugdraw3d/api.h>
 
 extern "C" {
 #include <stdlib.h>
@@ -120,7 +120,8 @@ void PlayerNode::_physics_process(double delta) {
 	// set data from context
 	set_velocity(m_stateContext->physics.velocity);
 	move_and_slide();
-	rotateTowardsVelocity(delta);
+	rotateTowardsVelocity(
+			m_stateContext->input->getInputRelative3d(), delta, GETPARAM_D("player", "animation", "rootRotationSpeed"));
 
 	// deferred actions
 	m_fsm.deferredActions(*m_stateContext);
@@ -134,9 +135,7 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());
 }
 
-void PlayerNode::rotateTowardsVelocity(float delta) {
-	const Vector2 input_relative = m_stateContext->input->m_inputCameraRelative;
-	Vector3 inputvec(input_relative.x, 0, input_relative.y);
+void PlayerNode::rotateTowardsVelocity(Vector3 inputvec, float delta, float slerpWeight) {
 	if (inputvec.length_squared() <= 0) { return; }
 	inputvec.normalize();
 
@@ -145,6 +144,6 @@ void PlayerNode::rotateTowardsVelocity(float delta) {
 	angle *= angle_dir;
 	const Quaternion curquat = m_meshAnchor->get_transform().get_basis().get_quaternion();
 	const Quaternion targetquat(g_up, angle);
-	Quaternion newquat = curquat.slerp(targetquat, delta * GETPARAM_D("player", "animation", "rootRotationSpeed"));
+	Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 	m_meshAnchor->set_basis(Basis(newquat));
 }
