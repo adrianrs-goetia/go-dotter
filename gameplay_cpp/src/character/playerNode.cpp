@@ -16,14 +16,13 @@
 #include <godot_cpp/classes/viewport.hpp>
 
 #include <debugdraw3d/api.h>
+#include <configHandler.h>
 
 extern "C" {
 #include <stdlib.h>
 }
 
 using namespace godot;
-
-constexpr float MESHDUMMY_ROTATIONSPEED = 18.f;
 
 void PlayerNode::_bind_methods() {}
 
@@ -146,6 +145,6 @@ void PlayerNode::rotateTowardsVelocity(float delta) {
 	angle *= angle_dir;
 	const Quaternion curquat = m_meshAnchor->get_transform().get_basis().get_quaternion();
 	const Quaternion targetquat(g_up, angle);
-	Quaternion newquat = curquat.slerp(targetquat, delta * MESHDUMMY_ROTATIONSPEED);
+	Quaternion newquat = curquat.slerp(targetquat, delta * GETPARAM_D("player", "animation", "rootRotationSpeed"));
 	m_meshAnchor->set_basis(Basis(newquat));
 }
