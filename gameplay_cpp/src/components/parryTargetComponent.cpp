@@ -70,7 +70,8 @@ void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
 		LOG(DEBUG, "Parrying static object: ", get_parent()->get_name())
 	}
 
-	if (m_onParriedCb) m_onParriedCb();
+	if (m_onParriedCb)
+		m_onParriedCb();
 }
 
 Vector3 ParryTargetComponent::getPosition() const {

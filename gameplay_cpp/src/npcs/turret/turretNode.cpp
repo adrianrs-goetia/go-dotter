@@ -50,8 +50,10 @@ void TurretNode::_physics_process(double delta) {
 		const Vector3 direction = getGunOpeningDirection() * -1.f;
 		Transform3D gunOpeningAudioVisualTransform(
 				createBasisFromDirection(direction), getGunOpeningLocation() + (direction * 0.5));
-		if (m_gunOpeningAudioPlayer) m_gunOpeningAudioPlayer->set_global_transform(gunOpeningAudioVisualTransform);
-		if (m_gunOpeningGpuParticles) m_gunOpeningGpuParticles->set_global_transform(gunOpeningAudioVisualTransform);
+		if (m_gunOpeningAudioPlayer)
+			m_gunOpeningAudioPlayer->set_global_transform(gunOpeningAudioVisualTransform);
+		if (m_gunOpeningGpuParticles)
+			m_gunOpeningGpuParticles->set_global_transform(gunOpeningAudioVisualTransform);
 	}
 
 	RETURN_IF_EDITOR(void())

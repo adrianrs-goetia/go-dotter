@@ -112,8 +112,10 @@ void GrappleInstigatorComponent::determineTarget() {
 			target = gn;
 		}
 	}
-	if (target) m_currentTarget = target;
-	else m_currentTarget = nullptr;
+	if (target)
+		m_currentTarget = target;
+	else
+		m_currentTarget = nullptr;
 }
 
 GrappleInstigatorComponent::LaunchContext GrappleInstigatorComponent::launch(double launchStrength) {
