@@ -4,10 +4,13 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
+#include <components/animationComponent.h>
+
 #include <mainNode.h>
 #include <managers/inputManager.h>
 #include <npcs/projectile/projectile.h>
@@ -25,14 +28,17 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<CameraPivot>();
 	godot::ClassDB::register_class<PlayerNode>();
 
-	// Components
+	// Managers
 	godot::ClassDB::register_class<InputManager>();
+
+	// Components
 	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();
 	godot::ClassDB::register_class<ParryInstigatorComponent>();
 	godot::ClassDB::register_class<ParryTargetComponent>();
+	godot::ClassDB::register_class<AnimationComponent>();
 
 	// npcs
 	godot::ClassDB::register_class<TurretNode>();

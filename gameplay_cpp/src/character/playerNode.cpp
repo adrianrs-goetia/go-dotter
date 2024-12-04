@@ -1,5 +1,6 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -44,23 +45,23 @@ void PlayerNode::_enter_tree() {
 
 	RETURN_IF_EDITOR(void())
 
+	Log(ELog::DEBUG, "PlayerNode entering tree");
+
 	auto* input = InputManager::get(*this);
+	m_animComponent = getChildOfNode<AnimationComponent>(this);
 	m_parryComponent = getChildOfNode<ParryInstigatorComponent>(this);
 	auto* grappleInstigator = getChildOfNode<GrappleInstigatorComponent>(this);
 	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getChildOfNode<GPUParticles3D>(this);
 
-	Log(ELog::DEBUG, "PlayerNode entering tree");
-
 	m_stateContext = (StateContext*)calloc(1, sizeof(StateContext));
-	m_meshAnchor = get_node<Node3D>("meshAnchor");
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
 
 	ASSERT_NOTNULL(input)
 	ASSERT_NOTNULL(m_parryComponent)
 	ASSERT_NOTNULL(m_stateContext)
 	ASSERT_NOTNULL(m_camerapivot)
-	ASSERT_NOTNULL(m_meshAnchor)
+	ASSERT_NOTNULL(m_animComponent)
 	ASSERT_NOTNULL(grappleInstigator)
 	ASSERT_NOTNULL(audio)
 	ASSERT_NOTNULL(particles)
@@ -122,7 +123,7 @@ void PlayerNode::_physics_process(double delta) {
 	// set data from context
 	set_velocity(m_stateContext->physics.velocity);
 	move_and_slide();
-	rotateTowardsVelocity(
+	m_animComponent->rotateRootTowardsVector(
 			m_stateContext->input->getInputRelative3d(), delta, GETPARAM_D("player", "animation", "rootRotationSpeed"));
 
 	// deferred actions
@@ -137,19 +138,4 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	}
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());
-}
-
-void PlayerNode::rotateTowardsVelocity(Vector3 inputvec, float delta, float slerpWeight) {
-	if (inputvec.length_squared() <= 0) {
-		return;
-	}
-	inputvec.normalize();
-
-	float angle = Math::acos(g_forward.dot(inputvec));
-	const int angle_dir = (g_right.dot(inputvec) > 0.f) ? 1 : -1;
-	angle *= angle_dir;
-	const Quaternion curquat = m_meshAnchor->get_transform().get_basis().get_quaternion();
-	const Quaternion targetquat(g_up, angle);
-	Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
-	m_meshAnchor->set_basis(Basis(newquat));
 }

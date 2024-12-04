@@ -16,7 +16,7 @@ void GrappleInstigatorComponent::_bind_methods() {
 	ClassDB::bind_method(
 			D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
 
-	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH, "Detection area")
+	METHOD_PROPERTY_IMPL(GrappleInstigatorComponent, PathToArea3D, NODE_PATH, "Detection area")
 }
 
 void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {

@@ -120,6 +120,9 @@ shape = SubResource("SphereShape3D_6du44")
 "Collision area" = NodePath("../ParryDetection")
 Mass = 100.0
 
+[node name="AnimationComponent" type="AnimationComponent" parent="."]
+"Root node path" = NodePath("../meshAnchor")
+
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1_j0ubi")
 

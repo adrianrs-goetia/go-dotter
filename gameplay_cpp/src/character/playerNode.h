@@ -15,6 +15,7 @@
 using namespace godot;
 
 class CameraPivot;
+class AnimationComponent;
 class GrappleTargetComponent;
 class ParryInstigatorComponent;
 class ParryInstance;
@@ -26,7 +27,7 @@ public:
 	PlayerFSM m_fsm;
 	StateContext* m_stateContext = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
-	Node3D* m_meshAnchor = nullptr;
+	AnimationComponent* m_animComponent = nullptr;
 
 	ParryInstigatorComponent* m_parryComponent = nullptr;
 
@@ -41,8 +42,6 @@ public:
 	void _process(double delta) override;
 	void _physics_process(double delta) override;
 	void _input(const Ref<InputEvent>& p_event);
-
-	void rotateTowardsVelocity(Vector3 inputvec, float delta, float slerpWeight);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H
