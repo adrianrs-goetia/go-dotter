@@ -10,16 +10,9 @@
 using namespace godot;
 
 void ParryTargetComponent::_bind_methods() {
-	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &ParryTargetComponent::getAreaPath);
-	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &ParryTargetComponent::setAreaPath);
-	godot::ClassDB::bind_method(D_METHOD("getIsHeavy"), &ParryTargetComponent::getIsHeavy);
-	godot::ClassDB::bind_method(D_METHOD("setIsHeavy", "isHeavy"), &ParryTargetComponent::setIsHeavy);
-	ClassDB::bind_method(D_METHOD("getMass"), &ParryTargetComponent::getMass);
-	ClassDB::bind_method(D_METHOD("setMass", "mass"), &ParryTargetComponent::setMass);
-
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
-	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "Is Heavy"), "setIsHeavy", "getIsHeavy");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Mass"), "setMass", "getMass");
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH, "Collision AreaPath")
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, IsHeavy, BOOL, "Is heavy")
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT, "MASS")
 }
 
 void ParryTargetComponent::_enter_tree() {
@@ -44,30 +37,6 @@ void ParryTargetComponent::_exit_tree() {
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 	m_areaPtr = nullptr;
-}
-
-void ParryTargetComponent::setAreaPath(NodePath path) {
-	m_pathToArea3D = path;
-}
-
-NodePath ParryTargetComponent::getAreaPath() const {
-	return m_pathToArea3D;
-}
-
-void ParryTargetComponent::setIsHeavy(bool isHeavy) {
-	m_isHeavy = isHeavy;
-}
-
-bool ParryTargetComponent::getIsHeavy() const {
-	return m_isHeavy;
-}
-
-void ParryTargetComponent::setMass(float mass) {
-	m_mass = mass;
-}
-
-float ParryTargetComponent::getMass() const {
-	return m_mass;
 }
 
 void ParryTargetComponent::setOnParriedCb(OnParriedCb&& cb) {

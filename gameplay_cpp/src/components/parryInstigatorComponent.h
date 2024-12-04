@@ -36,10 +36,6 @@ public:
 	void _exit_tree() override;
 	void _physics_process(double delta) override;
 
-	void setPathToArea3D(godot::NodePath path);
-	godot::NodePath getPathToArea3D() const;
-	void setMass(float mass);
-	float getMass() const;
 
 	void areaEnteredParryDetection(godot::Area3D* area);
 	void areaExitedParryDetection(godot::Area3D* area);
@@ -49,4 +45,7 @@ public:
 	godot::Vector3 getPosition() const;
 	godot::Vector3 getVelocity() const;
 	godot::Vector3 getDesiredDirection() const;
+	
+	GS_PATH_IMPL(m_pathToArea3D, PathToArea3D)
+	GS_FLOAT_IMPL(m_mass, Mass)
 };

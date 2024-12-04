@@ -1,7 +1,7 @@
 #include "animationComponent.h"
 
 void AnimationComponent::_bind_methods() {
-	METHOD_PATH_IMPL(AnimationComponent, m_pathToRootAnimationNode, "Root node path");
+	METHOD_PROPERTY_IMPL(AnimationComponent, RootAnimationNode, NODE_PATH, "Root node path");
 }
 
 void AnimationComponent::_enter_tree() {}

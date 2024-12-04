@@ -62,10 +62,6 @@ public: // getters-setters
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {
 		m_getInstigatorDirection = getInstigatorDirection;
 	}
-	void setPathToArea3D(godot::NodePath path) {
-		m_pathToGrappleDetectionArea = path;
-	}
-	godot::NodePath getPathToArea3D() const {
-		return m_pathToGrappleDetectionArea;
-	}
+
+	GS_PATH_IMPL(m_pathToGrappleDetectionArea, PathToArea3D)
 };

@@ -22,7 +22,5 @@ public:
 
 	godot::RID getRid() const;
 
-public: // get/set editor-properties
-	void setAreaPath(godot::NodePath path);
-	godot::NodePath getAreaPath();
+	GS_PATH_IMPL(m_pathToArea3D, AreaPath)
 };

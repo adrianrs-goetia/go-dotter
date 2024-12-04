@@ -11,24 +11,41 @@
  * Common property implementations as macros
  * Usually just getters and setters causing a bunch of boilerplate code
  * GS == getter setter
- * 
+ *
  * GS_..._IMPL in .h
- * METHOD_..._IMPL in .cpp withing _bind_methods() definition
+ * METHOD_PROPERTY_IMPL in .cpp withing _bind_methods() definition
  */
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define GS_PATH_IMPL(variableName)                                                                                     \
-	void set_##variableName##_Path(godot::NodePath path) { variableName = path; }                                      \
-	godot::NodePath get_##variableName##_Path() const { return variableName; }
+#define GS_PATH_IMPL(variableName, functionName)                                                                       \
+	void set##functionName(godot::NodePath value) {                                                                    \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	godot::NodePath get##functionName() const {                                                                        \
+		return variableName;                                                                                           \
+	}
+#define GS_BOOL_IMPL(variableName, functionName)                                                                       \
+	void set##functionName(bool value) {                                                                               \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	bool get##functionName() const {                                                                                   \
+		return variableName;                                                                                           \
+	}
+#define GS_FLOAT_IMPL(variableName, functionName)                                                                      \
+	void set##functionName(float value) {                                                                              \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	float get##functionName() const {                                                                                  \
+		return variableName;                                                                                           \
+	}
 
-#define METHOD_PATH_IMPL(class, variableName, propertyName)                                                            \
-	godot::ClassDB::bind_method(                                                                                       \
-			godot::D_METHOD(TOSTRING(get_##variableName##_Path)), &class::get_##variableName##_Path);                 \
-	godot::ClassDB::bind_method(                                                                                       \
-			godot::D_METHOD(TOSTRING(set_##variableName##_Path), "path"), &class::set_##variableName##_Path);         \
-	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::NODE_PATH, propertyName), "setAreaPath", "getAreaPath");
+#define METHOD_PROPERTY_IMPL(class, functionName, propertyType, propertyName)                                          \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, propertyName), TOSTRING(set##functionName),         \
+			TOSTRING(get##functionName));
 
 /**
  * NodeComponent for Godot
@@ -50,7 +67,9 @@ private:
 protected:
 	// Return true of state changed
 	bool _setComponentEnabledImpl(bool enabled) {
-		if (isComponentEnabled() == enabled) { return false; }
+		if (isComponentEnabled() == enabled) {
+			return false;
+		}
 		m_isEnabled = enabled;
 		return true;
 	}
@@ -63,11 +82,15 @@ protected:
 public:
 	static void _bind_methods() {}
 
-	void _exit_tree() { _onExitTree(); }
+	void _exit_tree() {
+		_onExitTree();
+	}
 
 	void addOnDestructionCb(DestructionId id, OnDestructionCb&& cb) {
 		m_onDestructionCbs.insert({ id, std::move(cb) });
 	}
 	virtual void setComponentEnabled(bool enabled) = 0;
-	bool isComponentEnabled() const { return m_isEnabled; }
+	bool isComponentEnabled() const {
+		return m_isEnabled;
+	}
 };

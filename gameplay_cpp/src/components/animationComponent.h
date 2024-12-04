@@ -17,5 +17,5 @@ public:
 	void _enter_tree() override;
 	void _exit_tree() override;
 
-	GS_PATH_IMPL(m_pathToRootAnimationNode)
+	GS_PATH_IMPL(m_pathToRootAnimationNode, RootAnimationNode)
 };

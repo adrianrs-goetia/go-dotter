@@ -15,15 +15,8 @@
 using namespace godot;
 
 void ParryInstigatorComponent::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("getPathToArea3D"), &ParryInstigatorComponent::getPathToArea3D);
-	ClassDB::bind_method(D_METHOD("setPathToArea3D", "path"), &ParryInstigatorComponent::setPathToArea3D);
-	ClassDB::bind_method(D_METHOD("areaEnteredParryDetection"), &ParryInstigatorComponent::areaEnteredParryDetection);
-	ClassDB::bind_method(D_METHOD("areaExitedParryDetection"), &ParryInstigatorComponent::areaExitedParryDetection);
-	ClassDB::bind_method(D_METHOD("getMass"), &ParryInstigatorComponent::getMass);
-	ClassDB::bind_method(D_METHOD("setMass", "mass"), &ParryInstigatorComponent::setMass);
-
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision area"), "setPathToArea3D", "getPathToArea3D");
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Mass"), "setMass", "getMass");
+	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, PathToArea3D, NODE_PATH, "Collision area")
+	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, Mass, FLOAT, "Mass")
 }
 
 void ParryInstigatorComponent::_enter_tree() {
@@ -49,22 +42,6 @@ void ParryInstigatorComponent::_exit_tree() {
 
 void ParryInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
-}
-
-void ParryInstigatorComponent::setPathToArea3D(NodePath path) {
-	m_pathToArea3D = path;
-}
-
-NodePath ParryInstigatorComponent::getPathToArea3D() const {
-	return m_pathToArea3D;
-}
-
-void ParryInstigatorComponent::setMass(float mass) {
-	m_mass = mass;
-}
-
-float ParryInstigatorComponent::getMass() const {
-	return m_mass;
 }
 
 void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {

@@ -11,14 +11,12 @@
 #include <algorithm>
 
 void GrappleInstigatorComponent::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("getPathToArea3D"), &GrappleInstigatorComponent::getPathToArea3D);
-	ClassDB::bind_method(D_METHOD("setPathToArea3D", "path"), &GrappleInstigatorComponent::setPathToArea3D);
 	ClassDB::bind_method(
 			D_METHOD("areaEnteredGrappledetection", "area"), &GrappleInstigatorComponent::areaEnteredDetection);
 	ClassDB::bind_method(
 			D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
 
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Detection area"), "setPathToArea3D", "getPathToArea3D");
+	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH, "Detection area")
 }
 
 void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {

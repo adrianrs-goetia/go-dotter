@@ -31,13 +31,6 @@ public:
 	void _enter_tree() override;
 	void _exit_tree() override;
 
-	void setAreaPath(godot::NodePath path);
-	godot::NodePath getAreaPath() const;
-	void setIsHeavy(bool isHeavy);
-	bool getIsHeavy() const;
-	void setMass(float mass);
-	float getMass() const;
-
 	void setOnParriedCb(OnParriedCb&& cb);
 
 	void getParried(const ParryInstance& parryInstance);
@@ -45,4 +38,9 @@ public:
 	godot::Vector3 getPosition() const;
 	godot::Vector3 getVelocity() const;
 	godot::Vector3 getDesiredDirection() const;
+
+
+	GS_PATH_IMPL(m_pathToArea3D, AreaPath)
+	GS_BOOL_IMPL(m_isHeavy, IsHeavy)
+	GS_FLOAT_IMPL(m_mass, Mass)
 };

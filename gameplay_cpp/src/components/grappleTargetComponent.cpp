@@ -6,9 +6,7 @@
 using namespace godot;
 
 void GrappleTargetComponent::_bind_methods() {
-	godot::ClassDB::bind_method(D_METHOD("getAreaPath"), &GrappleTargetComponent::getAreaPath);
-	godot::ClassDB::bind_method(D_METHOD("setAreaPath", "path"), &GrappleTargetComponent::setAreaPath);
-	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "Collision AreaPath"), "setAreaPath", "getAreaPath");
+	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH, "Collision AreaPath")
 }
 
 void GrappleTargetComponent::_enter_tree() {
@@ -42,12 +40,4 @@ RID GrappleTargetComponent::getRid() const {
 		return RID();
 	}
 	return m_area->get_rid();
-}
-
-void GrappleTargetComponent::setAreaPath(godot::NodePath path) {
-	m_pathToArea3D = path;
-}
-
-godot::NodePath GrappleTargetComponent::getAreaPath() {
-	return m_pathToArea3D;
 }
