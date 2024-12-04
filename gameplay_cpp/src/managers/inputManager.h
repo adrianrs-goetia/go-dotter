@@ -80,8 +80,7 @@ public:
 	InputAction() = default;
 	InputAction(EInputAction action, EInputActionType type)
 		: m_action(action)
-		, m_type(type) {
-	}
+		, m_type(type) {}
 
 	bool isActionPressed(EInputAction action, bool consume = true) {
 		if (!m_consumed && m_action == action) {

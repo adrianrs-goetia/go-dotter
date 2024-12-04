@@ -4,8 +4,7 @@
 
 using namespace godot;
 
-void Projectile::_bind_methods() {
-}
+void Projectile::_bind_methods() {}
 
 void Projectile::_enter_tree() {
 	RETURN_IF_EDITOR(void())
@@ -20,8 +19,7 @@ void Projectile::_enter_tree() {
 	m_timer->start(GETPARAM_D("npcs", "projectile", "lifetime"));
 }
 
-void Projectile::_physics_process(double delta) {
-}
+void Projectile::_physics_process(double delta) {}
 
 void Projectile::onTimeout() {
 	queue_free();

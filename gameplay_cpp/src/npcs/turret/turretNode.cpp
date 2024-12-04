@@ -12,8 +12,7 @@
 
 using namespace godot;
 
-void TurretNode::_bind_methods() {
-}
+void TurretNode::_bind_methods() {}
 
 void TurretNode::_enter_tree() {
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());

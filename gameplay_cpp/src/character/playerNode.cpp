@@ -24,8 +24,7 @@ extern "C" {
 
 using namespace godot;
 
-void PlayerNode::_bind_methods() {
-}
+void PlayerNode::_bind_methods() {}
 
 void PlayerNode::_notification(int what) {
 	// LOG(INFO, "Notification", (int64_t)what)

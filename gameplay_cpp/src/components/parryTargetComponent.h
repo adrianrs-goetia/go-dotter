@@ -26,8 +26,7 @@ public:
 public:
 	static void _bind_methods();
 
-	void setComponentEnabled(bool enabled) override {
-	}
+	void setComponentEnabled(bool enabled) override {}
 
 	void _enter_tree() override;
 	void _exit_tree() override;

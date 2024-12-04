@@ -18,18 +18,15 @@ constexpr bool JOYMOTION_Y_INVERTED = true;
 constexpr float JOYMOTION_X_MULTIPLIER = 100.f;
 constexpr float JOYMOTION_Y_MULTIPLIER = 100.f;
 
-void CameraPivot::_bind_methods() {
-}
+void CameraPivot::_bind_methods() {}
 
-void CameraPivot::_ready() {
-}
+void CameraPivot::_ready() {}
 
 void CameraPivot::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 }
 
-void CameraPivot::_process(double delta) {
-}
+void CameraPivot::_process(double delta) {}
 
 void CameraPivot::process(StateContext& context, float delta) {
 	RETURN_IF_EDITOR(void())
@@ -51,8 +48,7 @@ void CameraPivot::process(StateContext& context, float delta) {
 	}
 }
 
-void CameraPivot::_physics_process(double delta) {
-}
+void CameraPivot::_physics_process(double delta) {}
 
 void CameraPivot::processInput(StateContext& context, float delta) {
 	// Want to process MnK and Joypad slightly differently

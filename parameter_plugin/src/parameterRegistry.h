@@ -15,8 +15,7 @@ struct API Variant {
 
 	Variant() = default;
 	Variant(Type v)
-		: value(v) {
-	}
+		: value(v) {}
 
 	Type value;
 
