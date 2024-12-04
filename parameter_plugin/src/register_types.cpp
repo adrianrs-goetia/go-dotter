@@ -5,13 +5,17 @@
 #include "configHandler.h"
 
 void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
 
 	godot::ClassDB::register_class<ConfigHandler>();
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
 }
 
 /// Entry point for plugin

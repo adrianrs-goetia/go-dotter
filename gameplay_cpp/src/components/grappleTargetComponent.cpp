@@ -38,7 +38,9 @@ void GrappleTargetComponent::_exit_tree() {
 }
 
 RID GrappleTargetComponent::getRid() const {
-	if (!m_area || !is_inside_tree()) { return RID(); }
+	if (!m_area || !is_inside_tree()) {
+		return RID();
+	}
 	return m_area->get_rid();
 }
 

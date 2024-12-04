@@ -11,7 +11,9 @@ bool ConfigReader::checkFileChanged(const std::string& filePath) {
 			return true;
 		}
 	}
-	else { LOG(ERROR, "Config filePath was not found!") }
+	else {
+		LOG(ERROR, "Config filePath was not found!")
+	}
 	return false;
 }
 
@@ -28,7 +30,9 @@ bool ConfigReader::parseFile(const std::string& filePath) {
 			LOG(WARN, "ConfigHandler could not parse config.json: ", e.what())
 		}
 	}
-	else { LOG(ERROR, "SHOULD NEVER HAPPEN. ConfigReader could not open file: ", filePath.c_str()) }
+	else {
+		LOG(ERROR, "SHOULD NEVER HAPPEN. ConfigReader could not open file: ", filePath.c_str())
+	}
 	return false;
 }
 
@@ -47,11 +51,21 @@ parameter::Variant ConfigReader::getValue(const parameter::StringKey& arguments)
 				return {};
 			}
 		}
-		if (param.is_boolean()) { return parameter::Variant(param.get<bool>()); }
-		else if (param.is_number_integer()) { return parameter::Variant(param.get<int>()); }
-		else if (param.is_number_float()) { return parameter::Variant(param.get<double>()); }
-		else if (param.is_string()) { return parameter::Variant(param.get<std::string>()); }
-		else { LOG(ERROR, "Unexpected type in json at:", toString(arguments).c_str()) }
+		if (param.is_boolean()) {
+			return parameter::Variant(param.get<bool>());
+		}
+		else if (param.is_number_integer()) {
+			return parameter::Variant(param.get<int>());
+		}
+		else if (param.is_number_float()) {
+			return parameter::Variant(param.get<double>());
+		}
+		else if (param.is_string()) {
+			return parameter::Variant(param.get<std::string>());
+		}
+		else {
+			LOG(ERROR, "Unexpected type in json at:", toString(arguments).c_str())
+		}
 	}
 	catch (...) {
 		std::stringstream ss;
@@ -83,7 +97,11 @@ void ConfigReader::_parseJsonObject(parameter::Registry& registry, parameter::St
 			registry.setEntry(key, std::move(val));
 			key.pop_back();
 		}
-		else if (val.is_object()) { _parseJsonObject(registry, key, entry.value()); }
+		else if (val.is_object()) {
+			_parseJsonObject(registry, key, entry.value());
+		}
 	}
-	if (!key.empty()) { key.pop_back(); }
+	if (!key.empty()) {
+		key.pop_back();
+	}
 }

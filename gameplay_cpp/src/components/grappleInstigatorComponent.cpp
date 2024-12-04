@@ -22,7 +22,9 @@ void GrappleInstigatorComponent::_bind_methods() {
 }
 
 void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {
-	if (!_setComponentEnabledImpl(enabled)) { return; }
+	if (!_setComponentEnabledImpl(enabled)) {
+		return;
+	}
 
 	if (!enabled) {
 		m_currentTarget = nullptr;
@@ -49,11 +51,13 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 
 	// maybe a callback instead of checking each frame?
 	setComponentEnabled(GETPARAM_B("player", "grapple", "enabled"));
-	if (!isComponentEnabled()) { return; }
+	if (!isComponentEnabled()) {
+		return;
+	}
 
 	determineTarget();
-	
-	// @TODO remove 
+
+	// @TODO remove
 	// tmp targeting system for grappling
 	if (getTarget()) {
 		DebugDraw::Position(
@@ -72,7 +76,9 @@ void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 		auto wp = std::weak_ptr<InRangeTargetMap>(m_inRangeTargets);
 		gn->addOnDestructionCb(NodeComponent::DestructionId::GRAPPLECOMPONENT_INRANGE, [wp, rid]() {
 			auto lock = wp.lock();
-			if (lock) { lock->erase(rid); }
+			if (lock) {
+				lock->erase(rid);
+			}
 		});
 	}
 }
@@ -82,7 +88,9 @@ void GrappleInstigatorComponent::areaExitedDetection(Area3D* area) {
 	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
 		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		m_inRangeTargets->erase(gn->getRid());
-		if (gn == m_currentTarget) { m_currentTarget = nullptr; }
+		if (gn == m_currentTarget) {
+			m_currentTarget = nullptr;
+		}
 	}
 }
 
@@ -143,9 +151,15 @@ GrappleInstigatorComponent::LaunchContext GrappleInstigatorComponent::launch(dou
 }
 
 GrappleBaseComponent::LaunchType GrappleInstigatorComponent::_determineLaunchType(const GrappleBaseComponent* subject) {
-	if (getIsAnchor() && subject->getIsAnchor()) { return LaunchType::BOTH_ANCHOR; }
-	else if (!getIsAnchor() && subject->getIsAnchor()) { return LaunchType::SUBJECT_ANCHOR; }
-	else if (getIsAnchor() && !subject->getIsAnchor()) { return LaunchType::INSTIGATOR_ANCHOR; }
+	if (getIsAnchor() && subject->getIsAnchor()) {
+		return LaunchType::BOTH_ANCHOR;
+	}
+	else if (!getIsAnchor() && subject->getIsAnchor()) {
+		return LaunchType::SUBJECT_ANCHOR;
+	}
+	else if (getIsAnchor() && !subject->getIsAnchor()) {
+		return LaunchType::INSTIGATOR_ANCHOR;
+	}
 	return LaunchType::BOTH_NON_ANCHOR;
 }
 

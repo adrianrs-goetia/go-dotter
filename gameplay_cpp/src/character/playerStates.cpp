@@ -44,13 +44,16 @@ PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, f
 	context.physics.velocity.y += (GETPARAM_D("gravityConstant") * GETPARAM_D("player", "gravityScale")) * delta;
 
 	// walking off edge
-	if (!context.physics.is_on_ground) { return Return{ PlayerStateBank::get().state<PlayerInAirState>() }; }
+	if (!context.physics.is_on_ground) {
+		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
+	}
 
 	return {};
 }
 PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, float delta) {
 	// direction
-	helper::movement_acceleration(context, GETPARAM_D("player", "onGroundAcceleration"), GETPARAM_D("player", "onGroundDeceleration"), delta);
+	helper::movement_acceleration(
+			context, GETPARAM_D("player", "onGroundAcceleration"), GETPARAM_D("player", "onGroundDeceleration"), delta);
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
@@ -75,7 +78,8 @@ PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, floa
 			return Return{ PlayerStateBank::get().state<PlayerOnGroundState>() };
 		}
 	}
-	helper::movement_acceleration(context, GETPARAM_D("player", "inAirAcceleration"), GETPARAM_D("player", "inAirDeceleration"), delta);
+	helper::movement_acceleration(
+			context, GETPARAM_D("player", "inAirAcceleration"), GETPARAM_D("player", "inAirDeceleration"), delta);
 	context.physics.velocity.y += (GETPARAM_D("gravityConstant") * GETPARAM_D("player", "gravityScale")) * delta;
 	return {};
 }
@@ -114,7 +118,9 @@ PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 // PlayerParryState
 bool PlayerParryState::canEnter() const {
 	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("player", "parry", "cooldown"));
-	if (!canEnter) { LOG(DEBUG, "Tried entering parryState before cooldown was ready") }
+	if (!canEnter) {
+		LOG(DEBUG, "Tried entering parryState before cooldown was ready")
+	}
 	LOG(INFO, "Player parrying")
 	return canEnter;
 }

@@ -112,12 +112,16 @@ Vector3 ParryInstigatorComponent::getPosition() const {
 
 Vector3 ParryInstigatorComponent::getVelocity() const {
 	RETURN_IF_EDITOR(Vector3())
-	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) { return characterBody->get_velocity(); }
+	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) {
+		return characterBody->get_velocity();
+	}
 	return {};
 }
 
 Vector3 ParryInstigatorComponent::getDesiredDirection() const {
-	if (m_getDesiredDirectionCb) { return m_getDesiredDirectionCb(); }
+	if (m_getDesiredDirectionCb) {
+		return m_getDesiredDirectionCb();
+	}
 	LOG(ERROR, "ParryInstigatorComponent does not have getDesiredDirectionCb set: ", get_parent()->get_name())
 	return {};
 }

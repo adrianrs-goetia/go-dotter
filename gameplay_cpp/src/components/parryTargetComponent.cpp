@@ -31,14 +31,18 @@ void ParryTargetComponent::_enter_tree() {
 		msg += ", failed to fetch m_areaPtr for collision. Please assign a path to a CollisionShape3D to 'Area Path'";
 		ERR_PRINT_ONCE(msg);
 	}
-	else { m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true); }
+	else {
+		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
+	}
 
 	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_areaPtr)
 }
 
 void ParryTargetComponent::_exit_tree() {
-	if (m_areaPtr) { m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true); }
+	if (m_areaPtr) {
+		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
+	}
 	m_areaPtr = nullptr;
 }
 
@@ -62,7 +66,9 @@ void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
 		DebugDraw::Line(parryInstance.targetPosition,
 				parryInstance.targetPosition + (parryInstance.getNewTargetVelocity() * 2.f), Color(1.0, 0.3, 1.0), 1.f);
 	}
-	else { LOG(DEBUG, "Parrying static object: ", get_parent()->get_name()) }
+	else {
+		LOG(DEBUG, "Parrying static object: ", get_parent()->get_name())
+	}
 
 	if (m_onParriedCb) m_onParriedCb();
 }
@@ -76,7 +82,9 @@ Vector3 ParryTargetComponent::getPosition() const {
 Vector3 ParryTargetComponent::getVelocity() const {
 	RETURN_IF_EDITOR(Vector3())
 
-	if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) { return rigidBody->get_linear_velocity(); }
+	if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) {
+		return rigidBody->get_linear_velocity();
+	}
 	return {};
 }
 

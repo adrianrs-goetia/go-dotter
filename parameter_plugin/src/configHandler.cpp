@@ -12,8 +12,8 @@ std::string ConfigHandler::m_file = "config.json";
 
 API parameter::Variant ConfigHandler::_getParamImpl(const parameter::StringKey& key) {
 	if (m_reader.hasEmptyCache()) {
-		if (m_reader.parseFile(m_file)) { 
-			m_reader.updateParameterRegistry(m_paramRegistry); 
+		if (m_reader.parseFile(m_file)) {
+			m_reader.updateParameterRegistry(m_paramRegistry);
 		}
 	}
 	return m_paramRegistry.getEntry(key);
@@ -52,8 +52,8 @@ void ConfigHandler::_physics_process(double delta) {
 
 void ConfigHandler::_configUpdate() {
 	if (m_isReady && _readerCheckConfig()) {
-		if (m_reader.parseFile(m_file)) { 
-			m_reader.updateParameterRegistry(m_paramRegistry); 
+		if (m_reader.parseFile(m_file)) {
+			m_reader.updateParameterRegistry(m_paramRegistry);
 		}
 	}
 }
@@ -61,7 +61,9 @@ void ConfigHandler::_configUpdate() {
 bool ConfigHandler::_readerCheckConfig() {
 	if (m_readNextFrame) {
 		m_readNextFrame = false;
-		if (m_reader.checkFileChanged(m_file)) { return true; }
+		if (m_reader.checkFileChanged(m_file)) {
+			return true;
+		}
 	}
 	return false;
 }

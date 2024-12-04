@@ -80,7 +80,9 @@ void PlayerNode::_enter_tree() {
 
 	m_parryComponent->m_getDesiredDirectionCb = [this]() -> Vector3 {
 		Vector3 desiredDir = m_stateContext->input->getInputRelative3d();
-		if (desiredDir.length_squared() < 0.2f) { desiredDir = m_stateContext->input->getCamera3dDir(); }
+		if (desiredDir.length_squared() < 0.2f) {
+			desiredDir = m_stateContext->input->getCamera3dDir();
+		}
 		// desiredDir is flipped to launch player and object in the opposite directions
 		return desiredDir * -1.f;
 	};
@@ -130,13 +132,17 @@ void PlayerNode::_physics_process(double delta) {
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR(void())
 
-	if (!m_stateContext) { return; }
+	if (!m_stateContext) {
+		return;
+	}
 	ASSERT_NOTNULL(m_camerapivot);
 	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());
 }
 
 void PlayerNode::rotateTowardsVelocity(Vector3 inputvec, float delta, float slerpWeight) {
-	if (inputvec.length_squared() <= 0) { return; }
+	if (inputvec.length_squared() <= 0) {
+		return;
+	}
 	inputvec.normalize();
 
 	float angle = Math::acos(g_forward.dot(inputvec));

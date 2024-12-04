@@ -4,7 +4,6 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
-#include <components/baseClasses/grapple.hpp>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -13,12 +12,15 @@
 #include <managers/inputManager.h>
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
+#include <components/baseClasses/grapple.hpp>
 #include <core/nodeComponent.hpp>
 
 using namespace godot;
 
 void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
 	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<CameraPivot>();
 	godot::ClassDB::register_class<PlayerNode>();
@@ -38,7 +40,9 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
-	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) { return; }
+	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
+		return;
+	}
 }
 
 /// Entry point for plugin

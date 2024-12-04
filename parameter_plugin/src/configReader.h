@@ -19,9 +19,7 @@ class ConfigReader {
 	json m_cachedJson;
 
 public:
-	ConfigReader(){
-		m_cachedJson.clear();
-	}
+	ConfigReader() { m_cachedJson.clear(); }
 
 	bool hasEmptyCache() const;
 

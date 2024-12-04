@@ -27,9 +27,9 @@ private:
 	/**
 	 * Shared ptr to allow for weakptrs in NodeComponent onDestruction callback.
 	 * No other object is meant to have a shared ptr to this field
-	 * 
+	 *
 	 * godot::Node are not refcounted so each intance that is transient cannot be blindly derefenced
-	 * and so it has to 'track its own' entry within this map and remove it onDestruction. 
+	 * and so it has to 'track its own' entry within this map and remove it onDestruction.
 	 */
 	std::shared_ptr<InRangeTargetMap> m_inRangeTargets; // Should never be nullptrs
 	std::set<godot::RID> m_ignoredRids;

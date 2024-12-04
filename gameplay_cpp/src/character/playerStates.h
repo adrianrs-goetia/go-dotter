@@ -77,11 +77,21 @@ public:
 	template <class T>
 	PlayerState* state() {
 		static_assert(std::is_base_of_v<PlayerState, T>, "PlayerStateBank can only handle PlayerStates");
-		if constexpr (std::is_same_v<T, PlayerOnGroundState>) { return &ongroundstate; }
-		if constexpr (std::is_same_v<T, PlayerInAirState>) { return &inairstate; }
-		if constexpr (std::is_same_v<T, PlayerPreGrappleLaunchState>) { return &pregrapplelaunchstate; }
-		if constexpr (std::is_same_v<T, PlayerGrappleLaunchState>) { return &grapplelaunchstate; }
-		if constexpr (std::is_same_v<T, PlayerParryState>) { return &parrystate; }
+		if constexpr (std::is_same_v<T, PlayerOnGroundState>) {
+			return &ongroundstate;
+		}
+		if constexpr (std::is_same_v<T, PlayerInAirState>) {
+			return &inairstate;
+		}
+		if constexpr (std::is_same_v<T, PlayerPreGrappleLaunchState>) {
+			return &pregrapplelaunchstate;
+		}
+		if constexpr (std::is_same_v<T, PlayerGrappleLaunchState>) {
+			return &grapplelaunchstate;
+		}
+		if constexpr (std::is_same_v<T, PlayerParryState>) {
+			return &parrystate;
+		}
 	}
 };
 

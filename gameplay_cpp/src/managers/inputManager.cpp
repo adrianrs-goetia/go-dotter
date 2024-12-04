@@ -88,7 +88,9 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 		m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight, InputString::cameraDown,
 				InputString::cameraUp, 0.05);
 	}
-	else { mode = EInputMode::NONE; }
+	else {
+		mode = EInputMode::NONE;
+	}
 }
 
 void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
@@ -110,7 +112,9 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 			Vector2i size = ds->screen_get_size();
 			ds->window_set_position(size / 4, prime_screen);
 		}
-		else { ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN); }
+		else {
+			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
+		}
 	}
 	else if (p_event->is_action_pressed(InputString::toggleApplicationMouseLock)) {
 		m_additionalStates.applicationMouseLock = !m_additionalStates.applicationMouseLock;
@@ -141,12 +145,16 @@ bool InputManager::isActionPressed(EInputAction action, float timeframe) {
 			}
 		}
 	}
-	if (!m_inputActions.empty()) { return m_inputActions.begin()->isActionPressed(action); }
+	if (!m_inputActions.empty()) {
+		return m_inputActions.begin()->isActionPressed(action);
+	}
 	return false;
 }
 
 InputManager* InputManager::get(const Node& referenceNode) {
-	if (auto* input = referenceNode.get_node<InputManager>(g_inputManagerNodePath)) { return input; }
+	if (auto* input = referenceNode.get_node<InputManager>(g_inputManagerNodePath)) {
+		return input;
+	}
 	return nullptr;
 }
 
