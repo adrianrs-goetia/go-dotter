@@ -43,7 +43,7 @@ On parrying the player will gain some seameter, and given the target objects tag
 - Heavy_Dynamic: Will push the player away from the centre. 
 - Light_Dynamic: Player will gain a boost in their desired horizontal direction and push the object in the opposite horizontal direction. Player will also receive a vertical boost.
 - Static_Object: Player will bounce off it in their desired direction
-- Static_Wall: Player will bounce off it given an angle from the surface normal. Limited to avoid going parallell with the wall. 
+- Static_Terrain: Player will bounce off it given an angle from the surface normal. Limited to avoid going parallell with the wall. 
 
 
 ### Seam meter -- Seameter

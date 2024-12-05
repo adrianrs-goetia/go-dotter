@@ -5,6 +5,7 @@
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
 
+
 /**
  * weight of 0 means instigator 100% overrides targets velocity
  * weight of 1 means target ignores the instigators desired direction
@@ -20,6 +21,7 @@ struct ParryInstance {
 	const godot::Vector3 targetPosition;
 	const godot::Vector3 targetVelocity;
 	const godot::Vector3 targetDesiredDirection;
+	const ParryTargetComponent::EParryTargetTag targetParryTag;
 	float weight;
 
 	static constexpr float massLimit = 0.001f;
@@ -28,13 +30,18 @@ struct ParryInstance {
 		: instigatorDesiredDirection(instigator.getDesiredDirection())
 		, targetPosition(target.getPosition())
 		, targetVelocity(target.getVelocity())
-		, targetDesiredDirection(target.getDesiredDirection()) {
+		, targetDesiredDirection(target.getDesiredDirection())
+		, targetParryTag(target.getParryTagEnum()) {
 		if (instigator.getMass() < massLimit && target.getMass() < massLimit) {
 			LOG(WARN, "Neither instigator or target has any mass for ParryInstance. Setting weight to 0.5f")
 			weight = 0.5f;
 		}
-		else if (instigator.getMass() < massLimit) { weight = 1.f; }
-		else if (target.getMass() < massLimit) { weight = 0.f; }
+		else if (instigator.getMass() < massLimit) {
+			weight = 1.f;
+		}
+		else if (target.getMass() < massLimit) {
+			weight = 0.f;
+		}
 		else {
 			float exp = godot::Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) *
 					100.f; // Magic values attached to

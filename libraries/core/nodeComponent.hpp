@@ -40,12 +40,34 @@
 	float get##functionName() const {                                                                                  \
 		return variableName;                                                                                           \
 	}
+#define GS_INT_IMPL(variableName, functionName)                                                                        \
+	void set##functionName(int value) {                                                                                \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	int get##functionName() const {                                                                                    \
+		return variableName;                                                                                           \
+	}
+#define GS_ENUM_IMPL(variableName, functionName, enumType)                                                             \
+	void set##functionName(int value) {                                                                                \
+		variableName = static_cast<enumType>(value);                                                                   \
+	}                                                                                                                  \
+	int get##functionName() const {                                                                                    \
+		return static_cast<int>(variableName);                                                                         \
+	}                                                                                                                  \
+	enumType get##functionName##Enum() const {                                                                         \
+		return variableName;                                                                                           \
+	}
 
 #define METHOD_PROPERTY_IMPL(class, functionName, propertyType, propertyName)                                          \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
 	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, propertyName), TOSTRING(set##functionName),         \
 			TOSTRING(get##functionName));
+#define METHOD_PROPERTY_ENUM_IMPL(class, functionName, propertyType, propertyName, enumFields)                         \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, propertyName, PROPERTY_HINT_ENUM, enumFields),      \
+			TOSTRING(set##functionName), TOSTRING(get##functionName));
 
 /**
  * NodeComponent for Godot

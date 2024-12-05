@@ -9,10 +9,19 @@
 
 using namespace godot;
 
+VARIANT_ENUM_CAST(ParryTargetComponent::EParryTargetTag)
+
 void ParryTargetComponent::_bind_methods() {
 	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH, "Collision AreaPath")
 	METHOD_PROPERTY_IMPL(ParryTargetComponent, IsHeavy, BOOL, "Is heavy")
 	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT, "MASS")
+
+	BIND_ENUM_CONSTANT(DYNAMIC_LIGHT)
+	BIND_ENUM_CONSTANT(DYNAMIC_HEAVY)
+	BIND_ENUM_CONSTANT(STATIC_OBJECT)
+	BIND_ENUM_CONSTANT(STATIC_TERRAIN)
+	METHOD_PROPERTY_ENUM_IMPL(ParryTargetComponent, ParryTag, INT, "Parry tag",
+			"DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
 }
 
 void ParryTargetComponent::_enter_tree() {
