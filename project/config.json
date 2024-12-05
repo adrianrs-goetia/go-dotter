@@ -12,7 +12,7 @@
             "rootRotationSpeed": 20.0
         },
         "grapple": {
-            "enabled": true,
+            "enabled": false,
             "launchStrength": 18.0
         },
         "parry": {
