@@ -1,5 +1,7 @@
 #include <npcs/turret/turretNode.h>
 
+#include <components/parryTargetComponent.h>
+
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
@@ -9,6 +11,8 @@
 
 #include <configHandler.h>
 #include <debugdraw3d/api.h>
+
+#define CONFIG_PREFIX "npcs", "turret"
 
 using namespace godot;
 
@@ -59,14 +63,14 @@ void TurretNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 	//
 
-	m_isEnabled = GETPARAM_B("npcs", "turret", "enabled");
+	m_isEnabled = GETPARAM_B("enabled");
 
 	rotateHeadTowardsTarget();
 }
 
 float TurretNode::getFiringInterval() const {
-	const auto variance = GETPARAM_D("npcs", "turret", "firingIntervalVariance");
-	return GETPARAM_D("npcs", "turret", "firingInterval") + canonicalRandomNumber(-variance, variance);
+	const auto variance = GETPARAM_D("firingIntervalVariance");
+	return GETPARAM_D("firingInterval") + canonicalRandomNumber(-variance, variance);
 }
 
 void TurretNode::rotateHeadTowardsTarget() {
@@ -104,7 +108,7 @@ void TurretNode::fireProjectile() {
 
 	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
 		rigidbody->set_global_position(getGunOpeningLocation());
-		rigidbody->set_linear_velocity(getGunOpeningDirection() * GETPARAM_D("npcs", "turret", "firingStrength"));
+		rigidbody->set_linear_velocity(getGunOpeningDirection() * GETPARAM_D("firingStrength"));
 	}
 	m_firingTimer->start(getFiringInterval());
 

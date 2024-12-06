@@ -12,15 +12,14 @@ using namespace godot;
 VARIANT_ENUM_CAST(ParryTargetComponent::EParryTargetTag)
 
 void ParryTargetComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH, "Collision AreaPath")
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, IsHeavy, BOOL, "Is heavy")
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT, "MASS")
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH, "CollisionAreaPath")
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT, "Mass")
 
 	BIND_ENUM_CONSTANT(DYNAMIC_LIGHT)
 	BIND_ENUM_CONSTANT(DYNAMIC_HEAVY)
 	BIND_ENUM_CONSTANT(STATIC_OBJECT)
 	BIND_ENUM_CONSTANT(STATIC_TERRAIN)
-	METHOD_PROPERTY_ENUM_IMPL(ParryTargetComponent, ParryTag, INT, "Parry tag",
+	METHOD_PROPERTY_ENUM_IMPL(ParryTargetComponent, ParryTag, INT, "Parrytag",
 			"DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
 }
 
@@ -37,7 +36,6 @@ void ParryTargetComponent::_enter_tree() {
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 
-	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL(m_areaPtr)
 }
 
@@ -82,7 +80,8 @@ Vector3 ParryTargetComponent::getVelocity() const {
 }
 
 Vector3 ParryTargetComponent::getDesiredDirection() const {
-	Vector3 dir = getVelocity() * (getIsHeavy() ? 1.f : -1.f);
+	// Vector3 dir = getVelocity() * (getIsHeavy() ? 1.f : -1.f);
+	Vector3 dir = getVelocity() * (true ? 1.f : -1.f);
 	dir.y = Math::abs(dir.y);
 	dir.normalize();
 	return dir;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dn7bsvt1xcuws"]
+[gd_scene load_steps=13 format=3 uid="uid://dn7bsvt1xcuws"]
 
 [ext_resource type="PackedScene" uid="uid://65su4boe1cns" path="res://models/enemies/turret.blend" id="1_4lbsn"]
 [ext_resource type="AudioStream" uid="uid://bi4ylllh6hs88" path="res://sounds/turretFire.wav" id="2_8gu02"]
@@ -47,6 +47,10 @@ emission_curve = SubResource("CurveTexture_s5uh4")
 [sub_resource type="BoxMesh" id="BoxMesh_d6q8m"]
 material = ExtResource("3_6q5xo")
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mlalw"]
+height = 0.788931
+radius = 0.460117
+
 [node name="TurretNode" type="TurretNode"]
 
 [node name="turret" parent="." instance=ExtResource("1_4lbsn")]
@@ -69,3 +73,14 @@ randomness = 0.2
 visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
 process_material = SubResource("ParticleProcessMaterial_ycpv1")
 draw_pass_1 = SubResource("BoxMesh_d6q8m")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707062, 0.0410295)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_mlalw")
+
+[node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
+CollisionAreaPath = NodePath("../Area3D")
+Mass = 1.0
+ParryTag = 2

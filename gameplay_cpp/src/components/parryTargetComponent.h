@@ -18,17 +18,16 @@ public:
 
 	enum EParryTargetTag {
 		NONE = -1,
-		DYNAMIC_LIGHT,
-		DYNAMIC_HEAVY,
-		STATIC_OBJECT,
-		STATIC_TERRAIN,
+		DYNAMIC_LIGHT = 0,
+		DYNAMIC_HEAVY = 1,
+		STATIC_OBJECT = 2,
+		STATIC_TERRAIN = 3,
 	};
 
 public:
 	godot::NodePath m_pathToArea3D;
 	godot::Area3D* m_areaPtr = nullptr;
 	OnParriedCb m_onParriedCb = nullptr;
-	bool m_isHeavy = false;
 	float m_mass = 1.f;
 	EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
@@ -37,7 +36,7 @@ public:
 
 	void setComponentEnabled(bool enabled) override {}
 
-	void _enter_tree() override;
+	void _enter_tree();
 	void _exit_tree() override;
 
 	void setOnParriedCb(OnParriedCb&& cb);
@@ -49,7 +48,6 @@ public:
 	godot::Vector3 getDesiredDirection() const;
 
 	GS_PATH_IMPL(m_pathToArea3D, AreaPath)
-	GS_BOOL_IMPL(m_isHeavy, IsHeavy)
 	GS_FLOAT_IMPL(m_mass, Mass)
 	GS_ENUM_IMPL(m_parryTag, ParryTag, EParryTargetTag)
 };

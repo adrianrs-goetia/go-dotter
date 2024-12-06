@@ -10,6 +10,9 @@
 
 #include <algorithm>
 
+// TODO, remove this. CONFIG_PREFIX should never be on any component
+#define CONFIG_PREFIX "player"
+
 void GrappleInstigatorComponent::_bind_methods() {
 	ClassDB::bind_method(
 			D_METHOD("areaEnteredGrappledetection", "area"), &GrappleInstigatorComponent::areaEnteredDetection);
@@ -48,7 +51,7 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
 	// maybe a callback instead of checking each frame?
-	setComponentEnabled(GETPARAM_B("player", "grapple", "enabled"));
+	setComponentEnabled(GETPARAM_B("grapple", "enabled")); // @TODO, make this function into cb that owner has to set. Do NOT use specified path like this.. yuk
 	if (!isComponentEnabled()) {
 		return;
 	}

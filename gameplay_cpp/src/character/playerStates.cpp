@@ -11,6 +11,8 @@
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 
+#define CONFIG_PREFIX "player"
+
 using namespace godot;
 
 namespace helper {
@@ -18,9 +20,9 @@ void movement_acceleration(StateContext& context, float acceleration, float dece
 	// direction
 	if (context.input->m_inputRaw.abs() > Vector2()) {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x,
-				context.input->m_inputCameraRelative.x * GETPARAM_F("player", "walkSpeed"), acceleration * delta);
+				context.input->m_inputCameraRelative.x * GETPARAM_F("walkSpeed"), acceleration * delta);
 		context.physics.velocity.z = Math::move_toward(context.physics.velocity.z,
-				context.input->m_inputCameraRelative.y * GETPARAM_F("player", "walkSpeed"), acceleration * delta);
+				context.input->m_inputCameraRelative.y * GETPARAM_F("walkSpeed"), acceleration * delta);
 	}
 	else {
 		context.physics.velocity.x = Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
@@ -34,14 +36,14 @@ PlayerState::Return PlayerOnGroundState::enter(StateContext& context) {
 	Super::enter(context);
 	// Immediate jump when entering while having just pressed jump
 	if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-		context.physics.velocity.y += GETPARAM_D("player", "jumpStrength");
+		context.physics.velocity.y += GETPARAM_D("jumpStrength");
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
 }
 
 PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, float delta) {
-	context.physics.velocity.y += (GETPARAM_D("gravityConstant") * GETPARAM_D("player", "gravityScale")) * delta;
+	context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 	// walking off edge
 	if (!context.physics.is_on_ground) {
@@ -53,11 +55,11 @@ PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, f
 PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, float delta) {
 	// direction
 	helper::movement_acceleration(
-			context, GETPARAM_D("player", "onGroundAcceleration"), GETPARAM_D("player", "onGroundDeceleration"), delta);
+			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
-		context.physics.velocity.y += GETPARAM_D("player", "jumpStrength");
+		context.physics.velocity.y += GETPARAM_D("jumpStrength");
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
@@ -79,8 +81,8 @@ PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, floa
 		}
 	}
 	helper::movement_acceleration(
-			context, GETPARAM_D("player", "inAirAcceleration"), GETPARAM_D("player", "inAirDeceleration"), delta);
-	context.physics.velocity.y += (GETPARAM_D("gravityConstant") * GETPARAM_D("player", "gravityScale")) * delta;
+			context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
+	context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 	return {};
 }
 
@@ -107,7 +109,7 @@ PlayerState::Return PlayerPreGrappleLaunchState::enter(StateContext& context) {
 PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 	// TODO... What to do here other than launch?
 	GrappleTargetComponent::LaunchContext launch =
-			context.grapple->launch(GETPARAM_D("player", "grapple", "launchStrength"));
+			context.grapple->launch(GETPARAM_D("grapple", "launchStrength"));
 	if (launch.type != GrappleTargetComponent::LaunchType::INSTIGATOR_ANCHOR &&
 			launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
 		context.physics.velocity = launch.impulse;
@@ -117,7 +119,7 @@ PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 
 // PlayerParryState
 bool PlayerParryState::canEnter() const {
-	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("player", "parry", "cooldown"));
+	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("parry", "cooldown"));
 	if (!canEnter) {
 		LOG(DEBUG, "Tried entering parryState before cooldown was ready")
 	}
@@ -139,7 +141,7 @@ PlayerState::Return PlayerParryState::exit(StateContext& context) {
 
 PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, float delta) {
 	// Parry state timed out
-	if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("player", "parry", "stateLength"))) {
+	if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("parry", "stateLength"))) {
 		// Enter on ground by default, should discern if in air or onGround?
 		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
 	}
@@ -153,8 +155,8 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		// Launch player
 		Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
 		const Vector3 orthoRight = g_up.cross(launchDir);
-		launchDir.rotate(orthoRight, Math::deg_to_rad(GETPARAM_D("player", "parry", "launchUpAngle")) * -1.f);
-		context.physics.velocity = launchDir * GETPARAM_D("player", "parry", "launchStrength");
+		launchDir.rotate(orthoRight, Math::deg_to_rad(GETPARAM_D("parry", "launchUpAngle")) * -1.f);
+		context.physics.velocity = launchDir * GETPARAM_D("parry", "launchStrength");
 
 		return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}

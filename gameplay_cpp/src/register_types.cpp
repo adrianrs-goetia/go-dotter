@@ -13,8 +13,11 @@
 
 #include <mainNode.h>
 #include <managers/inputManager.h>
+
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
+#include <npcs/grapplenode.h>
+
 #include <components/baseClasses/grapple.hpp>
 #include <core/nodeComponent.hpp>
 
@@ -43,6 +46,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	// npcs
 	godot::ClassDB::register_class<TurretNode>();
 	godot::ClassDB::register_class<Projectile>();
+	godot::ClassDB::register_class<GrappleNode>();
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {

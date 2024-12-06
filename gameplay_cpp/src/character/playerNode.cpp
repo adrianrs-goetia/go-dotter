@@ -19,6 +19,8 @@
 #include <configHandler.h>
 #include <debugdraw3d/api.h>
 
+#define CONFIG_PREFIX "player"
+
 extern "C" {
 #include <stdlib.h>
 }
@@ -124,7 +126,7 @@ void PlayerNode::_physics_process(double delta) {
 	set_velocity(m_stateContext->physics.velocity);
 	move_and_slide();
 	m_animComponent->rotateRootTowardsVector(
-			m_stateContext->input->getInputRelative3d(), delta, GETPARAM_D("player", "animation", "rootRotationSpeed"));
+			m_stateContext->input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
 	// deferred actions
 	m_fsm.deferredActions(*m_stateContext);

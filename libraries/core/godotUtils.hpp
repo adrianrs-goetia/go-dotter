@@ -4,6 +4,7 @@
 
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
 
 // Directions
 static const godot::Vector3 g_up(0, 1, 0);
@@ -16,21 +17,29 @@ static const godot::Vector3 g_right(1, 0, 0);
 
 // Distinction between editor-mode and in-game
 #define RETURN_IF_EDITOR(ret)                                                                                          \
-	if (godot::Engine::get_singleton()->is_editor_hint()) { return ret; }
+	if (godot::Engine::get_singleton()->is_editor_hint()) {                                                            \
+		return ret;                                                                                                    \
+	}
 
 template <typename T>
 T* getChildOfNode(const godot::Node* node) {
 	godot::TypedArray<godot::Node> children = node->get_children();
 	for (int i = 0; i < children.size(); ++i) {
-		if (T* child = node->cast_to<T>(children[i])) { return child; }
+		if (T* child = node->cast_to<T>(children[i])) {
+			return child;
+		}
 	}
 	return nullptr;
 }
 
 template <typename T>
 T* getAdjacentNode(const godot::Node* node) {
-	if (!node->get_parent()) { LOG(ERROR, "Node did not have parent: ", node->get_path()) }
-	if (godot::Node* parent = node->get_parent()) { return getChildOfNode<T>(parent); }
+	if (!node->get_parent()) {
+		LOG(ERROR, "Node did not have parent: ", node->get_path())
+	}
+	if (godot::Node* parent = node->get_parent()) {
+		return getChildOfNode<T>(parent);
+	}
 	return nullptr;
 }
 
@@ -39,8 +48,12 @@ T* getAdjacentNode(const godot::Node* node) {
  */
 template <typename T>
 T* getParentNode(const godot::Node* node) {
-	if (!node->get_parent()) { LOG(ERROR, "Node did not have parent: ", node->get_path()) }
-	if (T* parent = node->cast_to<T>(node->get_parent())) { return parent; }
+	if (!node->get_parent()) {
+		LOG(ERROR, "Node did not have parent: ", node->get_path())
+	}
+	if (T* parent = node->cast_to<T>(node->get_parent())) {
+		return parent;
+	}
 	return nullptr;
 }
 

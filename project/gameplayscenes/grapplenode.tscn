@@ -5,7 +5,7 @@ radius = 0.31118
 
 [sub_resource type="TorusMesh" id="TorusMesh_0euda"]
 
-[node name="grapplepoint" type="Node3D"]
+[node name="grapplepoint" type="GrappleNode"]
 
 [node name="GrappleTargetComponent" type="GrappleTargetComponent" parent="."]
 "Collision AreaPath" = NodePath("../Area3D")
@@ -23,4 +23,6 @@ transform = Transform3D(0.256047, 0, 0, 0, 0.848187, 0, 0, 0, 0.264521, 0, 0, 0)
 mesh = SubResource("TorusMesh_0euda")
 
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
-"Collision AreaPath" = NodePath("../Area3D")
+CollisionAreaPath = NodePath("../Area3D")
+Mass = 1.0
+ParryTag = 2

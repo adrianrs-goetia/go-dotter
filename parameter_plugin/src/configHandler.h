@@ -45,8 +45,14 @@ private:
 	void _setReadStatusTrue();
 };
 
-#define GETPARAM_D(...) ConfigHandler::getParam<double>({ __VA_ARGS__ })
-#define GETPARAM_F(...) (float)ConfigHandler::getParam<double>({ __VA_ARGS__ })
-#define GETPARAM_I(...) ConfigHandler::getParam<int>({ __VA_ARGS__ })
-#define GETPARAM_B(...) ConfigHandler::getParam<bool>({ __VA_ARGS__ })
-#define GETPARAM_S(...) ConfigHandler::getParam<std::string>({ __VA_ARGS__ })
+#define GETPARAMGLOBAL_D(...) ConfigHandler::getParam<double>({ __VA_ARGS__ })
+#define GETPARAMGLOBAL_F(...) (float)ConfigHandler::getParam<double>({ __VA_ARGS__ })
+#define GETPARAMGLOBAL_I(...) ConfigHandler::getParam<int>({ __VA_ARGS__ })
+#define GETPARAMGLOBAL_B(...) ConfigHandler::getParam<bool>({ __VA_ARGS__ })
+#define GETPARAMGLOBAL_S(...) ConfigHandler::getParam<std::string>({ __VA_ARGS__ }).c_str()
+
+#define GETPARAM_D(...) GETPARAMGLOBAL_D(CONFIG_PREFIX, __VA_ARGS__)
+#define GETPARAM_F(...) GETPARAMGLOBAL_F(CONFIG_PREFIX, __VA_ARGS__)
+#define GETPARAM_I(...) GETPARAMGLOBAL_I(CONFIG_PREFIX, __VA_ARGS__)
+#define GETPARAM_B(...) GETPARAMGLOBAL_B(CONFIG_PREFIX, __VA_ARGS__)
+#define GETPARAM_S(...) GETPARAMGLOBAL_S(CONFIG_PREFIX, __VA_ARGS__)

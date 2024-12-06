@@ -6,6 +6,8 @@
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/timer.hpp>
 
+class ParryTargetComponent;
+
 namespace godot {
 class AudioStreamPlayer3D;
 class GPUParticles3D;
@@ -23,6 +25,8 @@ private:
 	godot::Timer* m_firingTimer = nullptr;
 	godot::AudioStreamPlayer3D* m_gunOpeningAudioPlayer = nullptr;
 	godot::GPUParticles3D* m_gunOpeningGpuParticles = nullptr;
+
+	ParryTargetComponent* m_parryTargetComp = nullptr;
 
 	godot::Ref<godot::PackedScene> m_projectileResource;
 	bool m_isEnabled{};
