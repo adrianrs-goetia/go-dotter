@@ -3,7 +3,6 @@
 #include <core/core.hpp>
 #include <core/nodeComponent.hpp>
 
-
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
@@ -47,8 +46,12 @@ public:
 	virtual godot::Vector3 impulseOwner(const godot::Vector3& direction, float impulse_strength) {
 		const godot::Vector3 impulse = direction * impulse_strength;
 		DebugDraw::Line(get_global_position(), get_global_position() + (impulse), godot::Color(1, 0, 1), 1.f);
-		if (auto* p = getParentNode<godot::RigidBody3D>(this)) { p->set_linear_velocity(impulse); }
-		else if (auto* p = getParentNode<godot::CharacterBody3D>(this)) { p->set_velocity(impulse); }
+		if (auto* p = getParentNode<godot::RigidBody3D>(this)) {
+			p->set_linear_velocity(impulse);
+		}
+		else if (auto* p = getParentNode<godot::CharacterBody3D>(this)) {
+			p->set_velocity(impulse);
+		}
 		else {
 			LOG(ERROR, "GrappleTargetComponent impulse on invalid parent",
 					get_parent()->get_name().get_basename().utf8().get_data())
@@ -67,13 +70,23 @@ public: // getters-setters
 		m_anchored = anchored;
 	}
 
-	bool getIsAnchor() const { return m_anchored; }
+	bool getIsAnchor() const {
+		return m_anchored;
+	}
 
-	void setPullStrength(float pullStrength) { m_pullStrength = pullStrength; }
+	void setPullStrength(float pullStrength) {
+		m_pullStrength = pullStrength;
+	}
 
-	float getPullStrength() const { return m_pullStrength; }
+	float getPullStrength() const {
+		return m_pullStrength;
+	}
 
-	void setMass(float mass) { m_mass = mass; }
+	void setMass(float mass) {
+		m_mass = mass;
+	}
 
-	float getMass() const { return m_mass; }
+	float getMass() const {
+		return m_mass;
+	}
 };

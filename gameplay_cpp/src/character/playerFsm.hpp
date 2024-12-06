@@ -1,6 +1,4 @@
-
-#ifndef GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
-#define GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H
+#pragma once
 
 #include <functional>
 
@@ -9,7 +7,6 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 
-// Forward declarations
 class PlayerState;
 class PlayerFSM;
 class GrappleTargetComponent;
@@ -22,13 +19,13 @@ class AudioStreamPlayer3D;
 class GPUParticles3D;
 } //namespace godot
 
-constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f;
+constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f; // Magic number, guesswork
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 
 // Data som en playerstate alltid er interessert i
 //  Forer inn en ny struct som dette i hver _physics_process
 struct StatePhysicsContext {
-	bool is_on_ground;
+	bool isOnGround;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
 
@@ -38,7 +35,7 @@ struct StatePhysicsContext {
 };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
-	godot::GPUParticles3D* particles = nullptr;
+	godot::GPUParticles3D* particles = nullptr; // todo, same as above?
 };
 
 struct StateContext {
@@ -54,22 +51,34 @@ class PlayerState : public State<StateContext, PlayerState> {
 
 public:
 	// default overrides for PlayerState
-	virtual bool canEnter() const override { return true; }
+	virtual bool canEnter() const override {
+		return true;
+	}
 	virtual Return enter(StateContext& context) override {
-		LOG(DEBUG, "Entering state ", getName())
+		LOG(DEBUG, "Player enter state:", getName())
 		return {};
 	}
-	virtual Return exit(StateContext& context) override { return {}; }
-	virtual Return process(StateContext& context, float delta) override { return {}; }
-	virtual Return physicsProcess(StateContext& context, float delta) override { return {}; }
-	virtual Return handleInput(StateContext& context, float delta) override { return {}; }
-	virtual Return deferredActions(StateContext& context) override { return {}; }
+	virtual Return exit(StateContext& context) override {
+		return {};
+	}
+	virtual Return process(StateContext& context, float delta) override {
+		return {};
+	}
+	virtual Return physicsProcess(StateContext& context, float delta) override {
+		return {};
+	}
+	virtual Return handleInput(StateContext& context, float delta) override {
+		return {};
+	}
+	virtual Return deferredActions(StateContext& context) override {
+		return {};
+	}
 
 #define PLAYER_STATE_IMPL(CLASSNAME)                                                                                   \
 	typedef PlayerState Super;                                                                                         \
-	virtual const char* getName() override { return #CLASSNAME; }
+	virtual const char* getName() override {                                                                           \
+		return #CLASSNAME;                                                                                             \
+	}
 };
 
 class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};
-
-#endif // GD_CHARACTER_PLAYERFSM_PLUGIN_GAMEPLAY_H

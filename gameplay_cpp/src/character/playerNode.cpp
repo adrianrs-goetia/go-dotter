@@ -70,7 +70,7 @@ void PlayerNode::_enter_tree() {
 
 	m_stateContext->input = input;
 	m_stateContext->parry = m_parryComponent;
-	m_stateContext->physics.is_on_ground = is_on_floor();
+	m_stateContext->physics.isOnGround = is_on_floor();
 	m_stateContext->physics.position = get_position();
 	m_stateContext->physics.velocity = get_velocity();
 	m_stateContext->audioVisual.audio = audio;
@@ -114,7 +114,7 @@ void PlayerNode::_physics_process(double delta) {
 
 	ASSERT_NOTNULL(m_stateContext);
 	// capture current physics context
-	m_stateContext->physics.is_on_ground = is_on_floor();
+	m_stateContext->physics.isOnGround = is_on_floor();
 	m_stateContext->physics.position = get_position();
 	m_stateContext->physics.velocity = get_velocity();
 

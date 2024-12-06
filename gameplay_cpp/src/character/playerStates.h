@@ -53,6 +53,21 @@ public:
 	Return handleInput(StateContext& context, float delta) override;
 };
 
+class PlayerAttackState : public PlayerState {
+private:
+	Timestamp m_enterTimestamp;
+	Timestamp m_exitTimestamp;
+
+public:
+	PLAYER_STATE_IMPL(PlayerParryState)
+
+	bool canEnter() const;
+	Return enter(StateContext& context) override;
+	Return exit(StateContext& context) override;
+	Return physicsProcess(StateContext& context, float delta) override;
+	Return handleInput(StateContext& context, float delta) override;
+};
+
 /*
  * Static PlayerStateBank with memory baked into the binary.
  * Avoid allocating memory on heap when switching between states;
@@ -68,6 +83,7 @@ class PlayerStateBank {
 	PlayerPreGrappleLaunchState pregrapplelaunchstate;
 	PlayerGrappleLaunchState grapplelaunchstate;
 	PlayerParryState parrystate;
+	PlayerAttackState attackstate;
 
 public:
 	static PlayerStateBank& get() {
@@ -91,6 +107,9 @@ public:
 		}
 		if constexpr (std::is_same_v<T, PlayerParryState>) {
 			return &parrystate;
+		}
+		if constexpr (std::is_same_v<T, PlayerAttackState>) {
+			return &attackstate;
 		}
 	}
 };

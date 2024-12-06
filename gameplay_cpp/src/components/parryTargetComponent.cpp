@@ -19,8 +19,8 @@ void ParryTargetComponent::_bind_methods() {
 	BIND_ENUM_CONSTANT(DYNAMIC_HEAVY)
 	BIND_ENUM_CONSTANT(STATIC_OBJECT)
 	BIND_ENUM_CONSTANT(STATIC_TERRAIN)
-	METHOD_PROPERTY_ENUM_IMPL(ParryTargetComponent, ParryTag, INT, "Parrytag",
-			"DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
+	METHOD_PROPERTY_ENUM_IMPL(
+			ParryTargetComponent, ParryTag, INT, "ParryTag", "DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
 }
 
 void ParryTargetComponent::_enter_tree() {
@@ -51,17 +51,24 @@ void ParryTargetComponent::setOnParriedCb(OnParriedCb&& cb) {
 }
 
 void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
-	if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) {
-		rigidBody->set_linear_velocity(parryInstance.getNewTargetVelocity());
-		DebugDraw::Line(parryInstance.targetPosition,
-				parryInstance.targetPosition + (parryInstance.getNewTargetVelocity() * 2.f), Color(1.0, 0.3, 1.0), 1.f);
-	}
-	else {
-		LOG(DEBUG, "Parrying static object: ", get_parent()->get_name())
+	switch (getParryTagEnum()) {
+		case EParryTargetTag::DYNAMIC_LIGHT: {
+			if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) {
+				// rigidBody->set_linear_velocity(parryInstance.getNewTargetVelocity());
+				rigidBody->set_linear_velocity(Vector3(0, 3, 0));
+			}
+			else {
+				LOG(DEBUG, "Parry DYNAMIC_LIGHT requires RigidBody3D: ", get_parent()->get_name())
+			}
+			break;
+		}
+
+		default: LOG(WARN, "Parried target without tag: ", getParryTag()) break;
 	}
 
-	if (m_onParriedCb)
+	if (m_onParriedCb) {
 		m_onParriedCb();
+	}
 }
 
 Vector3 ParryTargetComponent::getPosition() const {
@@ -81,7 +88,7 @@ Vector3 ParryTargetComponent::getVelocity() const {
 
 Vector3 ParryTargetComponent::getDesiredDirection() const {
 	// Vector3 dir = getVelocity() * (getIsHeavy() ? 1.f : -1.f);
-	Vector3 dir = getVelocity() * (true ? 1.f : -1.f);
+	Vector3 dir = getVelocity();
 	dir.y = Math::abs(dir.y);
 	dir.normalize();
 	return dir;

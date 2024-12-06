@@ -5,7 +5,6 @@
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
 
-
 /**
  * weight of 0 means instigator 100% overrides targets velocity
  * weight of 1 means target ignores the instigators desired direction

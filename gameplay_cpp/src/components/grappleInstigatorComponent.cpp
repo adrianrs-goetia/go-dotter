@@ -51,7 +51,8 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
 	// maybe a callback instead of checking each frame?
-	setComponentEnabled(GETPARAM_B("grapple", "enabled")); // @TODO, make this function into cb that owner has to set. Do NOT use specified path like this.. yuk
+	setComponentEnabled(GETPARAM_B("grapple", "enabled")); // @TODO, make this function into cb that owner has to set.
+														   // Do NOT use specified path like this.. yuk
 	if (!isComponentEnabled()) {
 		return;
 	}

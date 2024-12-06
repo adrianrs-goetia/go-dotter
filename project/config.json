@@ -20,6 +20,10 @@
             "stateLength": 0.7,
             "launchUpAngle": 60.0,
             "launchStrength": 10.0
+        },
+        "attack":{
+            "cooldown": 1.0,
+            "stateLength": 0.3
         }
     },
     "npcs": {

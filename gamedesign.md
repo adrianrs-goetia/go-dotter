@@ -35,13 +35,17 @@ Basic movement along the horizontal plane.
 A small jump giving the player a second in the air. Not meant for major traversals, but to allow for the player to gain the in-air state. Modifying their existing mechanics. 
 
 #### Slice Attack
-Swing your massive half scissor, damaging any enemy in front of you as well as cutting up projectiles for additional seameter.
+Swing your massive half scissor, damaging any enemy in front of you as well as cutting up projectiles for additional seameter. \
+Attacking projectiles;
+- Parried projectiles: When hanging in the air, attack them and launch them towards input direction
+- Stop the projectile, stopping the attacking action and stun the player briefly as the shock reverberates through the player characters body.
 
 #### Parry
 Use the backend of your massive scissors to deflect ANY damage, be it enemy, fall damage or environment. \
 On parrying the player will gain some seameter, and given the target objects tag/type the player can;
+<!-- - Light_Dynamic: Player will gain a boost in their desired horizontal direction and push the object in the opposite horizontal direction. Player will also receive a vertical boost. -->
+- Light_Dynamic: Object will stop before the player and hang in the air for a short period. Ready to be used as a projectile back by attacking it. _Potentially used in other ways as well_
 - Heavy_Dynamic: Will push the player away from the centre. 
-- Light_Dynamic: Player will gain a boost in their desired horizontal direction and push the object in the opposite horizontal direction. Player will also receive a vertical boost.
 - Static_Object: Player will bounce off it in their desired direction
 - Static_Terrain: Player will bounce off it given an angle from the surface normal. Limited to avoid going parallell with the wall. 
 

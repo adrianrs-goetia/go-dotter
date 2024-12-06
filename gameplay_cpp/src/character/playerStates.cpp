@@ -46,7 +46,7 @@ PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, f
 	context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 	// walking off edge
-	if (!context.physics.is_on_ground) {
+	if (!context.physics.isOnGround) {
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 
@@ -68,20 +68,22 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 	if (context.input->isActionPressed(EInputAction::PARRY)) {
 		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
+	if (context.input->isActionPressed(EInputAction::ATTACK)) {
+		return { PlayerStateBank::get().state<PlayerParryState>() };
+	}
 	return {};
 }
 
 // PlayerInAirState
 PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, float delta) {
-	if (context.physics.is_on_ground) {
+	if (context.physics.isOnGround) {
 		// if (!m_guarantee_one_frame_processing)
 		{
 			DebugDraw::Position(Transform3D(Basis(), Vector3(context.physics.position)), Color(1, 1, 1), 2.f);
 			return Return{ PlayerStateBank::get().state<PlayerOnGroundState>() };
 		}
 	}
-	helper::movement_acceleration(
-			context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
+	helper::movement_acceleration(context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
 	context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 	return {};
 }
@@ -108,8 +110,7 @@ PlayerState::Return PlayerPreGrappleLaunchState::enter(StateContext& context) {
 // PlayerGrappleLaunchState
 PlayerState::Return PlayerGrappleLaunchState::enter(StateContext& context) {
 	// TODO... What to do here other than launch?
-	GrappleTargetComponent::LaunchContext launch =
-			context.grapple->launch(GETPARAM_D("grapple", "launchStrength"));
+	GrappleTargetComponent::LaunchContext launch = context.grapple->launch(GETPARAM_D("grapple", "launchStrength"));
 	if (launch.type != GrappleTargetComponent::LaunchType::INSTIGATOR_ANCHOR &&
 			launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
 		context.physics.velocity = launch.impulse;
@@ -123,7 +124,6 @@ bool PlayerParryState::canEnter() const {
 	if (!canEnter) {
 		LOG(DEBUG, "Tried entering parryState before cooldown was ready")
 	}
-	LOG(INFO, "Player parrying")
 	return canEnter;
 }
 
@@ -153,12 +153,15 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		context.audioVisual.particles->restart();
 
 		// Launch player
-		Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
-		const Vector3 orthoRight = g_up.cross(launchDir);
-		launchDir.rotate(orthoRight, Math::deg_to_rad(GETPARAM_D("parry", "launchUpAngle")) * -1.f);
-		context.physics.velocity = launchDir * GETPARAM_D("parry", "launchStrength");
+		// Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
+		// const Vector3 orthoRight = g_up.cross(launchDir);
+		// launchDir.rotate(orthoRight, Math::deg_to_rad(GETPARAM_D("parry", "launchUpAngle")) * -1.f);
+		// context.physics.velocity = launchDir * GETPARAM_D("parry", "launchStrength");
 
-		return { PlayerStateBank::get().state<PlayerInAirState>() };
+		if (context.physics.isOnGround)
+			return { PlayerStateBank::get().state<PlayerOnGroundState>() };
+		else
+			return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
 }
@@ -168,4 +171,45 @@ PlayerState::Return PlayerParryState::handleInput(StateContext& context, float d
 		return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 	return {};
+}
+
+// PlayerAttackState
+bool PlayerAttackState::canEnter() const {
+	const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "cooldown"));
+	if (!canEnter) {
+		LOG(DEBUG, "Player AttackState still on cooldown")
+	}
+	return canEnter;
+}
+
+PlayerState::Return PlayerAttackState::exit(StateContext& context) {
+	m_exitTimestamp.setTimestamp();
+	context.attackComponent.deactivate();
+	return {};
+}
+
+PlayerState::Return PlayerAttackState::enter(StateContext& context) {
+	context.attackComponent.activate(ProcessCallback determineOnHitReactionForState);
+	context.animation.playAnimation(EAnimation::ATTACK);
+	return Return();
+}
+
+PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, float delta) {
+	if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "stateLength"))) {
+		if (context.physics.isOnGround)
+			return { PlayerStateBank::get().state<PlayerOnGroundState>() };
+		else
+			return { PlayerStateBank::get().state<PlayerInAirState>() };
+	}
+	
+	auto condition = context.attackComponent->getAttackCondition();
+	switch (condition)
+	{
+	case /* constant-expression */:
+		/* code */
+		break;
+	
+	default:
+		break;
+	}
 }

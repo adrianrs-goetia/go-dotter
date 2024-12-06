@@ -5,18 +5,18 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
+#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
-#include <components/animationComponent.h>
 
 #include <mainNode.h>
 #include <managers/inputManager.h>
 
+#include <npcs/grapplenode.h>
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
-#include <npcs/grapplenode.h>
 
 #include <components/baseClasses/grapple.hpp>
 #include <core/nodeComponent.hpp>

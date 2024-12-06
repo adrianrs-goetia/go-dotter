@@ -22,7 +22,7 @@ shape = SubResource("SphereShape3D_40u21")
 transform = Transform3D(0.256047, 0, 0, 0, 0.848187, 0, 0, 0, 0.264521, 0, 0, 0)
 mesh = SubResource("TorusMesh_0euda")
 
-[node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
-CollisionAreaPath = NodePath("../Area3D")
-Mass = 1.0
-ParryTag = 2
+; [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
+; CollisionAreaPath = NodePath("../Area3D")
+; Mass = 1.0
+; ParryTag = 2
