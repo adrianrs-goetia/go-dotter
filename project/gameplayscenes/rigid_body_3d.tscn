@@ -20,7 +20,7 @@ mesh = SubResource("BoxMesh_1xi85")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="GrappleTargetComponent" type="GrappleTargetComponent" parent="."]
-"Collision AreaPath" = NodePath("../Area3D")
+ColliderPath = NodePath("../Area3D")
 mass = 1.0
 
 [node name="Area3D" type="Area3D" parent="."]

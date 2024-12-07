@@ -24,17 +24,16 @@ mesh = SubResource("SphereMesh_tiefc")
 surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="GrappleTargetComponent" type="GrappleTargetComponent" parent="."]
-"Collision AreaPath" = NodePath("../Area3D")
+ColliderPath = NodePath("../Area3D")
 mass = 4.37
 
 [node name="Area3D" type="Area3D" parent="."]
-collision_layer = 192
+collision_layer = 208
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_ahihr")
 
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
-CollisionAreaPath = NodePath("../Area3D")
-Mass = 1.0
+ColliderPath = NodePath("../Area3D")
 ParryTag = 0

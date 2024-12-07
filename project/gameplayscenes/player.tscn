@@ -1,7 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=19 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://d1mu4t3fvpx8t" path="res://models/character/character.blend" id="1_s8c4i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
+size = Vector3(1.27637, 1.7627, 1.1709)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
 radius = 0.279674
@@ -94,6 +97,15 @@ radius = 1.521
 [node name="character" parent="meshAnchor" instance=ExtResource("1_s8c4i")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 
+[node name="AttackCollider" type="Area3D" parent="meshAnchor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="meshAnchor/AttackCollider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.57386)
+shape = SubResource("BoxShape3D_5oxfn")
+
 [node name="Capsule" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
 shape = SubResource("CapsuleShape3D_xmldd")
@@ -117,11 +129,14 @@ collision_mask = 64
 shape = SubResource("SphereShape3D_6du44")
 
 [node name="ParryInstigatorComponent" type="ParryInstigatorComponent" parent="."]
-"Collision area" = NodePath("../ParryDetection")
+ColliderPath = NodePath("../ParryDetection")
 Mass = 100.0
 
 [node name="AnimationComponent" type="AnimationComponent" parent="."]
-"Root node path" = NodePath("../meshAnchor")
+RootAnimationNode = NodePath("../meshAnchor")
+
+[node name="AttackComponent" type="AttackComponent" parent="."]
+ColliderPath = NodePath("../meshAnchor/AttackCollider")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1_j0ubi")
@@ -146,7 +161,7 @@ collision_mask = 192
 shape = SubResource("SphereShape3D_en38a")
 
 [node name="GrappleInstigatorComponent" type="GrappleInstigatorComponent" parent="."]
-"Detection area" = NodePath("../GrappleDetection")
+ColliderPath = NodePath("../GrappleDetection")
 "pull strength" = 20.0
 mass = 100.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00901, 0)
