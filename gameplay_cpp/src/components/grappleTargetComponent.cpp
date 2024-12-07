@@ -18,7 +18,7 @@ void GrappleTargetComponent::_enter_tree() {
 
 	RETURN_IF_EDITOR(void())
 	if (m_pathToArea3D.is_empty()) {
-		LOG(INFO, "Path to area3D is empty for", get_parent()->get_name())
+		// LOG(INFO, "Path to area3D is empty for", get_parent()->get_name())
 		return;
 	}
 	m_area = get_node<Area3D>(m_pathToArea3D);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "baseClasses/grapple.hpp"
+#include "baseClasses/grappleBaseComponent.hpp"
 
 #include "grappleTargetComponent.h"
 

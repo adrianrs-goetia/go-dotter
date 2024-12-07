@@ -12,7 +12,7 @@ bool parameter::Registry::setEntry(const StringKey& key, const Variant&& newValu
 
 Variant parameter::Registry::getEntry(const StringKey& key) {
 	auto it = m_entries.find(_getHashOfKey(key));
-	ASSERT(it != m_entries.end(), toString(key).c_str())
+	ASSERT_MSG(it != m_entries.end(), toString(key).c_str())
 	return it->second;
 }
 

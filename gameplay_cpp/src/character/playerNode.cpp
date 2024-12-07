@@ -1,5 +1,7 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+
+#include <components/attackComponent.h>
 #include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
@@ -53,6 +55,7 @@ void PlayerNode::_enter_tree() {
 	auto* input = InputManager::get(*this);
 	m_animComponent = getChildOfNode<AnimationComponent>(this);
 	m_parryComponent = getChildOfNode<ParryInstigatorComponent>(this);
+	auto* attackComponent = getChildOfNode<AttackComponent>(this);
 	auto* grappleInstigator = getChildOfNode<GrappleInstigatorComponent>(this);
 	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getChildOfNode<GPUParticles3D>(this);
@@ -65,10 +68,12 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(m_stateContext)
 	ASSERT_NOTNULL(m_camerapivot)
 	ASSERT_NOTNULL(m_animComponent)
+	ASSERT_NOTNULL(attackComponent)
 	ASSERT_NOTNULL(grappleInstigator)
 	ASSERT_NOTNULL(audio)
 	ASSERT_NOTNULL(particles)
 
+	m_stateContext->attack = attackComponent;
 	m_stateContext->input = input;
 	m_stateContext->parry = m_parryComponent;
 	m_stateContext->physics.isOnGround = is_on_floor();

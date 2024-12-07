@@ -65,7 +65,7 @@ public:
 	Return enter(StateContext& context) override;
 	Return exit(StateContext& context) override;
 	Return physicsProcess(StateContext& context, float delta) override;
-	Return handleInput(StateContext& context, float delta) override;
+	// Return handleInput(StateContext& context, float delta) override;
 };
 
 /*

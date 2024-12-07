@@ -70,7 +70,7 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 	RETURN_IF_EDITOR(void())
 	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
-		LOG(DEBUG, "Component entered grapple area: ", gn->get_parent()->get_name())
+		// LOG(DEBUG, "Component entered grapple area: ", gn->get_parent()->get_name())
 		auto rid = gn->getRid();
 		m_inRangeTargets->insert({ rid, gn });
 		auto wp = std::weak_ptr<InRangeTargetMap>(m_inRangeTargets);

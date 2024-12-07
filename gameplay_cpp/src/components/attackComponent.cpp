@@ -1,6 +1,7 @@
 #include "attackComponent.h"
 
 #include <godot_cpp/classes/area3d.hpp>
+#include <godot_cpp/classes/rigid_body3d.hpp>
 
 using namespace godot;
 
@@ -22,7 +23,7 @@ void AttackComponent::setComponentEnabled(bool enabled) {
 	}
 
 	m_numOfHitNodes = 0;
-    m_numOfHitNodesTotal = 0;
+	m_numOfHitNodesTotal = 0;
 }
 
 void AttackComponent::_enter_tree() {
@@ -31,6 +32,7 @@ void AttackComponent::_enter_tree() {
 	m_attackCollider = get_node<Area3D>(m_attackColliderPath);
 	ASSERT_NOTNULL(m_attackCollider)
 
+	m_attackCollider->set_collision_mask_value(collisionflags::attackTarget, true);
 	m_attackCollider->connect("area_entered", callable_mp(this, &AttackComponent::areaEnteredCollider));
 	m_attackCollider->connect("area_exited", callable_mp(this, &AttackComponent::areaExitedCollider));
 }
@@ -40,24 +42,32 @@ void AttackComponent::_exit_tree() {
 }
 
 void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
-    ++m_numOfHitNodes;
-    ++m_numOfHitNodesTotal;
+	++m_numOfHitNodes;
+	++m_numOfHitNodesTotal;
+
+	if (auto* target = cast_to<RigidBody3D>(area->get_parent())) {
+		Vector3 dir = Vector3(target->get_global_position() - get_global_position()).normalized();
+		dir += Vector3(0, 1, 0);
+		dir.normalize();
+		target->set_linear_velocity(dir * 3.f);
+		LOG(INFO, "area entered attack collider")
+	}
 }
 
 void AttackComponent::areaExitedCollider(godot::Area3D* area) {
-    --m_numOfHitNodes;
+	--m_numOfHitNodes;
 }
 
 AttackComponent::EState AttackComponent::getAttackState() const {
-    if (m_numOfHitNodes > 0){
-        return EState::HIT;
-    }
-    else if (m_numOfHitNodes == 0 && m_numOfHitNodesTotal > 0){
-        return EState::PREVIOUSLY_HIT;
-    }
-    else if (m_numOfHitNodes == 0){
-        return EState::NOT_HIT;
-    }
-    ASSERT(false)
+	if (m_numOfHitNodes > 0) {
+		return EState::HIT;
+	}
+	else if (m_numOfHitNodes == 0 && m_numOfHitNodesTotal > 0) {
+		return EState::PREVIOUSLY_HIT;
+	}
+	else if (m_numOfHitNodes == 0) {
+		return EState::NOT_HIT;
+	}
+	ASSERT(false)
 	return EState::NONE; // Should never happen
 }

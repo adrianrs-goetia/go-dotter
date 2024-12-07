@@ -36,7 +36,7 @@ void TurretNode::_enter_tree() {
 	m_projectileResource = ResourceLoader::get_singleton()->load("res://gameplayscenes/projectile.tscn");
 	m_firingTimer = memnew(Timer);
 
-	ASSERT(m_projectileResource.is_valid(), "");
+	ASSERT(m_projectileResource.is_valid());
 	ASSERT_NOTNULL(m_target)
 	ASSERT_NOTNULL(m_gunRotPoint)
 	ASSERT_NOTNULL(m_gunRotJoint)

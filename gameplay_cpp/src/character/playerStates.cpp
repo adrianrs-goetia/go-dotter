@@ -72,7 +72,7 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 		return { PlayerStateBank::get().state<PlayerParryState>() };
 	}
 	if (context.input->isActionPressed(EInputAction::ATTACK)) {
-		return { PlayerStateBank::get().state<PlayerParryState>() };
+		return { PlayerStateBank::get().state<PlayerAttackState>() };
 	}
 	return {};
 }
@@ -186,6 +186,7 @@ bool PlayerAttackState::canEnter() const {
 }
 
 PlayerState::Return PlayerAttackState::enter(StateContext& context) {
+	m_enterTimestamp.setTimestamp();
 	context.attack->setComponentEnabled(true);
 	// context.animation.playAnimation(EAnimation::ATTACK);
 	return Return();
@@ -198,6 +199,9 @@ PlayerState::Return PlayerAttackState::exit(StateContext& context) {
 }
 
 PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, float delta) {
+	DebugDraw::Position(
+			Transform3D(Basis(), Vector3(context.physics.position + Vector3(0, 1, 0))), Color(0.7, 0, 0.5), delta);
+
 	if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "stateLength"))) {
 		if (context.physics.isOnGround)
 			return { PlayerStateBank::get().state<PlayerOnGroundState>() };
@@ -207,6 +211,7 @@ PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, flo
 
 	switch (context.attack->getAttackState()) {
 		case AttackComponent::EState::HIT: {
+			LOG(INFO, "HIT TARGET")
 		}
 		case AttackComponent::EState::NOT_HIT: {
 		}
@@ -214,4 +219,5 @@ PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, flo
 		default:
 			break;
 	}
+	return {};
 }

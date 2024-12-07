@@ -137,3 +137,4 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 #define BIND_INOUT_METHODS(classname, entered, exited, fieldName)                                                      \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(exited), TOSTRING(fieldName)), &classname::exited);
+

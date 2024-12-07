@@ -51,7 +51,7 @@ void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 		return;
 	}
 	if (auto* parrytarget = getAdjacentNode<ParryTargetComponent>(area)) {
-		LOG(DEBUG, "ParryTarget entered area", area->get_parent()->get_name())
+		// LOG(DEBUG, "ParryTarget entered area", area->get_parent()->get_name())
 		m_inRangeParryTargets.emplace(area->get_rid().get_id(), *parrytarget);
 	}
 }

@@ -19,7 +19,7 @@
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
 
-#include <components/baseClasses/grapple.hpp>
+#include <components/baseClasses/grappleBaseComponent.hpp>
 #include <core/nodeComponent.hpp>
 
 using namespace godot;
@@ -36,8 +36,8 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<InputManager>();
 
 	// Components
-	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
 	godot::ClassDB::register_abstract_class<NodeComponent>();
+	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
 
 	godot::ClassDB::register_class<AttackComponent>();
 	godot::ClassDB::register_class<AnimationComponent>();

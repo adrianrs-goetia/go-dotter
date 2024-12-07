@@ -41,6 +41,9 @@ void InputManager::_physics_process(double delta) {
 	if (input->is_action_just_pressed(InputString::parry)) {
 		m_inputActions.emplace_back(InputAction{ EInputAction::PARRY, EInputActionType::PRESSED });
 	}
+	if (input->is_action_just_pressed(InputString::attack)) {
+		m_inputActions.emplace_back(InputAction{ EInputAction::ATTACK, EInputActionType::PRESSED });
+	}
 
 	// Clear inputs
 	for (auto it = m_inputActions.begin(); it != m_inputActions.end();) {
@@ -75,7 +78,7 @@ void InputManager::_enter_tree() {
 void InputManager::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
 
-	ASSERT(DisplayServer::get_singleton() != nullptr, "");
+	ASSERT_NOTNULL(DisplayServer::get_singleton())
 	if (DisplayServer::get_singleton()->window_is_focused()) {
 		m_additionalStates.applicationMouseLock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
 												: input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
