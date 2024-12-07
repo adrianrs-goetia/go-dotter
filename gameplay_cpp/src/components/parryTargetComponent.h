@@ -25,7 +25,7 @@ public:
 	};
 
 public:
-	godot::NodePath m_pathToArea3D;
+	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
 	OnParriedCb m_onParriedCb = nullptr;
 	float m_mass = 1.f;
@@ -47,7 +47,7 @@ public:
 	godot::Vector3 getVelocity() const;
 	godot::Vector3 getDesiredDirection() const;
 
-	GS_PATH_IMPL(m_pathToArea3D, AreaPath)
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 	GS_FLOAT_IMPL(m_mass, Mass)
 	GS_ENUM_IMPL(m_parryTag, ParryTag, EParryTargetTag)
 };

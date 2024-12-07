@@ -6,7 +6,7 @@
 using namespace godot;
 
 void GrappleTargetComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH)
+	METHOD_PROPERTY_IMPL(GrappleTargetComponent, ColliderPath, NODE_PATH)
 }
 
 void GrappleTargetComponent::_enter_tree() {
@@ -17,11 +17,11 @@ void GrappleTargetComponent::_enter_tree() {
 	}
 
 	RETURN_IF_EDITOR(void())
-	if (m_pathToArea3D.is_empty()) {
+	if (m_colliderPath.is_empty()) {
 		// LOG(INFO, "Path to area3D is empty for", get_parent()->get_name())
 		return;
 	}
-	m_area = get_node<Area3D>(m_pathToArea3D);
+	m_area = get_node<Area3D>(m_colliderPath);
 	if (!m_area) {
 		String msg;
 		msg += get_parent()->get_name();

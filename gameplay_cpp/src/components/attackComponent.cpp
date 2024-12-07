@@ -5,16 +5,9 @@
 
 using namespace godot;
 
-// VARIANT_ENUM_CAST(AttackComponent::EState)
-
 void AttackComponent::_bind_methods() {
-	// BIND_ENUM_CONSTANT(NOT_HIT)
-	// BIND_ENUM_CONSTANT(HIT)
-	// METHOD_PROPERTY_ENUM_IMPL(AttackComponent, AttackState, INT, "NOT_HIT,HIT")
-
 	METHOD_PROPERTY_IMPL(AttackComponent, ColliderPath, NODE_PATH)
-
-	BIND_INOUT_METHODS(AttackComponent, areaEnteredCollider, areaExitedCollider, area)
+	METHOD_INOUT_BIND(AttackComponent, areaEnteredCollider, areaExitedCollider, area)
 }
 
 void AttackComponent::setComponentEnabled(bool enabled) {

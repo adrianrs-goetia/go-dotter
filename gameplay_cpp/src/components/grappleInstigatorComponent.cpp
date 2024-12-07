@@ -14,10 +14,8 @@
 #define CONFIG_PREFIX "player"
 
 void GrappleInstigatorComponent::_bind_methods() {
-	ClassDB::bind_method( D_METHOD("areaEnteredGrappledetection", "area"), &GrappleInstigatorComponent::areaEnteredDetection);
-	ClassDB::bind_method( D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
-
-	METHOD_PROPERTY_IMPL(GrappleInstigatorComponent, PathToArea3D, NODE_PATH)
+	METHOD_INOUT_BIND(GrappleInstigatorComponent, areaEnteredDetection, areaExitedDetection, area)
+	METHOD_PROPERTY_IMPL(GrappleInstigatorComponent, ColliderPath, NODE_PATH)
 }
 
 void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {
@@ -37,7 +35,7 @@ void GrappleInstigatorComponent::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 
 	m_inRangeTargets = std::make_shared<InRangeTargetMap>();
-	m_detectionArea = get_node<Area3D>(m_pathToGrappleDetectionArea);
+	m_detectionArea = get_node<Area3D>(m_colliderPath);
 
 	ASSERT_NOTNULL(m_detectionArea)
 

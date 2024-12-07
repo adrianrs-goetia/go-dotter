@@ -44,5 +44,4 @@ public:
 	EState getAttackState() const;
 
 	GS_PATH_IMPL(m_attackColliderPath, ColliderPath)
-	// GS_ENUM_IMPL(m_state, AttackState, EState)
 };

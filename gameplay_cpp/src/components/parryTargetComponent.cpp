@@ -12,7 +12,7 @@ using namespace godot;
 VARIANT_ENUM_CAST(ParryTargetComponent::EParryTargetTag)
 
 void ParryTargetComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH)
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, ColliderPath, NODE_PATH)
 	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT)
 
 	BIND_ENUM_CONSTANT(DYNAMIC_LIGHT)
@@ -25,7 +25,7 @@ void ParryTargetComponent::_bind_methods() {
 
 void ParryTargetComponent::_enter_tree() {
 	set_name(get_class());
-	m_areaPtr = get_node<Area3D>(m_pathToArea3D);
+	m_areaPtr = get_node<Area3D>(m_colliderPath);
 	if (!m_areaPtr) {
 		String msg;
 		msg += get_parent()->get_name();

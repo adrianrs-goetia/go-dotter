@@ -21,7 +21,7 @@ public:
 	using GodotRID = uint64_t;
 
 public:
-	godot::NodePath m_pathToArea3D; // Path for m_area object
+	godot::NodePath m_colliderPath; // Path for m_area object
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
 	std::function<godot::Vector3()> m_getDesiredDirectionCb;
@@ -45,6 +45,6 @@ public:
 	godot::Vector3 getVelocity() const;
 	godot::Vector3 getDesiredDirection() const;
 
-	GS_PATH_IMPL(m_pathToArea3D, PathToArea3D)
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 	GS_FLOAT_IMPL(m_mass, Mass)
 };

@@ -15,7 +15,7 @@
 using namespace godot;
 
 void ParryInstigatorComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, PathToArea3D, NODE_PATH)
+	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, ColliderPath, NODE_PATH)
 	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, Mass, FLOAT)
 }
 
@@ -23,7 +23,7 @@ void ParryInstigatorComponent::_enter_tree() {
 	set_name(get_class());
 	RETURN_IF_EDITOR(void())
 
-	m_area = get_node<Area3D>(m_pathToArea3D);
+	m_area = get_node<Area3D>(m_colliderPath);
 
 	ASSERT_NOTNULL(m_area)
 

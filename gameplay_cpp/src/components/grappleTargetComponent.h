@@ -9,7 +9,7 @@ class GrappleTargetComponent : public GrappleBaseComponent {
 	GDCLASS(GrappleTargetComponent, GrappleBaseComponent)
 
 private:
-	godot::NodePath m_pathToArea3D;
+	godot::NodePath m_colliderPath;
 	godot::Area3D* m_area = nullptr;
 
 public:
@@ -22,5 +22,5 @@ public:
 
 	godot::RID getRid() const;
 
-	GS_PATH_IMPL(m_pathToArea3D, AreaPath)
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 };
