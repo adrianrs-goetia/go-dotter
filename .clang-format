@@ -18,7 +18,7 @@ AlignTrailingComments: false
 AllowAllParametersOfDeclarationOnNextLine: false
 # AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Never
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 # AllowShortLambdasOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never

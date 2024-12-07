@@ -6,7 +6,7 @@
 using namespace godot;
 
 void GrappleTargetComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH, "Collision AreaPath")
+	METHOD_PROPERTY_IMPL(GrappleTargetComponent, AreaPath, NODE_PATH)
 }
 
 void GrappleTargetComponent::_enter_tree() {

@@ -19,18 +19,20 @@ inline void __m_assert(const char* expr_str, bool expr, const char* file, int li
 		abort();
 	}
 }
-#define ASSERT(expr, msg)                                                                                              \
+#define ASSERT(expr)                                                                                                   \
+	{ __m_assert(#expr, expr, __FILE__, __LINE__, ""); }
+#define ASSERT_MSG(expr, msg)                                                                                          \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
-#define ASSERT_NOTNULL(ptr) ASSERT(ptr != nullptr, "")
-#define ASSERT_NOTNULL_MSG(ptr, msg) ASSERT(ptr != nullptr, msg)
+#define ASSERT_NOTNULL(ptr) ASSERT(ptr != nullptr)
+#define ASSERT_NOTNULL_MSG(ptr, msg) ASSERT_MSG(ptr != nullptr, msg)
 void __m_assert(const char* expr_str, bool expr, const char* file, int line, const char* msg);
 
 #ifdef _WIN32
-    // #ifdef LIBRARY_EXPORTS
-        #define DD3D_API __declspec(dllexport)
-    // #else
-        // #define API __declspec(dllimport)
-    // #endif
+// #ifdef LIBRARY_EXPORTS
+#define DD3D_API __declspec(dllexport)
+// #else
+// #define API __declspec(dllimport)
+// #endif
 #else
-    #define API __attribute__((visibility("default")))
+#define API __attribute__((visibility("default")))
 #endif

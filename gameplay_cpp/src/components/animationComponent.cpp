@@ -3,7 +3,7 @@
 using namespace godot;
 
 void AnimationComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(AnimationComponent, RootAnimationNode, NODE_PATH, "Root node path");
+	METHOD_PROPERTY_IMPL(AnimationComponent, RootAnimationNode, NODE_PATH);
 }
 
 void AnimationComponent::_enter_tree() {

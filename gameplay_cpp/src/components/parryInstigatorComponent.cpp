@@ -15,8 +15,8 @@
 using namespace godot;
 
 void ParryInstigatorComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, PathToArea3D, NODE_PATH, "Collision area")
-	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, Mass, FLOAT, "Mass")
+	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, PathToArea3D, NODE_PATH)
+	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, Mass, FLOAT)
 }
 
 void ParryInstigatorComponent::_enter_tree() {

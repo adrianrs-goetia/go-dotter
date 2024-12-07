@@ -44,7 +44,8 @@ void CameraPivot::process(StateContext& context, float delta) {
 			set_rotation_degrees(current_rot);
 			break;
 		}
-		default: break;
+		default:
+			break;
 	}
 }
 
@@ -64,6 +65,7 @@ void CameraPivot::processInput(StateContext& context, float delta) {
 			set_rotation_degrees(current_rot);
 			break;
 		}
-		default: break;
+		default:
+			break;
 	}
 }

@@ -75,3 +75,65 @@ inline godot::Basis createBasisFromDirection(
 inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 	return godot::Vector3(basis.get_column(0).length(), basis.get_column(1).length(), basis.get_column(2).length());
 }
+
+/**
+ * Lazy macroes for declaring and binding functions to godot
+ */
+
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+
+#define GS_PATH_IMPL(variableName, functionName)                                                                       \
+	void set##functionName(godot::NodePath value) {                                                                    \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	godot::NodePath get##functionName() const {                                                                        \
+		return variableName;                                                                                           \
+	}
+#define GS_BOOL_IMPL(variableName, functionName)                                                                       \
+	void set##functionName(bool value) {                                                                               \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	bool get##functionName() const {                                                                                   \
+		return variableName;                                                                                           \
+	}
+#define GS_FLOAT_IMPL(variableName, functionName)                                                                      \
+	void set##functionName(float value) {                                                                              \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	float get##functionName() const {                                                                                  \
+		return variableName;                                                                                           \
+	}
+#define GS_INT_IMPL(variableName, functionName)                                                                        \
+	void set##functionName(int value) {                                                                                \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	int get##functionName() const {                                                                                    \
+		return variableName;                                                                                           \
+	}
+#define GS_ENUM_IMPL(variableName, functionName, enumType)                                                             \
+	void set##functionName(int value) {                                                                                \
+		variableName = static_cast<enumType>(value);                                                                   \
+	}                                                                                                                  \
+	int get##functionName() const {                                                                                    \
+		return static_cast<int>(variableName);                                                                         \
+	}                                                                                                                  \
+	enumType get##functionName##Enum() const {                                                                         \
+		return variableName;                                                                                           \
+	}
+
+#define METHOD_PROPERTY_IMPL(class, functionName, propertyType)                                                        \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName)),                            \
+			TOSTRING(set##functionName), TOSTRING(get##functionName));
+#define METHOD_PROPERTY_ENUM_IMPL(class, functionName, propertyType, enumFields)                                       \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName),                             \
+						 godot::PropertyHint::PROPERTY_HINT_ENUM, enumFields),                                         \
+			TOSTRING(set##functionName), TOSTRING(get##functionName));
+
+#define BIND_INOUT_METHODS(classname, entered, exited, fieldName)                                                      \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(exited), TOSTRING(fieldName)), &classname::exited);

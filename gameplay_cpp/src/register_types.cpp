@@ -6,6 +6,7 @@
 #include <character/playerNode.h>
 
 #include <components/animationComponent.h>
+#include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
@@ -27,26 +28,28 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<CameraPivot>();
+	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<PlayerNode>();
 
 	// Managers
 	godot::ClassDB::register_class<InputManager>();
 
 	// Components
-	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
+	godot::ClassDB::register_abstract_class<NodeComponent>();
+
+	godot::ClassDB::register_class<AttackComponent>();
+	godot::ClassDB::register_class<AnimationComponent>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();
 	godot::ClassDB::register_class<ParryInstigatorComponent>();
 	godot::ClassDB::register_class<ParryTargetComponent>();
-	godot::ClassDB::register_class<AnimationComponent>();
 
 	// npcs
-	godot::ClassDB::register_class<TurretNode>();
-	godot::ClassDB::register_class<Projectile>();
 	godot::ClassDB::register_class<GrappleNode>();
+	godot::ClassDB::register_class<Projectile>();
+	godot::ClassDB::register_class<TurretNode>();
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {

@@ -38,7 +38,8 @@ void PlayerNode::_notification(int what) {
 			break;
 		}
 
-		default: break;
+		default:
+			break;
 	}
 }
 

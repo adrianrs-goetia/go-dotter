@@ -12,6 +12,7 @@ class PlayerFSM;
 class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
+class AttackComponent;
 class InputManager;
 
 namespace godot {
@@ -39,6 +40,7 @@ struct AudioVisualContext {
 };
 
 struct StateContext {
+	AttackComponent* attack = nullptr;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;

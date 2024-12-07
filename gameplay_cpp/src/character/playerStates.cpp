@@ -1,9 +1,12 @@
 #include <character/playerStates.h>
+
+#include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
-#include <managers/inputManager.h>
 #include <components/dataObjects/parryInstance.hpp>
+
+#include <managers/inputManager.h>
 
 #include <configHandler.h>
 #include <debugdraw3d/api.h>
@@ -182,16 +185,16 @@ bool PlayerAttackState::canEnter() const {
 	return canEnter;
 }
 
-PlayerState::Return PlayerAttackState::exit(StateContext& context) {
-	m_exitTimestamp.setTimestamp();
-	context.attackComponent.deactivate();
-	return {};
+PlayerState::Return PlayerAttackState::enter(StateContext& context) {
+	context.attack->setComponentEnabled(true);
+	// context.animation.playAnimation(EAnimation::ATTACK);
+	return Return();
 }
 
-PlayerState::Return PlayerAttackState::enter(StateContext& context) {
-	context.attackComponent.activate(ProcessCallback determineOnHitReactionForState);
-	context.animation.playAnimation(EAnimation::ATTACK);
-	return Return();
+PlayerState::Return PlayerAttackState::exit(StateContext& context) {
+	m_exitTimestamp.setTimestamp();
+	context.attack->setComponentEnabled(false);
+	return {};
 }
 
 PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, float delta) {
@@ -201,15 +204,14 @@ PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, flo
 		else
 			return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
-	
-	auto condition = context.attackComponent->getAttackCondition();
-	switch (condition)
-	{
-	case /* constant-expression */:
-		/* code */
-		break;
-	
-	default:
-		break;
+
+	switch (context.attack->getAttackState()) {
+		case AttackComponent::EState::HIT: {
+		}
+		case AttackComponent::EState::NOT_HIT: {
+		}
+
+		default:
+			break;
 	}
 }

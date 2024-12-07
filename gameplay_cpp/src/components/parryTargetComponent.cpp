@@ -12,15 +12,15 @@ using namespace godot;
 VARIANT_ENUM_CAST(ParryTargetComponent::EParryTargetTag)
 
 void ParryTargetComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH, "CollisionAreaPath")
-	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT, "Mass")
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, AreaPath, NODE_PATH)
+	METHOD_PROPERTY_IMPL(ParryTargetComponent, Mass, FLOAT)
 
 	BIND_ENUM_CONSTANT(DYNAMIC_LIGHT)
 	BIND_ENUM_CONSTANT(DYNAMIC_HEAVY)
 	BIND_ENUM_CONSTANT(STATIC_OBJECT)
 	BIND_ENUM_CONSTANT(STATIC_TERRAIN)
 	METHOD_PROPERTY_ENUM_IMPL(
-			ParryTargetComponent, ParryTag, INT, "ParryTag", "DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
+			ParryTargetComponent, ParryTag, INT, "DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
 }
 
 void ParryTargetComponent::_enter_tree() {
@@ -63,7 +63,8 @@ void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
 			break;
 		}
 
-		default: LOG(WARN, "Parried target without tag: ", getParryTag()) break;
+		default:
+			LOG(WARN, "Parried target without tag: ", getParryTag()) break;
 	}
 
 	if (m_onParriedCb) {

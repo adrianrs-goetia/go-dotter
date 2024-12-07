@@ -42,9 +42,15 @@ parameter::Variant ConfigReader::getValue(const parameter::StringKey& arguments)
 	json param;
 	try {
 		switch (arguments.size()) {
-			case 1: param = m_cachedJson.at(arguments.at(0)); break;
-			case 2: param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)); break;
-			case 3: param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)); break;
+			case 1:
+				param = m_cachedJson.at(arguments.at(0));
+				break;
+			case 2:
+				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1));
+				break;
+			case 3:
+				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2));
+				break;
 			case 4:
 				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(4));
 				break;

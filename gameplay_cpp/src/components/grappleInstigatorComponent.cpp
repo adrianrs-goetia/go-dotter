@@ -14,12 +14,10 @@
 #define CONFIG_PREFIX "player"
 
 void GrappleInstigatorComponent::_bind_methods() {
-	ClassDB::bind_method(
-			D_METHOD("areaEnteredGrappledetection", "area"), &GrappleInstigatorComponent::areaEnteredDetection);
-	ClassDB::bind_method(
-			D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
+	ClassDB::bind_method( D_METHOD("areaEnteredGrappledetection", "area"), &GrappleInstigatorComponent::areaEnteredDetection);
+	ClassDB::bind_method( D_METHOD("areaExitedGrappledetection", "area"), &GrappleInstigatorComponent::areaExitedDetection);
 
-	METHOD_PROPERTY_IMPL(GrappleInstigatorComponent, PathToArea3D, NODE_PATH, "Detection area")
+	METHOD_PROPERTY_IMPL(GrappleInstigatorComponent, PathToArea3D, NODE_PATH)
 }
 
 void GrappleInstigatorComponent::setComponentEnabled(bool enabled) {

@@ -61,7 +61,8 @@ void InputManager::_notification(int what) {
 			break;
 		}
 
-		default: break;
+		default:
+			break;
 	}
 }
 
@@ -129,11 +130,16 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 	}
 	if (auto* keyevent = cast_to<InputEventKey>(*p_event)) {
 		switch (keyevent->get_keycode()) {
-			case KEY_7: return setLogLevel(ELog::DEBUG);
-			case KEY_8: return setLogLevel(ELog::INFO);
-			case KEY_9: return setLogLevel(ELog::WARN);
-			case KEY_0: return setLogLevel(ELog::ERROR);
-			default: break;
+			case KEY_7:
+				return setLogLevel(ELog::DEBUG);
+			case KEY_8:
+				return setLogLevel(ELog::INFO);
+			case KEY_9:
+				return setLogLevel(ELog::WARN);
+			case KEY_0:
+				return setLogLevel(ELog::ERROR);
+			default:
+				break;
 		}
 	}
 }
