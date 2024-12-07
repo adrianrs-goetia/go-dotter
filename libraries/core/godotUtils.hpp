@@ -78,6 +78,8 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 
 /**
  * Lazy macroes for declaring and binding functions to godot
+ * 
+ * GS getter setter
  */
 
 #define STRINGIFY(x) #x

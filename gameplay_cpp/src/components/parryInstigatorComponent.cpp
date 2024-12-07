@@ -59,7 +59,7 @@ void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	auto it = m_inRangeParryTargets.find(area->get_rid().get_id());
 	if (it != m_inRangeParryTargets.end()) {
-		LOG(DEBUG, "ParryTarget left area", area->get_parent()->get_name())
+		// LOG(DEBUG, "ParryTarget left area", area->get_parent()->get_name())
 		m_inRangeParryTargets.erase(it);
 	}
 }

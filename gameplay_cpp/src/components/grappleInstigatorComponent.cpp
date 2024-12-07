@@ -84,7 +84,7 @@ void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 void GrappleInstigatorComponent::areaExitedDetection(Area3D* area) {
 	RETURN_IF_EDITOR(void())
 	if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
-		LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
+		// LOG(DEBUG, "Node left grapple area: ", area->get_parent()->get_name())
 		m_inRangeTargets->erase(gn->getRid());
 		if (gn == m_currentTarget) {
 			m_currentTarget = nullptr;

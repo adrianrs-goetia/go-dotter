@@ -3,6 +3,8 @@
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
+#include <debugdraw3d/api.h>
+
 using namespace godot;
 
 void AttackComponent::_bind_methods() {
@@ -22,6 +24,8 @@ void AttackComponent::setComponentEnabled(bool enabled) {
 void AttackComponent::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 
+	setComponentEnabled(false);
+
 	m_attackCollider = get_node<Area3D>(m_attackColliderPath);
 	ASSERT_NOTNULL(m_attackCollider)
 
@@ -39,11 +43,15 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	++m_numOfHitNodesTotal;
 
 	if (auto* target = cast_to<RigidBody3D>(area->get_parent())) {
+		if (!isComponentEnabled()) {
+			return;
+		}
 		Vector3 dir = Vector3(target->get_global_position() - get_global_position()).normalized();
 		dir += Vector3(0, 1, 0);
 		dir.normalize();
-		target->set_linear_velocity(dir * 3.f);
-		LOG(INFO, "area entered attack collider")
+		dir *= 10.f;
+		target->set_linear_velocity(dir);
+		DebugDraw::Line(target->get_global_position(), target->get_global_position() + dir, Color(1,0,0), 1.f);
 	}
 }
 

@@ -188,6 +188,7 @@ bool PlayerAttackState::canEnter() const {
 PlayerState::Return PlayerAttackState::enter(StateContext& context) {
 	m_enterTimestamp.setTimestamp();
 	context.attack->setComponentEnabled(true);
+	context.attack->setAttackStrength(GETPARAM_F("attack", "strength"));
 	// context.animation.playAnimation(EAnimation::ATTACK);
 	return Return();
 }
@@ -208,6 +209,8 @@ PlayerState::Return PlayerAttackState::physicsProcess(StateContext& context, flo
 		else
 			return { PlayerStateBank::get().state<PlayerInAirState>() };
 	}
+
+	context.physics.velocity *= 0;
 
 	switch (context.attack->getAttackState()) {
 		case AttackComponent::EState::HIT: {

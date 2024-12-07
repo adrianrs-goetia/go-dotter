@@ -22,11 +22,11 @@ public:
 		PREVIOUSLY_HIT,
 	};
 
-public:
+private:
 	godot::NodePath m_attackColliderPath;
 	godot::Area3D* m_attackCollider = nullptr;
 
-	// EState m_state;
+	float m_attackStrength = 1.f;
 	uint8_t m_numOfHitNodes = 0;
 	uint8_t m_numOfHitNodesTotal = 0;
 
@@ -44,4 +44,5 @@ public:
 	EState getAttackState() const;
 
 	GS_PATH_IMPL(m_attackColliderPath, ColliderPath)
+	GS_FLOAT_IMPL(m_attackStrength, AttackStrength);
 };
