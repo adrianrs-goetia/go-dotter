@@ -74,6 +74,7 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(particles)
 
 	m_stateContext->attack = attackComponent;
+	m_stateContext->anim = m_animComponent;
 	m_stateContext->input = input;
 	m_stateContext->parry = m_parryComponent;
 	m_stateContext->physics.isOnGround = is_on_floor();

@@ -19,6 +19,7 @@ void AnimationComponent::_enter_tree() {
 
 	RETURN_IF_EDITOR(void())
 
+	m_animRoot = get_node<Node3D>(m_pathToRootAnimationNode);
 	ASSERT_NOTNULL(m_animRoot);
 }
 
@@ -37,6 +38,10 @@ void AnimationComponent::rotateRootTowardsVector(godot::Vector3 vector, float de
 	const Quaternion targetquat(g_up, angle);
 	Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 	m_animRoot->set_basis(Basis(newquat));
+}
+
+void AnimationComponent::idleRunValue(float value) {
+	set("parameters/blend_position", value);
 }
 
 void AnimationComponent::playAnimation(EPlayingAnim anim) {}

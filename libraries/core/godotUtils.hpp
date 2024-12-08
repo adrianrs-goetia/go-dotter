@@ -36,9 +36,8 @@ T* getComponentOfNode(const godot::Node* node) {
 			foundNode = child;
 		}
 	}
-	ASSERT_NOTNULL(foundNode)
-	ASSERT(num == 1)
-	return nullptr;
+	ASSERT(num <= 1)
+	return foundNode;
 }
 
 template <typename T>

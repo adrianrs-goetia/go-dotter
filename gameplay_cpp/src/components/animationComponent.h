@@ -30,6 +30,7 @@ public:
 
 	void rotateRootTowardsVector(godot::Vector3 vector, float delta, float slerpWeight);
 
+	void idleRunValue(float value);
 	void playAnimation(EPlayingAnim anim);
 
 	GS_PATH_IMPL(m_pathToRootAnimationNode, RootAnimationNode)

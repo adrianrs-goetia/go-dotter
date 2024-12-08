@@ -13,6 +13,7 @@ class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ParryInstigatorComponent;
 class AttackComponent;
+class AnimationComponent;
 class InputManager;
 
 namespace godot {
@@ -41,6 +42,7 @@ struct AudioVisualContext {
 
 struct StateContext {
 	AttackComponent* attack = nullptr;
+	AnimationComponent* anim = nullptr;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
 	ParryInstigatorComponent* parry = nullptr;

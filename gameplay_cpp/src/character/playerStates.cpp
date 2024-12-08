@@ -1,5 +1,6 @@
 #include <character/playerStates.h>
 
+#include <components/animationComponent.h>
 #include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
@@ -59,6 +60,12 @@ PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, floa
 	// direction
 	helper::movement_acceleration(
 			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
+
+	auto& vel = context.physics.velocity;
+	const Vector2 vel2d(vel.x, vel.z);
+	const float speed = vel2d.length();
+	float idleWalkBlend = Math::clamp(speed / GETPARAM_F("walkSpeed"), 0.0f, 1.0f);
+	context.anim->idleRunValue(idleWalkBlend);
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
