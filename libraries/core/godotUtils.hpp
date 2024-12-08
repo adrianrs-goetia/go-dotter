@@ -78,7 +78,7 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 
 /**
  * Lazy macroes for declaring and binding functions to godot
- * 
+ *
  * GS getter setter
  */
 
@@ -123,6 +123,13 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 	enumType get##functionName##Enum() const {                                                                         \
 		return variableName;                                                                                           \
 	}
+#define GS_PACKEDSCENE_IMPL(variableName, functionName)                                                                \
+	void set##functionName(const godot::Ref<godot::PackedScene>& value) {                                              \
+		variableName = value;                                                                                          \
+	}                                                                                                                  \
+	godot::Ref<godot::PackedScene> get##functionName() const {                                                         \
+		return variableName;                                                                                           \
+	}
 
 #define METHOD_PROPERTY_IMPL(class, functionName, propertyType)                                                        \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
@@ -135,8 +142,13 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName),                             \
 						 godot::PropertyHint::PROPERTY_HINT_ENUM, enumFields),                                         \
 			TOSTRING(set##functionName), TOSTRING(get##functionName));
+#define METHOD_PROPERTY_PACKEDSCENE_IMPL(class, functionName)                                                          \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::OBJECT, TOSTRING(functionName),                                   \
+						 godot::PropertyHint::PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"),                             \
+			TOSTRING(set##functionName), TOSTRING(get##functionName));
 
-#define METHOD_INOUT_BIND(classname, entered, exited, fieldName)                                                      \
+#define METHOD_INOUT_BIND(classname, entered, exited, fieldName)                                                       \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(exited), TOSTRING(fieldName)), &classname::exited);
-

@@ -12,7 +12,9 @@
 
 using namespace godot;
 
-void Projectile::_bind_methods() {}
+void Projectile::_bind_methods() {
+	METHOD_PROPERTY_PACKEDSCENE_IMPL(Projectile, DeathParticles)
+}
 
 void Projectile::_enter_tree() {
 	RETURN_IF_EDITOR(void())
@@ -20,12 +22,12 @@ void Projectile::_enter_tree() {
 
 	m_timer = memnew(Timer);
 	m_parryTargetComp = getChildOfNode<ParryTargetComponent>(this);
-	m_particles = getChildOfNode<GPUParticles3D>(this);
+	// m_particles = getChildOfNode<GPUParticles3D>(this);
 	// m_audio = getChildOfNode<AudioStreamPlayer3D>(this);
 
 	ASSERT_NOTNULL(m_timer)
 	ASSERT_NOTNULL(m_parryTargetComp)
-	ASSERT_NOTNULL(m_particles)
+	// ASSERT_NOTNULL(m_particles)
 	// ASSERT_NOTNULL(m_audio)
 
 	add_child(m_timer);
@@ -40,7 +42,16 @@ void Projectile::_physics_process(double delta) {}
 void Projectile::_notification(int what) {
 	switch (what) {
 		case ENotifications::ATTACKED: {
-			m_particles->restart();
+			// m_particles->restart();
+			ASSERT(m_deathParticles.is_valid())
+			Node* root = get_node<Node>(nodePaths::root);
+			ASSERT_NOTNULL(root)
+
+			auto* particles = cast_to<GPUParticles3D>(m_deathParticles->instantiate());
+			root->add_child(particles);
+
+			particles->set_transform(get_global_transform());
+			particles->restart();
 			queue_free();
 		}
 		case ENotifications::DESTROY: {

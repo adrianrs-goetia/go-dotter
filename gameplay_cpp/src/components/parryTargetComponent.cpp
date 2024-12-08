@@ -24,6 +24,8 @@ void ParryTargetComponent::_bind_methods() {
 }
 
 void ParryTargetComponent::_enter_tree() {
+	RETURN_IF_EDITOR(void())
+	
 	set_name(get_class());
 	m_areaPtr = get_node<Area3D>(m_colliderPath);
 	if (!m_areaPtr) {

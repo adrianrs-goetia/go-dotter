@@ -1,0 +1,75 @@
+[gd_scene load_steps=11 format=3 uid="uid://buvtfe8enc6im"]
+
+[ext_resource type="Script" path="res://particles/genericDeathParticles.gd" id="1_4kp0s"]
+
+[sub_resource type="Curve" id="Curve_unhab"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_arxut"]
+curve = SubResource("Curve_unhab")
+
+[sub_resource type="Curve" id="Curve_vgtr0"]
+max_value = 6.0
+_data = [Vector2(0, 3.75604), 0.0, -0.655877, 0, 0, Vector2(0.422287, 0.883774), -3.93526, -3.93526, 0, 0, Vector2(0.98827, 0.147296), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_mablm"]
+curve = SubResource("Curve_vgtr0")
+
+[sub_resource type="Curve" id="Curve_jdhh3"]
+max_value = 1.8
+_data = [Vector2(0.0117302, 0.962601), 0.0, 0.0, 0, 0, Vector2(0.548387, 0.386306), -0.724917, -0.724917, 0, 0, Vector2(0.979472, 0.251669), -0.483277, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_yvk1m"]
+curve = SubResource("Curve_jdhh3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hrn33"]
+lifetime_randomness = 0.39
+particle_flag_rotate_y = true
+spread = 180.0
+initial_velocity_min = 6.0
+initial_velocity_max = 18.0
+angular_velocity_min = -489.13
+angular_velocity_max = 450.0
+gravity = Vector3(0, 0, 0)
+damping_min = 30.0
+damping_max = 60.0
+scale_min = 0.01
+scale_max = 0.1
+scale_curve = SubResource("CurveTexture_yvk1m")
+color = Color(0.803979, 0.826975, 0.553958, 1)
+alpha_curve = SubResource("CurveTexture_arxut")
+emission_curve = SubResource("CurveTexture_mablm")
+anim_speed_max = 2.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ghqc7"]
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+grow_amount = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_xmue6"]
+material = SubResource("StandardMaterial3D_ghqc7")
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+top_level = true
+emitting = false
+amount = 100
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.94
+visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
+process_material = SubResource("ParticleProcessMaterial_hrn33")
+draw_pass_1 = SubResource("BoxMesh_xmue6")
+script = ExtResource("1_4kp0s")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

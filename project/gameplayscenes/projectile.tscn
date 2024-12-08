@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cctxwemvvq4kt"]
+[gd_scene load_steps=6 format=3 uid="uid://cctxwemvvq4kt"]
+
+[ext_resource type="PackedScene" uid="uid://buvtfe8enc6im" path="res://particles/genericDeathParticles.tscn" id="1_wsdnf"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wmjjx"]
 radius = 0.267467
@@ -14,6 +16,7 @@ albedo_color = Color(0.419608, 1, 1, 1)
 radius = 0.553219
 
 [node name="Projectile" type="Projectile"]
+DeathParticles = ExtResource("1_wsdnf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_wmjjx")
@@ -37,12 +40,3 @@ shape = SubResource("SphereShape3D_ahihr")
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
 ColliderPath = NodePath("../Area3D")
 ParryTag = 0
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-top_level = true
-emitting = false
-amount = 100
-lifetime = 0.3
-one_shot = true
-explosiveness = 0.94
-visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
