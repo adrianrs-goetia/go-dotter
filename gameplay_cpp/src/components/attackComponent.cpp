@@ -17,14 +17,17 @@ void AttackComponent::setComponentEnabled(bool enabled) {
 		return;
 	}
 
-	m_numOfHitNodes = 0;
-	m_numOfHitNodesTotal = 0;
+	if (m_attackCollider) {
+		m_attackCollider->set_monitoring(enabled);
+	}
+	if (enabled) {
+		m_numOfHitNodes = 0;
+		m_numOfHitNodesTotal = 0;
+	}
 }
 
 void AttackComponent::_enter_tree() {
 	RETURN_IF_EDITOR(void())
-
-	setComponentEnabled(false);
 
 	m_attackCollider = get_node<Area3D>(m_attackColliderPath);
 	ASSERT_NOTNULL(m_attackCollider)
@@ -32,6 +35,8 @@ void AttackComponent::_enter_tree() {
 	m_attackCollider->set_collision_mask_value(collisionflags::attackTarget, true);
 	m_attackCollider->connect("area_entered", callable_mp(this, &AttackComponent::areaEnteredCollider));
 	m_attackCollider->connect("area_exited", callable_mp(this, &AttackComponent::areaExitedCollider));
+
+	setComponentEnabled(false);
 }
 
 void AttackComponent::_exit_tree() {
@@ -39,19 +44,29 @@ void AttackComponent::_exit_tree() {
 }
 
 void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
+	/**
+	 * Area is assumed to not be monitoring while attack component is not enabled
+	 * This callback assumes AttackComponent is enabled
+	 */
+	
 	++m_numOfHitNodes;
 	++m_numOfHitNodesTotal;
 
-	if (auto* target = cast_to<RigidBody3D>(area->get_parent())) {
-		if (!isComponentEnabled()) {
-			return;
+	auto* target = area->get_parent();
+	ASSERT_NOTNULL(target);
+
+	target->notification(ENotifications::ATTACKED);
+	// auto g = target->get_groups();
+
+	if (auto* rb = cast_to<RigidBody3D>(target)) {
+		if (!rb->is_in_group(godotgroups::projectile)) {
+			Vector3 dir = Vector3(rb->get_global_position() - get_global_position()).normalized();
+			dir += Vector3(0, 1, 0);
+			dir.normalize();
+			dir *= 10.f;
+			rb->set_linear_velocity(dir);
+			DebugDraw::Line(rb->get_global_position(), rb->get_global_position() + dir, Color(1, 0, 0), 1.f);
 		}
-		Vector3 dir = Vector3(target->get_global_position() - get_global_position()).normalized();
-		dir += Vector3(0, 1, 0);
-		dir.normalize();
-		dir *= 10.f;
-		target->set_linear_velocity(dir);
-		DebugDraw::Line(target->get_global_position(), target->get_global_position() + dir, Color(1,0,0), 1.f);
 	}
 }
 

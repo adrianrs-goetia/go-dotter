@@ -7,11 +7,18 @@
 
 class ParryTargetComponent;
 
+namespace godot {
+class AudioStreamPlayer3D;
+class GPUParticles3D;
+} //namespace godot
+
 class Projectile : public godot::RigidBody3D {
 	GDCLASS(Projectile, godot::RigidBody3D)
 private:
 	godot::Timer* m_timer = nullptr;
 
+	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
+	godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ParryTargetComponent* m_parryTargetComp = nullptr;
 
 public:
@@ -20,6 +27,7 @@ public:
 	//
 	void _enter_tree() override;
 	void _physics_process(double delta) override;
+	void _notification(int what);
 
 	void onTimeout();
 };

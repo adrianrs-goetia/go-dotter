@@ -51,6 +51,14 @@ private:
 #define GETPARAMGLOBAL_B(...) ConfigHandler::getParam<bool>({ __VA_ARGS__ })
 #define GETPARAMGLOBAL_S(...) ConfigHandler::getParam<std::string>({ __VA_ARGS__ }).c_str()
 
+/**
+ * Requires #definition CONFIG_PREFIX
+ * 
+ * e.g. 
+ * #define CONFIG_PREFIX "player", "parry"
+ * to access that subobject in config.json by default 
+ */
+
 #define GETPARAM_D(...) GETPARAMGLOBAL_D(CONFIG_PREFIX, __VA_ARGS__)
 #define GETPARAM_F(...) GETPARAMGLOBAL_F(CONFIG_PREFIX, __VA_ARGS__)
 #define GETPARAM_I(...) GETPARAMGLOBAL_I(CONFIG_PREFIX, __VA_ARGS__)
