@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
-[ext_resource type="PackedScene" uid="uid://d1mu4t3fvpx8t" path="res://models/character/character.blend" id="1_s8c4i"]
+[ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
 size = Vector3(2.08374, 1.7627, 0.460938)
