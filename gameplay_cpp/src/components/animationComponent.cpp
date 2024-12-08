@@ -2,19 +2,25 @@
 
 #include <godot_cpp/classes/animation_player.hpp>
 #include <godot_cpp/classes/curve2d.hpp>
+#include <godot_cpp/classes/skeleton3d.hpp>
+
+#include <configHandler.h>
 
 using namespace godot;
 
 void AnimationComponent::_bind_methods() {
 	METHOD_PROPERTY_IMPL(AnimationComponent, RootAnimationNode, NODE_PATH);
 	METHOD_PROPERTY_IMPL(AnimationComponent, AnimatedCharacterScene, NODE_PATH);
-	METHOD_PROPERTY_PACKEDSCENE_IMPL(AnimationComponent, AttackAnimCurve);
+	// METHOD_PROPERTY_PACKEDSCENE_IMPL(AnimationComponent, AttackAnimCurve);
 }
 
 void AnimationComponent::_enter_tree() {
 	if (!m_pathToAnimatedCharacterScene.is_empty()) {
 		auto* node = get_node<Node>(m_pathToAnimatedCharacterScene);
 		set_animation_player(node->get_node<AnimationPlayer>("AnimationPlayer")->get_path());
+
+		m_skeleton = node->get_node<Skeleton3D>("Armature/Skeleton3D");
+		ASSERT_NOTNULL(m_skeleton)
 	}
 
 	RETURN_IF_EDITOR(void())
@@ -24,6 +30,14 @@ void AnimationComponent::_enter_tree() {
 }
 
 void AnimationComponent::_exit_tree() {}
+
+void AnimationComponent::_physics_process(double delta) {
+	RETURN_IF_EDITOR(void())
+
+	if (m_currentOneshotAnim == EAnim::ATTACK) {
+		m_animRoot->rotate_y(GETPARAMGLOBAL_D("player", "attack", "tmpRotation") * delta);
+	}
+}
 
 void AnimationComponent::rotateRootTowardsVector(godot::Vector3 vector, float delta, float slerpWeight) {
 	if (vector.length_squared() <= 0) {
@@ -44,4 +58,25 @@ void AnimationComponent::idleRunValue(float value) {
 	set("parameters/blend_position", value);
 }
 
-void AnimationComponent::playAnimation(EPlayingAnim anim) {}
+void AnimationComponent::setActive(bool active) {
+	set_active(active);
+	if (!active) {
+		m_skeleton->reset_bone_poses();
+	}
+}
+
+void AnimationComponent::playAnimation(EAnim anim) {
+	m_currentOneshotAnim = anim;
+	switch (anim) {
+		case EAnim::NONE: {
+			setActive(true);
+			break;
+		}
+		case EAnim::ATTACK: {
+			setActive(false); // tmp method, force TPose during attack
+			break;
+		}
+		default:
+			break;
+	}
+}

@@ -8,7 +8,7 @@
         "inAirAcceleration": 10.0,
         "inAirDeceleration": 10.0,
         "gravityScale": 1.8,
-        "animation":{
+        "animation": {
             "rootRotationSpeed": 20.0
         },
         "grapple": {
@@ -21,10 +21,11 @@
             "launchUpAngle": 60.0,
             "launchStrength": 10.0
         },
-        "attack":{
+        "attack": {
             "cooldown": 0.5,
             "stateLength": 0.3,
-            "strength": 71.3
+            "strength": 71.3,
+            "tmpRotation": 35.0
         }
     },
     "npcs": {

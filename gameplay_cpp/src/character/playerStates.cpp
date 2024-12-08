@@ -54,18 +54,21 @@ PlayerState::Return PlayerOnGroundState::physicsProcess(StateContext& context, f
 		return Return{ PlayerStateBank::get().state<PlayerInAirState>() };
 	}
 
+	auto& vel = context.physics.velocity;
+	const Vector2 vel2d(vel.x, vel.z);
+	const float speed = vel2d.length();
+	float idleWalkBlend = Math::clamp(speed / GETPARAM_F("walkSpeed"), 0.0f, 1.0f);
+	context.anim->idleRunValue(idleWalkBlend);
+
+	context.anim->rotateRootTowardsVector(
+			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+
 	return {};
 }
 PlayerState::Return PlayerOnGroundState::handleInput(StateContext& context, float delta) {
 	// direction
 	helper::movement_acceleration(
 			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
-
-	auto& vel = context.physics.velocity;
-	const Vector2 vel2d(vel.x, vel.z);
-	const float speed = vel2d.length();
-	float idleWalkBlend = Math::clamp(speed / GETPARAM_F("walkSpeed"), 0.0f, 1.0f);
-	context.anim->idleRunValue(idleWalkBlend);
 
 	// actions
 	if (context.input->isActionPressed(EInputAction::JUMP)) {
@@ -95,6 +98,10 @@ PlayerState::Return PlayerInAirState::physicsProcess(StateContext& context, floa
 	}
 	helper::movement_acceleration(context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
 	context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
+
+	context.anim->rotateRootTowardsVector(
+			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+
 	return {};
 }
 
@@ -196,13 +203,14 @@ PlayerState::Return PlayerAttackState::enter(StateContext& context) {
 	m_enterTimestamp.setTimestamp();
 	context.attack->setComponentEnabled(true);
 	context.attack->setAttackStrength(GETPARAM_F("attack", "strength"));
-	// context.animation.playAnimation(EAnimation::ATTACK);
-	return Return();
+	context.anim->playAnimation(AnimationComponent::EAnim::ATTACK);
+	return {};
 }
 
 PlayerState::Return PlayerAttackState::exit(StateContext& context) {
 	m_exitTimestamp.setTimestamp();
 	context.attack->setComponentEnabled(false);
+	context.anim->playAnimation(AnimationComponent::EAnim::NONE);
 	return {};
 }
 

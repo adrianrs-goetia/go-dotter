@@ -132,8 +132,6 @@ void PlayerNode::_physics_process(double delta) {
 	// set data from context
 	set_velocity(m_stateContext->physics.velocity);
 	move_and_slide();
-	m_animComponent->rotateRootTowardsVector(
-			m_stateContext->input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
 	// deferred actions
 	m_fsm.deferredActions(*m_stateContext);
