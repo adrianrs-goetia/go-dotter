@@ -53,12 +53,12 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	auto* input = InputManager::get(*this);
-	m_animComponent = getChildOfNode<AnimationComponent>(this);
-	m_parryComponent = getChildOfNode<ParryInstigatorComponent>(this);
-	auto* attackComponent = getChildOfNode<AttackComponent>(this);
-	auto* grappleInstigator = getChildOfNode<GrappleInstigatorComponent>(this);
-	auto* audio = getChildOfNode<AudioStreamPlayer3D>(this);
-	auto* particles = getChildOfNode<GPUParticles3D>(this);
+	m_animComponent = getComponentOfNode<AnimationComponent>(this);
+	m_parryComponent = getComponentOfNode<ParryInstigatorComponent>(this);
+	auto* attackComponent = getComponentOfNode<AttackComponent>(this);
+	auto* grappleInstigator = getComponentOfNode<GrappleInstigatorComponent>(this);
+	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
+	auto* particles = getComponentOfNode<GPUParticles3D>(this);
 
 	m_stateContext = (StateContext*)calloc(1, sizeof(StateContext));
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);

@@ -20,8 +20,8 @@ void TurretNode::_bind_methods() {}
 
 void TurretNode::_enter_tree() {
 	m_gunOpening = get_node<Node3D>(paths::gunOpening());
-	m_gunOpeningAudioPlayer = getChildOfNode<AudioStreamPlayer3D>(this);
-	m_gunOpeningGpuParticles = getChildOfNode<GPUParticles3D>(this);
+	m_gunOpeningAudioPlayer = getComponentOfNode<AudioStreamPlayer3D>(this);
+	m_gunOpeningGpuParticles = getComponentOfNode<GPUParticles3D>(this);
 
 	RETURN_IF_EDITOR(void())
 	//

@@ -10,6 +10,7 @@ void AnimationComponent::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 
 	m_animRoot = get_node<Node3D>(m_pathToRootAnimationNode);
+	
 	ASSERT_NOTNULL(m_animRoot);
 }
 

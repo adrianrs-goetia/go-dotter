@@ -21,9 +21,9 @@ void Projectile::_enter_tree() {
 	//
 
 	m_timer = memnew(Timer);
-	m_parryTargetComp = getChildOfNode<ParryTargetComponent>(this);
-	// m_particles = getChildOfNode<GPUParticles3D>(this);
-	// m_audio = getChildOfNode<AudioStreamPlayer3D>(this);
+	m_parryTargetComp = getComponentOfNode<ParryTargetComponent>(this);
+	// m_particles = getComponentOfNode<GPUParticles3D>(this);
+	// m_audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 
 	ASSERT_NOTNULL(m_timer)
 	ASSERT_NOTNULL(m_parryTargetComp)

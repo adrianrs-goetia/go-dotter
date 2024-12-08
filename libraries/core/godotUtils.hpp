@@ -1,5 +1,6 @@
 #pragma once
 
+#include "assert.hpp"
 #include "log.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
@@ -21,14 +22,22 @@ static const godot::Vector3 g_right(1, 0, 0);
 		return ret;                                                                                                    \
 	}
 
+/**
+ * We ALWAYS expect there to only be a single component of type T under a specific node
+ */
 template <typename T>
-T* getChildOfNode(const godot::Node* node) {
+T* getComponentOfNode(const godot::Node* node) {
 	godot::TypedArray<godot::Node> children = node->get_children();
+	int num = 0;
+	T* foundNode = nullptr;
 	for (int i = 0; i < children.size(); ++i) {
 		if (T* child = node->cast_to<T>(children[i])) {
-			return child;
+			++num;
+			foundNode = child;
 		}
 	}
+	ASSERT_NOTNULL(foundNode)
+	ASSERT(num == 1)
 	return nullptr;
 }
 
@@ -38,7 +47,7 @@ T* getAdjacentNode(const godot::Node* node) {
 		LOG(ERROR, "Node did not have parent: ", node->get_path())
 	}
 	if (godot::Node* parent = node->get_parent()) {
-		return getChildOfNode<T>(parent);
+		return getComponentOfNode<T>(parent);
 	}
 	return nullptr;
 }
@@ -56,7 +65,7 @@ T* getParentNode(const godot::Node* node) {
 	}
 	return nullptr;
 }
-
+	auto* node = getComponentOfNode<T>(this);
 /**
  * Get basis pointing towards a direction
  * Up is going towards global up
