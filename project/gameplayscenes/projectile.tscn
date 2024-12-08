@@ -37,3 +37,12 @@ shape = SubResource("SphereShape3D_ahihr")
 [node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
 ColliderPath = NodePath("../Area3D")
 ParryTag = 0
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+top_level = true
+emitting = false
+amount = 100
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.94
+visibility_aabb = AABB(-3, -3, -3, 6, 6, 6)
