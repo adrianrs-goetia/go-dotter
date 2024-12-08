@@ -17,7 +17,8 @@ class Projectile : public godot::RigidBody3D {
 private:
 	godot::Timer* m_timer = nullptr;
 
-	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
+	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
+	// context?
 	godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ParryTargetComponent* m_parryTargetComp = nullptr;
 

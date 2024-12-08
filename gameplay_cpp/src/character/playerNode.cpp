@@ -1,8 +1,8 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
-#include <components/attackComponent.h>
 #include <components/animationComponent.h>
+#include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>

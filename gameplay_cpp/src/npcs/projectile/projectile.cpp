@@ -2,9 +2,9 @@
 
 #include <components/parryTargetComponent.h>
 
-#include <godot_cpp/classes/scene_tree.hpp>
-#include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
+#include <godot_cpp/classes/gpu_particles3d.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
 
 #include <configHandler.h>
 

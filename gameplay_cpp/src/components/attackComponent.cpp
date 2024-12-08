@@ -48,7 +48,7 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	 * Area is assumed to not be monitoring while attack component is not enabled
 	 * This callback assumes AttackComponent is enabled
 	 */
-	
+
 	++m_numOfHitNodes;
 	++m_numOfHitNodesTotal;
 

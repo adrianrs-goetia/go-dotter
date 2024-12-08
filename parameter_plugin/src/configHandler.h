@@ -53,10 +53,10 @@ private:
 
 /**
  * Requires #definition CONFIG_PREFIX
- * 
- * e.g. 
+ *
+ * e.g.
  * #define CONFIG_PREFIX "player", "parry"
- * to access that subobject in config.json by default 
+ * to access that subobject in config.json by default
  */
 
 #define GETPARAM_D(...) GETPARAMGLOBAL_D(CONFIG_PREFIX, __VA_ARGS__)
