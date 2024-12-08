@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6ovt56wcjbld"]
+
+[ext_resource type="PackedScene" uid="uid://d1mu4t3fvpx8t" path="res://models/character/character.blend" id="1_0djxj"]
+
+[node name="character" instance=ExtResource("1_0djxj")]

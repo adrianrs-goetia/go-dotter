@@ -1,16 +1,24 @@
 #include "animationComponent.h"
 
+#include <godot_cpp/classes/animation_player.hpp>
+#include <godot_cpp/classes/curve2d.hpp>
+
 using namespace godot;
 
 void AnimationComponent::_bind_methods() {
 	METHOD_PROPERTY_IMPL(AnimationComponent, RootAnimationNode, NODE_PATH);
+	METHOD_PROPERTY_IMPL(AnimationComponent, AnimatedCharacterScene, NODE_PATH);
+	METHOD_PROPERTY_PACKEDSCENE_IMPL(AnimationComponent, AttackAnimCurve);
 }
 
 void AnimationComponent::_enter_tree() {
+	if (!m_pathToAnimatedCharacterScene.is_empty()) {
+		auto* node = get_node<Node>(m_pathToAnimatedCharacterScene);
+		set_animation_player(node->get_node<AnimationPlayer>("AnimationPlayer")->get_path());
+	}
+
 	RETURN_IF_EDITOR(void())
 
-	m_animRoot = get_node<Node3D>(m_pathToRootAnimationNode);
-	
 	ASSERT_NOTNULL(m_animRoot);
 }
 
@@ -30,3 +38,5 @@ void AnimationComponent::rotateRootTowardsVector(godot::Vector3 vector, float de
 	Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 	m_animRoot->set_basis(Basis(newquat));
 }
+
+void AnimationComponent::playAnimation(EPlayingAnim anim) {}

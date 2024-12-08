@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://buvtfe8enc6im"]
 
-[ext_resource type="Script" path="res://particles/genericDeathParticles.gd" id="1_4kp0s"]
+[ext_resource type="Script" path="res://particles/scripts/genericDeathParticles.gd" id="1_4kp0s"]
 
 [sub_resource type="Curve" id="Curve_unhab"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]

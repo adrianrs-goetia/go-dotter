@@ -65,7 +65,7 @@ T* getParentNode(const godot::Node* node) {
 	}
 	return nullptr;
 }
-	auto* node = getComponentOfNode<T>(this);
+
 /**
  * Get basis pointing towards a direction
  * Up is going towards global up

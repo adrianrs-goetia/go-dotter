@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d1mu4t3fvpx8t" path="res://models/character/character.blend" id="1_s8c4i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
-size = Vector3(1.27637, 1.7627, 1.1709)
+size = Vector3(2.08374, 1.7627, 0.460938)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
 radius = 0.279674
@@ -103,7 +103,7 @@ collision_layer = 0
 collision_mask = 16
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="meshAnchor/AttackCollider"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.57386)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00803697)
 shape = SubResource("BoxShape3D_5oxfn")
 
 [node name="Capsule" type="CollisionShape3D" parent="."]
@@ -134,6 +134,9 @@ Mass = 100.0
 
 [node name="AnimationComponent" type="AnimationComponent" parent="."]
 RootAnimationNode = NodePath("../meshAnchor")
+AnimatedCharacterScene = NodePath("../meshAnchor/character")
+root_node = NodePath("../meshAnchor/character")
+anim_player = NodePath("/root/@EditorNode@17148/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/AnimationPlayer")
 
 [node name="AttackComponent" type="AttackComponent" parent="."]
 ColliderPath = NodePath("../meshAnchor/AttackCollider")
