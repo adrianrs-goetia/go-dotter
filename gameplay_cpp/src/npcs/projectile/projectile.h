@@ -2,9 +2,10 @@
 
 #include <core/core.hpp>
 
-#include <godot_cpp/classes/rigid_body3d.hpp>
+#include "fsm.h"
+
 #include <godot_cpp/classes/packed_scene.hpp>
-#include <godot_cpp/classes/timer.hpp>
+#include <godot_cpp/classes/rigid_body3d.hpp>
 
 class ParryTargetComponent;
 
@@ -16,7 +17,8 @@ class GPUParticles3D;
 class Projectile : public godot::RigidBody3D {
 	GDCLASS(Projectile, godot::RigidBody3D)
 private:
-	godot::Timer* m_timer = nullptr;
+	ProjectileFsm::StateContext m_stateContext;
+	ProjectileFsm::Fsm m_fsm;
 
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
 	// context?
@@ -29,10 +31,12 @@ public:
 
 	//
 	void _enter_tree() override;
+	void _exit_tree() override;
 	void _physics_process(double delta) override;
 	void _notification(int what);
 
 	void onTimeout();
+
 
 	GS_PACKEDSCENE_IMPL(m_deathParticles, DeathParticles)
 };

@@ -71,10 +71,10 @@ public:
 	virtual Return physicsProcess(StateContext& context, float delta) override {
 		return {};
 	}
-	virtual Return handleInput(StateContext& context, float delta) override {
+	virtual Return handleInput(StateContext& context, float delta) {
 		return {};
 	}
-	virtual Return deferredActions(StateContext& context) override {
+	virtual Return deferredActions(StateContext& context) {
 		return {};
 	}
 
@@ -85,4 +85,14 @@ public:
 	}
 };
 
-class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {};
+class PlayerFSM : public Fsm<StateContext, PlayerState, PlayerState::Return> {
+public:
+	void handleInput(StateContext& context, float delta) {
+		ASSERT_NOTNULL(m_currentState)
+		_processState(context, m_currentState->handleInput(context, delta));
+	}
+	void deferredActions(StateContext& context) {
+		ASSERT_NOTNULL(m_currentState)
+		_processState(context, m_currentState->deferredActions(context));
+	}
+};

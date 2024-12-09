@@ -20,44 +20,35 @@ void Projectile::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 	//
 
-	m_timer = memnew(Timer);
+	m_stateContext.owner = this;
+	m_fsm.setStateT<ProjectileFsm::Launched>(m_stateContext);
+
 	m_parryTargetComp = getComponentOfNode<ParryTargetComponent>(this);
 	// m_particles = getComponentOfNode<GPUParticles3D>(this);
 	// m_audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 
-	ASSERT_NOTNULL(m_timer)
 	ASSERT_NOTNULL(m_parryTargetComp)
 	// ASSERT_NOTNULL(m_particles)
 	// ASSERT_NOTNULL(m_audio)
 
-	add_child(m_timer);
-	m_timer->connect("timeout", callable_mp(this, &Projectile::onTimeout));
-	m_timer->start(GETPARAM_D("lifetime"));
-
 	add_to_group(godotgroups::projectile);
+}
+
+void Projectile::_exit_tree() {
+	RETURN_IF_EDITOR(void())
+
+	m_fsm.deinit();
 }
 
 void Projectile::_physics_process(double delta) {}
 
 void Projectile::_notification(int what) {
 	switch (what) {
-		case ENotifications::ATTACKED: {
-			// m_particles->restart();
-			ASSERT(m_deathParticles.is_valid())
-			Node* root = get_node<Node>(nodePaths::root);
-			ASSERT_NOTNULL(root)
-
-			auto* particles = cast_to<GPUParticles3D>(m_deathParticles->instantiate());
-			root->add_child(particles);
-
-			particles->set_transform(get_global_transform());
-			particles->restart();
-			queue_free();
-		}
-		case ENotifications::DESTROY: {
-			queue_free();
+		case ENotifications::PARRIED:
+		case ENotifications::ATTACKED:
+		case ENotifications::DESTROY:
+			m_fsm.notification(m_stateContext, what);
 			break;
-		}
 		default:
 			break;
 	}
