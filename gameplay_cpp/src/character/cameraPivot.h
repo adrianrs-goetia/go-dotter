@@ -1,12 +1,13 @@
 #ifndef GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H
 
-#include <character/playerFsm.hpp>
 #include <core/core.hpp>
 
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event.hpp>
 #include <godot_cpp/classes/spring_arm3d.hpp>
+
+#include <character/fsm/typedefs.hpp>
 
 class PlayerNode;
 
@@ -18,11 +19,11 @@ public:
 
 	void _physics_process(double delta) override;
 
-	void process(StateContext& context, float delta);
-	void processInput(StateContext& context, float delta);
+	void process(const fsm::player::Context& context, float delta);
+	void processInput(const fsm::player::Context& context, float delta);
 
 private:
-	void _rotation(StateContext& context, float xMulti, float yMulti, float delta);
+	void _rotation(const fsm::player::Context& context, float xMulti, float yMulti, float delta);
 };
 
 #endif // GD_CHARACTER_CAMERAPIVOT_PLUGIN_GAMEPLAY_H

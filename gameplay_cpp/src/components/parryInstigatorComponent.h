@@ -30,7 +30,6 @@ public:
 	godot::NodePath m_colliderPath; // Path for m_area object
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
-	std::function<godot::Vector3()> m_getDesiredDirectionCb;
 
 public:
 	static void _bind_methods();

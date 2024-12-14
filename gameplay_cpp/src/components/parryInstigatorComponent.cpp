@@ -103,11 +103,3 @@ Vector3 ParryInstigatorComponent::getVelocity() const {
 	}
 	return {};
 }
-
-Vector3 ParryInstigatorComponent::getDesiredDirection() const {
-	if (m_getDesiredDirectionCb) {
-		return m_getDesiredDirectionCb();
-	}
-	LOG(ERROR, "ParryInstigatorComponent does not have getDesiredDirectionCb set: ", get_parent()->get_name())
-	return {};
-}

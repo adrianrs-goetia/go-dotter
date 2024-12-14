@@ -14,9 +14,11 @@ inline std::string toString(const std::vector<std::string>& vec) {
 	return ss.str();
 }
 
-// template <typename T, typename Variant>
-// struct isTypeInVariant;
-// template <typename T, typename... Types>
-// struct isTypeInVariant<T, std::variant<Types...>> : std::disjunction<std::is_same_v<T, Types>...> {};
-// template <typename T, typename Variant>
-// inline constexpr bool isTypeInVariantV = isTypeInVariant<T, Variant>::value;
+// helper type for the visitor #4
+template <class... Ts>
+struct overloaded : Ts... {
+	using Ts::operator()...;
+};
+// explicit deduction guide (not needed as of C++20)
+template <class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;

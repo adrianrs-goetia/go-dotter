@@ -1,7 +1,6 @@
 #ifndef GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H
 #define GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H
 
-#include <character/playerStates.h>
 #include <managers/inputManager.h>
 #include <core/core.hpp>
 
@@ -11,6 +10,10 @@
 
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
+
+namespace fsm::player{
+	class Fsm;
+}
 
 using namespace godot;
 
@@ -24,8 +27,8 @@ class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
 
 public:
-	PlayerFSM m_fsm;
-	StateContext* m_stateContext = nullptr;
+	fsm::player::Fsm* m_fsm = nullptr;
+	// StateContext* m_stateContext = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	AnimationComponent* m_animComponent = nullptr;
 

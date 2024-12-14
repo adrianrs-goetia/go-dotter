@@ -1,5 +1,6 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+#include <character/fsm/fsm.hpp>
 
 #include <components/animationComponent.h>
 #include <components/attackComponent.h>
@@ -60,12 +61,11 @@ void PlayerNode::_enter_tree() {
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
 
-	m_stateContext = (StateContext*)calloc(1, sizeof(StateContext));
+	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
 
 	ASSERT_NOTNULL(input)
 	ASSERT_NOTNULL(m_parryComponent)
-	ASSERT_NOTNULL(m_stateContext)
 	ASSERT_NOTNULL(m_camerapivot)
 	ASSERT_NOTNULL(m_animComponent)
 	ASSERT_NOTNULL(attackComponent)
@@ -73,29 +73,23 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(audio)
 	ASSERT_NOTNULL(particles)
 
-	m_stateContext->attack = attackComponent;
-	m_stateContext->anim = m_animComponent;
-	m_stateContext->input = input;
-	m_stateContext->parry = m_parryComponent;
-	m_stateContext->physics.isOnGround = is_on_floor();
-	m_stateContext->physics.position = get_position();
-	m_stateContext->physics.velocity = get_velocity();
-	m_stateContext->audioVisual.audio = audio;
-	m_stateContext->audioVisual.particles = particles;
-	m_fsm.init(*m_stateContext, PlayerStateBank::get().state<PlayerInAirState>());
+	stateContext.attack = attackComponent;
+	stateContext.anim = m_animComponent;
+	stateContext.input = input;
+	stateContext.parry = m_parryComponent;
+	stateContext.physics.isOnGround = is_on_floor();
+	stateContext.physics.position = get_position();
+	stateContext.physics.velocity = get_velocity();
+	stateContext.audioVisual.audio = audio;
+	stateContext.audioVisual.particles = particles;
 
 	grappleInstigator->setInstigatorDirection(
 			[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });
-	m_stateContext->grapple = grappleInstigator;
+	stateContext.grapple = grappleInstigator;
 
-	m_parryComponent->m_getDesiredDirectionCb = [this]() -> Vector3 {
-		Vector3 desiredDir = m_stateContext->input->getInputRelative3d();
-		if (desiredDir.length_squared() < 0.2f) {
-			desiredDir = m_stateContext->input->getCamera3dDir();
-		}
-		// desiredDir is flipped to launch player and object in the opposite directions
-		return desiredDir * -1.f;
-	};
+	m_fsm = new fsm::player::Fsm(stateContext);
+	ASSERT_NOTNULL(m_fsm)
+	m_fsm->init(fsm::player::TInAirState());
 }
 
 void PlayerNode::_exit_tree() {
@@ -103,46 +97,42 @@ void PlayerNode::_exit_tree() {
 
 	Log(ELog::DEBUG, "PlayerNode exiting tree");
 
-	ASSERT_NOTNULL(m_stateContext);
-
-	::free(m_stateContext);
-	m_stateContext = nullptr;
+	delete m_fsm;
+	m_fsm = nullptr;
 }
 
 void PlayerNode::_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
 	ASSERT_NOTNULL(m_camerapivot);
-	m_camerapivot->process(*m_stateContext, delta);
+	m_camerapivot->process(m_fsm->getContext(), delta);
 }
 
 void PlayerNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
-	ASSERT_NOTNULL(m_stateContext);
+	ASSERT_NOTNULL(m_fsm)
 	// capture current physics context
-	m_stateContext->physics.isOnGround = is_on_floor();
-	m_stateContext->physics.position = get_position();
-	m_stateContext->physics.velocity = get_velocity();
+	auto& stateContext = m_fsm->getContext();
+	stateContext.physics.isOnGround = is_on_floor();
+	stateContext.physics.position = get_position();
+	stateContext.physics.velocity = get_velocity();
 
 	// Let FSM deal with physics and input context
-	m_fsm.physicsProcess(*m_stateContext, delta);
-	m_fsm.handleInput(*m_stateContext, delta);
+	m_fsm->physicsProcess(delta);
+	m_fsm->handleInput(delta);
 
 	// set data from context
-	set_velocity(m_stateContext->physics.velocity);
+	set_velocity(stateContext.physics.velocity);
 	move_and_slide();
-
-	// deferred actions
-	m_fsm.deferredActions(*m_stateContext);
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR(void())
 
-	if (!m_stateContext) {
+	if (!m_fsm) {
 		return;
 	}
 	ASSERT_NOTNULL(m_camerapivot);
-	m_camerapivot->processInput(*m_stateContext, get_process_delta_time());
+	m_camerapivot->processInput(m_fsm->getContext(), get_process_delta_time());
 }
