@@ -19,13 +19,18 @@ class ParryInstigatorComponent : public NodeComponent {
 
 public:
 	using GodotRID = uint64_t;
+	
+	struct ActivateParams {
+		godot::Vector3 direction;
+		float length;
+		float lift;
+	};
 
 public:
 	godot::NodePath m_colliderPath; // Path for m_area object
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
 	std::function<godot::Vector3()> m_getDesiredDirectionCb;
-	float m_mass = 1.f;
 
 public:
 	static void _bind_methods();
@@ -39,12 +44,11 @@ public:
 	void areaEnteredParryDetection(godot::Area3D* area);
 	void areaExitedParryDetection(godot::Area3D* area);
 
-	std::optional<ParryInstance> activateParry();
+	std::optional<ParryInstance> activateParry(ActivateParams params);
 
 	godot::Vector3 getPosition() const;
 	godot::Vector3 getVelocity() const;
 	godot::Vector3 getDesiredDirection() const;
 
 	GS_PATH_IMPL(m_colliderPath, ColliderPath)
-	GS_FLOAT_IMPL(m_mass, Mass)
 };

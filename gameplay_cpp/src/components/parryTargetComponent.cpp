@@ -25,7 +25,7 @@ void ParryTargetComponent::_bind_methods() {
 
 void ParryTargetComponent::_enter_tree() {
 	RETURN_IF_EDITOR(void())
-	
+
 	set_name(get_class());
 	m_areaPtr = get_node<Area3D>(m_colliderPath);
 	if (!m_areaPtr) {
@@ -48,25 +48,9 @@ void ParryTargetComponent::_exit_tree() {
 	m_areaPtr = nullptr;
 }
 
-void ParryTargetComponent::getParried(const ParryInstance& parryInstance) {
-	// switch (getParryTagEnum()) {
-	// 	case EParryTargetTag::DYNAMIC_LIGHT: {
-	// 		if (auto* rigidBody = cast_to<RigidBody3D>(get_parent())) {
-	// 			// rigidBody->set_linear_velocity(parryInstance.getNewTargetVelocity());
-	// 			rigidBody->set_linear_velocity(Vector3(0, 3, 0));
-	// 		}
-	// 		else {
-	// 			LOG(DEBUG, "Parry DYNAMIC_LIGHT requires RigidBody3D: ", get_parent()->get_name())
-	// 		}
-	// 		break;
-	// 	}
-
-	// 	default:
-	// 		LOG(WARN, "Parried target without tag: ", getParryTag()) break;
-	// }
-
-	if (m_onParriedCb) {
-		m_onParriedCb(parryInstance);
+void ParryTargetComponent::onParried(const ParryInstance& parryInstance) {
+	if (_callback) {
+		_callback(parryInstance);
 	}
 }
 

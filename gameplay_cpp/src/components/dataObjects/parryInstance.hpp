@@ -5,56 +5,27 @@
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.h>
 
-/**
- * weight of 0 means instigator 100% overrides targets velocity
- * weight of 1 means target ignores the instigators desired direction
- *
- * weight goes towards -1 if target has heavy property.
- * -1: targetDesiredDirection is equal to velocity on XZ plane
- *  1: targetDesiredDirection is equal to mirrored velocity on XZ plane
- * Targets velocity Y is always mirrored when parried
- */
-
 struct ParryInstance {
-	const godot::Vector3 instigatorDesiredDirection;
+	const godot::Vector3 instigatorPosition;
 	const godot::Vector3 targetPosition;
-	const godot::Vector3 targetVelocity;
-	const godot::Vector3 targetDesiredDirection;
-	const ParryTargetComponent::EParryTargetTag targetParryTag;
-	float weight;
+	const ParryInstigatorComponent::ActivateParams instigatorParams;
 
-	static constexpr float massLimit = 0.001f;
-
-	ParryInstance(const ParryInstigatorComponent& instigator, const ParryTargetComponent& target)
-		: instigatorDesiredDirection(instigator.getDesiredDirection())
+	ParryInstance(const ParryInstigatorComponent& instigator, const ParryTargetComponent& target,
+			const ParryInstigatorComponent::ActivateParams params)
+		: instigatorPosition(instigator.getPosition())
 		, targetPosition(target.getPosition())
-		, targetVelocity(target.getVelocity())
-		, targetDesiredDirection(target.getDesiredDirection())
-		, targetParryTag(target.getParryTagEnum()) {
-		if (instigator.getMass() < massLimit && target.getMass() < massLimit) {
-			LOG(WARN, "Neither instigator or target has any mass for ParryInstance. Setting weight to 0.5f")
-			weight = 0.5f;
-		}
-		else if (instigator.getMass() < massLimit) {
-			weight = 1.f;
-		}
-		else if (target.getMass() < massLimit) {
-			weight = 0.f;
-		}
-		else {
-			float exp = godot::Math::exp(-(target.getMass() / instigator.getMass()) * 9.f) *
-					100.f; // Magic values attached to
-						   // logistic sigmoid / soft
-						   // step To ensure we get a
-						   // value in range of 0-1
-			weight = 1.f / (1 + exp);
-		}
+		, instigatorParams(params) {}
+
+	godot::Vector3 getVectorToTarget() const {
+		return godot::Vector3(targetPosition - instigatorPosition);
 	}
 
-	godot::Vector3 getNewTargetVelocity() const {
-		const godot::Vector3 newDir =
-				godot::Vector3(targetDesiredDirection * weight + ((1.f - weight) * instigatorDesiredDirection))
-						.normalized();
-		return newDir * targetVelocity.length();
+	godot::Vector3 getDirectionToTarget3D() const {
+		return getVectorToTarget().normalized();
+	}
+
+	godot::Vector3 getDirectionToTarget2D() const {
+		const auto dir3D = getVectorToTarget();
+		return godot::Vector3(dir3D.x, 0, dir3D.z).normalized();
 	}
 };

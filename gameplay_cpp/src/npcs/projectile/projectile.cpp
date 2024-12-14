@@ -38,7 +38,7 @@ void Projectile::_enter_tree() {
 	ASSERT_NOTNULL(m_parryTargetComp)
 	ASSERT_NOTNULL(m_attackTargetComp)
 
-	m_parryTargetComp->m_onParriedCb = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
+	m_parryTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
 	m_attackTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
 
 	add_to_group(godotgroups::projectile);

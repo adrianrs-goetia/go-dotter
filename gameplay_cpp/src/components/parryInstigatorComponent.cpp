@@ -16,7 +16,6 @@ using namespace godot;
 
 void ParryInstigatorComponent::_bind_methods() {
 	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, ColliderPath, NODE_PATH)
-	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, Mass, FLOAT)
 }
 
 void ParryInstigatorComponent::_enter_tree() {
@@ -64,7 +63,7 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
-std::optional<ParryInstance> ParryInstigatorComponent::activateParry() {
+std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivateParams params) {
 	RETURN_IF_EDITOR(std::nullopt)
 	ASSERT_NOTNULL(m_area)
 
@@ -86,8 +85,8 @@ std::optional<ParryInstance> ParryInstigatorComponent::activateParry() {
 	}
 	ASSERT_NOTNULL(target)
 
-	ParryInstance instance(*this, *target);
-	target->getParried(instance);
+	ParryInstance instance(*this, *target, params);
+	target->onParried(instance);
 	return std::move(instance);
 }
 

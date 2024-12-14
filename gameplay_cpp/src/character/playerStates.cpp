@@ -162,18 +162,13 @@ PlayerState::Return PlayerParryState::physicsProcess(StateContext& context, floa
 		// Enter on ground by default, should discern if in air or onGround?
 		return { PlayerStateBank::get().state<PlayerOnGroundState>() };
 	}
-	if (const auto pi = context.parry->activateParry()) {
+	if (const auto pi = context.parry->activateParry(ParryInstigatorComponent::ActivateParams{
+				context.input->getInputRelative3d(), GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift")  })) {
 		// Play effects
 		context.audioVisual.audio->play();
 		context.audioVisual.particles->set_global_position(pi->targetPosition);
-		context.audioVisual.particles->set_global_basis(createBasisFromDirection(pi->instigatorDesiredDirection));
+		context.audioVisual.particles->set_global_basis(createBasisFromDirection(pi->getDirectionToTarget3D()));
 		context.audioVisual.particles->restart();
-
-		// Launch player
-		// Vector3 launchDir = pi->instigatorDesiredDirection * -1.f; // Flipped to towards input dir
-		// const Vector3 orthoRight = g_up.cross(launchDir);
-		// launchDir.rotate(orthoRight, Math::deg_to_rad(GETPARAM_D("parry", "launchUpAngle")) * -1.f);
-		// context.physics.velocity = launchDir * GETPARAM_D("parry", "launchStrength");
 
 		if (context.physics.isOnGround)
 			return { PlayerStateBank::get().state<PlayerOnGroundState>() };

@@ -46,7 +46,10 @@ public:
 			utils::death(context);
 		}
 		else if (std::holds_alternative<ParryInstance>(action)) {
-			context.owner->set_linear_velocity(godot::Vector3(0, 3, 0));
+			const auto& a = std::get<ParryInstance>(action);
+			context.owner->set_linear_velocity(godot::Vector3(0, a.instigatorParams.lift, 0));
+			context.owner->set_global_position(
+					a.instigatorPosition + (a.instigatorParams.direction * a.instigatorParams.length));
 			return TParried{};
 		}
 		return {};

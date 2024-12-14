@@ -27,7 +27,7 @@ public:
 public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
-	OnParriedCb m_onParriedCb = nullptr;
+	OnParriedCb _callback = nullptr;
 	float m_mass = 1.f;
 	EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
@@ -39,7 +39,7 @@ public:
 	void _enter_tree();
 	void _exit_tree() override;
 
-	void getParried(const ParryInstance& parryInstance);
+	void onParried(const ParryInstance& parryInstance);
 
 	godot::Vector3 getPosition() const;
 	godot::Vector3 getVelocity() const;
