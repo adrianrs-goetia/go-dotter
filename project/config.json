@@ -1,4 +1,32 @@
 {
+    "application": {
+        "input": {
+            "overwriteMode": 1,
+            "mouselock": false
+        }
+    },
+    "camera": {
+        "xMaxRotation": 20.0,
+        "xMinRotation": -80.0,
+        "mnk": {
+            "xInverted": false,
+            "xMultiplier": 20.0,
+            "yInverted": false,
+            "yMultiplier": 20.0
+        },
+        "keyboardOnly": {
+            "xInverted": false,
+            "xMultiplier": 100.0,
+            "yInverted": false,
+            "yMultiplier": 100.0
+        },
+        "joypad": {
+            "xInverted": false,
+            "xMultiplier": 100.0,
+            "yInverted": true,
+            "yMultiplier": 100.0
+        }
+    },
     "gravityConstant": -9.81,
     "player": {
         "walkSpeed": 4.0,

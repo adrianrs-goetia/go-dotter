@@ -8,6 +8,10 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
 
+#include <configHandler.h>
+
+#define CONFIG_PREFIX "application", "input"
+
 using namespace godot;
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
@@ -45,6 +49,24 @@ void InputManager::_physics_process(double delta) {
 		m_inputActions.emplace_back(InputAction{ EInputAction::ATTACK, EInputActionType::PRESSED });
 	}
 
+	// Motion vector for keyboard only
+	if (m_mode == EInputMode::KEYBOARD_ONLY) {
+		Vector2 motion;
+		if (input->is_action_pressed(InputString::cameraLeft)) {
+			motion.x -= 1.f;
+		}
+		if (input->is_action_pressed(InputString::cameraRight)) {
+			motion.x += 1.f;
+		}
+		if (input->is_action_pressed(InputString::cameraDown)) {
+			motion.y -= 1.f;
+		}
+		if (input->is_action_pressed(InputString::cameraUp)) {
+			motion.y += 1.f;
+		}
+		m_motion = motion;
+	}
+
 	// Clear inputs
 	for (auto it = m_inputActions.begin(); it != m_inputActions.end();) {
 		if (it->isConsumed() || !it->receivedInputWithinTimeframe(MAX_INPUT_LIFETIME)) {
@@ -80,22 +102,43 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 
 	ASSERT_NOTNULL(DisplayServer::get_singleton())
 	if (DisplayServer::get_singleton()->window_is_focused()) {
-		m_additionalStates.applicationMouseLock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
-												: input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
+		// const bool mouselock = m_additionalStates.applicationMouseLock ^ GETPARAM_B("mouselock");
+		const bool mouselock = GETPARAM_B("mouselock");
+		mouselock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
+				  : input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 	}
 
-	// Camera motion (mouse or rightstick equivalent)
-	if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
-		mode = EInputMode::MOUSE_N_KEYBOARD;
-		m_motion = p_mousemotion->get_relative();
+	const auto overwriteMode = GETPARAM_I("overwriteMode");
+	if (overwriteMode != static_cast<int>(EInputMode::NONE)) {
+		m_mode = static_cast<EInputMode>(overwriteMode);
+		switch (m_mode) {
+			case EInputMode::MOUSE_N_KEYBOARD: {
+				if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
+					m_motion = p_mousemotion->get_relative();
+				}
+				break;
+			}
+			case EInputMode::JOYPAD: {
+				if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
+					m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight,
+							InputString::cameraDown, InputString::cameraUp, 0.05);
+				}
+				break;
+			}
+			default:
+				break;
+		}
 	}
-	else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
-		mode = EInputMode::JOYPAD;
-		m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight, InputString::cameraDown,
-				InputString::cameraUp, 0.05);
-	}
-	else {
-		mode = EInputMode::NONE;
+	else { // Autodetect mode
+		if (auto* p_mousemotion = cast_to<InputEventMouseMotion>(*p_event)) {
+			m_mode = EInputMode::MOUSE_N_KEYBOARD;
+			m_motion = p_mousemotion->get_relative();
+		}
+		else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
+			m_mode = EInputMode::JOYPAD;
+			m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight, InputString::cameraDown,
+					InputString::cameraUp, 0.05);
+		}
 	}
 }
 
@@ -107,12 +150,12 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 		return;
 	}
 	else if (p_event->is_action_pressed(InputString::toggleScreenMode)) {
-		LOG(INFO, "Toggle primary screen mode");
+		LOG(INFO, "Toggle primary screen m_mode");
 		DisplayServer* ds = DisplayServer::get_singleton();
 		int prime_screen = ds->get_primary_screen();
-		DisplayServer::WindowMode mode = ds->window_get_mode(prime_screen);
+		DisplayServer::WindowMode m_mode = ds->window_get_mode(prime_screen);
 
-		if (mode == DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN) {
+		if (m_mode == DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN) {
 			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_WINDOWED, prime_screen);
 			ds->window_set_size(Vector2i(1280, 720), prime_screen);
 			Vector2i size = ds->screen_get_size();
@@ -121,9 +164,6 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 		else {
 			ds->window_set_mode(DisplayServer::WindowMode::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
 		}
-	}
-	else if (p_event->is_action_pressed(InputString::toggleApplicationMouseLock)) {
-		m_additionalStates.applicationMouseLock = !m_additionalStates.applicationMouseLock;
 	}
 	else if (p_event->is_action_pressed(InputString::restart)) {
 		if (SceneTree* tree = get_tree()) {

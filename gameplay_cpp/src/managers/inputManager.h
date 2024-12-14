@@ -33,9 +33,10 @@ constexpr const char* uiDown = "ui_down";
 
 } //namespace InputString
 
-enum class EInputMode : uint8_t {
-	NONE = 0,
-	MOUSE_N_KEYBOARD = 1,
+enum class EInputMode : int {
+	NONE = -1,
+	MOUSE_N_KEYBOARD = 0,
+	KEYBOARD_ONLY = 1,
 	JOYPAD = 2,
 };
 
@@ -115,7 +116,7 @@ class InputManager : public godot::Node {
 	static constexpr const char* g_inputManagerNodePath = "/root/InputManager";
 
 public:
-	EInputMode mode;
+	EInputMode m_mode;
 
 	/**
 	 * Raw input along XY axis
@@ -129,10 +130,6 @@ public:
 	godot::Vector2 m_camera2dDir;
 
 	std::list<InputAction> m_inputActions;
-
-	struct AdditionalStates {
-		bool applicationMouseLock{ true };
-	} m_additionalStates;
 
 private:
 	void exitGame();
