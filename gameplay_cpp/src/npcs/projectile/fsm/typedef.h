@@ -12,7 +12,7 @@ class Projectile;
 namespace fsm::projectile {
 
 struct Context {
-	::Projectile* owner = nullptr;
+	Projectile* owner = nullptr;
 };
 
 using ExternalAction = std::variant<AttackInstance, ParryInstance>;

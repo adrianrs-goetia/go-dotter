@@ -2,8 +2,6 @@
 
 #include <core/core.hpp>
 
-#include "fsm/fsm.h"
-
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
@@ -13,18 +11,19 @@ struct AttackInstance;
 class ParryTargetComponent;
 class ParryInstance;
 
-namespace godot {
+namespace fsm::projectile {
+class Fsm;
+}
 
+namespace godot {
 class AudioStreamPlayer3D;
 class GPUParticles3D;
-
 } //namespace godot
 
 class Projectile : public godot::RigidBody3D {
 	GDCLASS(Projectile, godot::RigidBody3D)
 private:
-	fsm::projectile::Context m_stateContext;
-	fsm::projectile::Fsm m_fsm;
+	fsm::projectile::Fsm* m_fsm = nullptr;
 
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
 	// context?
@@ -49,9 +48,6 @@ public:
 	}
 
 	void onTimeout();
-
-	void onAttacked(const AttackInstance& instance);
-	void onParried(const ParryInstance& instance);
 
 	GS_PACKEDSCENE_IMPL(m_deathParticles, DeathParticles)
 };
