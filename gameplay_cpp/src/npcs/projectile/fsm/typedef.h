@@ -19,7 +19,8 @@ using ExternalAction = std::variant<AttackInstance, ParryInstance>;
 
 struct TLaunched {};
 struct TParried {};
-using TState = std::variant<std::monostate, TLaunched, TParried>;
+struct TPostParryLaunched {};
+using TState = std::variant<std::monostate, TLaunched, TParried, TPostParryLaunched>;
 
 class BaseState {
 public:
@@ -39,9 +40,7 @@ public:
 		return {};
 	}
 
-	virtual TState physicsProcess(Context& context, float delta) {
-		return {};
-	}
+	virtual TState physicsProcess(Context& context, float delta) = 0;
 };
 
 } //namespace fsm::projectile

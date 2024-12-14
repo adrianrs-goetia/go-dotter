@@ -4,6 +4,7 @@
 
 #include "states/launched.h"
 #include "states/parried.h"
+#include "states/postParryLaunch.h"
 
 namespace fsm::projectile {
 
@@ -13,6 +14,7 @@ class Fsm {
 
 	Launched m_launched;
 	Parried m_parried;
+	PostParryLaunch m_postParryLaunch;
 
 public:
 	Fsm(Context context): m_context(context){}
@@ -34,6 +36,9 @@ public:
 		}
 		else if constexpr (std::is_same_v<T, TParried>) {
 			m_currentState = &m_parried;
+		}
+		else if constexpr (std::is_same_v<T, TPostParryLaunched>) {
+			m_currentState = &m_postParryLaunch;
 		}
 		else {
 			ASSERT(false)

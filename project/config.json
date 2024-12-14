@@ -24,7 +24,7 @@
         "attack": {
             "cooldown": 0.5,
             "stateLength": 0.3,
-            "strength": 71.3,
+            "strength": 5.3,
             "tmpRotation": 35.0
         }
     },
@@ -36,7 +36,8 @@
             "firingStrength": 29.0
         },
         "projectile": {
-            "lifetime": 2.0
+            "lifetime": 2.0,
+            "postParryIntagibleTime": 1.0
         }
     }
 }

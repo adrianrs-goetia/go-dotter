@@ -2,21 +2,26 @@
 
 #include "../typedef.h"
 #include "_utils.h"
+#include <npcs/projectile/projectile.h>
+
+#include <godot_cpp/classes/timer.hpp>
 
 #include <configHandler.h>
-#include <npcs/projectile/projectile.h>
 
 #define CONFIG_PREFIX "npcs", "projectile"
 
 namespace fsm::projectile {
 
-class Parried : public BaseState {
+class PostParryLaunch : public BaseState {
+	Timestamp m_enterTime;
+
 public:
 	TState getType() const override {
-		return TParried();
+		return TPostParryLaunched();
 	}
 
 	TState enter(Context& context) override {
+		m_enterTime.setTimestamp();
 		return {};
 	}
 
@@ -25,18 +30,12 @@ public:
 	}
 
 	TState handleExternalAction(Context& context, const ExternalAction& action) override {
-		if (std::holds_alternative<AttackInstance>(action)) {
-			auto& attackInstance = std::get<AttackInstance>(action);
-			const auto dir = attackInstance.getDirection();
-			context.owner->set_linear_velocity(dir * attackInstance.attackStrength);
-			return TPostParryLaunched{};
-		}
 		return {};
 	}
 
-	TState physicsProcess(Context& context, float delta) override {
-		if (context.owner->isOnGround()) {
-			utils::death(context);
+	TState physicsProcess(Context& context, float delta) {
+		if (m_enterTime.timestampWithinTimeframe(GETPARAM_F("postParryIntagibleTime"))) {
+			return TLaunched();
 		}
 		return {};
 	}

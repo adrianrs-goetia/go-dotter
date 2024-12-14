@@ -51,6 +51,10 @@ public:
 		}
 		return {};
 	}
+
+	TState physicsProcess(Context& context, float delta) {
+		return {};
+	}
 };
 
 #undef CONFIG_PREFIX
