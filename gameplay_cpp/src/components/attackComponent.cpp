@@ -1,5 +1,8 @@
 #include "attackComponent.h"
 
+#include "attackTargetComponent.h"
+#include <components/dataObjects/attackInstance.h>
+
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
@@ -55,19 +58,23 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	auto* target = area->get_parent();
 	ASSERT_NOTNULL(target);
 
-	target->notification(ENotifications::ATTACKED);
+	if (auto* attackComp = getComponentOfNode<AttackTargetComponent>(target)) {
+		attackComp->receiveAttack(AttackInstance(*this, *attackComp));
+	}
+
+	// target->notification(ENotifications::ATTACKED);
 	// auto g = target->get_groups();
 
-	if (auto* rb = cast_to<RigidBody3D>(target)) {
-		if (!rb->is_in_group(godotgroups::projectile)) {
-			Vector3 dir = Vector3(rb->get_global_position() - get_global_position()).normalized();
-			dir += Vector3(0, 1, 0);
-			dir.normalize();
-			dir *= 10.f;
-			rb->set_linear_velocity(dir);
-			DebugDraw::Line(rb->get_global_position(), rb->get_global_position() + dir, Color(1, 0, 0), 1.f);
-		}
-	}
+	// if (auto* rb = cast_to<RigidBody3D>(target)) {
+	// 	if (!rb->is_in_group(godotgroups::projectile)) {
+	// 		Vector3 dir = Vector3(rb->get_global_position() - get_global_position()).normalized();
+	// 		dir += Vector3(0, 1, 0);
+	// 		dir.normalize();
+	// 		dir *= 10.f;
+	// 		rb->set_linear_velocity(dir);
+	// 		DebugDraw::Line(rb->get_global_position(), rb->get_global_position() + dir, Color(1, 0, 0), 1.f);
+	// 	}
+	// }
 }
 
 void AttackComponent::areaExitedCollider(godot::Area3D* area) {

@@ -5,9 +5,13 @@
 #include "fsm.h"
 
 #include <godot_cpp/classes/packed_scene.hpp>
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
+class AttackTargetComponent;
+struct AttackInstance;
 class ParryTargetComponent;
+class ParryInstance;
 
 namespace godot {
 class AudioStreamPlayer3D;
@@ -24,7 +28,10 @@ private:
 	// context?
 	// godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ParryTargetComponent* m_parryTargetComp = nullptr;
+	AttackTargetComponent* m_attackTargetComp = nullptr;
 	godot::Ref<godot::PackedScene> m_deathParticles;
+
+	bool m_isOnGround = false;
 
 public:
 	static void _bind_methods();
@@ -33,10 +40,16 @@ public:
 	void _enter_tree() override;
 	void _exit_tree() override;
 	void _physics_process(double delta) override;
-	void _notification(int what);
+	void _integrate_forces(godot::PhysicsDirectBodyState3D* state) override;
+
+	bool isOnGround() const {
+		return m_isOnGround;
+	}
 
 	void onTimeout();
 
+	void onAttacked(const AttackInstance& instance);
+	void onParried(const ParryInstance& instance);
 
 	GS_PACKEDSCENE_IMPL(m_deathParticles, DeathParticles)
 };

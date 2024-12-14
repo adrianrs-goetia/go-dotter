@@ -36,7 +36,7 @@
             "firingStrength": 29.0
         },
         "projectile": {
-            "lifetime": 6.0
+            "lifetime": 2.0
         }
     }
 }

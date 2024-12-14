@@ -14,7 +14,7 @@ class ParryTargetComponent : public NodeComponent {
 	GDCLASS(ParryTargetComponent, NodeComponent)
 
 public:
-	using OnParriedCb = std::function<void()>;
+	using OnParriedCb = std::function<void(const ParryInstance& instance)>;
 
 	enum EParryTargetTag {
 		NONE = -1,
@@ -38,8 +38,6 @@ public:
 
 	void _enter_tree();
 	void _exit_tree() override;
-
-	void setOnParriedCb(OnParriedCb&& cb);
 
 	void getParried(const ParryInstance& parryInstance);
 
