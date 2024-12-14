@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../typedef.h"
-#include "_utils.h"
+#include "../typedefs.hpp"
+#include "_utils.hpp"
 
 #include <configHandler.h>
 #include <npcs/projectile/projectile.h>

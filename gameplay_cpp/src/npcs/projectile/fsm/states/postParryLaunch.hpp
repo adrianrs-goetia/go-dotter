@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../typedef.h"
-#include "_utils.h"
+#include "../typedefs.hpp"
+#include "_utils.hpp"
 #include <npcs/projectile/projectile.h>
 
 #include <godot_cpp/classes/timer.hpp>

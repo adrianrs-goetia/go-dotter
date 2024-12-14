@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../typedef.h"
+#include "../typedefs.hpp"
 #include <configHandler.h>
 #include <npcs/projectile/projectile.h>
 
-#include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
+#include <godot_cpp/classes/node.hpp>
 
 namespace fsm::projectile::utils {
 

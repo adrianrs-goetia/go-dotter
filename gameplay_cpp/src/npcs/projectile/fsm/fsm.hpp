@@ -1,10 +1,10 @@
 #pragma once
 
-#include "typedef.h"
+#include "typedefs.hpp"
 
-#include "states/launched.h"
-#include "states/parried.h"
-#include "states/postParryLaunch.h"
+#include "states/launched.hpp"
+#include "states/parried.hpp"
+#include "states/postParryLaunch.hpp"
 
 namespace fsm::projectile {
 

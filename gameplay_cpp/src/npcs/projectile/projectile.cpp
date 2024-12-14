@@ -1,6 +1,6 @@
 #include "projectile.h"
 
-#include "fsm/fsm.h"
+#include "fsm/fsm.hpp"
 
 #include <components/attackTargetComponent.h>
 #include <components/parryTargetComponent.h>
