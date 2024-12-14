@@ -24,6 +24,7 @@ VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
 EXPORT_VERSION="v${VERSION}_${MODE}"
 mkdir -p build/export/${EXPORT_VERSION}
+cp project/config.json build/export/${EXPORT_VERSION}/
 
 # Configure export preset
 EXPORT_PATH="export_path=\"../build/export/${EXPORT_VERSION}/go-dotter.${EXPORT_VERSION}\""
