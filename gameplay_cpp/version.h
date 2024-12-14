@@ -2,7 +2,7 @@
 
 #define GODOTTER_MAJOR 0
 #define GODOTTER_MINOR 3
-#define GODOTTER_PATCH 4
+#define GODOTTER_PATCH 5
 #define GODOTTER_VERSION ((GODOTTER_MAJOR << (8 * 3)) + (GODOTTER_MINOR << (8 * 2)) + (GODOTTER_PATCH << (8 * 1)))
 
 #define _GODOTTER_VERSION_STR_TEXT(text) #text
