@@ -2,7 +2,7 @@
 
 #include <core/core.hpp>
 
-#include "fsm.h"
+#include "fsm/fsm.h"
 
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
@@ -14,15 +14,17 @@ class ParryTargetComponent;
 class ParryInstance;
 
 namespace godot {
+
 class AudioStreamPlayer3D;
 class GPUParticles3D;
+
 } //namespace godot
 
 class Projectile : public godot::RigidBody3D {
 	GDCLASS(Projectile, godot::RigidBody3D)
 private:
-	ProjectileFsm::StateContext m_stateContext;
-	ProjectileFsm::Fsm m_fsm;
+	fsm::projectile::Context m_stateContext;
+	fsm::projectile::Fsm m_fsm;
 
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
 	// context?

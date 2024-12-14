@@ -25,7 +25,7 @@ void Projectile::_enter_tree() {
 	set_max_contacts_reported(3);
 
 	m_stateContext.owner = this;
-	m_fsm.setStateT<ProjectileFsm::Launched>(m_stateContext);
+	m_fsm.setStateT<fsm::projectile::TLaunched>(m_stateContext);
 
 	m_parryTargetComp = getComponentOfNode<ParryTargetComponent>(this);
 	m_attackTargetComp = memnew(AttackTargetComponent);
