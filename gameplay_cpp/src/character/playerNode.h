@@ -28,7 +28,6 @@ class PlayerNode : public CharacterBody3D {
 
 public:
 	fsm::player::Fsm* m_fsm = nullptr;
-	// StateContext* m_stateContext = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	AnimationComponent* m_animComponent = nullptr;
 
