@@ -59,6 +59,7 @@ public:
 		LOG(DEBUG, "state: ", Name())
 		data.jumpframes = 3;
 		data.velocity = context.owner->get_linear_velocity();
+		context.anim->inAir();
 		return {};
 	}
 

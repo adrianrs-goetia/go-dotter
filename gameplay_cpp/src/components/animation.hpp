@@ -116,6 +116,7 @@ public:
 		m_animRoot->set_basis(godot::Basis(newquat));
 	}
 	
+	
 	void setRootTowardsVector(godot::Vector3 vector) {
 		if (vector.length_squared() <= 0) {
 			return;
