@@ -9,6 +9,9 @@
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/scene_tree.hpp>
 
+#include <godot_cpp/classes/area3d.hpp>
+#include <godot_cpp/classes/collision_shape3d.hpp>
+
 #include <configHandler.h>
 
 #define CONFIG_PREFIX "npcs", "projectile"

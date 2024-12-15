@@ -12,13 +12,14 @@ constexpr const char* camera = ("%s/Camera", cameraPivot);
 } //namespace nodePaths
 
 namespace collisionflags {
-inline constexpr uint32_t staticWorld = 1;
-inline constexpr uint32_t dynamicWorld = 2;
-inline constexpr uint32_t pickableObjects = 3;
-inline constexpr uint32_t wallWalking = 4;
-inline constexpr uint32_t attackTarget = 5;
-inline constexpr uint32_t grapplingTarget = 7;
-inline constexpr uint32_t parryTarget = 8;
+inline constexpr auto staticWorld = 1;
+inline constexpr auto dynamicWorld = 2;
+inline constexpr auto player = 3;
+inline constexpr auto pickableObjects = 4;
+inline constexpr auto wallWalking = 5;
+inline constexpr auto attackTarget = 17;
+inline constexpr auto grapplingTarget = 18;
+inline constexpr auto parryTarget = 19;
 } //namespace collisionflags
 
 namespace godotgroups {

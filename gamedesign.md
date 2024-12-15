@@ -43,7 +43,6 @@ Attacking projectiles;
 #### Parry
 Use the backend of your massive scissors to deflect ANY damage, be it enemy, fall damage or environment. \
 On parrying the player will gain some seameter, and given the target objects tag/type the player can;
-<!-- - Light_Dynamic: Player will gain a boost in their desired horizontal direction and push the object in the opposite horizontal direction. Player will also receive a vertical boost. -->
 - Light_Dynamic: Object will stop before the player and hang in the air for a short period. Ready to be used as a projectile back by attacking it. _Potentially used in other ways as well_
 - Heavy_Dynamic: Will push the player away from the centre. 
 - Static_Object: Player will bounce off it in their desired direction

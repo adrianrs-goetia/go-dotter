@@ -11,16 +11,22 @@
 namespace fsm::projectile {
 
 class Parried : public BaseState {
+	uint32_t enteredCollisionLayers = 0;
+
 public:
 	TState getType() const override {
 		return TParried();
 	}
 
 	TState enter(Context& context) override {
+		enteredCollisionLayers = context.owner->get_collision_layer();
+		const auto newCollisionLayers = collisionflags::staticWorld | collisionflags::attackTarget;
+		context.owner->set_collision_layer(newCollisionLayers);
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.owner->set_collision_layer(enteredCollisionLayers);
 		return {};
 	}
 
