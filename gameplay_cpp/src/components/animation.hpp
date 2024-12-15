@@ -15,6 +15,23 @@
 class ComponentAnimation : public godot::AnimationTree {
 	GDCLASS(ComponentAnimation, godot::AnimationTree)
 
+private:
+	enum MovementAnimationType {
+		AIRBORNE,
+		WALKING,
+	};
+
+		void setMovement(MovementAnimationType type) {
+		switch (type) {
+			case MovementAnimationType::WALKING:
+				set("parameters/movement/blend_amount", 0);
+				break;
+			case MovementAnimationType::AIRBORNE:
+				set("parameters/movement/blend_amount", 1);
+				break; 
+		}
+	}
+
 public:
 	enum EAnim : int {
 		NONE = -1,
@@ -78,7 +95,7 @@ public:
 		godot::Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 		m_animRoot->set_basis(godot::Basis(newquat));
 	}
-
+	
 	void setRootTowardsVector(godot::Vector3 vector) {
 		if (vector.length_squared() <= 0) {
 			return;
@@ -88,9 +105,17 @@ public:
 		m_animRoot->set_basis(createBasisFromDirection(vector));
 	}
 
-	void idleRunValue(float value) {
-		set("parameters/blend_position", value);
+	void inAir() {
+		setMovement(MovementAnimationType::AIRBORNE);
 	}
+
+	void onGround() {
+		setMovement(MovementAnimationType::WALKING);
+	}
+
+	void idleRunValue(float value) {
+		set("parameters/run/blend_position", value);
+		}
 
 	// Tmp method for forcing TPose
 	void setActive(bool active) {
