@@ -20,7 +20,8 @@ public:
 
 	TState enter(Context& context) override {
 		enteredCollisionLayers = context.owner->get_collision_layer();
-		const auto newCollisionLayers = collisionflags::staticWorld | collisionflags::attackTarget;
+		// const auto newCollisionLayers = collisionflags::staticWorld | collisionflags::attackTarget;
+		const auto newCollisionLayers = collisionflags::attackTarget;
 		context.owner->set_collision_layer(newCollisionLayers);
 		return {};
 	}

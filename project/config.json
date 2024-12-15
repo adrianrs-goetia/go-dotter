@@ -32,7 +32,7 @@
         "walkSpeed": 4.0,
         "onGroundAcceleration": 40.0,
         "onGroundDeceleration": 30.0,
-        "jumpStrength": 8.4,
+        "jumpStrength": 6.4,
         "inAirAcceleration": 10.0,
         "inAirDeceleration": 10.0,
         "gravityScale": 1.8,
@@ -50,7 +50,10 @@
             "launchStrength": 10.0,
             "length": 1.0,
             "lift": 6.0,
-            "freezetime": 1.0
+            "freezetime": 1.0,
+            "parryJumpStrength": 2.0,
+            "parryDoubleJumpStrength": 8.0,
+            "parryJumpStateTime": 1.0
         },
         "attack": {
             "cooldown": 0.5,

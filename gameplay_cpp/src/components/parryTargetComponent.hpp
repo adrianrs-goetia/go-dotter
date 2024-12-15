@@ -9,8 +9,7 @@
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 
-class ParryInstance;
-class ParryFreezeInstance;
+class WrapperParryInstances;
 
 class ParryTargetComponent : public NodeComponent {
 	GDCLASS(ParryTargetComponent, NodeComponent)
@@ -28,10 +27,7 @@ public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
 
-	// using External = std::variant<std::monostate, ParryInstance, ParryFreezeInstance>;
-	// std::function<void(const External& instance)> _callback = nullptr;
-	std::function<void(const ParryInstance& instance)> _cbOnParry = nullptr;
-	std::function<void(const ParryFreezeInstance& instance)> _cbOnFreeze = nullptr;
+	std::function<void(const WrapperParryInstances& instance)> _callback = nullptr;
 
 	// EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
@@ -60,17 +56,17 @@ public:
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 
-	std::shared_ptr<ParryContact> onParried(const ParryInstance& parryInstance) {
-		if (_cbOnParry) {
-			_cbOnParry(parryInstance);
+	std::shared_ptr<ParryContact> onParried(const WrapperParryInstances& parryInstance) {
+		if (_callback) {
+			_callback(parryInstance);
 		}
 		m_parryContact = std::make_shared<ParryContact>([this]() { return this; });
 		return m_parryContact;
 	}
 
-	void onFreeze(const ParryFreezeInstance& freeze){
-		if (_cbOnFreeze) {
-			_cbOnFreeze(freeze);
+	void onAction(const WrapperParryInstances& freeze) {
+		if (_callback) {
+			_callback(freeze);
 		}
 	}
 

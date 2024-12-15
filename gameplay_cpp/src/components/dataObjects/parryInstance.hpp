@@ -5,6 +5,8 @@
 #include <components/parryInstigatorComponent.h>
 #include <components/parryTargetComponent.hpp>
 
+#include <variant>
+
 struct ParryInstance {
 	const godot::Vector3 instigatorPosition;
 	const godot::Vector3 targetPosition;
@@ -32,4 +34,17 @@ struct ParryInstance {
 
 struct ParryFreezeInstance {
 	float time;
+};
+
+struct PlayerParryJump {};
+
+/**
+ * Trickery to get compiler to be able to use a variant of these types with just a forward declaration of the Wrapper
+ */
+struct WrapperParryInstances {
+	using T = std::variant<ParryInstance, ParryFreezeInstance, PlayerParryJump>;
+	T obj;
+
+	WrapperParryInstances(T t)
+		: obj(t) {}
 };

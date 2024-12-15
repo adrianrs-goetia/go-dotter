@@ -3,7 +3,6 @@
 #include "../typedefs.hpp"
 #include "_utils.hpp"
 #include <components/dataObjects/parryInstance.hpp>
-// #include <npcs/projectile/projectile.h>
 
 #include <configHandler.h>
 
@@ -31,6 +30,12 @@ public:
 				context.forwardedAction.value());
 			context.forwardedAction = std::nullopt;
 		}
+		else {
+			ASSERT(false)
+		}
+
+		context.owner->set_collision_mask_value(collisionflags::player, false);
+		context.owner->set_collision_layer_value(collisionflags::dynamicWorld, false);
 		return {};
 	}
 
@@ -39,7 +44,16 @@ public:
 	}
 
 	TState handleExternalAction(Context& context, const ExternalAction& action) override {
-		return {};
+		return std::visit(
+			overloaded{
+				[&](PlayerParryJump)
+				{
+					utils::death(context);
+					return std::monostate();
+				},
+				[](auto) { return std::monostate(); },
+			},
+			action);
 	}
 
 	TState physicsProcess(Context& context, float delta) {

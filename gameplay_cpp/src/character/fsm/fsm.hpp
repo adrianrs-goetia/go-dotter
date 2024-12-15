@@ -9,6 +9,7 @@
 #include "states/inair.hpp"
 #include "states/onground.hpp"
 #include "states/parry.hpp"
+#include "states/parryjump.hpp"
 #include "states/pregrapplelaunch.hpp"
 
 namespace fsm::player {
@@ -22,6 +23,7 @@ class Fsm {
 	GrappleLaunchState _grappleLaunchState;
 	InAirState _inAirState;
 	ParryState _parryState;
+	ParryJumpState _parryJumpState;
 	PreGrappleLaunchState _preGrappleLaunchState;
 
 public:
@@ -40,6 +42,7 @@ public:
 				[this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
 				[this](TInAirState) { _currentState = &_inAirState; },
 				[this](TParryState) { _currentState = &_parryState; },
+				[this](TParryJumpState) { _currentState = &_parryJumpState; },
 				[this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
 				[this](std::monostate) { ASSERT(false); },
 			},
@@ -88,6 +91,7 @@ private:
 				[&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
 				[&](TInAirState) { newState = &_inAirState; },
 				[&](TParryState) { newState = &_parryState; },
+				[&](TParryJumpState) { newState = &_parryJumpState; },
 				[&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
 				[&](std::monostate) { ASSERT(false); },
 			},

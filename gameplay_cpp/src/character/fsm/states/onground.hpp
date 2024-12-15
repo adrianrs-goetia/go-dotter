@@ -66,7 +66,8 @@ public:
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			if (auto lock = context.parry->m_lastParryContact.lock()) {
-				lock->getTarget()->onFreeze(ParryFreezeInstance{ GETPARAM_F("parry", "freezetime") });
+				lock->getTarget()->onAction({ ParryFreezeInstance{ GETPARAM_F("parry", "freezetime") } });
+				return TParryJumpState();
 			}
 
 			context.physics.velocity.y += GETPARAM_D("jumpStrength");

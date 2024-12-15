@@ -37,6 +37,7 @@ public:
 	void _physics_process(double delta) override;
 
 	void rotateRootTowardsVector(godot::Vector3 vector, float delta, float slerpWeight);
+	void setRootTowardsVector(godot::Vector3 vector);
 
 	void idleRunValue(float value);
 	void setActive(bool active);

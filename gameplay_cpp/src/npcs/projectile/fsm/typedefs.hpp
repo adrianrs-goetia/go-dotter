@@ -11,7 +11,7 @@ class Projectile;
 
 namespace fsm::projectile {
 
-using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryFreezeInstance>;
+using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryFreezeInstance, PlayerParryJump>;
 
 struct Context {
 	Projectile* owner = nullptr;

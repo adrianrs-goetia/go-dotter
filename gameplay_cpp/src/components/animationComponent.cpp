@@ -54,6 +54,15 @@ void AnimationComponent::rotateRootTowardsVector(godot::Vector3 vector, float de
 	m_animRoot->set_basis(Basis(newquat));
 }
 
+void AnimationComponent::setRootTowardsVector(godot::Vector3 vector) {
+	if (vector.length_squared() <= 0) {
+		return;
+	}
+	vector.normalize();
+
+	m_animRoot->set_basis(createBasisFromDirection(vector));
+}
+
 void AnimationComponent::idleRunValue(float value) {
 	set("parameters/blend_position", value);
 }

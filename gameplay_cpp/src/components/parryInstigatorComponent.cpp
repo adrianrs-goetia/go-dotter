@@ -64,6 +64,12 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
+ParryTargetComponent* ParryInstigatorComponent::getLastParryContactAssert() const {
+	auto lock = m_lastParryContact.lock();
+	ASSERT_NOTNULL(lock)
+	return lock->getTarget();
+}
+
 std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivateParams params) {
 	RETURN_IF_EDITOR(std::nullopt)
 	ASSERT_NOTNULL(m_area)
@@ -87,7 +93,7 @@ std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivatePar
 	ASSERT_NOTNULL(target)
 
 	ParryInstance instance(*this, *target, params);
-	m_lastParryContact = target->onParried(instance);
+	m_lastParryContact = target->onParried({ instance });
 
 	return std::move(instance);
 }

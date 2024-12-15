@@ -28,6 +28,10 @@ struct PhysicsContext {
 	godot::Vector3 get_gravity_center() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
+
+	godot::Vector3 getVelocityDir2D() const {
+		return godot::Vector3(velocity.x, 0, velocity.z).normalized();
+	}
 };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
@@ -49,9 +53,10 @@ struct TInAirState {};
 struct TPreGrappleLaunchState {};
 struct TGrappleLaunchState {};
 struct TParryState {};
+struct TParryJumpState {};
 struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
-	TParryState, TAttackState>;
+	TParryState, TParryJumpState, TAttackState>;
 
 class BaseState {
 public:
