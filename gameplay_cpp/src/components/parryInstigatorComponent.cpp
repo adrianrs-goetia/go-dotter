@@ -86,7 +86,8 @@ std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivatePar
 	ASSERT_NOTNULL(target)
 
 	ParryInstance instance(*this, *target, params);
-	target->onParried(instance);
+	m_lastParryContact = target->onParried(instance);
+
 	return std::move(instance);
 }
 

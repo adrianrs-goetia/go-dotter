@@ -1,5 +1,6 @@
 #pragma once
 
+#include "typedefs.hpp"
 #include <core/core.hpp>
 #include <core/nodeComponent.hpp>
 
@@ -19,7 +20,7 @@ class ParryInstigatorComponent : public NodeComponent {
 
 public:
 	using GodotRID = uint64_t;
-	
+
 	struct ActivateParams {
 		godot::Vector3 direction;
 		float length;
@@ -27,9 +28,11 @@ public:
 	};
 
 public:
-	godot::NodePath m_colliderPath; // Path for m_area object
+	godot::NodePath m_colliderPath;
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
+
+	std::weak_ptr<ParryContact> m_lastParryContact;
 
 public:
 	static void _bind_methods();
