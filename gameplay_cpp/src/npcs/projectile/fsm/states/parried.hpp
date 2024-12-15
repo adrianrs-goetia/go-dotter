@@ -34,7 +34,6 @@ public:
 		TState ret;
 		std::visit(
 			overloaded{
-				[](const auto&) { ASSERT(false) },
 				[&](const AttackInstance& action)
 				{
 					const auto dir = action.getDirection();
@@ -46,6 +45,7 @@ public:
 					context.forwardedAction = action;
 					ret = TParryFreeze();
 				},
+				[](const auto&) { ASSERT(false) },
 			},
 			action);
 

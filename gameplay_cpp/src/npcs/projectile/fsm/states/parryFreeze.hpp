@@ -25,8 +25,8 @@ public:
 		if (context.forwardedAction) {
 			std::visit(
 				overloaded{
-					[](const auto&) { ASSERT(false) },
 					[&](const ParryFreezeInstance& action) { m_freezetime = action.time; },
+					[](const auto&) { ASSERT(false) },
 				},
 				context.forwardedAction.value());
 			context.forwardedAction = std::nullopt;
