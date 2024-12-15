@@ -49,7 +49,8 @@
             "launchUpAngle": 60.0,
             "launchStrength": 10.0,
             "length": 1.0,
-            "lift": 6.0
+            "lift": 6.0,
+            "freezetime": 1.0
         },
         "attack": {
             "cooldown": 0.5,

@@ -1,6 +1,6 @@
 #include "grapplenode.h"
 
-#include <components/parryTargetComponent.h>
+#include <components/parryTargetComponent.hpp>
 
 void GrappleNode::_bind_methods() {}
 

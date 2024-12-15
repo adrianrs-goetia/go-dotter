@@ -11,7 +11,7 @@
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/parryInstigatorComponent.h>
-#include <components/parryTargetComponent.h>
+#include <components/parryTargetComponent.hpp>
 
 #include <mainNode.h>
 #include <managers/inputManager.h>

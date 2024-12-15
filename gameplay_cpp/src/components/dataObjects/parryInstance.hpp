@@ -3,7 +3,7 @@
 #include <core/core.hpp>
 
 #include <components/parryInstigatorComponent.h>
-#include <components/parryTargetComponent.h>
+#include <components/parryTargetComponent.hpp>
 
 struct ParryInstance {
 	const godot::Vector3 instigatorPosition;
@@ -11,7 +11,7 @@ struct ParryInstance {
 	const ParryInstigatorComponent::ActivateParams instigatorParams;
 
 	ParryInstance(const ParryInstigatorComponent& instigator, const ParryTargetComponent& target,
-			const ParryInstigatorComponent::ActivateParams params)
+		const ParryInstigatorComponent::ActivateParams params)
 		: instigatorPosition(instigator.getPosition())
 		, targetPosition(target.getPosition())
 		, instigatorParams(params) {}
@@ -28,4 +28,8 @@ struct ParryInstance {
 		const auto dir3D = getVectorToTarget();
 		return godot::Vector3(dir3D.x, 0, dir3D.z).normalized();
 	}
+};
+
+struct ParryFreezeInstance {
+	float time;
 };

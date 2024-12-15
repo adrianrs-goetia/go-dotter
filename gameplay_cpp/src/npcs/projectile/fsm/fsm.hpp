@@ -4,6 +4,7 @@
 
 #include "states/launched.hpp"
 #include "states/parried.hpp"
+#include "states/parryFreeze.hpp"
 #include "states/postParryLaunch.hpp"
 
 namespace fsm::projectile {
@@ -14,6 +15,7 @@ class Fsm {
 
 	Launched m_launched;
 	Parried m_parried;
+	ParryFreeze m_parryFreeze;
 	PostParryLaunch m_postParryLaunch;
 
 public:
@@ -30,20 +32,17 @@ public:
 		_processState(m_currentState->handleExternalAction(m_context, action));
 	}
 
-	template <typename T>
-	void init() {
-		if constexpr (std::is_same_v<T, TLaunched>) {
-			m_currentState = &m_launched;
-		}
-		else if constexpr (std::is_same_v<T, TParried>) {
-			m_currentState = &m_parried;
-		}
-		else if constexpr (std::is_same_v<T, TPostParryLaunched>) {
-			m_currentState = &m_postParryLaunch;
-		}
-		else {
-			ASSERT(false)
-		}
+	void init(TState state) {
+		std::visit(
+			overloaded{
+				[](std::monostate) { ASSERT(false) },
+				[this](TLaunched) { m_currentState = &m_launched; },
+				[this](TParried) { m_currentState = &m_parried; },
+				[this](TPostParryLaunched) { m_currentState = &m_postParryLaunch; },
+				[this](TParryFreeze) { m_currentState = &m_parryFreeze; },
+			},
+			state);
+
 		ASSERT_NOTNULL(m_currentState)
 		_processState(m_currentState->enter(m_context));
 	}
@@ -66,12 +65,16 @@ protected:
 		}
 
 		BaseState* newState = nullptr;
-		if (std::holds_alternative<TLaunched>(ret)) {
-			newState = &m_launched;
-		}
-		else if (std::holds_alternative<TParried>(ret)) {
-			newState = &m_parried;
-		}
+		std::visit(
+			overloaded{
+				[](std::monostate) { ASSERT(false) },
+				[&](TLaunched) { newState = &m_launched; },
+				[&](TParried) { newState = &m_parried; },
+				[&](TPostParryLaunched) { newState = &m_postParryLaunch; },
+				[&](TParryFreeze) { newState = &m_parryFreeze; },
+			},
+			ret);
+
 		if (newState && newState->canEnter()) {
 			ASSERT_NOTNULL(m_currentState)
 			m_currentState->exit(m_context);

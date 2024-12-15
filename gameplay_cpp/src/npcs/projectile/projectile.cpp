@@ -3,7 +3,7 @@
 #include "fsm/fsm.hpp"
 
 #include <components/attackTargetComponent.h>
-#include <components/parryTargetComponent.h>
+#include <components/parryTargetComponent.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
@@ -32,7 +32,7 @@ void Projectile::_enter_tree() {
 
 	m_fsm = new fsm::projectile::Fsm(fsm::projectile::Context{ this });
 	ASSERT_NOTNULL(m_fsm)
-	m_fsm->init<fsm::projectile::TLaunched>();
+	m_fsm->init(fsm::projectile::TLaunched());
 
 	m_parryTargetComp = getComponentOfNode<ParryTargetComponent>(this);
 	m_attackTargetComp = memnew(AttackTargetComponent);
@@ -41,7 +41,9 @@ void Projectile::_enter_tree() {
 	ASSERT_NOTNULL(m_parryTargetComp)
 	ASSERT_NOTNULL(m_attackTargetComp)
 
-	m_parryTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
+	m_parryTargetComp->_cbOnParry = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
+	m_parryTargetComp->_cbOnFreeze = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
+
 	m_attackTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
 
 	add_to_group(godotgroups::projectile);

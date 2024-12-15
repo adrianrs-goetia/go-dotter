@@ -8,6 +8,8 @@
 #include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/parryInstigatorComponent.h>
+#include <components/dataObjects/parryInstance.hpp>
+#include <components/parryTargetComponent.hpp>
 
 #define CONFIG_PREFIX "player"
 
@@ -63,15 +65,11 @@ public:
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			context.physics.velocity.y += GETPARAM_D("jumpStrength");
-			{
-				if (auto lock = context.parry->m_lastParryContact.lock()) {
-					LOG(INFO, "ParryContact")
-				}
-				else {
-					LOG(INFO, "NO PARRY CONTACT")
-				}
+			if (auto lock = context.parry->m_lastParryContact.lock()) {
+				lock->getTarget()->onFreeze(ParryFreezeInstance{ GETPARAM_F("parry", "freezetime") });
 			}
+
+			context.physics.velocity.y += GETPARAM_D("jumpStrength");
 			return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {

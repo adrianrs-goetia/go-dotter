@@ -34,13 +34,18 @@ public:
 		TState ret;
 		std::visit(
 			overloaded{
-				[&](AttackInstance&& action)
+				[](const auto&) { ASSERT(false) },
+				[&](const AttackInstance& action)
 				{
 					const auto dir = action.getDirection();
 					context.owner->set_linear_velocity(dir * action.attackStrength);
-					ret = TPostParryLaunched{};
+					ret = TPostParryLaunched();
 				},
-				[](auto&&) {},
+				[&](const ParryFreezeInstance& action)
+				{
+					context.forwardedAction = action;
+					ret = TParryFreeze();
+				},
 			},
 			action);
 

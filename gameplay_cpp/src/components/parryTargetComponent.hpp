@@ -4,10 +4,13 @@
 #include <core/core.hpp>
 #include <core/nodeComponent.hpp>
 
+#include <variant>
+
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 
 class ParryInstance;
+class ParryFreezeInstance;
 
 class ParryTargetComponent : public NodeComponent {
 	GDCLASS(ParryTargetComponent, NodeComponent)
@@ -24,7 +27,12 @@ public:
 public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
-	std::function<void(const ParryInstance& instance)> _callback = nullptr;
+
+	// using External = std::variant<std::monostate, ParryInstance, ParryFreezeInstance>;
+	// std::function<void(const External& instance)> _callback = nullptr;
+	std::function<void(const ParryInstance& instance)> _cbOnParry = nullptr;
+	std::function<void(const ParryFreezeInstance& instance)> _cbOnFreeze = nullptr;
+
 	// EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
 	std::shared_ptr<ParryContact> m_parryContact;
@@ -53,11 +61,17 @@ public:
 	}
 
 	std::shared_ptr<ParryContact> onParried(const ParryInstance& parryInstance) {
-		if (_callback) {
-			_callback(parryInstance);
+		if (_cbOnParry) {
+			_cbOnParry(parryInstance);
 		}
 		m_parryContact = std::make_shared<ParryContact>([this]() { return this; });
 		return m_parryContact;
+	}
+
+	void onFreeze(const ParryFreezeInstance& freeze){
+		if (_cbOnFreeze) {
+			_cbOnFreeze(freeze);
+		}
 	}
 
 	godot::Vector3 getPosition() const {

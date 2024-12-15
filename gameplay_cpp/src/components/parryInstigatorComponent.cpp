@@ -1,6 +1,6 @@
 #include "parryInstigatorComponent.h"
 
-#include "parryTargetComponent.h"
+#include "parryTargetComponent.hpp"
 #include <components/dataObjects/parryInstance.hpp>
 
 #include <godot_cpp/classes/character_body3d.hpp>

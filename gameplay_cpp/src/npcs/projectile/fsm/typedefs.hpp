@@ -11,16 +11,18 @@ class Projectile;
 
 namespace fsm::projectile {
 
+using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryFreezeInstance>;
+
 struct Context {
 	Projectile* owner = nullptr;
+	std::optional<ExternalAction> forwardedAction;
 };
-
-using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryUtilization>;
 
 struct TLaunched {};
 struct TParried {};
+struct TParryFreeze {};
 struct TPostParryLaunched {};
-using TState = std::variant<std::monostate, TLaunched, TParried, TPostParryLaunched>;
+using TState = std::variant<std::monostate, TLaunched, TParried, TParryFreeze, TPostParryLaunched>;
 
 class BaseState {
 public:
