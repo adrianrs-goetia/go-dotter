@@ -5,6 +5,7 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
+#include <components/animationComponent.h>
 #include <components/parryInstigatorComponent.h>
 #include <components/dataObjects/parryInstance.hpp>
 
@@ -54,9 +55,14 @@ public:
 			// Enter on ground by default, should discern if in air or onGround?
 			return TOnGroundState();
 		}
-		if (const auto pi = context.parry->activateParry(
-					ParryInstigatorComponent::ActivateParams{ context.input->getInputRelative3d(),
-							GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
+
+		godot::Vector3 parryDirection = context.input->getInputRelative3d();
+		if (parryDirection.length_squared() < 0.2f) {
+			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
+		}
+
+		if (const auto pi = context.parry->activateParry(ParryInstigatorComponent::ActivateParams{
+					parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);

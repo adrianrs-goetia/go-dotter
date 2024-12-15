@@ -10,6 +10,7 @@ class AnimationComponent;
 class InputManager;
 
 namespace godot {
+class Node3D;
 class AudioStreamPlayer3D;
 class GPUParticles3D;
 } //namespace godot
