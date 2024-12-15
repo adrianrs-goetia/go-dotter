@@ -17,7 +17,8 @@ class Fsm {
 	PostParryLaunch m_postParryLaunch;
 
 public:
-	Fsm(Context context): m_context(context){}
+	Fsm(Context context)
+		: m_context(context) {}
 
 	TState getCurrentState() const {
 		ASSERT_NOTNULL(m_currentState)

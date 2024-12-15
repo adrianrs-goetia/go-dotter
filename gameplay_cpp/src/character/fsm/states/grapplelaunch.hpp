@@ -26,7 +26,7 @@ public:
 		// TODO... What to do here other than launch?
 		GrappleTargetComponent::LaunchContext launch = context.grapple->launch(GETPARAM_D("grapple", "launchStrength"));
 		if (launch.type != GrappleTargetComponent::LaunchType::INSTIGATOR_ANCHOR &&
-				launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
+			launch.type != GrappleTargetComponent::LaunchType::BOTH_ANCHOR) {
 			context.physics.velocity = launch.impulse;
 		}
 		return TInAirState();

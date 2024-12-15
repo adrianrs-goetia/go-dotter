@@ -14,9 +14,11 @@ inline void movement_acceleration(Context& context, float acceleration, float de
 	// direction
 	if (context.input->m_inputRaw.abs() > godot::Vector2()) {
 		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x,
-				context.input->m_inputCameraRelative.x * GETPARAM_F("walkSpeed"), acceleration * delta);
+			context.input->m_inputCameraRelative.x * GETPARAM_F("walkSpeed"),
+			acceleration * delta);
 		context.physics.velocity.z = godot::Math::move_toward(context.physics.velocity.z,
-				context.input->m_inputCameraRelative.y * GETPARAM_F("walkSpeed"), acceleration * delta);
+			context.input->m_inputCameraRelative.y * GETPARAM_F("walkSpeed"),
+			acceleration * delta);
 	}
 	else {
 		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);

@@ -53,7 +53,7 @@ void TurretNode::_physics_process(double delta) {
 	if (m_gunOpening) {
 		const Vector3 direction = getGunOpeningDirection() * -1.f;
 		Transform3D gunOpeningAudioVisualTransform(
-				createBasisFromDirection(direction), getGunOpeningLocation() + (direction * 0.5));
+			createBasisFromDirection(direction), getGunOpeningLocation() + (direction * 0.5));
 		if (m_gunOpeningAudioPlayer)
 			m_gunOpeningAudioPlayer->set_global_transform(gunOpeningAudioVisualTransform);
 		if (m_gunOpeningGpuParticles)
@@ -84,7 +84,7 @@ void TurretNode::rotateHeadTowardsTarget() {
 		const Vector3 toTarget3D = getDirectionToTarget(m_gunRotPoint);
 		const Vector3 toTarget = Vector3(toTarget3D.x, 0, toTarget3D.z).normalized();
 		m_gunRotPoint->set_global_basis(
-				createBasisFromDirection(toTarget, getScaleFromBasis(m_gunRotPoint->get_global_basis())));
+			createBasisFromDirection(toTarget, getScaleFromBasis(m_gunRotPoint->get_global_basis())));
 	}
 	// Pitch rotation
 	{
@@ -118,8 +118,8 @@ void TurretNode::fireProjectile() {
 
 Vector3 TurretNode::getDirectionToTarget(const Node3D* source) const {
 	return Vector3((m_target->get_global_position() + Vector3(0, /*@ todo get player centre*/ 1, 0)) -
-			source->get_global_position())
-			.normalized();
+		source->get_global_position())
+		.normalized();
 }
 
 Vector3 TurretNode::getGunOpeningLocation() const {

@@ -11,8 +11,8 @@
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
 
-namespace fsm::player{
-	class Fsm;
+namespace fsm::player {
+class Fsm;
 }
 
 using namespace godot;

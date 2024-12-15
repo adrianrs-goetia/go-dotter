@@ -53,8 +53,9 @@ public:
 			p->set_velocity(impulse);
 		}
 		else {
-			LOG(ERROR, "GrappleTargetComponent impulse on invalid parent",
-					get_parent()->get_name().get_basename().utf8().get_data())
+			LOG(ERROR,
+				"GrappleTargetComponent impulse on invalid parent",
+				get_parent()->get_name().get_basename().utf8().get_data())
 		}
 		return impulse;
 	}
@@ -62,7 +63,7 @@ public:
 public: // getters-setters
 	void setIsAnchor(bool anchored) {
 		if (get_parent() && !getParentNode<godot::RigidBody3D>(this) && !getParentNode<godot::CharacterBody3D>(this) &&
-				!anchored) {
+			!anchored) {
 			m_anchored = true;
 			LOG(WARN, "A Node that is not inheriting from either Rigidbody or CharacterBody3D must be an anchor");
 			return;

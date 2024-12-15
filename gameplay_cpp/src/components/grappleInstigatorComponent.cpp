@@ -59,8 +59,9 @@ void GrappleInstigatorComponent::_physics_process(double delta) {
 	// tmp targeting system for grappling
 	if (getTarget()) {
 		DebugDraw::Position(
-				Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), getTarget()->get_global_position()),
-				Color(0, 0, 1), delta);
+			Transform3D(Basis(Vector3(0, 1, 0), 0, Vector3(3, 3, 3)), getTarget()->get_global_position()),
+			Color(0, 0, 1),
+			delta);
 		DebugDraw::Line(get_global_position(), getTarget()->get_global_position(), Color(0, 1, 0));
 	}
 }
@@ -72,12 +73,14 @@ void GrappleInstigatorComponent::areaEnteredDetection(Area3D* area) {
 		auto rid = gn->getRid();
 		m_inRangeTargets->insert({ rid, gn });
 		auto wp = std::weak_ptr<InRangeTargetMap>(m_inRangeTargets);
-		gn->addOnDestructionCb(NodeComponent::DestructionId::GRAPPLECOMPONENT_INRANGE, [wp, rid]() {
-			auto lock = wp.lock();
-			if (lock) {
-				lock->erase(rid);
-			}
-		});
+		gn->addOnDestructionCb(NodeComponent::DestructionId::GRAPPLECOMPONENT_INRANGE,
+			[wp, rid]()
+			{
+				auto lock = wp.lock();
+				if (lock) {
+					lock->erase(rid);
+				}
+			});
 	}
 }
 
@@ -95,7 +98,7 @@ void GrappleInstigatorComponent::areaExitedDetection(Area3D* area) {
 void GrappleInstigatorComponent::determineTarget() {
 	RETURN_IF_EDITOR(void())
 	ASSERT_NOTNULL_MSG(m_getInstigatorDirection,
-			"GrappleInstigatorComponent requires setInstigatorDirection to be set to determineTarget")
+		"GrappleInstigatorComponent requires setInstigatorDirection to be set to determineTarget")
 
 	const Vector3 cam3d = m_getInstigatorDirection(*this);
 	float lowest_dot = -1.0f;
@@ -130,10 +133,10 @@ GrappleInstigatorComponent::LaunchContext GrappleInstigatorComponent::launch(dou
 			const float subject_weight = getMass() / max_mass;
 			const float instigator_weight = subject->getMass() / max_mass;
 			LOG(DEBUG, "Grapple launch -- BOTH_NON_ANCHOR")
-			std::ignore = subject->impulseOwner(
-					_determineLaunchDirectionAtob(subject, this), getPullStrength() * subject_weight);
+			std::ignore =
+				subject->impulseOwner(_determineLaunchDirectionAtob(subject, this), getPullStrength() * subject_weight);
 			context.impulse =
-					impulseOwner(_determineLaunchDirectionAtob(this, subject), getPullStrength() * instigator_weight);
+				impulseOwner(_determineLaunchDirectionAtob(this, subject), getPullStrength() * instigator_weight);
 			break;
 		}
 		case LaunchType::INSTIGATOR_ANCHOR: {
@@ -164,6 +167,6 @@ GrappleBaseComponent::LaunchType GrappleInstigatorComponent::_determineLaunchTyp
 }
 
 Vector3 GrappleInstigatorComponent::_determineLaunchDirectionAtob(
-		const GrappleBaseComponent* a, const GrappleBaseComponent* b) {
+	const GrappleBaseComponent* a, const GrappleBaseComponent* b) {
 	return Vector3(b->get_global_position() - a->get_global_position()).normalized();
 }

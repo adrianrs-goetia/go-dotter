@@ -15,7 +15,7 @@ struct Context {
 	Projectile* owner = nullptr;
 };
 
-using ExternalAction = std::variant<AttackInstance, ParryInstance>;
+using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryUtilization>;
 
 struct TLaunched {};
 struct TParried {};

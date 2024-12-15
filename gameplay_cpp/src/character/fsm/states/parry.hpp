@@ -62,7 +62,7 @@ public:
 		}
 
 		if (const auto pi = context.parry->activateParry(ParryInstigatorComponent::ActivateParams{
-					parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
+				parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);

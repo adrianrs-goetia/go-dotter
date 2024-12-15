@@ -6,8 +6,8 @@
 #include <managers/inputManager.h>
 
 #include <components/animationComponent.h>
-#include <components/parryInstigatorComponent.h>
 #include <components/grappleInstigatorComponent.h>
+#include <components/parryInstigatorComponent.h>
 
 #define CONFIG_PREFIX "player"
 
@@ -51,7 +51,7 @@ public:
 		context.anim->idleRunValue(idleWalkBlend);
 
 		context.anim->rotateRootTowardsVector(
-				context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
 		return {};
 	}
@@ -59,7 +59,7 @@ public:
 	TState handleInput(Context& context, float delta) override {
 		// direction
 		utils::movement_acceleration(
-				context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
+			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {

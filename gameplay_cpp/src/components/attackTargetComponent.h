@@ -32,8 +32,8 @@ public:
 		_setComponentEnabledImpl(enabled);
 	}
 
-	void receiveAttack(const AttackInstance& instance){
-		if (_callback){
+	void receiveAttack(const AttackInstance& instance) {
+		if (_callback) {
 			return _callback(instance);
 		}
 	}

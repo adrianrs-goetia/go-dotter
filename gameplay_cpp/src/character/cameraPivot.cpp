@@ -20,14 +20,16 @@ void CameraPivot::process(const fsm::player::Context& context, float delta) {
 	switch (context.input->m_mode) {
 		case EInputMode::KEYBOARD_ONLY: {
 			_rotation(context,
-					GETPARAM_F("keyboardOnly", "xMultiplier") * (GETPARAM_B("keyboardOnly", "xInverted") ? 1.f : -1.f),
-					GETPARAM_F("keyboardOnly", "yMultiplier") * (GETPARAM_B("keyboardOnly", "yInverted") ? 1.f : -1.f),
-					delta);
+				GETPARAM_F("keyboardOnly", "xMultiplier") * (GETPARAM_B("keyboardOnly", "xInverted") ? 1.f : -1.f),
+				GETPARAM_F("keyboardOnly", "yMultiplier") * (GETPARAM_B("keyboardOnly", "yInverted") ? 1.f : -1.f),
+				delta);
 			break;
 		}
 		case EInputMode::JOYPAD: {
-			_rotation(context, GETPARAM_F("joypad", "xMultiplier") * (GETPARAM_B("joypad", "xInverted") ? 1.f : -1.f),
-					GETPARAM_F("joypad", "yMultiplier") * (GETPARAM_B("joypad", "yInverted") ? 1.f : -1.f), delta);
+			_rotation(context,
+				GETPARAM_F("joypad", "xMultiplier") * (GETPARAM_B("joypad", "xInverted") ? 1.f : -1.f),
+				GETPARAM_F("joypad", "yMultiplier") * (GETPARAM_B("joypad", "yInverted") ? 1.f : -1.f),
+				delta);
 			break;
 		}
 		default:
@@ -43,8 +45,10 @@ void CameraPivot::processInput(const fsm::player::Context& context, float delta)
 	// Mnk gets floaty when handled each frame, so it is only updated on input events
 	switch (context.input->m_mode) {
 		case EInputMode::MOUSE_N_KEYBOARD: {
-			_rotation(context, GETPARAM_F("mnk", "xMultiplier") * (GETPARAM_B("mnk", "xInverted") ? 1.f : -1.f),
-					GETPARAM_F("mnk", "yMultiplier") * (GETPARAM_B("mnk", "yInverted") ? 1.f : -1.f), delta);
+			_rotation(context,
+				GETPARAM_F("mnk", "xMultiplier") * (GETPARAM_B("mnk", "xInverted") ? 1.f : -1.f),
+				GETPARAM_F("mnk", "yMultiplier") * (GETPARAM_B("mnk", "yInverted") ? 1.f : -1.f),
+				delta);
 			break;
 		}
 		default:

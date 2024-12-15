@@ -45,8 +45,9 @@ void ParryInstigatorComponent::_physics_process(double delta) {
 
 void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 	if (m_area->get_rid() == area->get_rid()) {
-		LOG(DEBUG, "ParryInstigatorComponent cannot collide with itself",
-				get_parent() ? get_parent()->get_name() : get_name())
+		LOG(DEBUG,
+			"ParryInstigatorComponent cannot collide with itself",
+			get_parent() ? get_parent()->get_name() : get_name())
 		return;
 	}
 	if (auto* parrytarget = getAdjacentNode<ParryTargetComponent>(area)) {

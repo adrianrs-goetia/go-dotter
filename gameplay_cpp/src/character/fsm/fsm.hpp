@@ -33,14 +33,17 @@ public:
 	}
 
 	void init(TState state) {
-		std::visit(overloaded{ [this](TAttackState) { _currentState = &_attackState; },
-						   [this](TOnGroundState) { _currentState = &_onGroundState; },
-						   [this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
-						   [this](TInAirState) { _currentState = &_inAirState; },
-						   [this](TParryState) { _currentState = &_parryState; },
-						   [this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
-						   [this](std::monostate) { ASSERT(false); } },
-				state);
+		std::visit(
+			overloaded{
+				[this](TAttackState) { _currentState = &_attackState; },
+				[this](TOnGroundState) { _currentState = &_onGroundState; },
+				[this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
+				[this](TInAirState) { _currentState = &_inAirState; },
+				[this](TParryState) { _currentState = &_parryState; },
+				[this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
+				[this](std::monostate) { ASSERT(false); },
+			},
+			state);
 
 		ASSERT_NOTNULL(_currentState)
 		_processState(_currentState->enter(_context));
@@ -78,14 +81,17 @@ private:
 
 		BaseState* newState = nullptr;
 
-		std::visit(overloaded{ [&](TAttackState) { newState = &_attackState; },
-						   [&](TOnGroundState) { newState = &_onGroundState; },
-						   [&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
-						   [&](TInAirState) { newState = &_inAirState; },
-						   [&](TParryState) { newState = &_parryState; },
-						   [&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
-						   [&](std::monostate) { ASSERT(false); } },
-				state);
+		std::visit(
+			overloaded{
+				[&](TAttackState) { newState = &_attackState; },
+				[&](TOnGroundState) { newState = &_onGroundState; },
+				[&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
+				[&](TInAirState) { newState = &_inAirState; },
+				[&](TParryState) { newState = &_parryState; },
+				[&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
+				[&](std::monostate) { ASSERT(false); },
+			},
+			state);
 
 		if (newState && newState->canEnter()) {
 			ASSERT_NOTNULL(_currentState)

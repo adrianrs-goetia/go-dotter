@@ -31,13 +31,20 @@ public:
 	}
 
 	TState handleExternalAction(Context& context, const ExternalAction& action) override {
-		if (std::holds_alternative<AttackInstance>(action)) {
-			auto& attackInstance = std::get<AttackInstance>(action);
-			const auto dir = attackInstance.getDirection();
-			context.owner->set_linear_velocity(dir * attackInstance.attackStrength);
-			return TPostParryLaunched{};
-		}
-		return {};
+		TState ret;
+		std::visit(
+			overloaded{
+				[&](AttackInstance&& action)
+				{
+					const auto dir = action.getDirection();
+					context.owner->set_linear_velocity(dir * action.attackStrength);
+					ret = TPostParryLaunched{};
+				},
+				[](auto&&) {},
+			},
+			action);
+
+		return ret;
 	}
 
 	TState physicsProcess(Context& context, float delta) override {

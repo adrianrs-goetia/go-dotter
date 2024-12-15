@@ -84,7 +84,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.audioVisual.particles = particles;
 
 	grappleInstigator->setInstigatorDirection(
-			[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });
+		[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });
 	stateContext.grapple = grappleInstigator;
 
 	m_fsm = new fsm::player::Fsm(stateContext);

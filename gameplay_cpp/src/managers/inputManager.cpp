@@ -33,7 +33,7 @@ void InputManager::_physics_process(double delta) {
 
 	// Input movement direction (wasd or leftstick equivalent)
 	m_inputRaw = input->get_vector(
-			InputString::moveLeft, InputString::moveRight, InputString::moveForward, InputString::moveBackward, 0.05);
+		InputString::moveLeft, InputString::moveRight, InputString::moveForward, InputString::moveBackward, 0.05);
 
 	// Input actions
 	if (input->is_action_just_pressed(InputString::jump)) {
@@ -120,8 +120,11 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 			}
 			case EInputMode::JOYPAD: {
 				if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
-					m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight,
-							InputString::cameraDown, InputString::cameraUp, 0.05);
+					m_motion = input->get_vector(InputString::cameraLeft,
+						InputString::cameraRight,
+						InputString::cameraDown,
+						InputString::cameraUp,
+						0.05);
 				}
 				break;
 			}
@@ -136,8 +139,11 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 		}
 		else if (auto* p_joypadmotion = cast_to<InputEventJoypadMotion>(*p_event)) {
 			m_mode = EInputMode::JOYPAD;
-			m_motion = input->get_vector(InputString::cameraLeft, InputString::cameraRight, InputString::cameraDown,
-					InputString::cameraUp, 0.05);
+			m_motion = input->get_vector(InputString::cameraLeft,
+				InputString::cameraRight,
+				InputString::cameraDown,
+				InputString::cameraUp,
+				0.05);
 		}
 	}
 }

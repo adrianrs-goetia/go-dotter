@@ -53,8 +53,9 @@ public:
 
 	TState physicsProcess(Context& context, float delta) override {
 		DebugDraw::Position(
-				godot::Transform3D(Basis(), godot::Vector3(context.physics.position + godot::Vector3(0, 1, 0))),
-				godot::Color(0.7, 0, 0.5), delta);
+			godot::Transform3D(Basis(), godot::Vector3(context.physics.position + godot::Vector3(0, 1, 0))),
+			godot::Color(0.7, 0, 0.5),
+			delta);
 
 		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "stateLength"))) {
 			if (context.physics.isOnGround)

@@ -44,7 +44,7 @@ public:
 		context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 		context.anim->rotateRootTowardsVector(
-				context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
 		return {};
 	}
