@@ -55,7 +55,26 @@ void AnimationComponent::rotateRootTowardsVector(godot::Vector3 vector, float de
 }
 
 void AnimationComponent::idleRunValue(float value) {
-	set("parameters/blend_position", value);
+	set("parameters/run/blend_position", value);
+}
+
+void AnimationComponent::setMovement(MovementAnimationType type) {
+	switch (type) {
+		case MovementAnimationType::WALKING:
+			set("parameters/movement/blend_amount", 0);
+			break;
+		case MovementAnimationType::AIRBORNE:
+			set("parameters/movement/blend_amount", 1);
+			break; 
+	}
+}
+
+void AnimationComponent::inAir() {
+	setMovement(MovementAnimationType::AIRBORNE);
+}
+
+void AnimationComponent::onGround() {
+	setMovement(MovementAnimationType::WALKING);
 }
 
 void AnimationComponent::setActive(bool active) {
