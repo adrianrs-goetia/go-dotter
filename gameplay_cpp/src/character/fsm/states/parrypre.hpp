@@ -41,12 +41,14 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.anim->doParry();
 		m_enterTimestamp.setTimestamp();
 		context.physics.velocity = godot::Vector3(); // zero out velocity while in
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.anim->dontParry();
 		m_exitTimestamp.setTimestamp();
 		return {};
 	}

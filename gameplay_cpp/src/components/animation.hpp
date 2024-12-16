@@ -21,6 +21,13 @@ private:
 		WALKING,
 	};
 
+	enum ParryAnimationType {
+		PARRYHIGH,
+		PARRYLOW,
+	};
+	
+	void setParryType(ParryAnimationType type);
+
 		void setMovement(MovementAnimationType type) {
 		switch (type) {
 			case MovementAnimationType::WALKING:
@@ -103,6 +110,25 @@ public:
 		vector.normalize();
 
 		m_animRoot->set_basis(createBasisFromDirection(vector));
+	}
+
+	void doParry() {
+		set("parameters/move_and_parry/add_amount", 1);
+	}
+
+	void dontParry() {
+		set("parameters/move_and_parry/add_amount", 0);
+	}
+
+	void setParryType(ParryAnimationType type) {
+		switch (type) {
+			case ParryAnimationType::PARRYHIGH:
+				set("parameters/parry_type/blend_amount", 0);
+				break;
+			case ParryAnimationType::PARRYLOW:
+				set("parameters/parry_type/blend_amount", 1);
+				break; 
+		}
 	}
 
 	void inAir() {
