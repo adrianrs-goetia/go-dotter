@@ -14,11 +14,27 @@ class Skeleton3D;
 class AnimationComponent : public godot::AnimationTree {
 	GDCLASS(AnimationComponent, godot::AnimationTree)
 
+private:
+	enum MovementAnimationType {
+		AIRBORNE,
+		WALKING,
+	};
+	enum ParryAnimationType {
+		PARRYHIGH,
+		PARRYLOW,
+	};
+
+	void setMovement(MovementAnimationType type);
+	void setParryType(ParryAnimationType type);
+	
+
 public:
 	enum EAnim : int {
 		NONE = -1,
 		ATTACK = 5,
 	};
+
+	
 
 	godot::NodePath m_pathToRootAnimationNode;
 	godot::NodePath m_pathToAnimatedCharacterScene;
@@ -39,6 +55,10 @@ public:
 	void rotateRootTowardsVector(godot::Vector3 vector, float delta, float slerpWeight);
 
 	void idleRunValue(float value);
+	void inAir();
+	void doParry();
+	void dontParry();
+	void onGround();
 	void setActive(bool active);
 	void playAnimation(EAnim anim);
 

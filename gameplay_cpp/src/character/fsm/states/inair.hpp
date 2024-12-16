@@ -24,10 +24,12 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.anim->inAir();
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.anim->onGround();
 		return {};
 	}
 
