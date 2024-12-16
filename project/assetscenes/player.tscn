@@ -1,7 +1,7 @@
-[gd_scene load_steps=23 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=29 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
-[ext_resource type="PackedScene" uid="uid://d1mu4t3fvpx8t" path="res://models/character/character.blend" id="1_s8c4i"]
+[ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
 size = Vector3(2.08374, 1.7627, 0.460938)
@@ -28,24 +28,50 @@ sky = SubResource("Sky_j0wsn")
 [sub_resource type="SphereShape3D" id="SphereShape3D_6du44"]
 radius = 2.89418
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xp3ko"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_27cnj"]
+animation = &"airborne"
+
+[sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_j6qrd"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_o6rwv"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fovmf"]
+animation = &"Parry_backhand"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dk4jn"]
+animation = &"Parry_normal"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_3pp76"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ct0gk"]
 animation = &"idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_clhr5"]
-animation = &"walk"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jmadh"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v507m"]
 animation = &"run"
 
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_4e2dl"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_xp3ko")
-blend_point_0/pos = 0.02
-blend_point_1/node = SubResource("AnimationNodeAnimation_clhr5")
-blend_point_1/pos = 0.5
-blend_point_2/node = SubResource("AnimationNodeAnimation_jmadh")
-blend_point_2/pos = 1.0
-min_space = 0.0
-value_label = "idleWalkValue"
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_alv0l"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_ct0gk")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_v507m")
+blend_point_1/pos = 1.0
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ul21n"]
+graph_offset = Vector2(-514.837, -8.16425)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_27cnj")
+nodes/Animation/position = Vector2(-520, 180)
+nodes/move_and_parry/node = SubResource("AnimationNodeAdd2_j6qrd")
+nodes/move_and_parry/position = Vector2(120, 100)
+nodes/movement/node = SubResource("AnimationNodeBlend2_o6rwv")
+nodes/movement/position = Vector2(-160, 60)
+nodes/parry_high/node = SubResource("AnimationNodeAnimation_fovmf")
+nodes/parry_high/position = Vector2(-440, 520)
+nodes/parry_low/node = SubResource("AnimationNodeAnimation_dk4jn")
+nodes/parry_low/position = Vector2(-440, 400)
+nodes/parry_type/node = SubResource("AnimationNodeBlend2_3pp76")
+nodes/parry_type/position = Vector2(-140, 320)
+nodes/run/node = SubResource("AnimationNodeBlendSpace1D_alv0l")
+nodes/run/position = Vector2(-520, 40)
+node_connections = [&"move_and_parry", 0, &"movement", &"move_and_parry", 1, &"parry_type", &"movement", 0, &"run", &"movement", 1, &"Animation", &"output", 0, &"move_and_parry", &"parry_type", 0, &"parry_low", &"parry_type", 1, &"parry_high"]
 
 [sub_resource type="Curve" id="Curve_unhab"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]
@@ -156,9 +182,12 @@ ColliderPath = NodePath("../ParryDetection")
 RootAnimationNode = NodePath("../meshAnchor")
 AnimatedCharacterScene = NodePath("../meshAnchor/character")
 root_node = NodePath("../meshAnchor/character")
-tree_root = SubResource("AnimationNodeBlendSpace1D_4e2dl")
+tree_root = SubResource("AnimationNodeBlendTree_ul21n")
 anim_player = NodePath("/root/@EditorNode@17148/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/AnimationPlayer")
-parameters/blend_position = 0.00162338
+parameters/move_and_parry/add_amount = 0.0
+parameters/movement/blend_amount = 0
+parameters/parry_type/blend_amount = 0.0
+parameters/run/blend_position = 0.001
 
 [node name="ComponentAttackInstigator" type="ComponentAttackInstigator" parent="."]
 ColliderPath = NodePath("../meshAnchor/AttackCollider")
