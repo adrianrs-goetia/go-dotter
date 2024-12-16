@@ -69,6 +69,25 @@ void AnimationComponent::setMovement(MovementAnimationType type) {
 	}
 }
 
+void AnimationComponent::doParry() {
+	set("parameters/move_and_parry/add_amount", 1);
+}
+
+void AnimationComponent::dontParry() {
+	set("parameters/move_and_parry/add_amount", 0);
+}
+
+void AnimationComponent::setParryType(ParryAnimationType type) {
+	switch (type) {
+		case ParryAnimationType::PARRYHIGH:
+			set("parameters/parry_type/blend_amount", 0);
+			break;
+		case ParryAnimationType::PARRYLOW:
+			set("parameters/parry_type/blend_amount", 1);
+			break; 
+	}
+}
+
 void AnimationComponent::inAir() {
 	setMovement(MovementAnimationType::AIRBORNE);
 }

@@ -19,8 +19,14 @@ private:
 		AIRBORNE,
 		WALKING,
 	};
+	enum ParryAnimationType {
+		PARRYHIGH,
+		PARRYLOW,
+	};
 
 	void setMovement(MovementAnimationType type);
+	void setParryType(ParryAnimationType type);
+	
 
 public:
 	enum EAnim : int {
@@ -50,6 +56,8 @@ public:
 
 	void idleRunValue(float value);
 	void inAir();
+	void doParry();
+	void dontParry();
 	void onGround();
 	void setActive(bool active);
 	void playAnimation(EAnim anim);
