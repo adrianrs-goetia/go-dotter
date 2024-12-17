@@ -85,9 +85,12 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 }
 
 /**
- * Lazy macroes for declaring and binding functions to godot
+ * Common property implementations as macros
+ * Usually just getters and setters causing a bunch of boilerplate code
+ * GS == getter setter
  *
- * GS getter setter
+ * GS_..._IMPL in .h
+ * METHOD_PROPERTY_IMPL in .cpp withing _bind_methods() definition
  */
 
 #define STRINGIFY(x) #x

@@ -3,7 +3,7 @@
 #include <core/core.hpp>
 
 class GrappleTargetComponent;
-class GrappleInstigatorComponent;
+class ComponentGrappleInstigator;
 class ComponentParryInstigator;
 class ComponentAttackInstigator;
 class ComponentAnimation;
@@ -41,7 +41,7 @@ struct AudioVisualContext {
 struct Context {
 	ComponentAttackInstigator* attack = nullptr;
 	ComponentAnimation* anim = nullptr;
-	GrappleInstigatorComponent* grapple = nullptr;
+	ComponentGrappleInstigator* grapple = nullptr;
 	InputManager* input = nullptr;
 	ComponentParryInstigator* parry = nullptr;
 	PhysicsContext physics;

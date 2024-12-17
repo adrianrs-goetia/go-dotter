@@ -8,8 +8,8 @@
 
 #include <debugdraw3d/api.h>
 
-class GrappleBaseComponent : public NodeComponent {
-	GDCLASS(GrappleBaseComponent, NodeComponent)
+class ComponentGrappleBase : public NodeComponent {
+	GDCLASS(ComponentGrappleBase, NodeComponent)
 
 public:
 	enum LaunchType {
@@ -31,12 +31,12 @@ protected:
 public:
 	static void _bind_methods() {
 		using namespace godot;
-		godot::ClassDB::bind_method(D_METHOD("getIsAnchor"), &GrappleBaseComponent::getIsAnchor);
-		godot::ClassDB::bind_method(D_METHOD("setIsAnchor", "val"), &GrappleBaseComponent::setIsAnchor);
-		godot::ClassDB::bind_method(D_METHOD("getPullStrength"), &GrappleBaseComponent::getPullStrength);
-		godot::ClassDB::bind_method(D_METHOD("setPullStrength", "val"), &GrappleBaseComponent::setPullStrength);
-		godot::ClassDB::bind_method(D_METHOD("getMass"), &GrappleBaseComponent::getMass);
-		godot::ClassDB::bind_method(D_METHOD("setMass", "val"), &GrappleBaseComponent::setMass);
+		godot::ClassDB::bind_method(D_METHOD("getIsAnchor"), &ComponentGrappleBase::getIsAnchor);
+		godot::ClassDB::bind_method(D_METHOD("setIsAnchor", "val"), &ComponentGrappleBase::setIsAnchor);
+		godot::ClassDB::bind_method(D_METHOD("getPullStrength"), &ComponentGrappleBase::getPullStrength);
+		godot::ClassDB::bind_method(D_METHOD("setPullStrength", "val"), &ComponentGrappleBase::setPullStrength);
+		godot::ClassDB::bind_method(D_METHOD("getMass"), &ComponentGrappleBase::getMass);
+		godot::ClassDB::bind_method(D_METHOD("setMass", "val"), &ComponentGrappleBase::setMass);
 
 		ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anchored"), "setIsAnchor", "getIsAnchor");
 		ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pull strength"), "setPullStrength", "getPullStrength");

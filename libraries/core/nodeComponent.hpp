@@ -7,14 +7,6 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 
-/**
- * Common property implementations as macros
- * Usually just getters and setters causing a bunch of boilerplate code
- * GS == getter setter
- *
- * GS_..._IMPL in .h
- * METHOD_PROPERTY_IMPL in .cpp withing _bind_methods() definition
- */
 
 
 /**

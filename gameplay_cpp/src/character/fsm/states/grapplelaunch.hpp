@@ -5,8 +5,8 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
-#include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
+#include <components/grappleInstigator.hpp>
 
 #define CONFIG_PREFIX "player"
 

@@ -2,11 +2,11 @@
 #include <character/playerNode.h>
 #include <character/fsm/fsm.hpp>
 
-#include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <managers/inputManager.h>
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
+#include <components/grappleInstigator.hpp>
 #include <components/parryInstigator.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
@@ -57,7 +57,7 @@ void PlayerNode::_enter_tree() {
 	m_animComponent = getComponentOfNode<ComponentAnimation>(this);
 	m_parryComponent = getComponentOfNode<ComponentParryInstigator>(this);
 	auto* attackComponent = getComponentOfNode<ComponentAttackInstigator>(this);
-	auto* grappleInstigator = getComponentOfNode<GrappleInstigatorComponent>(this);
+	auto* grappleInstigator = getComponentOfNode<ComponentGrappleInstigator>(this);
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
 

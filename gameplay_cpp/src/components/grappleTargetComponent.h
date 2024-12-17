@@ -1,12 +1,12 @@
 #pragma once
 
-#include "baseClasses/grappleBaseComponent.hpp"
+#include "baseClasses/grappleBase.hpp"
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
 
-class GrappleTargetComponent : public GrappleBaseComponent {
-	GDCLASS(GrappleTargetComponent, GrappleBaseComponent)
+class GrappleTargetComponent : public ComponentGrappleBase {
+	GDCLASS(GrappleTargetComponent, ComponentGrappleBase)
 
 private:
 	godot::NodePath m_colliderPath;

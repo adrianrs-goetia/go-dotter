@@ -5,11 +5,11 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
-#include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/attackTarget.hpp>
+#include <components/grappleInstigator.hpp>
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
 
@@ -20,7 +20,7 @@
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
 
-#include <components/baseClasses/grappleBaseComponent.hpp>
+#include <components/baseClasses/grappleBase.hpp>
 #include <core/nodeComponent.hpp>
 
 using namespace godot;
@@ -38,12 +38,12 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 
 	// Components
 	godot::ClassDB::register_abstract_class<NodeComponent>();
-	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
+	godot::ClassDB::register_abstract_class<ComponentGrappleBase>();
 
 	godot::ClassDB::register_class<ComponentAttackInstigator>();
 	godot::ClassDB::register_class<ComponentAttackTarget>();
 	godot::ClassDB::register_class<ComponentAnimation>();
-	godot::ClassDB::register_class<GrappleInstigatorComponent>();
+	godot::ClassDB::register_class<ComponentGrappleInstigator>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();
 	godot::ClassDB::register_class<ComponentParryInstigator>();
 	godot::ClassDB::register_class<ComponentParryTarget>();
