@@ -13,8 +13,8 @@ namespace godot {
 class Area3D;
 }
 
-class AttackTargetComponent : public NodeComponent {
-	GDCLASS(AttackTargetComponent, NodeComponent)
+class ComponentAttackTarget : public NodeComponent {
+	GDCLASS(ComponentAttackTarget, NodeComponent)
 
 public:
 	using ReceiveAttackCb = std::function<void(const EventAttack& instance)>;

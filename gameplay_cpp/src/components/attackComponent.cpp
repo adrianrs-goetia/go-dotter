@@ -10,12 +10,12 @@
 
 using namespace godot;
 
-void AttackComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(AttackComponent, ColliderPath, NODE_PATH)
-	METHOD_INOUT_BIND(AttackComponent, areaEnteredCollider, areaExitedCollider, area)
+void ComponentAttackInstigator::_bind_methods() {
+	METHOD_PROPERTY_IMPL(ComponentAttackInstigator, ColliderPath, NODE_PATH)
+	METHOD_INOUT_BIND(ComponentAttackInstigator, areaEnteredCollider, areaExitedCollider, area)
 }
 
-void AttackComponent::setComponentEnabled(bool enabled) {
+void ComponentAttackInstigator::setComponentEnabled(bool enabled) {
 	if (!_setComponentEnabledImpl(enabled)) {
 		return;
 	}
@@ -29,27 +29,27 @@ void AttackComponent::setComponentEnabled(bool enabled) {
 	}
 }
 
-void AttackComponent::_enter_tree() {
+void ComponentAttackInstigator::_enter_tree() {
 	RETURN_IF_EDITOR(void())
 
 	m_attackCollider = get_node<Area3D>(m_attackColliderPath);
 	ASSERT_NOTNULL(m_attackCollider)
 
 	m_attackCollider->set_collision_mask_value(collisionflags::attackTarget, true);
-	m_attackCollider->connect("area_entered", callable_mp(this, &AttackComponent::areaEnteredCollider));
-	m_attackCollider->connect("area_exited", callable_mp(this, &AttackComponent::areaExitedCollider));
+	m_attackCollider->connect("area_entered", callable_mp(this, &ComponentAttackInstigator::areaEnteredCollider));
+	m_attackCollider->connect("area_exited", callable_mp(this, &ComponentAttackInstigator::areaExitedCollider));
 
 	setComponentEnabled(false);
 }
 
-void AttackComponent::_exit_tree() {
+void ComponentAttackInstigator::_exit_tree() {
 	RETURN_IF_EDITOR(void())
 }
 
-void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
+void ComponentAttackInstigator::areaEnteredCollider(godot::Area3D* area) {
 	/**
 	 * Area is assumed to not be monitoring while attack component is not enabled
-	 * This callback assumes AttackComponent is enabled
+	 * This callback assumes ComponentAttackInstigator is enabled
 	 */
 
 	++m_numOfHitNodes;
@@ -58,7 +58,7 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	auto* target = area->get_parent();
 	ASSERT_NOTNULL(target);
 
-	if (auto* attackComp = getComponentOfNode<AttackTargetComponent>(target)) {
+	if (auto* attackComp = getComponentOfNode<ComponentAttackTarget>(target)) {
 		attackComp->receiveAttack(
 			EventAttack{ get_global_transform(), attackComp->get_global_transform(), getAttackStrength() });
 	}
@@ -78,11 +78,11 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	// }
 }
 
-void AttackComponent::areaExitedCollider(godot::Area3D* area) {
+void ComponentAttackInstigator::areaExitedCollider(godot::Area3D* area) {
 	--m_numOfHitNodes;
 }
 
-AttackComponent::EState AttackComponent::getAttackState() const {
+ComponentAttackInstigator::EState ComponentAttackInstigator::getAttackState() const {
 	if (m_numOfHitNodes > 0) {
 		return EState::HIT;
 	}

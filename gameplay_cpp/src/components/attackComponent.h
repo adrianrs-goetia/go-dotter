@@ -11,8 +11,8 @@ namespace godot {
 class Area3D;
 }
 
-class AttackComponent : public NodeComponent {
-	GDCLASS(AttackComponent, NodeComponent)
+class ComponentAttackInstigator : public NodeComponent {
+	GDCLASS(ComponentAttackInstigator, NodeComponent)
 
 public:
 	enum EState {

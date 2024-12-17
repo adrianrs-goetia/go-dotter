@@ -67,10 +67,10 @@ public:
 		context.physics.velocity *= 0;
 
 		switch (context.attack->getAttackState()) {
-			case AttackComponent::EState::HIT: {
+			case ComponentAttackInstigator::EState::HIT: {
 				LOG(INFO, "HIT TARGET")
 			}
-			case AttackComponent::EState::NOT_HIT: {
+			case ComponentAttackInstigator::EState::NOT_HIT: {
 			}
 
 			default:

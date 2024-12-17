@@ -6,7 +6,7 @@
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
-class AttackTargetComponent;
+class ComponentAttackTarget;
 struct EventAttack;
 class ComponentParryTarget;
 class EventParry;
@@ -29,7 +29,7 @@ private:
 	// context?
 	// godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ComponentParryTarget* m_parryTargetComp = nullptr;
-	AttackTargetComponent* m_attackTargetComp = nullptr;
+	ComponentAttackTarget* m_attackTargetComp = nullptr;
 	godot::Ref<godot::PackedScene> m_deathParticles;
 
 	bool m_isOnGround = false;

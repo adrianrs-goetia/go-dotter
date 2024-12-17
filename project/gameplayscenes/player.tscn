@@ -160,7 +160,7 @@ tree_root = SubResource("AnimationNodeBlendSpace1D_4e2dl")
 anim_player = NodePath("/root/@EditorNode@17148/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/AnimationPlayer")
 parameters/blend_position = 0.00162338
 
-[node name="AttackComponent" type="AttackComponent" parent="."]
+[node name="ComponentAttackInstigator" type="ComponentAttackInstigator" parent="."]
 ColliderPath = NodePath("../meshAnchor/AttackCollider")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

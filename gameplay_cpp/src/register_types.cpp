@@ -40,8 +40,8 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_abstract_class<NodeComponent>();
 	godot::ClassDB::register_abstract_class<GrappleBaseComponent>();
 
-	godot::ClassDB::register_class<AttackComponent>();
-	godot::ClassDB::register_class<AttackTargetComponent>();
+	godot::ClassDB::register_class<ComponentAttackInstigator>();
+	godot::ClassDB::register_class<ComponentAttackTarget>();
 	godot::ClassDB::register_class<AnimationComponent>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();

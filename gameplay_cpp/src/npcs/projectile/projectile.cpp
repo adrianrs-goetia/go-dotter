@@ -36,7 +36,7 @@ void Projectile::_enter_tree() {
 	m_fsm->init(fsm::projectile::TLaunched());
 
 	m_parryTargetComp = getComponentOfNode<ComponentParryTarget>(this);
-	m_attackTargetComp = memnew(AttackTargetComponent);
+	m_attackTargetComp = memnew(ComponentAttackTarget);
 	add_child(m_attackTargetComp);
 
 	ASSERT_NOTNULL(m_parryTargetComp)

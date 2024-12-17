@@ -56,7 +56,7 @@ void PlayerNode::_enter_tree() {
 	auto* input = InputManager::get(*this);
 	m_animComponent = getComponentOfNode<AnimationComponent>(this);
 	m_parryComponent = getComponentOfNode<ComponentParryInstigator>(this);
-	auto* attackComponent = getComponentOfNode<AttackComponent>(this);
+	auto* attackComponent = getComponentOfNode<ComponentAttackInstigator>(this);
 	auto* grappleInstigator = getComponentOfNode<GrappleInstigatorComponent>(this);
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);

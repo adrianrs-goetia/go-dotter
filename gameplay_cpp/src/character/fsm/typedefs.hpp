@@ -5,7 +5,7 @@
 class GrappleTargetComponent;
 class GrappleInstigatorComponent;
 class ComponentParryInstigator;
-class AttackComponent;
+class ComponentAttackInstigator;
 class AnimationComponent;
 class InputManager;
 
@@ -39,7 +39,7 @@ struct AudioVisualContext {
 };
 
 struct Context {
-	AttackComponent* attack = nullptr;
+	ComponentAttackInstigator* attack = nullptr;
 	AnimationComponent* anim = nullptr;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
