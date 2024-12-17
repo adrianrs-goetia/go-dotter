@@ -23,7 +23,7 @@ class ComponentGrappleInstigator : public ComponentGrappleBase {
 	using InRangeTargetMap = std::map<godot::RID, GrappleTargetComponent*>;
 
 private:
-	godot::NodePath m_colliderPath;
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 	godot::Area3D* m_detectionArea = nullptr;
 
 	/**
@@ -204,6 +204,4 @@ public: // getters-setters
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {
 		m_getInstigatorDirection = getInstigatorDirection;
 	}
-
-	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 };

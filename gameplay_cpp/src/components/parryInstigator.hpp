@@ -25,11 +25,12 @@ class ComponentParryInstigator : public NodeComponent {
 public:
 	using GodotRID = uint64_t;
 
-public:
-	godot::NodePath m_colliderPath;
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
+
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ComponentParryTarget&> m_inRangeParryTargets;
 
+public:
 	std::weak_ptr<ParryContact> m_lastParryContact;
 
 public:
@@ -123,6 +124,4 @@ public:
 		}
 		return {};
 	}
-
-	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 };

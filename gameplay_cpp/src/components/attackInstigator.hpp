@@ -24,10 +24,11 @@ public:
 	};
 
 private:
-	godot::NodePath m_attackColliderPath;
+	GS_PATH_IMPL(m_attackColliderPath, ColliderPath)
+	GS_FLOAT_IMPL(m_attackStrength, AttackStrength);
+
 	godot::Area3D* m_attackCollider = nullptr;
 
-	float m_attackStrength = 1.f;
 	uint8_t m_numOfHitNodes = 0;
 	uint8_t m_numOfHitNodesTotal = 0;
 
@@ -99,7 +100,4 @@ public:
 		ASSERT(false)
 		return EState::NONE; // Should never happen
 	}
-
-	GS_PATH_IMPL(m_attackColliderPath, ColliderPath)
-	GS_FLOAT_IMPL(m_attackStrength, AttackStrength);
 };

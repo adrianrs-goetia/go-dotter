@@ -22,10 +22,12 @@ public:
 	// 	STATIC_TERRAIN = 3,
 	// };
 
-public:
-	godot::NodePath m_colliderPath;
+	GS_PATH_IMPL(m_colliderPath, ColliderPath)
+	// GS_ENUM_IMPL(m_parryTag, ParryTag, EParryTargetTag)
+
 	godot::Area3D* m_areaPtr = nullptr;
 
+public:
 	std::function<void(const VEventParry& instance)> _callback = nullptr;
 
 	// EParryTargetTag m_parryTag = EParryTargetTag::NONE;
@@ -74,9 +76,6 @@ public:
 		ASSERT_NOTNULL(m_areaPtr)
 		return m_areaPtr->get_global_position();
 	}
-
-	GS_PATH_IMPL(m_colliderPath, ColliderPath)
-	// GS_ENUM_IMPL(m_parryTag, ParryTag, EParryTargetTag)
 };
 
 // VARIANT_ENUM_CAST(ComponentParryTarget::EParryTargetTag)

@@ -22,7 +22,10 @@ class GPUParticles3D;
 
 class Projectile : public godot::RigidBody3D {
 	GDCLASS(Projectile, godot::RigidBody3D)
+
 private:
+	GS_PACKEDSCENE_IMPL(m_deathParticles, DeathParticles)
+
 	fsm::projectile::Fsm* m_fsm = nullptr;
 
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
@@ -30,7 +33,6 @@ private:
 	// godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ComponentParryTarget* m_parryTargetComp = nullptr;
 	ComponentAttackTarget* m_attackTargetComp = nullptr;
-	godot::Ref<godot::PackedScene> m_deathParticles;
 
 	bool m_isOnGround = false;
 
@@ -49,5 +51,4 @@ public:
 
 	void onTimeout();
 
-	GS_PACKEDSCENE_IMPL(m_deathParticles, DeathParticles)
 };

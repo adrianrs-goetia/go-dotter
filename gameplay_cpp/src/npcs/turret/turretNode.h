@@ -56,6 +56,4 @@ public:
 			return gunRotJoint() + "/GunRotCylinder_002/GunRotJoint_001/Gun";
 		}
 	};
-
-private:
 };

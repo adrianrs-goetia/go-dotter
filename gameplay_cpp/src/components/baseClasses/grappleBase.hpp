@@ -25,8 +25,9 @@ public:
 
 protected:
 	bool m_anchored = false;
-	float m_pullStrength = 0.f;
-	float m_mass = 10.f;
+
+	GS_FLOAT_IMPL(m_pullStrength, PullStrength)
+	GS_FLOAT_IMPL(m_mass, Mass)
 
 public:
 	static void _bind_methods() {
@@ -73,21 +74,5 @@ public: // getters-setters
 
 	bool getIsAnchor() const {
 		return m_anchored;
-	}
-
-	void setPullStrength(float pullStrength) {
-		m_pullStrength = pullStrength;
-	}
-
-	float getPullStrength() const {
-		return m_pullStrength;
-	}
-
-	void setMass(float mass) {
-		m_mass = mass;
-	}
-
-	float getMass() const {
-		return m_mass;
 	}
 };

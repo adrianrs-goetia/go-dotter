@@ -71,7 +71,7 @@ T* getParentNode(const godot::Node* node) {
  * Assumes that direction is a unit vector
  */
 inline godot::Basis createBasisFromDirection(
-		const godot::Vector3& direction, const godot::Vector3& scale = godot::Vector3(1, 1, 1)) {
+	const godot::Vector3& direction, const godot::Vector3& scale = godot::Vector3(1, 1, 1)) {
 	godot::Basis basis;
 	const godot::Vector3 right = g_up.cross(direction);
 	basis.set_column(0, right * scale.x); // x - right
@@ -96,34 +96,31 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define GS_PATH_IMPL(variableName, functionName)                                                                       \
-	void set##functionName(godot::NodePath value) {                                                                    \
+#define _GS_IMPL(variableName, functionName, type)                                                                     \
+protected:                                                                                                             \
+	type variableName;                                                                                                 \
+                                                                                                                       \
+public:                                                                                                                \
+	void set##functionName(type value) {                                                                               \
 		variableName = value;                                                                                          \
 	}                                                                                                                  \
-	godot::NodePath get##functionName() const {                                                                        \
+	type get##functionName() const {                                                                                   \
 		return variableName;                                                                                           \
-	}
-#define GS_BOOL_IMPL(variableName, functionName)                                                                       \
-	void set##functionName(bool value) {                                                                               \
-		variableName = value;                                                                                          \
 	}                                                                                                                  \
-	bool get##functionName() const {                                                                                   \
-		return variableName;                                                                                           \
-	}
-#define GS_FLOAT_IMPL(variableName, functionName)                                                                      \
-	void set##functionName(float value) {                                                                              \
-		variableName = value;                                                                                          \
-	}                                                                                                                  \
-	float get##functionName() const {                                                                                  \
-		return variableName;                                                                                           \
-	}
-#define GS_INT_IMPL(variableName, functionName)                                                                        \
-	void set##functionName(int value) {                                                                                \
-		variableName = value;                                                                                          \
-	}                                                                                                                  \
-	int get##functionName() const {                                                                                    \
-		return variableName;                                                                                           \
-	}
+                                                                                                                       \
+private:
+
+#define GS_PATH_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, godot::NodePath)
+
+#define GS_BOOL_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, bool)
+
+#define GS_FLOAT_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, float)
+
+#define GS_INT_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, int)
+
+#define GS_PACKEDSCENE_IMPL(variableName, functionName)                                                                \
+	_GS_IMPL(variableName, functionName, godot::Ref<godot::PackedScene>)
+
 #define GS_ENUM_IMPL(variableName, functionName, enumType)                                                             \
 	void set##functionName(int value) {                                                                                \
 		variableName = static_cast<enumType>(value);                                                                   \
@@ -134,31 +131,31 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 	enumType get##functionName##Enum() const {                                                                         \
 		return variableName;                                                                                           \
 	}
-#define GS_PACKEDSCENE_IMPL(variableName, functionName)                                                                \
-	void set##functionName(const godot::Ref<godot::PackedScene>& value) {                                              \
-		variableName = value;                                                                                          \
-	}                                                                                                                  \
-	godot::Ref<godot::PackedScene> get##functionName() const {                                                         \
-		return variableName;                                                                                           \
-	}
 
 #define METHOD_PROPERTY_IMPL(class, functionName, propertyType)                                                        \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
 	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName)),                            \
-			TOSTRING(set##functionName), TOSTRING(get##functionName));
+		TOSTRING(set##functionName),                                                                                   \
+		TOSTRING(get##functionName));
 #define METHOD_PROPERTY_ENUM_IMPL(class, functionName, propertyType, enumFields)                                       \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
-	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName),                             \
-						 godot::PropertyHint::PROPERTY_HINT_ENUM, enumFields),                                         \
-			TOSTRING(set##functionName), TOSTRING(get##functionName));
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType,                                                     \
+					 TOSTRING(functionName),                                                                           \
+					 godot::PropertyHint::PROPERTY_HINT_ENUM,                                                          \
+					 enumFields),                                                                                      \
+		TOSTRING(set##functionName),                                                                                   \
+		TOSTRING(get##functionName));
 #define METHOD_PROPERTY_PACKEDSCENE_IMPL(class, functionName)                                                          \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
-	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::OBJECT, TOSTRING(functionName),                                   \
-						 godot::PropertyHint::PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"),                             \
-			TOSTRING(set##functionName), TOSTRING(get##functionName));
+	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::OBJECT,                                                           \
+					 TOSTRING(functionName),                                                                           \
+					 godot::PropertyHint::PROPERTY_HINT_RESOURCE_TYPE,                                                 \
+					 "PackedScene"),                                                                                   \
+		TOSTRING(set##functionName),                                                                                   \
+		TOSTRING(get##functionName));
 
 #define METHOD_INOUT_BIND(classname, entered, exited, fieldName)                                                       \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \

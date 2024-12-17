@@ -21,8 +21,10 @@ public:
 		ATTACK = 5,
 	};
 
-	godot::NodePath m_pathToRootAnimationNode;
-	godot::NodePath m_pathToAnimatedCharacterScene;
+	GS_PATH_IMPL(m_pathToRootAnimationNode, RootAnimationNode)
+	GS_PATH_IMPL(m_pathToAnimatedCharacterScene, AnimatedCharacterScene)
+
+public:
 	godot::Node3D* m_animRoot = nullptr;
 
 	// godot::Ref<godot::PackedScene> m_attackAnimCurve;
@@ -114,7 +116,5 @@ public:
 		}
 	}
 
-	GS_PATH_IMPL(m_pathToRootAnimationNode, RootAnimationNode)
-	GS_PATH_IMPL(m_pathToAnimatedCharacterScene, AnimatedCharacterScene)
 	// GS_PACKEDSCENE_IMPL(m_attackAnimCurve, AttackAnimCurve)
 };
