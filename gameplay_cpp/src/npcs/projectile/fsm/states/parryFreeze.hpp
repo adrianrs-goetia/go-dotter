@@ -15,11 +15,11 @@ class ParryFreeze : public BaseState {
 	float m_freezetime;
 
 public:
-	TState getType() const override {
+	VState getType() const override {
 		return TParryFreeze();
 	}
 
-	TState enter(Context& context) override {
+	VState enter(Context& context) override {
 		m_enterTime.setTimestamp();
 		if (context.forwardedAction) {
 			std::visit(
@@ -39,11 +39,11 @@ public:
 		return {};
 	}
 
-	TState exit(Context& context) override {
+	VState exit(Context& context) override {
 		return {};
 	}
 
-	TState handleExternalAction(Context& context, const ExternalAction& action) override {
+	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
 		return std::visit(
 			overloaded{
 				[&](EventParryJump)
@@ -56,7 +56,7 @@ public:
 			action);
 	}
 
-	TState physicsProcess(Context& context, float delta) {
+	VState physicsProcess(Context& context, float delta) {
 		if (!m_enterTime.timestampWithinTimeframe(m_freezetime)) {
 			return TLaunched();
 		}

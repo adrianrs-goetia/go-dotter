@@ -22,17 +22,17 @@ public:
 	Fsm(Context context)
 		: m_context(context) {}
 
-	TState getCurrentState() const {
+	VState getCurrentState() const {
 		ASSERT_NOTNULL(m_currentState)
 		return m_currentState->getType();
 	}
 
-	void handleExternalAction(const ExternalAction& action) {
+	void handleExternalAction(const VExternalEvent& action) {
 		ASSERT_NOTNULL(m_currentState)
 		_processState(m_currentState->handleExternalAction(m_context, action));
 	}
 
-	void init(TState state) {
+	void init(VState state) {
 		std::visit(
 			overloaded{
 				[](std::monostate) { ASSERT(false) },
@@ -59,7 +59,7 @@ public:
 	}
 
 protected:
-	void _processState(TState ret) {
+	void _processState(VState ret) {
 		if (std::holds_alternative<std::monostate>(ret)) {
 			return;
 		}

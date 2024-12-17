@@ -16,11 +16,11 @@ class Launched : public BaseState {
 	godot::Timer* m_timer = nullptr;
 
 public:
-	TState getType() const override {
+	VState getType() const override {
 		return TLaunched();
 	}
 
-	TState enter(Context& context) override {
+	VState enter(Context& context) override {
 		m_timer = memnew(godot::Timer);
 		ASSERT_NOTNULL(m_timer)
 
@@ -31,7 +31,7 @@ public:
 		return {};
 	}
 
-	TState exit(Context& context) override {
+	VState exit(Context& context) override {
 		ASSERT_NOTNULL(m_timer)
 		m_timer->stop();
 		m_timer->disconnect("timeout", callable_mp(context.owner, &Projectile::onTimeout));
@@ -41,21 +41,20 @@ public:
 		return {};
 	}
 
-	TState handleExternalAction(Context& context, const ExternalAction& action) override {
+	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
 		if (std::holds_alternative<AttackInstance>(action)) {
 			utils::death(context);
 		}
 		else if (std::holds_alternative<EventParry>(action)) {
 			const auto& a = std::get<EventParry>(action);
 			context.owner->set_linear_velocity(godot::Vector3(0, a.params.lift, 0));
-			context.owner->set_global_position(
-				a.instigatorPosition + (a.params.direction * a.params.length));
+			context.owner->set_global_position(a.instigatorPosition + (a.params.direction * a.params.length));
 			return TParried{};
 		}
 		return {};
 	}
 
-	TState physicsProcess(Context& context, float delta) {
+	VState physicsProcess(Context& context, float delta) {
 		return {};
 	}
 };

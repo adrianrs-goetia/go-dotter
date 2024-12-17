@@ -5,45 +5,45 @@
 #include <components/dataObjects/attackInstance.h>
 #include <events/parry.hpp>
 
-#include <variant>
 #include <optional>
+#include <variant>
 
 class Projectile;
 
 namespace fsm::projectile {
 
-using ExternalAction = std::variant<AttackInstance, EventParry, EventParryFreeze, EventParryJump>;
+using VExternalEvent = std::variant<AttackInstance, EventParry, EventParryFreeze, EventParryJump>;
 
 struct Context {
 	Projectile* owner = nullptr;
-	std::optional<ExternalAction> forwardedAction;
+	std::optional<VExternalEvent> forwardedAction;
 };
 
 struct TLaunched {};
 struct TParried {};
 struct TParryFreeze {};
 struct TPostParryLaunched {};
-using TState = std::variant<std::monostate, TLaunched, TParried, TParryFreeze, TPostParryLaunched>;
+using VState = std::variant<std::monostate, TLaunched, TParried, TParryFreeze, TPostParryLaunched>;
 
 class BaseState {
 public:
-	virtual TState getType() const = 0;
+	virtual VState getType() const = 0;
 
 	virtual bool canEnter() const {
 		return true;
 	};
 
-	virtual TState enter(Context& context) = 0;
+	virtual VState enter(Context& context) = 0;
 
-	virtual TState exit(Context& context) = 0;
+	virtual VState exit(Context& context) = 0;
 
-	virtual TState handleExternalAction(Context& context, const ExternalAction& action) = 0;
+	virtual VState handleExternalAction(Context& context, const VExternalEvent& action) = 0;
 
-	virtual TState process(Context& context, float delta) {
+	virtual VState process(Context& context, float delta) {
 		return {};
 	}
 
-	virtual TState physicsProcess(Context& context, float delta) = 0;
+	virtual VState physicsProcess(Context& context, float delta) = 0;
 };
 
 } //namespace fsm::projectile

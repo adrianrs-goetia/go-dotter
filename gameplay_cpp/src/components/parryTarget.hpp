@@ -26,7 +26,7 @@ public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
 
-	std::function<void(const TEventParry& instance)> _callback = nullptr;
+	std::function<void(const VEventParry& instance)> _callback = nullptr;
 
 	// EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
@@ -55,7 +55,7 @@ public:
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 
-	std::shared_ptr<ParryContact> onParried(const TEventParry& parryInstance) {
+	std::shared_ptr<ParryContact> onParried(const VEventParry& parryInstance) {
 		if (_callback) {
 			_callback(parryInstance);
 		}
@@ -63,7 +63,7 @@ public:
 		return m_parryContact;
 	}
 
-	void onAction(const TEventParry& freeze) {
+	void onAction(const VEventParry& freeze) {
 		if (_callback) {
 			_callback(freeze);
 		}

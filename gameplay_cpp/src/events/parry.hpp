@@ -35,4 +35,4 @@ struct EventParryFreeze {
 
 struct EventParryJump {};
 
-using TEventParry = std::variant<EventParry, EventParryFreeze, EventParryJump>;
+using VEventParry = std::variant<EventParry, EventParryFreeze, EventParryJump>;

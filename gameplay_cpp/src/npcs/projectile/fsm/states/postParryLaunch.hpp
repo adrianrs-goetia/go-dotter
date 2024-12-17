@@ -16,24 +16,24 @@ class PostParryLaunch : public BaseState {
 	Timestamp m_enterTime;
 
 public:
-	TState getType() const override {
+	VState getType() const override {
 		return TPostParryLaunched();
 	}
 
-	TState enter(Context& context) override {
+	VState enter(Context& context) override {
 		m_enterTime.setTimestamp();
 		return {};
 	}
 
-	TState exit(Context& context) override {
+	VState exit(Context& context) override {
 		return {};
 	}
 
-	TState handleExternalAction(Context& context, const ExternalAction& action) override {
+	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
 		return {};
 	}
 
-	TState physicsProcess(Context& context, float delta) {
+	VState physicsProcess(Context& context, float delta) {
 		if (m_enterTime.timestampWithinTimeframe(GETPARAM_F("postParryIntagibleTime"))) {
 			return TLaunched();
 		}
