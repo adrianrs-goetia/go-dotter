@@ -3,10 +3,10 @@
 #include <functional>
 #include <memory>
 
-class ParryTargetComponent;
+class ComponentParryTarget;
 
 struct ParryContact {
-	using Get = std::function<ParryTargetComponent*()>;
+	using Get = std::function<ComponentParryTarget*()>;
 	Get getTarget;
 
 	ParryContact(Get get)

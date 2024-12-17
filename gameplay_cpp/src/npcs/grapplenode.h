@@ -4,7 +4,7 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 
-class ParryTargetComponent;
+class ComponentParryTarget;
 
 class GrappleNode : public godot::Node3D {
 	GDCLASS(GrappleNode, godot::Node3D)

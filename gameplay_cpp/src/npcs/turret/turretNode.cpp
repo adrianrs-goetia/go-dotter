@@ -1,6 +1,6 @@
 #include <npcs/turret/turretNode.h>
 
-#include <components/parryTargetComponent.hpp>
+#include <components/parryTarget.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>

@@ -80,7 +80,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707062, 0.0410295)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("CylinderShape3D_mlalw")
 
-[node name="ParryTargetComponent" type="ParryTargetComponent" parent="."]
+[node name="ComponentParryTarget" type="ComponentParryTarget" parent="."]
 ColliderPath = NodePath("../Area3D")
 Mass = 1.0
 ParryTag = 2

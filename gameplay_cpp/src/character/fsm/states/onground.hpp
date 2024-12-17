@@ -9,7 +9,7 @@
 #include <components/grappleInstigatorComponent.h>
 #include <components/parryInstigator.h>
 #include <components/dataObjects/parryInstance.hpp>
-#include <components/parryTargetComponent.hpp>
+#include <components/parryTarget.hpp>
 
 #define CONFIG_PREFIX "player"
 

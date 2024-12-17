@@ -8,7 +8,7 @@
 
 class AttackTargetComponent;
 struct AttackInstance;
-class ParryTargetComponent;
+class ComponentParryTarget;
 class ParryInstance;
 
 namespace fsm::projectile {
@@ -28,7 +28,7 @@ private:
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
 	// context?
 	// godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
-	ParryTargetComponent* m_parryTargetComp = nullptr;
+	ComponentParryTarget* m_parryTargetComp = nullptr;
 	AttackTargetComponent* m_attackTargetComp = nullptr;
 	godot::Ref<godot::PackedScene> m_deathParticles;
 

@@ -1,6 +1,6 @@
 #include "parryInstigator.h"
 
-#include "parryTargetComponent.hpp"
+#include "parryTarget.hpp"
 #include <components/dataObjects/parryInstance.hpp>
 
 #include <godot_cpp/classes/character_body3d.hpp>
@@ -50,7 +50,7 @@ void ComponentParryInstigator::areaEnteredParryDetection(Area3D* area) {
 			get_parent() ? get_parent()->get_name() : get_name())
 		return;
 	}
-	if (auto* parrytarget = getAdjacentNode<ParryTargetComponent>(area)) {
+	if (auto* parrytarget = getAdjacentNode<ComponentParryTarget>(area)) {
 		// LOG(DEBUG, "ParryTarget entered area", area->get_parent()->get_name())
 		m_inRangeParryTargets.emplace(area->get_rid().get_id(), *parrytarget);
 	}
@@ -64,7 +64,7 @@ void ComponentParryInstigator::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
-ParryTargetComponent* ComponentParryInstigator::getLastParryContactAssert() const {
+ComponentParryTarget* ComponentParryInstigator::getLastParryContactAssert() const {
 	auto lock = m_lastParryContact.lock();
 	ASSERT_NOTNULL(lock)
 	return lock->getTarget();
@@ -82,7 +82,7 @@ std::optional<ParryInstance> ComponentParryInstigator::activateParry(ActivatePar
 	// get closest in range parry target
 	const Vector3 instigatorPosition = m_area->get_global_position();
 	Vector3 closest = m_inRangeParryTargets.begin()->second.getPosition();
-	ParryTargetComponent* target = &m_inRangeParryTargets.begin()->second;
+	ComponentParryTarget* target = &m_inRangeParryTargets.begin()->second;
 	for (const auto& [rid, parryTarget] : m_inRangeParryTargets) {
 		DebugDraw::Line(instigatorPosition, parryTarget.getPosition(), Color(1, 0, 0), 1.f);
 		if (Vector3(instigatorPosition - parryTarget.getPosition()).length_squared() < closest.length_squared()) {

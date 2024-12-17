@@ -4,7 +4,7 @@
 
 #include <components/attackTargetComponent.h>
 #include <components/dataObjects/parryInstance.hpp>
-#include <components/parryTargetComponent.hpp>
+#include <components/parryTarget.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
@@ -35,7 +35,7 @@ void Projectile::_enter_tree() {
 	ASSERT_NOTNULL(m_fsm)
 	m_fsm->init(fsm::projectile::TLaunched());
 
-	m_parryTargetComp = getComponentOfNode<ParryTargetComponent>(this);
+	m_parryTargetComp = getComponentOfNode<ComponentParryTarget>(this);
 	m_attackTargetComp = memnew(AttackTargetComponent);
 	add_child(m_attackTargetComp);
 

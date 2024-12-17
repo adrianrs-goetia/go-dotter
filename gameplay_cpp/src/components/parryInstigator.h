@@ -12,7 +12,7 @@
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
 
-class ParryTargetComponent;
+class ComponentParryTarget;
 class ParryInstance;
 
 class ComponentParryInstigator : public NodeComponent {
@@ -30,7 +30,7 @@ public:
 public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_area = nullptr;
-	std::map<GodotRID, ParryTargetComponent&> m_inRangeParryTargets;
+	std::map<GodotRID, ComponentParryTarget&> m_inRangeParryTargets;
 
 	std::weak_ptr<ParryContact> m_lastParryContact;
 
@@ -46,7 +46,7 @@ public:
 	void areaEnteredParryDetection(godot::Area3D* area);
 	void areaExitedParryDetection(godot::Area3D* area);
 
-	ParryTargetComponent* getLastParryContactAssert() const;
+	ComponentParryTarget* getLastParryContactAssert() const;
 
 	std::optional<ParryInstance> activateParry(ActivateParams params);
 

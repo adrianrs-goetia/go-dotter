@@ -11,8 +11,8 @@
 
 class WrapperParryInstances;
 
-class ParryTargetComponent : public NodeComponent {
-	GDCLASS(ParryTargetComponent, NodeComponent)
+class ComponentParryTarget : public NodeComponent {
+	GDCLASS(ComponentParryTarget, NodeComponent)
 
 public:
 	// enum EParryTargetTag {
@@ -35,13 +35,13 @@ public:
 
 public:
 	static void _bind_methods() {
-		METHOD_PROPERTY_IMPL(ParryTargetComponent, ColliderPath, NODE_PATH)
+		METHOD_PROPERTY_IMPL(ComponentParryTarget, ColliderPath, NODE_PATH)
 		// BIND_ENUM_CONSTANT(DYNAMIC_LIGHT)
 		// BIND_ENUM_CONSTANT(DYNAMIC_HEAVY)
 		// BIND_ENUM_CONSTANT(STATIC_OBJECT)
 		// BIND_ENUM_CONSTANT(STATIC_TERRAIN)
 		// METHOD_PROPERTY_ENUM_IMPL(
-		// 		ParryTargetComponent, ParryTag, INT, "DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
+		// 		ComponentParryTarget, ParryTag, INT, "DYNAMIC_LIGHT,DYNAMIC_HEAVY,STATIC_OBJECT,STATIC_TERRAIN")
 	}
 
 	void setComponentEnabled(bool enabled) override {}
@@ -80,4 +80,4 @@ public:
 	// GS_ENUM_IMPL(m_parryTag, ParryTag, EParryTargetTag)
 };
 
-// VARIANT_ENUM_CAST(ParryTargetComponent::EParryTargetTag)
+// VARIANT_ENUM_CAST(ComponentParryTarget::EParryTargetTag)
