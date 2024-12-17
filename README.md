@@ -46,3 +46,23 @@ https://ss64.com/nt/syntax-ansi.html
 
 #### debug draw 3d
 https://github.com/DmitriySalnikov/godot_debug_draw_3d
+
+
+## Conventions
+### Class Naming
+CategoryContextFunction, e.g. ComponentsParryInstigator
+
+Category:\
+    Component: Entity, Module, Part, Unit, Block.\
+    System: Manager, Processor, Controller, Orchestrator.\
+    Event: Signal, Message, Action, Trigger.\
+
+Context:\
+    Parry: Deflect, Guard, Counter, Block.\
+    Damage: Hit, Impact, Harm, Injury, Attack.\
+    UI: Interface, Panel, Widget, HUD.\
+
+Function:\
+    Target: Receiver, Object, Goal, Focus.\
+    Instigator: Trigger, Initiator, Source, Actor.\
+    Handler: Manager, Processor, Delegate, Executor.\
