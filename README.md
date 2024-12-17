@@ -50,7 +50,7 @@ https://github.com/DmitriySalnikov/godot_debug_draw_3d
 
 ## Conventions
 ### Class Naming
-CategoryContextFunction, e.g. ComponentsParryInstigator
+CategoryContextFunction, e.g. ComponentParryInstigator
 
 Category:\
     Component: Entity, Module, Part, Unit, Block.\

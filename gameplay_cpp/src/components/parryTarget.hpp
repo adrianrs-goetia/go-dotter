@@ -3,13 +3,12 @@
 #include "typedefs.hpp"
 #include <core/core.hpp>
 #include <core/nodeComponent.hpp>
+#include <events/parry.hpp>
 
 #include <variant>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
-
-class WrapperParryInstances;
 
 class ComponentParryTarget : public NodeComponent {
 	GDCLASS(ComponentParryTarget, NodeComponent)
@@ -27,7 +26,7 @@ public:
 	godot::NodePath m_colliderPath;
 	godot::Area3D* m_areaPtr = nullptr;
 
-	std::function<void(const WrapperParryInstances& instance)> _callback = nullptr;
+	std::function<void(const TEventParry& instance)> _callback = nullptr;
 
 	// EParryTargetTag m_parryTag = EParryTargetTag::NONE;
 
@@ -56,7 +55,7 @@ public:
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 
-	std::shared_ptr<ParryContact> onParried(const WrapperParryInstances& parryInstance) {
+	std::shared_ptr<ParryContact> onParried(const TEventParry& parryInstance) {
 		if (_callback) {
 			_callback(parryInstance);
 		}
@@ -64,7 +63,7 @@ public:
 		return m_parryContact;
 	}
 
-	void onAction(const WrapperParryInstances& freeze) {
+	void onAction(const TEventParry& freeze) {
 		if (_callback) {
 			_callback(freeze);
 		}

@@ -6,8 +6,8 @@
 #include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/parryInstigator.h>
 #include <managers/inputManager.h>
+#include <components/parryInstigator.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>

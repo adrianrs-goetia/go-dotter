@@ -7,9 +7,9 @@
 
 #include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
-#include <components/parryInstigator.h>
-#include <components/dataObjects/parryInstance.hpp>
+#include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
+#include <events/parry.hpp>
 
 #define CONFIG_PREFIX "player"
 
@@ -66,7 +66,7 @@ public:
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			if (auto lock = context.parry->m_lastParryContact.lock()) {
-				lock->getTarget()->onAction({ ParryFreezeInstance{ GETPARAM_F("parry", "freezetime") } });
+				lock->getTarget()->onAction(EventParryFreeze{ GETPARAM_F("parry", "freezetime") });
 				return TParryJumpState();
 			}
 

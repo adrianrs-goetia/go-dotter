@@ -3,15 +3,16 @@
 #include <core/core.hpp>
 
 #include <components/dataObjects/attackInstance.h>
-#include <components/dataObjects/parryInstance.hpp>
+#include <events/parry.hpp>
 
 #include <variant>
+#include <optional>
 
 class Projectile;
 
 namespace fsm::projectile {
 
-using ExternalAction = std::variant<AttackInstance, ParryInstance, ParryFreezeInstance, PlayerParryJump>;
+using ExternalAction = std::variant<AttackInstance, EventParry, EventParryFreeze, EventParryJump>;
 
 struct Context {
 	Projectile* owner = nullptr;

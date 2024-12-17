@@ -3,8 +3,8 @@
 #include "fsm/fsm.hpp"
 
 #include <components/attackTargetComponent.h>
-#include <components/dataObjects/parryInstance.hpp>
 #include <components/parryTarget.hpp>
+#include <events/parry.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
@@ -42,8 +42,7 @@ void Projectile::_enter_tree() {
 	ASSERT_NOTNULL(m_parryTargetComp)
 	ASSERT_NOTNULL(m_attackTargetComp)
 
-	m_parryTargetComp->_callback = [this](const auto& wrapper)
-	{ this->m_fsm->handleExternalAction(variantCast(wrapper.obj)); };
+	m_parryTargetComp->_callback = [this](const auto& event) { this->m_fsm->handleExternalAction(variantCast(event)); };
 
 	m_attackTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
 

@@ -10,7 +10,7 @@
 #include <components/attackTargetComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/parryInstigator.h>
+#include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
 
 #include <mainNode.h>

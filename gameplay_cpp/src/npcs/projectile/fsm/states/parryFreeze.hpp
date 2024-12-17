@@ -2,7 +2,7 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <components/dataObjects/parryInstance.hpp>
+#include <events/parry.hpp>
 
 #include <configHandler.h>
 
@@ -24,7 +24,7 @@ public:
 		if (context.forwardedAction) {
 			std::visit(
 				overloaded{
-					[&](const ParryFreezeInstance& action) { m_freezetime = action.time; },
+					[&](const EventParryFreeze& action) { m_freezetime = action.time; },
 					[](const auto&) { ASSERT(false) },
 				},
 				context.forwardedAction.value());
@@ -46,7 +46,7 @@ public:
 	TState handleExternalAction(Context& context, const ExternalAction& action) override {
 		return std::visit(
 			overloaded{
-				[&](PlayerParryJump)
+				[&](EventParryJump)
 				{
 					utils::death(context);
 					return std::monostate();

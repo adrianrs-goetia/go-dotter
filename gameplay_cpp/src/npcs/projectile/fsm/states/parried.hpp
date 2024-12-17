@@ -41,7 +41,7 @@ public:
 					context.owner->set_linear_velocity(dir * action.attackStrength);
 					ret = TPostParryLaunched();
 				},
-				[&](const ParryFreezeInstance& action)
+				[&](const EventParryFreeze& action)
 				{
 					context.forwardedAction = action;
 					ret = TParryFreeze();

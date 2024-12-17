@@ -9,7 +9,7 @@
 class AttackTargetComponent;
 struct AttackInstance;
 class ComponentParryTarget;
-class ParryInstance;
+class EventParry;
 
 namespace fsm::projectile {
 class Fsm;

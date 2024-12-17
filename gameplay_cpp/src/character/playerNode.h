@@ -21,7 +21,7 @@ class CameraPivot;
 class AnimationComponent;
 class GrappleTargetComponent;
 class ComponentParryInstigator;
-class ParryInstance;
+class EventParry;
 
 class PlayerNode : public CharacterBody3D {
 	GDCLASS(PlayerNode, CharacterBody3D)
