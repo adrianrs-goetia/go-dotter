@@ -2,7 +2,7 @@
 
 #include <core/core.hpp>
 
-#include <components/parryInstigatorComponent.h>
+#include <components/parryInstigator.h>
 #include <components/parryTargetComponent.hpp>
 
 #include <variant>
@@ -10,10 +10,10 @@
 struct ParryInstance {
 	const godot::Vector3 instigatorPosition;
 	const godot::Vector3 targetPosition;
-	const ParryInstigatorComponent::ActivateParams instigatorParams;
+	const ComponentParryInstigator::ActivateParams instigatorParams;
 
-	ParryInstance(const ParryInstigatorComponent& instigator, const ParryTargetComponent& target,
-		const ParryInstigatorComponent::ActivateParams params)
+	ParryInstance(const ComponentParryInstigator& instigator, const ParryTargetComponent& target,
+		const ComponentParryInstigator::ActivateParams params)
 		: instigatorPosition(instigator.getPosition())
 		, targetPosition(target.getPosition())
 		, instigatorParams(params) {}

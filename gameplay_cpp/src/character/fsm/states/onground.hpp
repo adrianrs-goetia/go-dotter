@@ -7,7 +7,7 @@
 
 #include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
-#include <components/parryInstigatorComponent.h>
+#include <components/parryInstigator.h>
 #include <components/dataObjects/parryInstance.hpp>
 #include <components/parryTargetComponent.hpp>
 

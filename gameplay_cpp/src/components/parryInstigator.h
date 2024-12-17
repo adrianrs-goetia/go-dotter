@@ -15,8 +15,8 @@
 class ParryTargetComponent;
 class ParryInstance;
 
-class ParryInstigatorComponent : public NodeComponent {
-	GDCLASS(ParryInstigatorComponent, NodeComponent)
+class ComponentParryInstigator : public NodeComponent {
+	GDCLASS(ComponentParryInstigator, NodeComponent)
 
 public:
 	using GodotRID = uint64_t;

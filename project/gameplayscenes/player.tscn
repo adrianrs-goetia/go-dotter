@@ -149,7 +149,7 @@ collision_mask = 131072
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GrappleDetection"]
 shape = SubResource("SphereShape3D_6du44")
 
-[node name="ParryInstigatorComponent" type="ParryInstigatorComponent" parent="."]
+[node name="ComponentParryInstigator" type="ComponentParryInstigator" parent="."]
 ColliderPath = NodePath("../ParryDetection")
 
 [node name="AnimationComponent" type="AnimationComponent" parent="."]

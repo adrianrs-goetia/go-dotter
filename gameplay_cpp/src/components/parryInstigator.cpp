@@ -1,4 +1,4 @@
-#include "parryInstigatorComponent.h"
+#include "parryInstigator.h"
 
 #include "parryTargetComponent.hpp"
 #include <components/dataObjects/parryInstance.hpp>
@@ -14,11 +14,11 @@
 
 using namespace godot;
 
-void ParryInstigatorComponent::_bind_methods() {
-	METHOD_PROPERTY_IMPL(ParryInstigatorComponent, ColliderPath, NODE_PATH)
+void ComponentParryInstigator::_bind_methods() {
+	METHOD_PROPERTY_IMPL(ComponentParryInstigator, ColliderPath, NODE_PATH)
 }
 
-void ParryInstigatorComponent::_enter_tree() {
+void ComponentParryInstigator::_enter_tree() {
 	set_name(get_class());
 	RETURN_IF_EDITOR(void())
 
@@ -26,27 +26,27 @@ void ParryInstigatorComponent::_enter_tree() {
 
 	ASSERT_NOTNULL(m_area)
 
-	m_area->connect("area_entered", callable_mp(this, &ParryInstigatorComponent::areaEnteredParryDetection));
-	m_area->connect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
+	m_area->connect("area_entered", callable_mp(this, &ComponentParryInstigator::areaEnteredParryDetection));
+	m_area->connect("area_exited", callable_mp(this, &ComponentParryInstigator::areaExitedParryDetection));
 }
 
-void ParryInstigatorComponent::_exit_tree() {
+void ComponentParryInstigator::_exit_tree() {
 	RETURN_IF_EDITOR(void())
 
 	ASSERT_NOTNULL(m_area)
 
-	m_area->disconnect("area_entered", callable_mp(this, &ParryInstigatorComponent::areaEnteredParryDetection));
-	m_area->disconnect("area_exited", callable_mp(this, &ParryInstigatorComponent::areaExitedParryDetection));
+	m_area->disconnect("area_entered", callable_mp(this, &ComponentParryInstigator::areaEnteredParryDetection));
+	m_area->disconnect("area_exited", callable_mp(this, &ComponentParryInstigator::areaExitedParryDetection));
 }
 
-void ParryInstigatorComponent::_physics_process(double delta) {
+void ComponentParryInstigator::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 }
 
-void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
+void ComponentParryInstigator::areaEnteredParryDetection(Area3D* area) {
 	if (m_area->get_rid() == area->get_rid()) {
 		LOG(DEBUG,
-			"ParryInstigatorComponent cannot collide with itself",
+			"ComponentParryInstigator cannot collide with itself",
 			get_parent() ? get_parent()->get_name() : get_name())
 		return;
 	}
@@ -56,7 +56,7 @@ void ParryInstigatorComponent::areaEnteredParryDetection(Area3D* area) {
 	}
 }
 
-void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
+void ComponentParryInstigator::areaExitedParryDetection(Area3D* area) {
 	auto it = m_inRangeParryTargets.find(area->get_rid().get_id());
 	if (it != m_inRangeParryTargets.end()) {
 		// LOG(DEBUG, "ParryTarget left area", area->get_parent()->get_name())
@@ -64,13 +64,13 @@ void ParryInstigatorComponent::areaExitedParryDetection(Area3D* area) {
 	}
 }
 
-ParryTargetComponent* ParryInstigatorComponent::getLastParryContactAssert() const {
+ParryTargetComponent* ComponentParryInstigator::getLastParryContactAssert() const {
 	auto lock = m_lastParryContact.lock();
 	ASSERT_NOTNULL(lock)
 	return lock->getTarget();
 }
 
-std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivateParams params) {
+std::optional<ParryInstance> ComponentParryInstigator::activateParry(ActivateParams params) {
 	RETURN_IF_EDITOR(std::nullopt)
 	ASSERT_NOTNULL(m_area)
 
@@ -98,13 +98,13 @@ std::optional<ParryInstance> ParryInstigatorComponent::activateParry(ActivatePar
 	return std::move(instance);
 }
 
-Vector3 ParryInstigatorComponent::getPosition() const {
+Vector3 ComponentParryInstigator::getPosition() const {
 	RETURN_IF_EDITOR(Vector3())
 	ASSERT_NOTNULL(m_area)
 	return m_area->get_global_position();
 }
 
-Vector3 ParryInstigatorComponent::getVelocity() const {
+Vector3 ComponentParryInstigator::getVelocity() const {
 	RETURN_IF_EDITOR(Vector3())
 	if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) {
 		return characterBody->get_velocity();

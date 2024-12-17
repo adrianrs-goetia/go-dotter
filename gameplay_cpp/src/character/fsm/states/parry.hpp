@@ -6,7 +6,7 @@
 #include <managers/inputManager.h>
 
 #include <components/animationComponent.h>
-#include <components/parryInstigatorComponent.h>
+#include <components/parryInstigator.h>
 #include <components/dataObjects/parryInstance.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
@@ -61,7 +61,7 @@ public:
 			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
 		}
 
-		if (const auto pi = context.parry->activateParry(ParryInstigatorComponent::ActivateParams{
+		if (const auto pi = context.parry->activateParry(ComponentParryInstigator::ActivateParams{
 				parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
 			// Play effects
 			context.audioVisual.audio->play();

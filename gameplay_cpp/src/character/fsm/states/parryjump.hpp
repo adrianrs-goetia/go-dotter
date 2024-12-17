@@ -6,7 +6,7 @@
 #include <managers/inputManager.h>
 
 #include <components/animationComponent.h>
-#include <components/parryInstigatorComponent.h>
+#include <components/parryInstigator.h>
 #include <components/dataObjects/parryInstance.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>

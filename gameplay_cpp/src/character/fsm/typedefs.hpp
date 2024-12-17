@@ -4,7 +4,7 @@
 
 class GrappleTargetComponent;
 class GrappleInstigatorComponent;
-class ParryInstigatorComponent;
+class ComponentParryInstigator;
 class AttackComponent;
 class AnimationComponent;
 class InputManager;
@@ -43,7 +43,7 @@ struct Context {
 	AnimationComponent* anim = nullptr;
 	GrappleInstigatorComponent* grapple = nullptr;
 	InputManager* input = nullptr;
-	ParryInstigatorComponent* parry = nullptr;
+	ComponentParryInstigator* parry = nullptr;
 	PhysicsContext physics;
 	AudioVisualContext audioVisual;
 };

@@ -6,7 +6,7 @@
 #include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
-#include <components/parryInstigatorComponent.h>
+#include <components/parryInstigator.h>
 #include <managers/inputManager.h>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
@@ -55,7 +55,7 @@ void PlayerNode::_enter_tree() {
 
 	auto* input = InputManager::get(*this);
 	m_animComponent = getComponentOfNode<AnimationComponent>(this);
-	m_parryComponent = getComponentOfNode<ParryInstigatorComponent>(this);
+	m_parryComponent = getComponentOfNode<ComponentParryInstigator>(this);
 	auto* attackComponent = getComponentOfNode<AttackComponent>(this);
 	auto* grappleInstigator = getComponentOfNode<GrappleInstigatorComponent>(this);
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
