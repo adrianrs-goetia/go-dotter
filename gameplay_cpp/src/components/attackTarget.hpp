@@ -19,10 +19,6 @@ class ComponentAttackTarget : public NodeComponent {
 public:
 	using ReceiveAttackCb = std::function<void(const EventAttack& instance)>;
 
-	// enum EAttacked {
-	// 	NONE = -1,
-	// };
-
 	ReceiveAttackCb _callback;
 
 public:

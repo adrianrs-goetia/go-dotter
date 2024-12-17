@@ -3,10 +3,10 @@
 #include <character/fsm/fsm.hpp>
 
 #include <components/animationComponent.h>
-#include <components/attackComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <managers/inputManager.h>
+#include <components/attackInstigator.hpp>
 #include <components/parryInstigator.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>

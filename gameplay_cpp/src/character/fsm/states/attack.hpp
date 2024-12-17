@@ -6,7 +6,7 @@
 #include <managers/inputManager.h>
 
 #include <components/animationComponent.h>
-#include <components/attackComponent.h>
+#include <components/attackInstigator.hpp>
 
 #include <debugdraw3d/api.h>
 

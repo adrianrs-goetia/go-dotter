@@ -2,7 +2,7 @@
 
 #include "fsm/fsm.hpp"
 
-#include <components/attackTargetComponent.h>
+#include <components/attackTarget.hpp>
 #include <components/parryTarget.hpp>
 #include <events/parry.hpp>
 

@@ -6,10 +6,10 @@
 #include <character/playerNode.h>
 
 #include <components/animationComponent.h>
-#include <components/attackComponent.h>
-#include <components/attackTargetComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
+#include <components/attackInstigator.hpp>
+#include <components/attackTarget.hpp>
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
 
