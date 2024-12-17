@@ -9,10 +9,6 @@
 
 #include <godot_cpp/classes/node3d.hpp>
 
-namespace godot {
-class Area3D;
-}
-
 class ComponentAttackTarget : public NodeComponent {
 	GDCLASS(ComponentAttackTarget, NodeComponent)
 

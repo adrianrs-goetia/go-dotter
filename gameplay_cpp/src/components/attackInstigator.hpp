@@ -12,10 +12,6 @@
 
 #include <debugdraw3d/api.h>
 
-namespace godot {
-class Area3D;
-}
-
 class ComponentAttackInstigator : public NodeComponent {
 	GDCLASS(ComponentAttackInstigator, NodeComponent)
 

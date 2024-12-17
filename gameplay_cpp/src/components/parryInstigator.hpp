@@ -13,19 +13,11 @@
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
-#include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
-
-#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
-#include <godot_cpp/classes/shape3d.hpp>
-// #include <godot_cpp/classes/viewport.hpp>
-// #include <godot_cpp/classes/world3d.hpp>
+#include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
 
 #include <debugdraw3d/api.h>
-
-class ComponentParryTarget;
-class EventParry;
 
 class ComponentParryInstigator : public NodeComponent {
 	GDCLASS(ComponentParryInstigator, NodeComponent)
