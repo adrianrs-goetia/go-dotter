@@ -31,17 +31,9 @@ protected:
 
 public:
 	static void _bind_methods() {
-		using namespace godot;
-		godot::ClassDB::bind_method(D_METHOD("getIsAnchor"), &ComponentGrappleBase::getIsAnchor);
-		godot::ClassDB::bind_method(D_METHOD("setIsAnchor", "val"), &ComponentGrappleBase::setIsAnchor);
-		godot::ClassDB::bind_method(D_METHOD("getPullStrength"), &ComponentGrappleBase::getPullStrength);
-		godot::ClassDB::bind_method(D_METHOD("setPullStrength", "val"), &ComponentGrappleBase::setPullStrength);
-		godot::ClassDB::bind_method(D_METHOD("getMass"), &ComponentGrappleBase::getMass);
-		godot::ClassDB::bind_method(D_METHOD("setMass", "val"), &ComponentGrappleBase::setMass);
-
-		ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anchored"), "setIsAnchor", "getIsAnchor");
-		ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "pull strength"), "setPullStrength", "getPullStrength");
-		ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mass"), "setMass", "getMass");
+		METHOD_PROPERTY_IMPL(ComponentGrappleBase, IsAnchor, BOOL)
+		METHOD_PROPERTY_IMPL(ComponentGrappleBase, PullStrength, FLOAT)
+		METHOD_PROPERTY_IMPL(ComponentGrappleBase, Mass, FLOAT)
 	}
 
 	virtual godot::Vector3 impulseOwner(const godot::Vector3& direction, float impulse_strength) {
