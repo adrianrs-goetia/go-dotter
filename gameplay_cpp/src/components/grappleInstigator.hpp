@@ -1,7 +1,7 @@
 #pragma once
 
 #include "baseClasses/grappleBase.hpp"
-#include "grappleTargetComponent.h"
+#include "grappleTarget.hpp"
 
 #include <functional>
 #include <map>
@@ -20,7 +20,7 @@ class ComponentGrappleInstigator : public ComponentGrappleBase {
 	GDCLASS(ComponentGrappleInstigator, ComponentGrappleBase)
 
 	using InstigatorDirection = std::function<godot::Vector3(const Node& node)>;
-	using InRangeTargetMap = std::map<godot::RID, GrappleTargetComponent*>;
+	using InRangeTargetMap = std::map<godot::RID, ComponentGrappleTarget*>;
 
 private:
 	GS_PATH_IMPL(m_colliderPath, ColliderPath)
@@ -37,7 +37,7 @@ private:
 	std::set<godot::RID> m_ignoredRids;
 	InstigatorDirection m_getInstigatorDirection;
 
-	GrappleTargetComponent* m_currentTarget = nullptr;
+	ComponentGrappleTarget* m_currentTarget = nullptr;
 
 public:
 	static void _bind_methods() {
@@ -96,7 +96,7 @@ public:
 
 	void areaEnteredDetection(godot::Area3D* area) {
 		RETURN_IF_EDITOR(void())
-		if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
+		if (auto* gn = getAdjacentNode<ComponentGrappleTarget>(area)) {
 			auto rid = gn->getRid();
 			m_inRangeTargets->insert({ rid, gn });
 			auto wp = std::weak_ptr<InRangeTargetMap>(m_inRangeTargets);
@@ -113,7 +113,7 @@ public:
 
 	void areaExitedDetection(godot::Area3D* area) {
 		RETURN_IF_EDITOR(void())
-		if (auto* gn = getAdjacentNode<GrappleTargetComponent>(area)) {
+		if (auto* gn = getAdjacentNode<ComponentGrappleTarget>(area)) {
 			m_inRangeTargets->erase(gn->getRid());
 			if (gn == m_currentTarget) {
 				m_currentTarget = nullptr;
@@ -128,7 +128,7 @@ public:
 
 		const Vector3 cam3d = m_getInstigatorDirection(*this);
 		float lowest_dot = -1.0f;
-		GrappleTargetComponent* target = nullptr;
+		ComponentGrappleTarget* target = nullptr;
 		for (auto [_, gn] : *m_inRangeTargets) {
 			Vector3 dir_2d = gn->get_global_position() - get_global_position();
 			dir_2d.y = 0;
@@ -198,7 +198,7 @@ private:
 	}
 
 public: // getters-setters
-	GrappleTargetComponent* getTarget() const {
+	ComponentGrappleTarget* getTarget() const {
 		return m_currentTarget;
 	}
 	void setInstigatorDirection(const InstigatorDirection&& getInstigatorDirection) {

@@ -2,11 +2,11 @@
 #include <character/playerNode.h>
 #include <character/fsm/fsm.hpp>
 
-#include <components/grappleTargetComponent.h>
 #include <managers/inputManager.h>
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/grappleInstigator.hpp>
+#include <components/grappleTarget.hpp>
 #include <components/parryInstigator.hpp>
 
 #include <godot_cpp/classes/audio_stream_player3d.hpp>

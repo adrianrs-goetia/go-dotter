@@ -2,7 +2,6 @@
 
 #include <core/core.hpp>
 
-class GrappleTargetComponent;
 class ComponentGrappleInstigator;
 class ComponentParryInstigator;
 class ComponentAttackInstigator;

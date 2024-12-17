@@ -55,7 +55,7 @@ public:
 		}
 		else {
 			LOG(ERROR,
-				"GrappleTargetComponent impulse on invalid parent",
+				"ComponentGrappleTarget impulse on invalid parent",
 				get_parent()->get_name().get_basename().utf8().get_data())
 		}
 		return impulse;
