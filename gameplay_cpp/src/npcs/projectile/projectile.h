@@ -7,7 +7,7 @@
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
 class AttackTargetComponent;
-struct AttackInstance;
+struct EventAttack;
 class ComponentParryTarget;
 class EventParry;
 

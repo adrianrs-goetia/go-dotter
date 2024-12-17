@@ -1,7 +1,7 @@
 #include "attackComponent.h"
 
 #include "attackTargetComponent.h"
-#include <components/dataObjects/attackInstance.h>
+#include <events/attack.hpp>
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
@@ -59,7 +59,8 @@ void AttackComponent::areaEnteredCollider(godot::Area3D* area) {
 	ASSERT_NOTNULL(target);
 
 	if (auto* attackComp = getComponentOfNode<AttackTargetComponent>(target)) {
-		attackComp->receiveAttack(AttackInstance(*this, *attackComp));
+		attackComp->receiveAttack(
+			EventAttack{ get_global_transform(), attackComp->get_global_transform(), getAttackStrength() });
 	}
 
 	// target->notification(ENotifications::ATTACKED);

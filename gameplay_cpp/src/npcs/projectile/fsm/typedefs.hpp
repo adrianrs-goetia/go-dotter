@@ -2,7 +2,7 @@
 
 #include <core/core.hpp>
 
-#include <components/dataObjects/attackInstance.h>
+#include <events/attack.hpp>
 #include <events/parry.hpp>
 
 #include <optional>
@@ -12,7 +12,7 @@ class Projectile;
 
 namespace fsm::projectile {
 
-using VExternalEvent = std::variant<AttackInstance, EventParry, EventParryFreeze, EventParryJump>;
+using VExternalEvent = std::variant<EventAttack, EventParry, EventParryFreeze, EventParryJump>;
 
 struct Context {
 	Projectile* owner = nullptr;

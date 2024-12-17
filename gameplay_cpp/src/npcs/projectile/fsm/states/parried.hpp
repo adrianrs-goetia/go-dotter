@@ -35,7 +35,7 @@ public:
 		VState ret;
 		std::visit(
 			overloaded{
-				[&](const AttackInstance& action)
+				[&](const EventAttack& action)
 				{
 					const auto dir = action.getDirection();
 					context.owner->set_linear_velocity(dir * action.attackStrength);

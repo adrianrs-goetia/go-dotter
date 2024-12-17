@@ -2,18 +2,10 @@
 
 #include <core/core.hpp>
 
-#include <components/attackComponent.h>
-#include <components/attackTargetComponent.h>
-
-class AttackComponent;
-class AttackTargetComponent;
-
-struct AttackInstance {
+struct EventAttack {
 	const godot::Transform3D instigatorTransform;
 	const godot::Transform3D targetTransform;
 	const float attackStrength;
-
-	AttackInstance(const AttackComponent& instigator, const AttackTargetComponent& target);
 
 	godot::Vector3 getDirection() const {
 		using namespace godot;

@@ -3,11 +3,11 @@
 #include <core/core.hpp>
 #include <core/nodeComponent.hpp>
 
+#include <events/attack.hpp>
+
 #include <functional>
 
 #include <godot_cpp/classes/node3d.hpp>
-
-struct AttackInstance;
 
 namespace godot {
 class Area3D;
@@ -17,7 +17,7 @@ class AttackTargetComponent : public NodeComponent {
 	GDCLASS(AttackTargetComponent, NodeComponent)
 
 public:
-	using ReceiveAttackCb = std::function<void(const AttackInstance& instance)>;
+	using ReceiveAttackCb = std::function<void(const EventAttack& instance)>;
 
 	// enum EAttacked {
 	// 	NONE = -1,
@@ -32,7 +32,7 @@ public:
 		_setComponentEnabledImpl(enabled);
 	}
 
-	void receiveAttack(const AttackInstance& instance) {
+	void receiveAttack(const EventAttack& instance) {
 		if (_callback) {
 			return _callback(instance);
 		}

@@ -42,7 +42,7 @@ public:
 	}
 
 	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
-		if (std::holds_alternative<AttackInstance>(action)) {
+		if (std::holds_alternative<EventAttack>(action)) {
 			utils::death(context);
 		}
 		else if (std::holds_alternative<EventParry>(action)) {
