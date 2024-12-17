@@ -5,7 +5,7 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
-#include <components/animationComponent.h>
+#include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
 #include <events/parry.hpp>
 
@@ -61,8 +61,8 @@ public:
 			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
 		}
 
-		if (const auto pi = context.parry->activateParry(EventParry::Params{
-				parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
+		if (const auto pi = context.parry->activateParry(
+				EventParry::Params{ parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);

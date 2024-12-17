@@ -2,10 +2,10 @@
 #include <character/playerNode.h>
 #include <character/fsm/fsm.hpp>
 
-#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
 #include <managers/inputManager.h>
+#include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/parryInstigator.hpp>
 
@@ -54,7 +54,7 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	auto* input = InputManager::get(*this);
-	m_animComponent = getComponentOfNode<AnimationComponent>(this);
+	m_animComponent = getComponentOfNode<ComponentAnimation>(this);
 	m_parryComponent = getComponentOfNode<ComponentParryInstigator>(this);
 	auto* attackComponent = getComponentOfNode<ComponentAttackInstigator>(this);
 	auto* grappleInstigator = getComponentOfNode<GrappleInstigatorComponent>(this);

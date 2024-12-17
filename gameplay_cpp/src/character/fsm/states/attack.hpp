@@ -5,7 +5,7 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
-#include <components/animationComponent.h>
+#include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 
 #include <debugdraw3d/api.h>
@@ -36,14 +36,14 @@ public:
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
 		context.attack->setAttackStrength(GETPARAM_F("attack", "strength"));
-		context.anim->playAnimation(AnimationComponent::EAnim::ATTACK);
+		context.anim->playAnimation(ComponentAnimation::EAnim::ATTACK);
 		return {};
 	}
 
 	TState exit(Context& context) override {
 		m_exitTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(false);
-		context.anim->playAnimation(AnimationComponent::EAnim::NONE);
+		context.anim->playAnimation(ComponentAnimation::EAnim::NONE);
 		return {};
 	}
 

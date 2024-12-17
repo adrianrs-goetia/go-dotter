@@ -5,8 +5,8 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
-#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
+#include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
 #include <events/parry.hpp>

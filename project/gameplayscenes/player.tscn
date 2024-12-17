@@ -152,7 +152,7 @@ shape = SubResource("SphereShape3D_6du44")
 [node name="ComponentParryInstigator" type="ComponentParryInstigator" parent="."]
 ColliderPath = NodePath("../ParryDetection")
 
-[node name="AnimationComponent" type="AnimationComponent" parent="."]
+[node name="ComponentAnimation" type="ComponentAnimation" parent="."]
 RootAnimationNode = NodePath("../meshAnchor")
 AnimatedCharacterScene = NodePath("../meshAnchor/character")
 root_node = NodePath("../meshAnchor/character")

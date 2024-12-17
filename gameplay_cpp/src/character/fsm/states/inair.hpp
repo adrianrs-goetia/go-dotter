@@ -6,8 +6,8 @@
 #include <debugdraw3d/api.h>
 #include <managers/inputManager.h>
 
-#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
+#include <components/animation.hpp>
 
 #define CONFIG_PREFIX "player"
 

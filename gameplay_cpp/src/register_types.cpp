@@ -5,9 +5,9 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
-#include <components/animationComponent.h>
 #include <components/grappleInstigatorComponent.h>
 #include <components/grappleTargetComponent.h>
+#include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/attackTarget.hpp>
 #include <components/parryInstigator.hpp>
@@ -42,7 +42,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 
 	godot::ClassDB::register_class<ComponentAttackInstigator>();
 	godot::ClassDB::register_class<ComponentAttackTarget>();
-	godot::ClassDB::register_class<AnimationComponent>();
+	godot::ClassDB::register_class<ComponentAnimation>();
 	godot::ClassDB::register_class<GrappleInstigatorComponent>();
 	godot::ClassDB::register_class<GrappleTargetComponent>();
 	godot::ClassDB::register_class<ComponentParryInstigator>();
