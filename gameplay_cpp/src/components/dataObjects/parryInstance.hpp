@@ -40,6 +40,7 @@ struct PlayerParryJump {};
 
 /**
  * Trickery to get compiler to be able to use a variant of these types with just a forward declaration of the Wrapper
+ * These variants should be subset of what is used on the other end, e.g. for projectiles
  */
 struct WrapperParryInstances {
 	using T = std::variant<ParryInstance, ParryFreezeInstance, PlayerParryJump>;
