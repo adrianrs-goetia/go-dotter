@@ -19,3 +19,6 @@ build_cache/
 *.so
 __pycache__/
 compile_commands.json
+
+# Analysis
+reports
