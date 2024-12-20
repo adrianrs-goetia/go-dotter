@@ -68,7 +68,6 @@ public:
 
 		switch (context.attack->getAttackState()) {
 			case ComponentAttackInstigator::EState::HIT: {
-				LOG(INFO, "HIT TARGET")
 			}
 			case ComponentAttackInstigator::EState::NOT_HIT: {
 			}

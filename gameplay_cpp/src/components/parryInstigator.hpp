@@ -13,6 +13,7 @@
 
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
+#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
@@ -88,7 +89,6 @@ public:
 		ASSERT_NOTNULL(m_area)
 
 		if (m_inRangeParryTargets.empty()) {
-			LOG(DEBUG, "No in range parry targets");
 			return std::nullopt;
 		}
 
@@ -119,7 +119,7 @@ public:
 
 	godot::Vector3 getVelocity() const {
 		RETURN_IF_EDITOR(Vector3())
-		if (auto* characterBody = cast_to<CharacterBody3D>(get_parent())) {
+		if (auto* characterBody = cast_to<godot::CharacterBody3D>(get_parent())) {
 			return characterBody->get_velocity();
 		}
 		return {};

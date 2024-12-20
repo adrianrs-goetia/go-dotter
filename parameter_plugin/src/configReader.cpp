@@ -8,7 +8,7 @@ bool ConfigReader::checkFileChanged(const std::string& filePath) {
 	if (std::filesystem::exists(filePath)) {
 		const auto writeTime = std::filesystem::last_write_time(filePath);
 		if (writeTime != m_lastWriteTime) {
-			LOG(INFO, "Config filePath changed")
+			LOG(DEBUG, "Config filePath changed")
 			m_lastWriteTime = writeTime;
 			return true;
 		}
