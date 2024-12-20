@@ -14,6 +14,8 @@
 namespace fsm::player {
 
 class ParryPostState : public BaseState {
+	Timestamp m_enterTime;
+
 public:
 	TState getType() const override {
 		return TParryPostState();
@@ -24,6 +26,7 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		m_enterTime.setTimestamp();
 		return {};
 	}
 
@@ -36,7 +39,7 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) {
-		if (!context.parry->getLastParryContact()) {
+		if (_passiveExit(context)) {
 			return TOnGroundState();
 		}
 
@@ -53,6 +56,18 @@ public:
 			return TParryJumpState();
 		}
 		return {};
+	}
+
+private:
+	bool _passiveExit(Context& context) {
+		if (!context.parry->getLastParryContact()) {
+			return true;
+		}
+		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("parry", "postStateTime"))) {
+			return true;
+		}
+
+		return false;
 	}
 };
 
