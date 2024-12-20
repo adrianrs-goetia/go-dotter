@@ -79,6 +79,7 @@ public:
 	}
 
 	TState deferredPhysicsProcess(Context& context, float delta) {
+		utils::moveSlideOwner(context);
 		return {};
 	}
 };

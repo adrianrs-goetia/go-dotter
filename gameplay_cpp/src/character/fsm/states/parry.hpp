@@ -53,7 +53,6 @@ public:
 	TState physicsProcess(Context& context, float delta) override {
 		context.physics.velocity = Vector3();
 
-		// Parry state timed out
 		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("parry", "stateLength"))) {
 			// Enter on ground by default, should discern if in air or onGround?
 			return TOnGroundState();
@@ -89,7 +88,6 @@ public:
 			return {};
 		}
 
-		// @todo: revert collision slide and disable future collisions during this state
 		utils::revertRigidbodyCollisionSlide(context);
 
 		return {};

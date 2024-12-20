@@ -65,7 +65,6 @@ public:
 			return {};
 		}
 
-		// @todo: revert collision slide and disable future collisions during this state
 		utils::revertRigidbodyCollisionSlide(context);
 		return {};
 	}

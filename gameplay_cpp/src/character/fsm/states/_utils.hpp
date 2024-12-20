@@ -30,6 +30,12 @@ inline void movementAcceleration(Context& context, float acceleration, float dec
 	}
 }
 
+inline void moveSlideOwner(Context& context) {
+	auto* owner = context.physics.owner;
+	owner->set_velocity(context.physics.velocity);
+	context.physics.collided = owner->move_and_slide();
+}
+
 inline void revertRigidbodyCollisionSlide(Context& context) {
 	auto* owner = context.physics.owner;
 	for (int i = 0; i < owner->get_slide_collision_count(); i++) {
