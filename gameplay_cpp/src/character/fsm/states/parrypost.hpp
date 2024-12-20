@@ -58,6 +58,11 @@ public:
 		return {};
 	}
 
+	TState deferredPhysicsProcess(Context& context, float delta) {
+		// @todo: revert collision slide and disable future collisions during this state
+		return {};
+	}
+
 private:
 	bool _passiveExit(Context& context) {
 		if (!context.parry->getLastParryContact()) {

@@ -69,6 +69,7 @@ public:
 	virtual TState process(Context& context, float delta) = 0;
 	virtual TState physicsProcess(Context& context, float delta) = 0;
 	virtual TState handleInput(Context& context, float delta) = 0;
+	virtual TState deferredPhysicsProcess(Context& context, float delta) = 0;
 };
 
 } //namespace fsm::player

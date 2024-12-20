@@ -79,6 +79,11 @@ public:
 		_processState(_currentState->handleInput(_context, delta));
 	}
 
+	void deferredPhysicsProcess(float delta) {
+		ASSERT_NOTNULL(_currentState)
+		_processState(_currentState->deferredPhysicsProcess(_context, delta));
+	}
+
 private:
 	void _processState(TState state) {
 		if (std::holds_alternative<std::monostate>(state)) {

@@ -77,6 +77,10 @@ public:
 
 		return {};
 	}
+
+	TState deferredPhysicsProcess(Context& context, float delta) {
+		return {};
+	}
 };
 
 } //namespace fsm::player

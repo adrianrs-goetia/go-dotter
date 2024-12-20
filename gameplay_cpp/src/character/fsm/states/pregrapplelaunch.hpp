@@ -41,6 +41,10 @@ public:
 	TState handleInput(Context& context, float delta) override {
 		return {};
 	}
+
+	TState deferredPhysicsProcess(Context& context, float delta) {
+		return {};
+	}
 };
 
 } //namespace fsm::player
