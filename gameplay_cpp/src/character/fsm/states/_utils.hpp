@@ -14,7 +14,7 @@
 
 namespace fsm::player::utils {
 
-inline void movement_acceleration(Context& context, float acceleration, float deceleration, float delta) {
+inline void movementAcceleration(Context& context, float acceleration, float deceleration, float delta) {
 	// direction
 	if (context.input->m_inputRaw.abs() > godot::Vector2()) {
 		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x,

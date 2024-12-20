@@ -60,7 +60,7 @@ public:
 
 	TState handleInput(Context& context, float delta) override {
 		// direction
-		utils::movement_acceleration(
+		utils::movementAcceleration(
 			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
 
 		// actions
