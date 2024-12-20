@@ -124,7 +124,7 @@ void PlayerNode::_physics_process(double delta) {
 
 	// set data from context
 	set_velocity(stateContext.physics.velocity);
-	move_and_slide();
+	stateContext.physics.collided = move_and_slide();
 
 	m_fsm->deferredPhysicsProcess(delta);
 }

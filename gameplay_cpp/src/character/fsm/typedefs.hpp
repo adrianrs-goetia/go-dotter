@@ -21,6 +21,7 @@ constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 
 struct PhysicsContext {
 	bool isOnGround;
+	bool collided;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
 
