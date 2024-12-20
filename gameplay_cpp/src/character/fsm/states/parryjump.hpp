@@ -33,8 +33,6 @@ public:
 		auto target = context.parry->getLastParryContactAssert();
 		m_enterTime.setTimestamp();
 
-		LOG(INFO, "parry jump")
-
 		const auto targetPos = target->get_global_position() + godot::Vector3(0, 1, 0); // add margin to go above target
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
@@ -66,7 +64,10 @@ public:
 	}
 
 	TState handleInput(Context& context, float delta) override {
+		// @todo: should auto leave state after a certain point along the jump curve?
+
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
+			// @todo: check if target is within range 
 			auto target = context.parry->getLastParryContactAssert();
 			target->onAction({ EventParryJump() });
 

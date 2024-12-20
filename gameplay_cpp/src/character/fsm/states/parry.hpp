@@ -69,10 +69,7 @@ public:
 			context.audioVisual.particles->set_global_basis(createBasisFromDirection(pi->getDirectionToTarget3D()));
 			context.audioVisual.particles->restart();
 
-			if (context.physics.isOnGround)
-				return TOnGroundState();
-			else
-				return TInAirState();
+			return TParryPostState();
 		}
 		return {};
 	}

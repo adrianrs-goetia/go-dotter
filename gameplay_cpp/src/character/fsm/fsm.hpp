@@ -9,6 +9,7 @@
 #include "states/inair.hpp"
 #include "states/onground.hpp"
 #include "states/parry.hpp"
+#include "states/parrypost.hpp"
 #include "states/parryjump.hpp"
 #include "states/pregrapplelaunch.hpp"
 
@@ -23,6 +24,7 @@ class Fsm {
 	GrappleLaunchState _grappleLaunchState;
 	InAirState _inAirState;
 	ParryState _parryState;
+	ParryPostState _parryPostState;
 	ParryJumpState _parryJumpState;
 	PreGrappleLaunchState _preGrappleLaunchState;
 
@@ -42,6 +44,7 @@ public:
 				[this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
 				[this](TInAirState) { _currentState = &_inAirState; },
 				[this](TParryState) { _currentState = &_parryState; },
+				[this](TParryPostState) { _currentState = &_parryPostState; },
 				[this](TParryJumpState) { _currentState = &_parryJumpState; },
 				[this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
 				[this](std::monostate) { ASSERT(false); },
@@ -91,6 +94,7 @@ private:
 				[&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
 				[&](TInAirState) { newState = &_inAirState; },
 				[&](TParryState) { newState = &_parryState; },
+				[&](TParryPostState) { newState = &_parryPostState; },
 				[&](TParryJumpState) { newState = &_parryJumpState; },
 				[&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
 				[&](std::monostate) { ASSERT(false); },

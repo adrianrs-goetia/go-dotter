@@ -52,10 +52,11 @@ struct TInAirState {};
 struct TPreGrappleLaunchState {};
 struct TGrappleLaunchState {};
 struct TParryState {};
+struct TParryPostState {};
 struct TParryJumpState {};
 struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
-	TParryState, TParryJumpState, TAttackState>;
+	TParryState, TParryPostState, TParryJumpState, TAttackState>;
 
 class BaseState {
 public:

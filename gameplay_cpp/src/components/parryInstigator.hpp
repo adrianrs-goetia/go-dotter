@@ -12,8 +12,8 @@
 #include <optional>
 
 #include <godot_cpp/classes/area3d.hpp>
-#include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
+#include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/physics_direct_space_state3d.hpp>
 #include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
@@ -123,5 +123,16 @@ public:
 			return characterBody->get_velocity();
 		}
 		return {};
+	}
+
+	godot::Vector3 getLastParryTargetDir() const {
+		auto* target = getLastParryContactAssert();
+		return godot::Vector3(target->get_global_position() - get_global_position()).normalized();
+	}
+
+	godot::Vector3 getLastParryTargetDir2D() const {
+		auto* target = getLastParryContactAssert();
+		const godot::Vector3 dir(target->get_global_position() - get_global_position());
+		return godot::Vector3(dir.x, 0.0, dir.z).normalized();
 	}
 };
