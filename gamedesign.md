@@ -34,6 +34,8 @@ Basic movement along the horizontal plane.
 #### Jump
 A small jump giving the player a second in the air. Not meant for major traversals, but to allow for the player to gain the in-air state. Modifying their existing mechanics. 
 
+After parrying a Light_Dynamic projectile, then the player will be able to utilize it for a double jump. 
+
 #### Slice Attack
 Swing your massive half scissor, damaging any enemy in front of you as well as cutting up projectiles for additional seameter. \
 Attacking projectiles;
