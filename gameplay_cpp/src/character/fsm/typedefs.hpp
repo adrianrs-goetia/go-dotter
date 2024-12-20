@@ -25,7 +25,7 @@ struct PhysicsContext {
 	godot::Vector3 position;
 	godot::Vector3 velocity;
 
-	godot::Vector3 get_gravity_center() const {
+	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
