@@ -101,7 +101,6 @@ public:
 		Vector3 closest = m_inRangeParryTargets.begin()->second.getPosition();
 		ComponentParryTarget* target = &m_inRangeParryTargets.begin()->second;
 		for (const auto& [rid, parryTarget] : m_inRangeParryTargets) {
-			DebugDraw::Line(instigatorPosition, parryTarget.getPosition(), Color(1, 0, 0), 1.f);
 			if (Vector3(instigatorPosition - parryTarget.getPosition()).length_squared() < closest.length_squared()) {
 				closest = parryTarget.getPosition();
 				target = &parryTarget;

@@ -2,16 +2,17 @@
 
 #include <core/core.hpp>
 
+class ComponentAnimation;
+class ComponentAttackInstigator;
 class ComponentGrappleInstigator;
 class ComponentParryInstigator;
-class ComponentAttackInstigator;
-class ComponentAnimation;
 class InputManager;
 
 namespace godot {
-class Node3D;
 class AudioStreamPlayer3D;
+class CharacterBody3D;
 class GPUParticles3D;
+class Node3D;
 } //namespace godot
 
 namespace fsm::player {
@@ -24,6 +25,7 @@ struct PhysicsContext {
 	bool collided;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
+	godot::CharacterBody3D* owner = nullptr;
 
 	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);

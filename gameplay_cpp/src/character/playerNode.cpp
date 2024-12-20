@@ -80,6 +80,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.physics.isOnGround = is_on_floor();
 	stateContext.physics.position = get_position();
 	stateContext.physics.velocity = get_velocity();
+	stateContext.physics.owner = this;
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 

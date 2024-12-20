@@ -39,6 +39,8 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) {
+		context.physics.velocity = Vector3();
+
 		if (_passiveExit(context)) {
 			return TOnGroundState();
 		}
@@ -59,7 +61,12 @@ public:
 	}
 
 	TState deferredPhysicsProcess(Context& context, float delta) {
+		if (!context.physics.collided) {
+			return {};
+		}
+
 		// @todo: revert collision slide and disable future collisions during this state
+		utils::revertRigidbodyCollisionSlide(context);
 		return {};
 	}
 

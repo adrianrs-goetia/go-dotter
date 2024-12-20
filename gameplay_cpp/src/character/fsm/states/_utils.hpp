@@ -4,6 +4,10 @@
 
 #include <managers/inputManager.h>
 
+#include <godot_cpp/classes/character_body3d.hpp>
+#include <godot_cpp/classes/kinematic_collision3d.hpp>
+#include <godot_cpp/classes/rigid_body3d.hpp>
+
 #include <configHandler.h>
 
 #define CONFIG_PREFIX "player"
@@ -23,6 +27,20 @@ inline void movement_acceleration(Context& context, float acceleration, float de
 	else {
 		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
 		context.physics.velocity.z = godot::Math::move_toward(context.physics.velocity.z, 0.0f, deceleration * delta);
+	}
+}
+
+inline void revertRigidbodyCollisionSlide(Context& context) {
+	auto* owner = context.physics.owner;
+	for (int i = 0; i < owner->get_slide_collision_count(); i++) {
+		auto col = owner->get_slide_collision(i);
+		if (godot::Object::cast_to<godot::RigidBody3D>(col->get_collider())) {
+			const auto pos = owner->get_global_position();
+			// const auto adjustment = col->get_travel() + col->get_remainder();
+			const auto adjustment = col->get_travel();
+			owner->set_global_position(pos - adjustment);
+			owner->set_velocity(Vector3());
+		}
 	}
 }
 
