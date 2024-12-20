@@ -36,6 +36,10 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) {
+		if (!context.parry->getLastParryContact()) {
+			return TOnGroundState();
+		}
+
 		const godot::Vector3 dir = context.parry->getLastParryTargetDir2D();
 		context.anim->setRootTowardsVector(dir);
 

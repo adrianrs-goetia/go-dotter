@@ -31,7 +31,6 @@ public:
 	godot::Area3D* m_area = nullptr;
 	std::map<GodotRID, ComponentParryTarget&> m_inRangeParryTargets;
 
-public:
 	std::weak_ptr<ParryContact> m_lastParryContact;
 
 public:
@@ -82,6 +81,11 @@ public:
 		auto lock = m_lastParryContact.lock();
 		ASSERT_NOTNULL(lock)
 		return lock->getTarget();
+	}
+
+	ComponentParryTarget* getLastParryContact() const {
+		auto lock = m_lastParryContact.lock();
+		return lock ? lock->getTarget() : nullptr;
 	}
 
 	std::optional<EventParry> activateParry(EventParry::Params params) {
