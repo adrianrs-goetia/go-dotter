@@ -33,7 +33,7 @@ void TurretNode::_enter_tree() {
 	// ResourceLoader should cache this between each load.
 	// Still ugly way of getting the desired scene, only option I have seen so far is
 	// having a string property to fetch the scene...
-	m_projectileResource = ResourceLoader::get_singleton()->load("res://gameplayscenes/projectile.tscn");
+	m_projectileResource = ResourceLoader::get_singleton()->load("res://assetscenes/projectile.tscn");
 	m_firingTimer = memnew(Timer);
 
 	ASSERT(m_projectileResource.is_valid());

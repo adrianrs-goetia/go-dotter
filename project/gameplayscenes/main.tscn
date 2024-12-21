@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://h2pqh1vnci7k"]
 
-[ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://gameplayscenes/terrain_block.tscn" id="2_we13y"]
-[ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://gameplayscenes/turret.tscn" id="4_5gw1a"]
-[ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://gameplayscenes/grapplenode.tscn" id="4_ii646"]
-[ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://gameplayscenes/rigid_body_3d.tscn" id="4_nem2m"]
-[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://gameplayscenes/player.tscn" id="5_v1y23"]
+[ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://assetscenes/terrain_block.tscn" id="2_we13y"]
+[ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://assetscenes/turret.tscn" id="4_5gw1a"]
+[ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://assetscenes/grapplenode.tscn" id="4_ii646"]
+[ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://assetscenes/rigid_body_3d.tscn" id="4_nem2m"]
+[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://assetscenes/player.tscn" id="5_v1y23"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
