@@ -13,22 +13,25 @@
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 
-#define CONFIG_PREFIX "player"
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
+#define CONFIG_PREFIX "player", "parry", "pre"
 
 namespace fsm::player {
 
-class ParryState : public BaseState {
+class ParryPreState : public BaseState {
 private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;
 
 public:
 	TState getType() const override {
-		return TParryState();
+		return TParryPreState();
 	}
 
 	bool canEnter() const override {
-		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("parry", "cooldown"));
+		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("cooldown"));
 		if (!canEnter) {
 			LOG(DEBUG, "Tried entering parryState before cooldown was ready")
 		}
@@ -53,7 +56,7 @@ public:
 	TState physicsProcess(Context& context, float delta) override {
 		context.physics.velocity = Vector3();
 
-		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("parry", "stateLength"))) {
+		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("stateTime"))) {
 			// Enter on ground by default, should discern if in air or onGround?
 			return TOnGroundState();
 		}
@@ -64,7 +67,7 @@ public:
 		}
 
 		if (const auto pi = context.parry->activateParry(
-				EventParry::Params{ parryDirection, GETPARAM_F("parry", "length"), GETPARAM_F("parry", "lift") })) {
+				EventParry::Params{ parryDirection, GETPARAM_F("length"), GETPARAM_F("lift") })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);

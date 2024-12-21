@@ -54,12 +54,12 @@ struct TOnGroundState {};
 struct TInAirState {};
 struct TPreGrappleLaunchState {};
 struct TGrappleLaunchState {};
-struct TParryState {};
+struct TParryPreState {};
 struct TParryPostState {};
 struct TParryJumpState {};
 struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
-	TParryState, TParryPostState, TParryJumpState, TAttackState>;
+	TParryPreState, TParryPostState, TParryJumpState, TAttackState>;
 
 class BaseState {
 public:

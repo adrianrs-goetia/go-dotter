@@ -12,7 +12,10 @@
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 
-#define CONFIG_PREFIX "player", "parry"
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
+#define CONFIG_PREFIX "player", "parry", "jump"
 
 namespace fsm::player {
 
@@ -41,7 +44,7 @@ public:
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
 
-		context.physics.velocity = dir * length.length() * GETPARAM_F("parryJumpStrength");
+		context.physics.velocity = dir * length.length() * GETPARAM_F("impulse");
 		return {};
 	}
 
@@ -61,11 +64,11 @@ public:
 		context.anim->rotateRootTowardsVector(
 			context.physics.getVelocityDir2D(), delta, GETPARAMGLOBAL_D("player", "animation", "rootRotationSpeed"));
 
-		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("parryJumpStateTime"))) {
+		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("stateTime"))) {
 			return TInAirState();
 		}
 
-		if (!m_intangibilityTime.timestampWithinTimeframe(GETPARAM_F("parryJumpIntagibilityTime"))) {
+		if (!m_intangibilityTime.timestampWithinTimeframe(GETPARAM_F("intagibilityTime"))) {
 			utils::enableCollision(context, m_clm);
 		}
 
@@ -81,8 +84,8 @@ public:
 			target->onAction({ EventParryJump() });
 
 			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
-			newVel *= GETPARAM_D("parryDoubleJumpHorizontal");
-			newVel.y = GETPARAM_D("parryDoubleJumpStrength");
+			newVel *= GETPARAM_D("doubleJumpHorizontalStrength");
+			newVel.y = GETPARAM_D("doubleJumpImpulse");
 			context.physics.velocity = newVel;
 			return TInAirState();
 		}

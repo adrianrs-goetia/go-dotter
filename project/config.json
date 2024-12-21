@@ -44,19 +44,24 @@
             "launchStrength": 18.0
         },
         "parry": {
-            "cooldown": 0.5,
-            "stateLength": 0.7,
-            "launchUpAngle": 60.0,
-            "launchStrength": 10.0,
-            "length": 1.0,
-            "lift": 6.0,
-            "freezetime": 1.0,
-            "parryJumpStrength": 2.0,
-            "parryDoubleJumpStrength": 8.0,
-            "parryJumpStateTime": 1.2,
-            "parryJumpIntagibilityTime": 0.9,
-            "parryDoubleJumpHorizontal": 2.0,
-            "postStateTime": 1.0
+            "pre": {
+                "cooldown": 0.5,
+                "stateTime": 0.7,
+                "length": 1.0,
+                "lift": 6.0
+            },
+            "post": {
+                "freezetime": 1.0,
+                "stateTime": 1.0
+            },
+            "jump": {
+                "freezetime": 1.0,
+                "impulse": 2.1,
+                "doubleJumpImpulse": 8.0,
+                "stateTime": 1.2,
+                "intagibilityTime": 0.9,
+                "doubleJumpHorizontalStrength": 2.0
+            }
         },
         "attack": {
             "cooldown": 0.5,

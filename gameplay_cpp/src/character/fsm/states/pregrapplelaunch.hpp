@@ -5,6 +5,9 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
 #define CONFIG_PREFIX "player"
 
 namespace fsm::player {

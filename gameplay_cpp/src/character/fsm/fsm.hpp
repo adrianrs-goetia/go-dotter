@@ -8,9 +8,9 @@
 #include "states/grapplelaunch.hpp"
 #include "states/inair.hpp"
 #include "states/onground.hpp"
-#include "states/parry.hpp"
-#include "states/parrypost.hpp"
 #include "states/parryjump.hpp"
+#include "states/parrypost.hpp"
+#include "states/parrypre.hpp"
 #include "states/pregrapplelaunch.hpp"
 
 namespace fsm::player {
@@ -23,7 +23,7 @@ class Fsm {
 	OnGroundState _onGroundState;
 	GrappleLaunchState _grappleLaunchState;
 	InAirState _inAirState;
-	ParryState _parryState;
+	ParryPreState _parryState;
 	ParryPostState _parryPostState;
 	ParryJumpState _parryJumpState;
 	PreGrappleLaunchState _preGrappleLaunchState;
@@ -43,7 +43,7 @@ public:
 				[this](TOnGroundState) { _currentState = &_onGroundState; },
 				[this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
 				[this](TInAirState) { _currentState = &_inAirState; },
-				[this](TParryState) { _currentState = &_parryState; },
+				[this](TParryPreState) { _currentState = &_parryState; },
 				[this](TParryPostState) { _currentState = &_parryPostState; },
 				[this](TParryJumpState) { _currentState = &_parryJumpState; },
 				[this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
@@ -98,7 +98,7 @@ private:
 				[&](TOnGroundState) { newState = &_onGroundState; },
 				[&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
 				[&](TInAirState) { newState = &_inAirState; },
-				[&](TParryState) { newState = &_parryState; },
+				[&](TParryPreState) { newState = &_parryState; },
 				[&](TParryPostState) { newState = &_parryPostState; },
 				[&](TParryJumpState) { newState = &_parryJumpState; },
 				[&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
