@@ -52,7 +52,7 @@ parameter::Variant ConfigReader::getValue(const parameter::StringKey& arguments)
 				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2));
 				break;
 			case 4:
-				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(4));
+				param = m_cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(3));
 				break;
 			default: {
 				LOG(ERROR, "Unexpected amount of arguments when getting config.json value:", arguments.size())
