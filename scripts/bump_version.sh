@@ -59,11 +59,12 @@ GDEXTENSION_FILE="gameplay_cpp/addons/gameplay_cpp/gameplaycpp.gdextension"
 sed -i "s|${CURRENT_VERSION}|${VERSION}|" "$GDEXTENSION_FILE"
 
 # Update export_presets.cfg
-sed -i -E 's|.*export_path=|export_path=\"../build/export/v${VERSION}_debug/go-dotter.v${VERSION}_debug\"|' project/export_presets.cfg
+sed -i -E "s|.*export_path=.*|export_path=\"..\/build\/export\/v${VERSION}_debug\/go-dotter.v${VERSION}_debug\"|" project/export_presets.cfg
 
 git add \
     $VERSION_FILE \
-    $GDEXTENSION_FILE
+    $GDEXTENSION_FILE \
+    project/export_presets.cfg
 git commit -m "Version $VERSION, $TAG_MESSAGE"
 
 if [ -n "$TAG_MESSAGE" ]; then
