@@ -1,7 +1,10 @@
 [configuration]
 entry_symbol = "gameplay_plugin_init"
 compatibility_minimum = "4.2.2"
-reloadable = true
+
+; Disabled for now, is somewhat unstable.
+; Editor 'forgets' parameters on hot reloading dynamic library
+reloadable = false
 
 
 [dependencies]

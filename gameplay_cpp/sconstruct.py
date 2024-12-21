@@ -52,7 +52,9 @@ def generate_gdextension_file(env: SConsEnvironment):
 def configure_environment(env: SConsEnvironment, libs: list[str], args):
     e = env.Clone()
     e.Append(CPPPATH=os.path.join(current_dir, 'src'))
-    e["use_hot_reload"] = True # hot reload by default for gameplay_cpp
+    ##
+    # Turned out to be unstable. Causing editor to forget parameters when releoading the library. 
+    # e["use_hot_reload"] = True
 
     generate_gdextension_file(e)
     lib_file = e.File(get_libname(e, env["target"]))
