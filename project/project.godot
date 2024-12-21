@@ -145,3 +145,7 @@ toggle_application_mouse_lock={
 3d_physics/layer_17="AttackCollision"
 3d_physics/layer_18="GrappleCollision"
 3d_physics/layer_19="ParryCollision"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"

@@ -19,3 +19,7 @@ build_cache/
 *.so
 __pycache__/
 compile_commands.json
+
+# Track jolt binaries
+!project/addons/godot-jolt-v0.12.0/linux/*.so
+!project/addons/godot-jolt-v0.12.0/windows/*.dll
