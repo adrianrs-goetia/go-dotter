@@ -80,7 +80,10 @@ public:
 			auto target = context.parry->getLastParryContactAssert();
 			target->onAction({ EventParryJump() });
 
-			context.physics.velocity.y = GETPARAM_D("parryDoubleJumpStrength");
+			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
+			newVel *= GETPARAM_D("parryDoubleJumpHorizontal");
+			newVel.y = GETPARAM_D("parryDoubleJumpStrength");
+			context.physics.velocity = newVel;
 			return TInAirState();
 		}
 

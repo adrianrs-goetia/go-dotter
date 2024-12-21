@@ -55,6 +55,7 @@
             "parryDoubleJumpStrength": 8.0,
             "parryJumpStateTime": 1.2,
             "parryJumpIntagibilityTime": 0.9,
+            "parryDoubleJumpHorizontal": 2.0,
             "postStateTime": 1.0
         },
         "attack": {
