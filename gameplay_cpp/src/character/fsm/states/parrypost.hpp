@@ -9,7 +9,10 @@
 #include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
 
-#define CONFIG_PREFIX "player"
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
+#define CONFIG_PREFIX "player", "parry", "post"
 
 namespace fsm::player {
 
@@ -54,7 +57,7 @@ public:
 	TState handleInput(Context& context, float delta) override {
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			auto* target = context.parry->getLastParryContactAssert();
-			target->onAction(EventParryFreeze{ GETPARAM_F("parry", "freezetime") });
+			target->onAction(EventParryFreeze{ GETPARAM_F("freezetime") });
 			return TParryJumpState();
 		}
 		return {};
@@ -74,7 +77,7 @@ private:
 		if (!context.parry->getLastParryContact()) {
 			return true;
 		}
-		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("parry", "postStateTime"))) {
+		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("stateTime"))) {
 			return true;
 		}
 

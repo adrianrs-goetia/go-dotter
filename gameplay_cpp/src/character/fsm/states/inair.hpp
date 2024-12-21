@@ -9,6 +9,9 @@
 #include <components/animation.hpp>
 #include <components/grappleInstigator.hpp>
 
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
 #define CONFIG_PREFIX "player"
 
 namespace fsm::player {
@@ -54,7 +57,7 @@ public:
 			return TPreGrappleLaunchState();
 		}
 		if (context.input->isActionPressed(EInputAction::PARRY)) {
-			return TParryState();
+			return TParryPreState();
 		}
 		return {};
 	}

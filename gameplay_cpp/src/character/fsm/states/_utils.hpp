@@ -10,6 +10,9 @@
 
 #include <configHandler.h>
 
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
 #define CONFIG_PREFIX "player"
 
 namespace fsm::player::utils {
