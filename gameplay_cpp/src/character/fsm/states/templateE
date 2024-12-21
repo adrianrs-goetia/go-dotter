@@ -1,0 +1,50 @@
+#pragma once
+
+#include "../typedefs.hpp"
+#include "_utils.hpp"
+#include <configHandler.h>
+#include <debugdraw3d/api.h>
+#include <managers/inputManager.h>
+
+#define CONFIG_PREFIX "player"
+
+namespace fsm::player {
+
+class StateName : public BaseState {
+public:
+	TState getType() const override {
+		return TStateType();
+	}
+
+	bool canEnter() const override {
+		return true;
+	}
+
+	TState enter(Context& context) override {
+		return {};
+	}
+
+	TState exit(Context& context) override {
+		return {};
+	}
+
+	TState process(Context& context, float delta) override {
+		return {};
+	}
+
+	TState physicsProcess(Context& context, float delta) {
+		return {};
+	}
+
+	TState handleInput(Context& context, float delta) override {
+		return {};
+	}
+
+	TState deferredPhysicsProcess(Context& context, float delta) {
+		return {};
+	}
+};
+
+} //namespace fsm::player
+
+#undef CONFIG_PREFIX

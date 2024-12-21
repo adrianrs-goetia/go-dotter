@@ -73,6 +73,7 @@ void PlayerNode::_enter_tree() {
 	ASSERT_NOTNULL(audio)
 	ASSERT_NOTNULL(particles)
 
+	stateContext.owner = this;
 	stateContext.attack = attackComponent;
 	stateContext.anim = m_animComponent;
 	stateContext.input = input;
@@ -80,7 +81,6 @@ void PlayerNode::_enter_tree() {
 	stateContext.physics.isOnGround = is_on_floor();
 	stateContext.physics.position = get_position();
 	stateContext.physics.velocity = get_velocity();
-	stateContext.physics.owner = this;
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 

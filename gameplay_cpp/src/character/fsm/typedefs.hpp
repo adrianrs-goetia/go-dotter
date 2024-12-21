@@ -25,7 +25,6 @@ struct PhysicsContext {
 	bool collided;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
-	godot::CharacterBody3D* owner = nullptr;
 
 	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
@@ -41,6 +40,7 @@ struct AudioVisualContext {
 };
 
 struct Context {
+	godot::CharacterBody3D* owner = nullptr;
 	ComponentAttackInstigator* attack = nullptr;
 	ComponentAnimation* anim = nullptr;
 	ComponentGrappleInstigator* grapple = nullptr;
