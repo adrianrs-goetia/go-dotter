@@ -26,15 +26,28 @@ private:
 		PARRYLOW,
 	};
 	
-	void setParryType(ParryAnimationType type);
+		void setParryType(ParryAnimationType type) {
+		switch (type) {
+			case ParryAnimationType::PARRYHIGH:
+				set("parameters/parry_type/blend_amount", 0);
+				break;
+			case ParryAnimationType::PARRYLOW:
+				set("parameters/parry_type/blend_amount", 1);
+				break; 
+		}
+	}
 
-		void setMovement(MovementAnimationType type) {
+	void setMovement(MovementAnimationType type) {
+		set("parameters/action_or_locomotion_upper/blend_amount", 1);
+		set("parameters/action_or_locomotion_lower/blend_amount", 1);
 		switch (type) {
 			case MovementAnimationType::WALKING:
-				set("parameters/movement/blend_amount", 0);
+				set("parameters/locomotion_lower/blend_amount", 0);
+				set("parameters/locomotion_upper/blend_amount", 0);
 				break;
 			case MovementAnimationType::AIRBORNE:
-				set("parameters/movement/blend_amount", 1);
+				set("parameters/locomotion_lower/blend_amount", 1);
+				set("parameters/locomotion_upper/blend_amount", 1);
 				break; 
 		}
 	}
@@ -113,22 +126,16 @@ public:
 	}
 
 	void doParry() {
-		set("parameters/move_and_parry/add_amount", 1);
+		set("parameters/action_or_locomotion_upper/blend_amount", 0);
+		// if stand still, should set 
+		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
+		set("parameters/action_lower/blend_amount", 0);
+		set("parameters/action_upper/blend_amount", 0);
 	}
 
 	void dontParry() {
-		set("parameters/move_and_parry/add_amount", 0);
-	}
-
-	void setParryType(ParryAnimationType type) {
-		switch (type) {
-			case ParryAnimationType::PARRYHIGH:
-				set("parameters/parry_type/blend_amount", 0);
-				break;
-			case ParryAnimationType::PARRYLOW:
-				set("parameters/parry_type/blend_amount", 1);
-				break; 
-		}
+		set("parameters/action_lower/blend_amount", 0);
+		set("parameters/action_upper/blend_amount", 0);
 	}
 
 	void inAir() {
@@ -140,8 +147,9 @@ public:
 	}
 
 	void idleRunValue(float value) {
-		set("parameters/run/blend_position", value);
-		}
+		set("parameters/run_upper/blend_position", value);
+		set("parameters/run_lower/blend_position", value);
+	}
 
 	// Tmp method for forcing TPose
 	void setActive(bool active) {
