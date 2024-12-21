@@ -19,6 +19,8 @@ namespace fsm::player {
 class ParryJumpState : public BaseState {
 private:
 	Timestamp m_enterTime;
+	Timestamp m_intangibilityTime;
+	utils::CollisionLayerMask m_clm;
 
 public:
 	TState getType() const override {
@@ -30,9 +32,11 @@ public:
 	}
 
 	TState enter(Context& context) override {
-		auto target = context.parry->getLastParryContactAssert();
 		m_enterTime.setTimestamp();
 
+		m_clm = utils::disableCollision(context);
+
+		auto* target = context.parry->getLastParryContactAssert();
 		const auto targetPos = target->get_global_position() + godot::Vector3(0, 1, 0); // add margin to go above target
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
@@ -42,6 +46,7 @@ public:
 	}
 
 	TState exit(Context& context) override {
+		utils::enableCollision(context, m_clm);
 		return {};
 	}
 
@@ -60,6 +65,10 @@ public:
 			return TInAirState();
 		}
 
+		if (!m_intangibilityTime.timestampWithinTimeframe(GETPARAM_F("parryJumpIntagibilityTime"))) {
+			utils::enableCollision(context, m_clm);
+		}
+
 		return {};
 	}
 
@@ -67,7 +76,7 @@ public:
 		// @todo: should auto leave state after a certain point along the jump curve?
 
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			// @todo: check if target is within range 
+			// @todo: check if target is within range
 			auto target = context.parry->getLastParryContactAssert();
 			target->onAction({ EventParryJump() });
 

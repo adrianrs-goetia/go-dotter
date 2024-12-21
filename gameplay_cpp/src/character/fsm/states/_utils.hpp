@@ -36,6 +36,23 @@ inline void moveSlideOwner(Context& context) {
 	context.physics.collided = owner->move_and_slide();
 }
 
+typedef struct {
+	uint32_t layer;
+	uint32_t mask;
+} CollisionLayerMask;
+
+inline CollisionLayerMask disableCollision(Context& context) {
+	CollisionLayerMask clm{ context.physics.owner->get_collision_layer(), context.physics.owner->get_collision_mask() };
+	context.physics.owner->set_collision_layer(0);
+	context.physics.owner->set_collision_mask(1); // Not masking out static world
+	return clm;
+}
+
+inline void enableCollision(Context& context, const CollisionLayerMask& clm) {
+	context.physics.owner->set_collision_layer(clm.layer);
+	context.physics.owner->set_collision_mask(clm.mask);
+}
+
 inline void revertRigidbodyCollisionSlide(Context& context) {
 	auto* owner = context.physics.owner;
 	for (int i = 0; i < owner->get_slide_collision_count(); i++) {
