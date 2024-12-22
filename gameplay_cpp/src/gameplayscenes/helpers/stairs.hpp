@@ -14,7 +14,7 @@ class GamesceneHelperStairs : public godot::Node3D {
 	G_FLOAT_IMPL(m_stepDepth, StepDepth, = -0.25f)
 	G_FLOAT_IMPL(m_stepHeight, StepHeight, = 0.25f)
 	G_FLOAT_IMPL(m_stepScale, StepScale, = 0.3f)
-	G_FLOAT_IMPL(m_curveAngle, CurveAngle) // angle in degrees
+	G_FLOAT_IMPL(m_curveAngle, CurveAngle, = 0.f) // angle in degrees
 
 public:
 	static void _bind_methods() {
