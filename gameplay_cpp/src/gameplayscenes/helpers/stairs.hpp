@@ -30,7 +30,7 @@ public:
 		set_meta("_edit_group_", true);
 		set_notify_transform(true);
 
-		if (m_stairScene.is_valid()) {
+		if (m_stairScene.is_valid() && is_node_ready()) {
 			allocateAmount();
 			adjustTransform();
 		}
@@ -39,7 +39,8 @@ public:
 	void _notification(int what) {
 		switch (what) {
 			case NOTIFICATION_TRANSFORM_CHANGED:
-				adjustTransform();
+				if (is_node_ready())
+					adjustTransform();
 				break;
 
 			default:
