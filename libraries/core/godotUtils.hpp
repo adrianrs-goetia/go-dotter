@@ -96,48 +96,49 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define _G_IMPL(variableName, functionName, type)                                                                      \
+#define _GS_IMPL_VAR(variableName, type, ...)                                                                                \
 protected:                                                                                                             \
-	type variableName;                                                                                                 \
+	type variableName __VA_ARGS__;
+
+#define _G_IMPL(variableName, functionName, type, ...)                                                                 \
+	_GS_IMPL_VAR(variableName, type, __VA_ARGS__)                                                                      \
 public:                                                                                                                \
 	type get##functionName() const {                                                                                   \
 		return variableName;                                                                                           \
 	}
 
-#define _S_IMPL(variableName, functionName, type)                                                                      \
-protected:                                                                                                             \
-	type variableName;                                                                                                 \
+#define _S_IMPL(variableName, functionName, type, ...)                                                                 \
+	_GS_IMPL_VAR(variableName, type, __VA_ARGS__)                                                                      \
 public:                                                                                                                \
 	void set##functionName(type value) {                                                                               \
 		variableName = value;                                                                                          \
 	}
 
-#define _GS_IMPL(variableName, functionName, type)                                                                     \
-protected:                                                                                                             \
-	type variableName;                                                                                                 \
-public:                                                                                                             \
+#define _GS_IMPL(variableName, functionName, type, ...)                                                                \
+	_GS_IMPL_VAR(variableName, type, __VA_ARGS__)                                                                      \
+public:                                                                                                                \
 	type get##functionName() const {                                                                                   \
 		return variableName;                                                                                           \
-	}																												   \
+	}                                                                                                                  \
 	void set##functionName(type value) {                                                                               \
 		variableName = value;                                                                                          \
 	}
 
-#define G_PATH_IMPL(variableName, functionName) _G_IMPL(variableName, functionName, godot::NodePath)
-#define S_PATH_IMPL(variableName, functionName) _S_IMPL(variableName, functionName, godot::NodePath)
-#define GS_PATH_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, godot::NodePath)
+#define G_PATH_IMPL(variableName, functionName, ...) _G_IMPL(variableName, functionName, godot::NodePath, __VA_ARGS__)
+#define S_PATH_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, godot::NodePath, __VA_ARGS__)
+#define GS_PATH_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, godot::NodePath, __VA_ARGS__)
 
-#define G_BOOL_IMPL(variableName, functionName) _G_IMPL(variableName, functionName, bool)
-#define S_BOOL_IMPL(variableName, functionName) _S_IMPL(variableName, functionName, bool)
-#define GS_BOOL_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, bool)
+#define G_BOOL_IMPL(variableName, functionName, ...) _G_IMPL(variableName, functionName, bool, __VA_ARGS__)
+#define S_BOOL_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, bool, __VA_ARGS__)
+#define GS_BOOL_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, bool, __VA_ARGS__)
 
-#define G_FLOAT_IMPL(variableName, functionName) _G_IMPL(variableName, functionName, float)
-#define S_FLOAT_IMPL(variableName, functionName) _S_IMPL(variableName, functionName, float)
-#define GS_FLOAT_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, float)
+#define G_FLOAT_IMPL(variableName, functionName, ...) _G_IMPL(variableName, functionName, float, __VA_ARGS__)
+#define S_FLOAT_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, float, __VA_ARGS__)
+#define GS_FLOAT_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, float, __VA_ARGS__)
 
-#define G_INT_IMPL(variableName, functionName) _G_IMPL(variableName, functionName, int)
-#define S_INT_IMPL(variableName, functionName) _S_IMPL(variableName, functionName, int)
-#define GS_INT_IMPL(variableName, functionName) _GS_IMPL(variableName, functionName, int)
+#define G_INT_IMPL(variableName, functionName, ...) _G_IMPL(variableName, functionName, int, __VA_ARGS__)
+#define S_INT_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, int, __VA_ARGS__)
+#define GS_INT_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, int, __VA_ARGS__)
 
 #define G_PACKEDSCENE_IMPL(variableName, functionName)                                                                 \
 	_G_IMPL(variableName, functionName, godot::Ref<godot::PackedScene>)
