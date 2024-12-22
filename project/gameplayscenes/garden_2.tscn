@@ -1,0 +1,193 @@
+[gd_scene load_steps=3 format=3 uid="uid://gwsvj37lokuy"]
+
+[ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://assetscenes/player.tscn" id="1_6dfvs"]
+[ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://assetscenes/terrain_block.tscn" id="3_h5t3g"]
+
+[node name="Mainscene" type="MainNode"]
+
+[node name="PlayerNode" parent="." instance=ExtResource("1_6dfvs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3697, 0.57717, 0.850973)
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="TerrainBlock" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.31392, 0)
+
+[node name="TerrainBlock2" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.877381, 0, 0.479795, 0, 1, 0, -0.479795, 0, 0.877381, -4.22552, -5.31392, -9.35121)
+
+[node name="TerrainBlock5" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.526428, 0, 0.287877, 0, 0.6, 0, -0.287877, 0, 0.526428, 14.2642, 3.69843, -25.2431)
+
+[node name="TerrainBlock3" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(1.8425, 0, 1.00757, 0, 0.833065, 0, -1.00757, 0, 1.8425, 2.307, -6.19682, -9.03731)
+
+[node name="TerrainBlock20" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.206212, 0, 0.744865, 0, 0.320075, 0, -0.700693, 0, 0.219212, 16.0346, -5.81369, -6.27907)
+
+[node name="TerrainBlock22" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(-0.6834, 0, 0.570332, 0, 0.320075, 0, -0.739764, 0, -0.526877, 11.5963, -5.17301, -12.5286)
+
+[node name="TerrainBlock21" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.0571926, 0, 0.774068, 0, 0.320075, 0, -0.728164, 0, 0.0607981, 12.5512, -7.03246, -3.76538)
+
+[node name="TerrainBlock7" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.816277, 0.0583374, 0.738289, -0.308676, 0.270969, 0, -0.709955, -0.0507388, 0.848855, -6.20532, -5.03304, -20.9078)
+
+[node name="TerrainBlock19" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.728625, -0.0825651, 0.443533, 0.475225, 0.222351, 0, -0.633719, 0.0718107, 0.509957, 2.88964, -11.1249, -24.4618)
+
+[node name="TerrainBlock18" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.816277, 0.160895, 0.0790589, -0.308676, 0.747335, 0, -0.709955, -0.139938, 0.0908987, -9.62013, -3.33516, -25.6726)
+
+[node name="TerrainBlock11" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.550663, -0.0703893, -0.27324, 0.0756812, 0.438821, -0.136073, 0.148469, 0.0373833, 1.0828, -18.7633, -14.2339, -13.1355)
+
+[node name="TerrainBlock12" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.105294, 0.0154057, -1.10532, -0.0789833, 0.441758, 0.0104062, 0.560067, 0.0594024, 0.209269, -6.73652, -17.6843, -16.78)
+
+[node name="TerrainBlock14" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.0558579, 0.00845081, -0.448115, -0.0419003, 0.242326, 0.00421888, 0.297113, 0.0325852, 0.0848417, -7.29061, -16.6768, -19.7566)
+
+[node name="TerrainBlock13" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.105294, 0.0154057, -1.10532, -0.0789833, 0.441758, 0.0104062, 0.560067, 0.0594024, 0.209269, 1.30642, -20.2965, -13.957)
+
+[node name="TerrainBlock8" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(-0.380991, 0.0209611, -0.187167, 0.036841, 0.422495, -0.0276765, 0.184698, -0.0410351, -0.380562, -12.6313, -1.98706, -10.6953)
+
+[node name="TerrainBlock9" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(-0.380991, 0.0470126, -0.182375, 0.036841, 0.422199, 0.0318718, 0.184698, 0.0127623, -0.382555, -17.592, -8.05984, -5.77822)
+
+[node name="TerrainBlock10" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(-0.276494, 0.0643999, -0.369924, 0.0267363, 0.871325, -0.0084477, 0.13404, -0.0409567, -0.761384, -5.84104, -2.05221, -1.44903)
+
+[node name="TerrainBlock4" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(1.39099, 0, -0.475455, 0, 0.251041, 0, 0.475455, 0, 1.39099, 19.5587, 2.80464, -16.8568)
+
+[node name="TerrainBlock6" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.671837, 0, -0.229641, 0, 0.21, 0, 0.229641, 0, 0.671837, 30.7522, -20.8671, -19.0463)
+
+[node name="TerrainBlock15" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.697719, 0, 0.131482, 0, 0.21, 0, -0.131482, 0, 0.697719, 38.014, -20.1777, -19.6696)
+
+[node name="TerrainBlock16" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(0.398854, 0, 0.58738, 0, 0.21, 0, -0.58738, 0, 0.398854, 36.0811, -19.6292, -14.9145)
+
+[node name="TerrainBlock17" parent="Terrain" instance=ExtResource("3_h5t3g")]
+transform = Transform3D(-0.264755, 0.00910216, 0.336308, 0.100868, 0.202289, 0.0558116, -0.323398, 0.0556429, -0.257917, 36.1815, -19.8389, -24.1249)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.728263, 0.172233, 0.663301, -0.685297, 0.183032, 0.704888, 0, -0.967902, 0.251326, 8.25608, 0.0140181, -2.26032)
+shadow_enabled = true
+
+[node name="Stairs" type="Node" parent="."]
+
+[node name="GamesceneHelperStairs" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 2
+StepDepth = -3.46
+StepHeight = 0.71
+StepScale = 0.36
+CurveAngle = 0.488439
+transform = Transform3D(-0.676125, 0, 1.15041, 0, 1, 0, -1.24165, 0, -0.626444, 3.27238, -3.16423, -6.84506)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs2" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 5
+StepDepth = -3.21
+StepHeight = 0.825
+StepScale = 0.38
+CurveAngle = 70.898
+transform = Transform3D(0.219352, 0, -0.975646, 0, 1, 0, 0.975646, 0, 0.219352, 6.48972, -1.50256, 0.216877)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs11" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 30
+StepDepth = -0.48
+StepHeight = -0.04
+StepScale = 0.13
+CurveAngle = -60.0
+transform = Transform3D(-0.982541, -0.0217124, 0.184773, -1.86265e-09, 0.993167, 0.116705, -0.186044, 0.114668, -0.975827, 9.56755, -6.19504, -0.1624)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs7" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 5
+StepDepth = -4.03
+StepHeight = -0.365
+StepScale = 0.21
+CurveAngle = 37.663
+transform = Transform3D(0.670712, 0, 0.741718, 0, 1, 0, -0.741718, 0, 0.670712, 10.635, 2.7543, -30.0242)
+rotation_edit_mode = 1
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs10" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 4
+StepDepth = -4.305
+StepHeight = -4.85
+StepScale = 0.285
+CurveAngle = 77.783
+transform = Transform3D(-0.494791, 0, 0.869012, 0, 1, 0, -0.869012, 0, -0.494791, -7.53355, -2.10859, -35.439)
+rotation_edit_mode = 1
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs5" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+StepDepth = -3.21
+StepHeight = -0.78
+StepScale = 0.295
+CurveAngle = 21.348
+transform = Transform3D(-0.271457, 0, 0.962451, 0, 1, 0, -0.962451, 0, -0.271457, -9.96237, -2.52382, -6.8521)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs4" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 300
+StepDepth = -0.245
+StepHeight = -0.08
+StepScale = 0.18
+CurveAngle = 720.0
+transform = Transform3D(-0.128605, 0, -0.991696, 0, 1, 0, 0.991696, 0, -0.128605, 27.8826, 3.20319, -19.3129)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs6" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 155
+StepDepth = -0.245
+StepHeight = -0.07
+StepScale = 0.18
+CurveAngle = 200.0
+transform = Transform3D(-0.528975, -0.00232254, 0.848634, 0.0851385, 0.994806, 0.0557916, -0.844356, 0.101764, -0.52603, -19.8791, -6.75074, -4.40146)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs8" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 155
+StepDepth = -0.135
+StepHeight = 0.01
+StepScale = 0.18
+CurveAngle = 71.455
+transform = Transform3D(0.705604, -0.0684453, -0.705293, -0.0368521, 0.990433, -0.132985, 0.707647, 0.119826, 0.696331, -4.52979, -18.8546, 9.09705)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs9" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+Num = 185
+StepDepth = -0.155
+StepHeight = -0.008
+StepScale = 0.18
+CurveAngle = 104.49
+transform = Transform3D(-0.706132, -0.0048686, -0.708064, -0.0348859, 0.999001, 0.0279216, 0.707221, 0.0444178, -0.705596, 5.33938, -19.4807, -11.6026)
+metadata/_edit_group_ = true
+
+[node name="GamesceneHelperStairs3" type="GamesceneHelperStairs" parent="Stairs"]
+StairScene = ExtResource("3_h5t3g")
+StepDepth = -3.32
+StepHeight = 0.96
+StepScale = 0.18
+CurveAngle = -118.48
+transform = Transform3D(-0.0950812, 0, 0.99547, 0, 1, 0, -0.99547, 0, -0.0950812, 10.7114, 3.45423, -14.2675)
+metadata/_edit_group_ = true
