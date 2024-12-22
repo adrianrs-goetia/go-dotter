@@ -52,23 +52,33 @@ public:
 		}
 		ASSERT(m_stairScene->can_instantiate())
 
-		// tmp, no need to delete all nodes every time
 		auto children = get_children();
-		while (children.size()) {
+
+		while (getNum() <= children.size()) {
 			auto* child = cast_to<Node>(children.pop_back());
 			remove_child(child);
 		}
 
-		Node* step = nullptr;
-		step = m_stairScene->instantiate();
-		ASSERT_NOTNULL(step)
-		add_child(step);
+		if (children.size() < getNum()) {
+			int toAdd = getNum() - (int)children.size();
+			Node* step = nullptr;
 
-		for (int i = 1; i < m_num; i++) {
-			auto* nextStep = m_stairScene->instantiate();
-			ASSERT_NOTNULL(step)
-			step->add_sibling(nextStep);
-			step = nextStep;
+			if (children.size() == 0) {
+				step = m_stairScene->instantiate();
+				ASSERT_NOTNULL(step)
+				add_child(step);
+				toAdd--;
+			}
+			else {
+				step = cast_to<Node>(children.pop_back());
+			}
+
+			for (int i = 0; i < toAdd; i++) {
+				auto* nextStep = m_stairScene->instantiate();
+				ASSERT_NOTNULL(step)
+				step->add_sibling(nextStep);
+				step = nextStep;
+			}
 		}
 	}
 
@@ -108,7 +118,7 @@ public:
 	}
 
 	void setNum(int value) {
-		m_num = std::max(value, 0);
+		m_num = std::max(value, 1);
 		if (m_num > 0) {
 			setAmountOfStairs();
 			adjustStairTransform();
