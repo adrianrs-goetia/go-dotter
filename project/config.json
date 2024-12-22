@@ -1,12 +1,12 @@
 {
     "application": {
         "input": {
-            "overwriteMode": 1,
-            "mouselock": false
+            "overwriteMode": -1,
+            "mouselock": true
         }
     },
     "camera": {
-        "xMaxRotation": 20.0,
+        "xMaxRotation": 40.0,
         "xMinRotation": -80.0,
         "mnk": {
             "xInverted": false,
@@ -29,13 +29,13 @@
     },
     "gravityConstant": -9.81,
     "player": {
-        "walkSpeed": 4.0,
-        "onGroundAcceleration": 40.0,
-        "onGroundDeceleration": 30.0,
-        "jumpStrength": 6.4,
+        "walkSpeed": 6.5,
+        "onGroundAcceleration": 30.0,
+        "onGroundDeceleration": 20.0,
+        "jumpStrength": 6.6,
         "inAirAcceleration": 10.0,
-        "inAirDeceleration": 10.0,
-        "gravityScale": 1.8,
+        "inAirDeceleration": 30.0,
+        "gravityScale": 2.2,
         "animation": {
             "rootRotationSpeed": 20.0
         },
