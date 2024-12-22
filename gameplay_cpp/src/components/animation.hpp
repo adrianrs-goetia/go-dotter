@@ -17,21 +17,21 @@ class ComponentAnimation : public godot::AnimationTree {
 
 private:
 	enum MovementAnimationType {
-		AIRBORNE,
-		WALKING,
+		Airborne,
+		Walking,
 	};
 
 	enum ParryAnimationType {
-		PARRYHIGH,
-		PARRYLOW,
+		ParryHigh,
+		ParryLow,
 	};
 	
 		void setParryType(ParryAnimationType type) {
 		switch (type) {
-			case ParryAnimationType::PARRYHIGH:
+			case ParryAnimationType::ParryHigh:
 				set("parameters/parry_type/blend_amount", 0);
 				break;
-			case ParryAnimationType::PARRYLOW:
+			case ParryAnimationType::ParryLow:
 				set("parameters/parry_type/blend_amount", 1);
 				break; 
 		}
@@ -41,11 +41,11 @@ private:
 		set("parameters/action_or_locomotion_upper/blend_amount", 1);
 		set("parameters/action_or_locomotion_lower/blend_amount", 1);
 		switch (type) {
-			case MovementAnimationType::WALKING:
+			case MovementAnimationType::Walking:
 				set("parameters/locomotion_lower/blend_amount", 0);
 				set("parameters/locomotion_upper/blend_amount", 0);
 				break;
-			case MovementAnimationType::AIRBORNE:
+			case MovementAnimationType::Airborne:
 				set("parameters/locomotion_lower/blend_amount", 1);
 				set("parameters/locomotion_upper/blend_amount", 1);
 				break; 
@@ -139,11 +139,11 @@ public:
 	}
 
 	void inAir() {
-		setMovement(MovementAnimationType::AIRBORNE);
+		setMovement(MovementAnimationType::Airborne);
 	}
 
 	void onGround() {
-		setMovement(MovementAnimationType::WALKING);
+		setMovement(MovementAnimationType::Walking);
 	}
 
 	void idleRunValue(float value) {
