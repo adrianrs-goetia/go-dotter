@@ -138,6 +138,14 @@ public:
 		set("parameters/action_upper/blend_amount", 0);
 	}
 
+	void doAttack() {
+		set("parameters/action_or_locomotion_upper/blend_amount", 0);
+		// if stand still, should set 
+		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
+		set("parameters/action_lower/blend_amount", 1);
+		set("parameters/action_upper/blend_amount", 1);
+	}
+
 	void inAir() {
 		setMovement(MovementAnimationType::Airborne);
 	}
