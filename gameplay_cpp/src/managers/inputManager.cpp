@@ -174,7 +174,12 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 	else if (p_event->is_action_pressed(InputString::restart)) {
 		if (SceneTree* tree = get_tree()) {
 			LOG(INFO, "Reloading current scene")
-			tree->reload_current_scene();
+			if (GETPARAMGLOBAL_B("application", "hardResetTreeOnRestart")) {
+				tree->reload_current_scene();
+			}
+			else {
+				tree->get_current_scene()->propagate_notification(ENotifications::SOFT_RESTART);
+			}
 		}
 	}
 	if (auto* keyevent = cast_to<InputEventKey>(*p_event)) {

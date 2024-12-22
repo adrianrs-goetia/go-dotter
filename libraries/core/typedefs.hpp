@@ -35,4 +35,5 @@ enum ENotifications : int {
 	DESTROY = 3000,
 	PARRIED = 3001,
 	ATTACKED = 3002,
+	SOFT_RESTART = 3003,
 };
