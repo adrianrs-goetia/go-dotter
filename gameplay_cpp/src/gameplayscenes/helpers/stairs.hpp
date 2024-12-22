@@ -38,10 +38,18 @@ public:
 
 	void _notification(int what) {
 		switch (what) {
-			case NOTIFICATION_TRANSFORM_CHANGED:
+			case NOTIFICATION_TRANSFORM_CHANGED: {
 				if (is_node_ready())
 					adjustTransform();
 				break;
+			}
+			case ENotifications::INTERNAL_RELOAD: {
+				if (is_node_ready()) {
+					LOG(DEBUG, "Internal reload:", get_name())
+					resetAll();
+				}
+				break;
+			}
 
 			default:
 				break;

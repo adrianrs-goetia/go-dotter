@@ -1,6 +1,8 @@
 #include "inputManager.h"
 
 #include <godot_cpp/classes/display_server.hpp>
+#include <godot_cpp/classes/editor_command_palette.hpp>
+#include <godot_cpp/classes/editor_interface.hpp>
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/input_event_key.hpp>
@@ -21,6 +23,18 @@ void InputManager::exitGame() {
 		LOG(INFO, "tree->quit(0)")
 		tree->quit(0);
 	}
+}
+
+void InputManager::_internalReload() {
+	if (auto root = godot::EditorInterface::get_singleton()->get_edited_scene_root()) {
+		LOG(INFO, "_internalReload")
+		root->propagate_notification(ENotifications::INTERNAL_RELOAD);
+	}
+}
+
+InputManager::InputManager() {
+	set_process(true);
+	set_process_internal(true); // Is autoloaded into scene, but this *should* ensure it always runs during editor
 }
 
 void InputManager::_bind_methods() {
@@ -89,6 +103,11 @@ void InputManager::_notification(int what) {
 		default:
 			break;
 	}
+}
+
+void InputManager::_ready() {
+	auto palett = godot::EditorInterface::get_singleton()->get_command_palette();
+	palett->add_command("InternalReload All Nodes", "InputManager/", callable_mp(this, &InputManager::_internalReload));
 }
 
 void InputManager::_enter_tree() {
