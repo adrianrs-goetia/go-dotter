@@ -125,8 +125,11 @@ public:
 		m_animRoot->set_basis(createBasisFromDirection(vector));
 	}
 
-	void doParry() {
-		set("parameters/action_or_locomotion_upper/blend_amount", 0);
+	void doParry(bool mask_upper = true, bool mask_lower = true) {
+		if (mask_upper)
+			set("parameters/action_or_locomotion_upper/blend_amount", 0);
+		if (mask_lower)
+			set("parameters/action_or_locomotion_lower/blend_amount", 0);
 		// if stand still, should set 
 		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
 		set("parameters/action_lower/blend_amount", 0);
