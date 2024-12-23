@@ -11,6 +11,9 @@
 namespace fsm::projectile {
 
 class Parried : public BaseState {
+	TYPE(Parried)
+
+private:
 	uint32_t enteredCollisionLayers = 0;
 
 public:
@@ -46,7 +49,7 @@ public:
 					context.forwardedAction = action;
 					ret = TParryFreeze();
 				},
-				[](const auto& a) { ASSERT(false, "Projectile::Parried state got unexpected event: ", a.Name()) },
+				[](const auto& a) { ASSERT(false, "Projectile state #", Name(), "# got unexpected event: ", a.Name()) },
 			},
 			action);
 

@@ -13,6 +13,8 @@
 namespace fsm::player {
 
 class PreGrappleLaunchState : public BaseState {
+	TYPE(PreGrappleLaunchState)
+
 public:
 	TState getType() const override {
 		return TPreGrappleLaunchState();

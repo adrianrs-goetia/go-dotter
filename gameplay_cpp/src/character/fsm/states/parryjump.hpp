@@ -20,6 +20,8 @@
 namespace fsm::player {
 
 class ParryJumpState : public BaseState {
+	TYPE(ParryJumpState)
+
 private:
 	Timestamp m_enterTime;
 	Timestamp m_intangibilityTime;

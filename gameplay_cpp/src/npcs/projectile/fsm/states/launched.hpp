@@ -13,6 +13,9 @@
 namespace fsm::projectile {
 
 class Launched : public BaseState {
+	TYPE(Launched)
+
+private:
 	godot::Timer* m_timer = nullptr;
 
 public:

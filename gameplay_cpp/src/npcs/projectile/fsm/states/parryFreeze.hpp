@@ -11,6 +11,9 @@
 namespace fsm::projectile {
 
 class ParryFreeze : public BaseState {
+	TYPE(ParryFreeze)
+
+private:
 	Timestamp m_enterTime;
 	float m_freezetime;
 

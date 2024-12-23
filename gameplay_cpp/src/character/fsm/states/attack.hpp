@@ -18,6 +18,8 @@
 namespace fsm::player {
 
 class AttackState : public BaseState {
+	TYPE(AttackState)
+
 private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;

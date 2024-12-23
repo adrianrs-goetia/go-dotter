@@ -21,6 +21,8 @@
 namespace fsm::player {
 
 class ParryPreState : public BaseState {
+	TYPE(ParryPreState)
+
 private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;

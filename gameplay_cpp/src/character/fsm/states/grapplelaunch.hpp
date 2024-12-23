@@ -16,6 +16,8 @@
 namespace fsm::player {
 
 class GrappleLaunchState : public BaseState {
+	TYPE(GrappleLaunchState)
+
 public:
 	virtual bool canEnter() const override {
 		return true;

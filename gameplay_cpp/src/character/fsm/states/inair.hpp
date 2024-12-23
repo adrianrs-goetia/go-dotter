@@ -17,6 +17,8 @@
 namespace fsm::player {
 
 class InAirState : public BaseState {
+	TYPE(InAirState)
+
 public:
 	TState getType() const override {
 		return TInAirState();

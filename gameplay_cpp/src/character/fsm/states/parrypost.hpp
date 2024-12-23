@@ -17,6 +17,9 @@
 namespace fsm::player {
 
 class ParryPostState : public BaseState {
+	TYPE(ParryPostState)
+
+private:
 	Timestamp m_enterTime;
 
 public:

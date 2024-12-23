@@ -13,6 +13,9 @@
 namespace fsm::projectile {
 
 class PostParryLaunch : public BaseState {
+	TYPE(PostParryLaunch)
+
+private:
 	Timestamp m_enterTime;
 
 public:

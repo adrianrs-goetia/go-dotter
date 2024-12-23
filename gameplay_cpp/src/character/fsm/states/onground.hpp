@@ -19,6 +19,8 @@
 namespace fsm::player {
 
 class OnGroundState : public BaseState {
+	TYPE(OnGroundState)
+
 public:
 	TState getType() const override {
 		return TOnGroundState();
