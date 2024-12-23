@@ -46,7 +46,7 @@ public:
 					context.forwardedAction = action;
 					ret = TParryFreeze();
 				},
-				[](const auto&) { ASSERT(false) },
+				[](const auto& a) { ASSERT_MSG(false, a.Name()) },
 			},
 			action);
 

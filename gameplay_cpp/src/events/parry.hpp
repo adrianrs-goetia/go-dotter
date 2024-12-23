@@ -5,6 +5,8 @@
 #include <variant>
 
 struct EventParry {
+	TYPE(EventParry)
+
 	struct Params {
 		const godot::Vector3 direction;
 		const float length;
@@ -14,7 +16,7 @@ struct EventParry {
 	const godot::Vector3 instigatorPosition;
 	const godot::Vector3 targetPosition;
 	const Params params;
-	
+
 	godot::Vector3 getVectorToTarget() const {
 		return godot::Vector3(targetPosition - instigatorPosition);
 	}
@@ -30,9 +32,12 @@ struct EventParry {
 };
 
 struct EventParryFreeze {
+	TYPE(EventParryFreeze)
 	float time;
 };
 
-struct EventParryJump {};
+struct EventParryJump {
+	TYPE(EventParryJump)
+};
 
 using VEventParry = std::variant<EventParry, EventParryFreeze, EventParryJump>;
