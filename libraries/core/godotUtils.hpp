@@ -22,6 +22,11 @@ static const godot::Vector3 g_right(1, 0, 0);
 		return ret;                                                                                                    \
 	}
 
+#define RETURN_IF_GAME(ret)                                                                                            \
+	if (!godot::Engine::get_singleton()->is_editor_hint()) {                                                           \
+		return ret;                                                                                                    \
+	}
+
 /**
  * We ALWAYS expect there to only be a single component of type T under a specific node
  */
@@ -96,7 +101,7 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#define _GS_IMPL_VAR(variableName, type, ...)                                                                                \
+#define _GS_IMPL_VAR(variableName, type, ...)                                                                          \
 protected:                                                                                                             \
 	type variableName __VA_ARGS__;
 

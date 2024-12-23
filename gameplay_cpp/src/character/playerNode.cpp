@@ -33,15 +33,18 @@ extern "C" {
 
 using namespace godot;
 
+Transform3D PlayerNode::startTransform = {};
+
 void PlayerNode::_bind_methods() {}
 
 void PlayerNode::_notification(int what) {
-	// LOG(INFO, "Notification", (int64_t)what)
 	switch (what) {
 		case NOTIFICATION_WM_CLOSE_REQUEST: {
 			LOG(INFO, "PlayerNode WM_CLOSE_REQUEST")
-			// exit_game();
 			break;
+		}
+		case ENotifications::SOFT_RESTART: {
+			set_global_transform(PlayerNode::startTransform);
 		}
 
 		default:
@@ -53,6 +56,8 @@ void PlayerNode::_enter_tree() {
 	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
 
 	RETURN_IF_EDITOR(void())
+
+	PlayerNode::startTransform = get_global_transform();
 
 	Log(ELog::DEBUG, "PlayerNode entering tree");
 

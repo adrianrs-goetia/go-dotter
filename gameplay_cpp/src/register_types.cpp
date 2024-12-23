@@ -5,6 +5,8 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
+#include <gameplayscenes/helpers/stairs.hpp>
+
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/attackTarget.hpp>
@@ -52,6 +54,9 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<GrappleNode>();
 	godot::ClassDB::register_class<Projectile>();
 	godot::ClassDB::register_class<TurretNode>();
+
+	// gameplayscenes
+	godot::ClassDB::register_class<GamesceneHelperStairs>();
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {

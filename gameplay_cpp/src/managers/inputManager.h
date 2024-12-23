@@ -133,11 +133,15 @@ public:
 
 private:
 	void exitGame();
+	void _internalReload();
 
 public:
+	InputManager();
+
 	static void _bind_methods();
 
 	void _notification(int what);
+	void _ready() override;
 	void _enter_tree() override;
 	void _physics_process(double delta);
 	void _input(const godot::Ref<godot::InputEvent>& p_event);

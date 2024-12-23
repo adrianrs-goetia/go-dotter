@@ -30,10 +30,10 @@ public:
 	fsm::player::Fsm* m_fsm = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
 	ComponentAnimation* m_animComponent = nullptr;
-
 	ComponentParryInstigator* m_parryComponent = nullptr;
-
 	std::vector<ComponentGrappleTarget*> m_inRangeGrapplenodes;
+
+	static godot::Transform3D startTransform;
 
 public:
 	static void _bind_methods();
