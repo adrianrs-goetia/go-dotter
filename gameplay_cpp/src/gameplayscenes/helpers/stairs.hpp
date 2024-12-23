@@ -30,9 +30,14 @@ public:
 		set_meta("_edit_group_", true);
 		set_notify_transform(true);
 
+		/**
+		 * Only allocate children here
+		 * When adjusting transform, we require use of global transforms. However, getting global
+		 * transforms before a node has entered the tree returns an error. As the child node has not
+		 * yet been properly instantiated and entered the node tree.
+		 */
 		if (m_stairScene.is_valid() && is_node_ready()) {
-			allocateAmount();
-			adjustTransform();
+			allocateChildren();
 		}
 	}
 
@@ -40,7 +45,7 @@ public:
 		switch (what) {
 			case NOTIFICATION_TRANSFORM_CHANGED: {
 				if (is_node_ready())
-					adjustTransform();
+					adjustChildTransforms();
 				break;
 			}
 			case ENotifications::INTERNAL_RELOAD: {
@@ -56,7 +61,7 @@ public:
 		}
 	}
 
-	void allocateAmount() {
+	void allocateChildren() {
 		if (m_stairScene.is_null()) {
 			LOG(ERROR, "Required scene not set for stairs")
 			return;
@@ -107,7 +112,7 @@ public:
 			step->add_sibling(nextStep);
 			step = nextStep;
 		}
-		adjustTransform();
+		adjustChildTransforms();
 	}
 
 	void removeAll() {
@@ -118,7 +123,7 @@ public:
 		}
 	}
 
-	void adjustTransform() {
+	void adjustChildTransforms() {
 		if (get_child_count() == 0) {
 			return;
 		}
@@ -167,8 +172,8 @@ public:
 	void setNum(int value) {
 		m_num = std::max(value, 1);
 		if (m_num > 0 && is_node_ready()) {
-			allocateAmount();
-			adjustTransform();
+			allocateChildren();
+			adjustChildTransforms();
 		}
 	}
 
@@ -176,24 +181,24 @@ public:
 		m_stepDepth = value;
 
 		if (is_node_ready())
-			adjustTransform();
+			adjustChildTransforms();
 	}
 
 	void setStepHeight(float value) {
 		m_stepHeight = value;
 		if (is_node_ready())
-			adjustTransform();
+			adjustChildTransforms();
 	}
 
 	void setStepScale(float value) {
 		m_stepScale = value;
 		if (is_node_ready())
-			adjustTransform();
+			adjustChildTransforms();
 	}
 
 	void setCurveAngle(float value) {
 		m_curveAngle = value;
 		if (is_node_ready())
-			adjustTransform();
+			adjustChildTransforms();
 	}
 };
