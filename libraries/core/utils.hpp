@@ -68,3 +68,22 @@ template <class... Args>
 constexpr variantCastProxyRref<Args...> variantCast(std::variant<Args...>&& v) {
 	return { v };
 }
+
+/**
+ * Common static constexpr functions which should return literals
+ * Mostly for debug info when dealing with variants and quickly reading what type it is
+ *
+ * To be usable within cases where we call;
+ * (auto a){ a.Foo(); }
+ * Without having to deal with std::decay_t<decltype(a)>::Name or w/e
+ */
+#define TYPE(type)                                                                                                     \
+public:                                                                                                                \
+	static constexpr auto Name() {                                                                                     \
+		return #type;                                                                                                  \
+	}
+
+// GDCLASS + TYPE for debug info
+#define GDTYPE(type, inheritance)                                                                                      \
+	TYPE(inheritance::type)                                                                                            \
+	GDCLASS(type, inheritance)
