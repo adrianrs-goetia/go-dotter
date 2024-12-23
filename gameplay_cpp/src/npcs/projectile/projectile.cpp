@@ -32,15 +32,15 @@ void Projectile::_enter_tree() {
 	set_max_contacts_reported(3);
 
 	m_fsm = new fsm::projectile::Fsm(fsm::projectile::Context{ this });
-	ASSERT_NOTNULL(m_fsm)
+	ASSERTNN(m_fsm)
 	m_fsm->init(fsm::projectile::TLaunched());
 
 	m_parryTargetComp = getComponentOfNode<ComponentParryTarget>(this);
 	m_attackTargetComp = memnew(ComponentAttackTarget);
 	add_child(m_attackTargetComp);
 
-	ASSERT_NOTNULL(m_parryTargetComp)
-	ASSERT_NOTNULL(m_attackTargetComp)
+	ASSERTNN(m_parryTargetComp)
+	ASSERTNN(m_attackTargetComp)
 
 	m_parryTargetComp->_callback = [this](const auto& event) { this->m_fsm->handleExternalAction(variantCast(event)); };
 

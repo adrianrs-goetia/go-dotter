@@ -121,7 +121,7 @@ void InputManager::_enter_tree() {
 void InputManager::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
 
-	ASSERT_NOTNULL(DisplayServer::get_singleton())
+	ASSERTNN(DisplayServer::get_singleton())
 	if (DisplayServer::get_singleton()->window_is_focused()) {
 		// const bool mouselock = m_additionalStates.applicationMouseLock ^ GETPARAM_B("mouselock");
 		const bool mouselock = GETPARAM_B("mouselock");

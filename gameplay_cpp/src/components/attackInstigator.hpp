@@ -56,7 +56,7 @@ public:
 		RETURN_IF_EDITOR(void())
 
 		m_attackCollider = get_node<Area3D>(m_attackColliderPath);
-		ASSERT_NOTNULL(m_attackCollider)
+		ASSERTNN(m_attackCollider)
 
 		m_attackCollider->set_collision_mask_value(collisionflags::attackTarget, true);
 		m_attackCollider->connect("area_entered", callable_mp(this, &ComponentAttackInstigator::areaEnteredCollider));
@@ -75,7 +75,7 @@ public:
 		++m_numOfHitNodesTotal;
 
 		auto* target = area->get_parent();
-		ASSERT_NOTNULL(target);
+		ASSERTNN(target);
 
 		if (auto* attackComp = getComponentOfNode<ComponentAttackTarget>(target)) {
 			attackComp->receiveAttack(

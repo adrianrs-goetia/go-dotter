@@ -45,13 +45,13 @@ public:
 			set_animation_player(node->get_node<godot::AnimationPlayer>("AnimationPlayer")->get_path());
 
 			m_skeleton = node->get_node<godot::Skeleton3D>("Armature/Skeleton3D");
-			ASSERT_NOTNULL(m_skeleton)
+			ASSERTNN(m_skeleton)
 		}
 
 		RETURN_IF_EDITOR(void())
 
 		m_animRoot = get_node<Node3D>(m_pathToRootAnimationNode);
-		ASSERT_NOTNULL(m_animRoot);
+		ASSERTNN(m_animRoot);
 	}
 
 	void _physics_process(double delta) override {

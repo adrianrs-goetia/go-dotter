@@ -37,12 +37,12 @@ void TurretNode::_enter_tree() {
 	m_firingTimer = memnew(Timer);
 
 	ASSERT(m_projectileResource.is_valid());
-	ASSERT_NOTNULL(m_target)
-	ASSERT_NOTNULL(m_gunRotPoint)
-	ASSERT_NOTNULL(m_gunRotJoint)
-	ASSERT_NOTNULL(m_gunOpening)
-	ASSERT_NOTNULL(m_firingTimer)
-	ASSERT_NOTNULL(m_gunOpeningAudioPlayer)
+	ASSERTNN(m_target)
+	ASSERTNN(m_gunRotPoint)
+	ASSERTNN(m_gunRotJoint)
+	ASSERTNN(m_gunOpening)
+	ASSERTNN(m_firingTimer)
+	ASSERTNN(m_gunOpeningAudioPlayer)
 
 	add_child(m_firingTimer);
 	m_firingTimer->connect("timeout", callable_mp(this, &TurretNode::fireProjectile));
@@ -74,8 +74,8 @@ float TurretNode::getFiringInterval() const {
 }
 
 void TurretNode::rotateHeadTowardsTarget() {
-	ASSERT_NOTNULL(m_gunRotPoint)
-	ASSERT_NOTNULL(m_gunRotJoint)
+	ASSERTNN(m_gunRotPoint)
+	ASSERTNN(m_gunRotJoint)
 	/**
 	 * These rotations are highly dependent on transform of the child pieces in the model
 	 */
@@ -100,10 +100,10 @@ void TurretNode::fireProjectile() {
 		return;
 	}
 	Node* instance = m_projectileResource->instantiate();
-	ASSERT_NOTNULL(instance)
+	ASSERTNN(instance)
 
 	Node* root = get_node<Node>(nodePaths::root);
-	ASSERT_NOTNULL(root)
+	ASSERTNN(root)
 	root->add_child(instance);
 
 	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {

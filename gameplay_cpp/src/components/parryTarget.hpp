@@ -53,7 +53,7 @@ public:
 		set_name(get_class());
 
 		m_areaPtr = get_node<godot::Area3D>(m_colliderPath);
-		ASSERT_NOTNULL(m_areaPtr)
+		ASSERTNN(m_areaPtr)
 		m_areaPtr->set_collision_layer_value(collisionflags::parryTarget, true);
 	}
 
@@ -73,7 +73,7 @@ public:
 
 	godot::Vector3 getPosition() const {
 		RETURN_IF_EDITOR(godot::Vector3())
-		ASSERT_NOTNULL(m_areaPtr)
+		ASSERTNN(m_areaPtr)
 		return m_areaPtr->get_global_position();
 	}
 };

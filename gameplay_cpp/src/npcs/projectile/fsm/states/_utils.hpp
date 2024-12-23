@@ -13,7 +13,7 @@ inline void death(Context& context) {
 	auto deathParticles = context.owner->getDeathParticles();
 	ASSERT(deathParticles.is_valid())
 	godot::Node* root = context.owner->get_node<godot::Node>(nodePaths::root);
-	ASSERT_NOTNULL(root)
+	ASSERTNN(root)
 
 	auto* particles = context.owner->cast_to<godot::GPUParticles3D>(deathParticles->instantiate());
 	root->add_child(particles);

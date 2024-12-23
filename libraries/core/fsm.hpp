@@ -5,7 +5,7 @@
 /////////////////////////////////////
 template <typename Context, typename Ret>
 struct State {
-	virtual ~State(){}
+	virtual ~State() {}
 	struct Return {
 		Ret* new_state = nullptr;
 	};
@@ -38,13 +38,13 @@ protected:
 
 template <typename Context, typename StateClass, typename StateReturn>
 inline const char* Fsm<Context, StateClass, StateReturn>::getCurrentStateName() {
-	ASSERT_NOTNULL(m_currentState)
+	ASSERTNN(m_currentState)
 	return m_currentState->get_name();
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::init(Context& context, StateClass* state) {
-	ASSERT_NOTNULL(state)
+	ASSERTNN(state)
 	m_currentState = state;
 	_processState(context, m_currentState->enter(context));
 }
@@ -56,13 +56,13 @@ inline void Fsm<Context, StateClass, StateReturn>::deinit() {
 
 template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::process(Context& context, float delta) {
-	ASSERT_NOTNULL(m_currentState)
+	ASSERTNN(m_currentState)
 	_processState(context, m_currentState->process(context, delta));
 }
 
 template <typename Context, typename StateClass, typename StateReturn>
 inline void Fsm<Context, StateClass, StateReturn>::physicsProcess(Context& context, float delta) {
-	ASSERT_NOTNULL(m_currentState)
+	ASSERTNN(m_currentState)
 	_processState(context, m_currentState->physicsProcess(context, delta));
 }
 
@@ -74,4 +74,3 @@ inline void Fsm<Context, StateClass, StateReturn>::_processState(Context& contex
 		_processState(context, m_currentState->enter(context));
 	}
 }
-

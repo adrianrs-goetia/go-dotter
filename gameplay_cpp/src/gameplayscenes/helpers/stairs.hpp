@@ -76,7 +76,7 @@ public:
 
 			if (children.size() == 0) {
 				step = m_stairScene->instantiate();
-				ASSERT_NOTNULL(step)
+				ASSERTNN(step)
 				add_child(step);
 				toAdd--;
 			}
@@ -86,7 +86,7 @@ public:
 
 			for (int i = 0; i < toAdd; i++) {
 				auto* nextStep = m_stairScene->instantiate();
-				ASSERT_NOTNULL(step)
+				ASSERTNN(step)
 				step->add_sibling(nextStep);
 				step = nextStep;
 			}
@@ -99,11 +99,11 @@ public:
 		ASSERT(m_stairScene.is_valid())
 		Node* step = nullptr;
 		step = m_stairScene->instantiate();
-		ASSERT_NOTNULL(step)
+		ASSERTNN(step)
 		add_child(step);
 		for (int i = 1; i < m_num; i++) {
 			auto* nextStep = m_stairScene->instantiate();
-			ASSERT_NOTNULL(step)
+			ASSERTNN(step)
 			step->add_sibling(nextStep);
 			step = nextStep;
 		}
@@ -133,14 +133,14 @@ public:
 		// First step has transform equal to this
 		{
 			auto* child = cast_to<Node3D>(children.pop_front());
-			ASSERT_NOTNULL(child)
+			ASSERTNN(child)
 			child->set_global_position(pos);
 			child->set_scale(godot::Vector3(1, 1, 1) * getStepScale());
 		}
 
 		while (children.size()) {
 			auto* child = cast_to<Node3D>(children.pop_front());
-			ASSERT_NOTNULL(child)
+			ASSERTNN(child)
 
 			forward.rotate(up, godot::Math::deg_to_rad(anglePerStep));
 			pos += (forward.normalized() * getStepDepth()) + (up * getStepHeight());

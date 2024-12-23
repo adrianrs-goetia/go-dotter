@@ -72,14 +72,14 @@ void PlayerNode::_enter_tree() {
 	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
 
-	ASSERT_NOTNULL(input)
-	ASSERT_NOTNULL(m_parryComponent)
-	ASSERT_NOTNULL(m_camerapivot)
-	ASSERT_NOTNULL(m_animComponent)
-	ASSERT_NOTNULL(attackComponent)
-	ASSERT_NOTNULL(grappleInstigator)
-	ASSERT_NOTNULL(audio)
-	ASSERT_NOTNULL(particles)
+	ASSERTNN(input)
+	ASSERTNN(m_parryComponent)
+	ASSERTNN(m_camerapivot)
+	ASSERTNN(m_animComponent)
+	ASSERTNN(attackComponent)
+	ASSERTNN(grappleInstigator)
+	ASSERTNN(audio)
+	ASSERTNN(particles)
 
 	stateContext.owner = this;
 	stateContext.attack = attackComponent;
@@ -97,7 +97,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.grapple = grappleInstigator;
 
 	m_fsm = new fsm::player::Fsm(stateContext);
-	ASSERT_NOTNULL(m_fsm)
+	ASSERTNN(m_fsm)
 	m_fsm->init(fsm::player::TInAirState());
 }
 
@@ -113,14 +113,14 @@ void PlayerNode::_exit_tree() {
 void PlayerNode::_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
-	ASSERT_NOTNULL(m_camerapivot);
+	ASSERTNN(m_camerapivot);
 	m_camerapivot->process(m_fsm->getContext(), delta);
 }
 
 void PlayerNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 
-	ASSERT_NOTNULL(m_fsm)
+	ASSERTNN(m_fsm)
 	// capture current physics context
 	auto& stateContext = m_fsm->getContext();
 	stateContext.physics.isOnGround = is_on_floor();
@@ -139,6 +139,6 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	if (!m_fsm) {
 		return;
 	}
-	ASSERT_NOTNULL(m_camerapivot);
+	ASSERTNN(m_camerapivot);
 	m_camerapivot->processInput(m_fsm->getContext(), get_process_delta_time());
 }

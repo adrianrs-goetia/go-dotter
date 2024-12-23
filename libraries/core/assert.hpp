@@ -23,13 +23,8 @@ std::string __concatenate_args(Args&&... args) {
 	return oss.str();
 }
 
-#define ASSERTM(expr, ...)                                                                                             \
+#define ASSERT(expr, ...)                                                                                              \
 	{ __m_assert(#expr, expr, __FILE__, __LINE__, __concatenate_args(__VA_ARGS__).c_str()); }
 
-#define ASSERT(expr)                                                                                                   \
-	{ __m_assert(#expr, expr, __FILE__, __LINE__, ""); }
-#define ASSERT_MSG(expr, msg)                                                                                          \
-	{ __m_assert(#expr, expr, __FILE__, __LINE__, msg); }
-#define ASSERT_NOTNULL(ptr) ASSERT(ptr != nullptr)
-#define ASSERT_NOTNULL_MSG(ptr, msg) ASSERT_MSG(ptr != nullptr, msg)
-void __m_assert(const char* expr_str, bool expr, const char* file, int line, const char* msg);
+// assert not null
+#define ASSERTNN(ptr, ...) ASSERT(ptr != nullptr, __VA_ARGS__)

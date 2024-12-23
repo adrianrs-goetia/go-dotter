@@ -26,7 +26,7 @@ void ConfigHandler::_enter_tree() {
 
 	m_readerTimer = memnew(Timer);
 
-	ASSERT_NOTNULL(m_readerTimer)
+	ASSERTNN(m_readerTimer)
 
 	add_child(m_readerTimer);
 	m_readerTimer->connect("timeout", callable_mp(this, &ConfigHandler::_setReadStatusTrue));

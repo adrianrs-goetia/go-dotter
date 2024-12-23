@@ -64,7 +64,7 @@ public:
 		m_inRangeTargets = std::make_shared<InRangeTargetMap>();
 		m_detectionArea = get_node<Area3D>(m_colliderPath);
 
-		ASSERT_NOTNULL(m_detectionArea)
+		ASSERTNN(m_detectionArea)
 
 		m_detectionArea->connect("area_entered", callable_mp(this, &ComponentGrappleInstigator::areaEnteredDetection));
 		m_detectionArea->connect("area_exited", callable_mp(this, &ComponentGrappleInstigator::areaExitedDetection));
@@ -123,7 +123,7 @@ public:
 
 	void determineTarget() {
 		RETURN_IF_EDITOR(void())
-		ASSERT_NOTNULL_MSG(m_getInstigatorDirection,
+		ASSERTNN(m_getInstigatorDirection,
 			"ComponentGrappleInstigator requires setInstigatorDirection to be set to determineTarget")
 
 		const Vector3 cam3d = m_getInstigatorDirection(*this);

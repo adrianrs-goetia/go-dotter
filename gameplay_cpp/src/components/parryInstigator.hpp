@@ -46,7 +46,7 @@ public:
 
 		m_area = get_node<Area3D>(m_colliderPath);
 
-		ASSERT_NOTNULL(m_area)
+		ASSERTNN(m_area)
 
 		m_area->connect("area_entered", callable_mp(this, &ComponentParryInstigator::areaEnteredParryDetection));
 		m_area->connect("area_exited", callable_mp(this, &ComponentParryInstigator::areaExitedParryDetection));
@@ -55,7 +55,7 @@ public:
 	void _exit_tree() override {
 		RETURN_IF_EDITOR(void())
 
-		ASSERT_NOTNULL(m_area)
+		ASSERTNN(m_area)
 
 		m_area->disconnect("area_entered", callable_mp(this, &ComponentParryInstigator::areaEnteredParryDetection));
 		m_area->disconnect("area_exited", callable_mp(this, &ComponentParryInstigator::areaExitedParryDetection));
@@ -79,7 +79,7 @@ public:
 
 	ComponentParryTarget* getLastParryContactAssert() const {
 		auto lock = m_lastParryContact.lock();
-		ASSERT_NOTNULL(lock)
+		ASSERTNN(lock)
 		return lock->getTarget();
 	}
 
@@ -90,7 +90,7 @@ public:
 
 	std::optional<EventParry> activateParry(EventParry::Params params) {
 		RETURN_IF_EDITOR(std::nullopt)
-		ASSERT_NOTNULL(m_area)
+		ASSERTNN(m_area)
 
 		if (m_inRangeParryTargets.empty()) {
 			return std::nullopt;
@@ -106,7 +106,7 @@ public:
 				target = &parryTarget;
 			}
 		}
-		ASSERT_NOTNULL(target)
+		ASSERTNN(target)
 
 		EventParry instance{ getPosition(), target->getPosition(), std::move(params) };
 		m_lastParryContact = target->onParried({ instance });
@@ -116,7 +116,7 @@ public:
 
 	godot::Vector3 getPosition() const {
 		RETURN_IF_EDITOR(Vector3())
-		ASSERT_NOTNULL(m_area)
+		ASSERTNN(m_area)
 		return m_area->get_global_position();
 	}
 

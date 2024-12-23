@@ -51,12 +51,12 @@ public:
 			},
 			state);
 
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		_processState(_currentState->enter(_context));
 	}
 
 	TState getCurrentState() const {
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		return _currentState->getType();
 	}
 
@@ -65,22 +65,22 @@ public:
 	}
 
 	void process(float delta) {
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		_processState(_currentState->process(_context, delta));
 	}
 
 	void physicsProcess(float delta) {
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		_processState(_currentState->physicsProcess(_context, delta));
 	}
 
 	void handleInput(float delta) {
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		_processState(_currentState->handleInput(_context, delta));
 	}
 
 	void deferredPhysicsProcess(float delta) {
-		ASSERT_NOTNULL(_currentState)
+		ASSERTNN(_currentState)
 		_processState(_currentState->deferredPhysicsProcess(_context, delta));
 	}
 
@@ -107,7 +107,7 @@ private:
 			state);
 
 		if (newState && newState->canEnter()) {
-			ASSERT_NOTNULL(_currentState)
+			ASSERTNN(_currentState)
 			_currentState->exit(_context);
 			_currentState = newState;
 			_processState(_currentState->enter(_context));

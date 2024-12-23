@@ -23,12 +23,12 @@ public:
 		: m_context(context) {}
 
 	VState getCurrentState() const {
-		ASSERT_NOTNULL(m_currentState)
+		ASSERTNN(m_currentState)
 		return m_currentState->getType();
 	}
 
 	void handleExternalAction(const VExternalEvent& action) {
-		ASSERT_NOTNULL(m_currentState)
+		ASSERTNN(m_currentState)
 		_processState(m_currentState->handleExternalAction(m_context, action));
 	}
 
@@ -43,18 +43,18 @@ public:
 			},
 			state);
 
-		ASSERT_NOTNULL(m_currentState)
+		ASSERTNN(m_currentState)
 		_processState(m_currentState->enter(m_context));
 	}
 	void deinit() {
 		m_currentState = nullptr;
 	}
 	void process(float delta) {
-		ASSERT_NOTNULL(m_currentState)
+		ASSERTNN(m_currentState)
 		_processState(m_currentState->process(m_context, delta));
 	}
 	void physicsProcess(float delta) {
-		ASSERT_NOTNULL(m_currentState)
+		ASSERTNN(m_currentState)
 		_processState(m_currentState->physicsProcess(m_context, delta));
 	}
 
@@ -76,7 +76,7 @@ protected:
 			ret);
 
 		if (newState && newState->canEnter()) {
-			ASSERT_NOTNULL(m_currentState)
+			ASSERTNN(m_currentState)
 			m_currentState->exit(m_context);
 			m_currentState = newState;
 			_processState(m_currentState->enter(m_context));

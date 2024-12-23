@@ -22,7 +22,7 @@ public:
 
 	VState enter(Context& context) override {
 		m_timer = memnew(godot::Timer);
-		ASSERT_NOTNULL(m_timer)
+		ASSERTNN(m_timer)
 
 		context.owner->add_child(m_timer);
 		m_timer->connect("timeout", callable_mp(context.owner, &Projectile::onTimeout));
@@ -32,7 +32,7 @@ public:
 	}
 
 	VState exit(Context& context) override {
-		ASSERT_NOTNULL(m_timer)
+		ASSERTNN(m_timer)
 		m_timer->stop();
 		m_timer->disconnect("timeout", callable_mp(context.owner, &Projectile::onTimeout));
 		context.owner->remove_child(m_timer);
