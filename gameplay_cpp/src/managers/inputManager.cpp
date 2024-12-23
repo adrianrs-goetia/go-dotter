@@ -124,12 +124,12 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 	ASSERTNN(DisplayServer::get_singleton())
 	if (DisplayServer::get_singleton()->window_is_focused()) {
 		// const bool mouselock = m_additionalStates.applicationMouseLock ^ GETPARAM_B("mouselock");
-		const bool mouselock = GETPARAM_B("mouselock");
+		const bool mouselock = GETAPPPARAM_B("input", "mouselock");
 		mouselock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
 				  : input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
 	}
 
-	const auto overwriteMode = GETPARAM_I("overwriteMode");
+	const auto overwriteMode = GETAPPPARAM_I("input", "overwriteMode");
 	if (overwriteMode != static_cast<int>(EInputMode::NONE)) {
 		m_mode = static_cast<EInputMode>(overwriteMode);
 		switch (m_mode) {
@@ -195,7 +195,7 @@ void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 	else if (p_event->is_action_pressed(InputString::restart)) {
 		if (SceneTree* tree = get_tree()) {
 			LOG(INFO, "Reloading current scene")
-			if (GETPARAMGLOBAL_B("application", "hardResetTreeOnRestart")) {
+			if (GETAPPPARAM_B("hardResetTreeOnRestart")) {
 				tree->reload_current_scene();
 			}
 			else {
