@@ -1,11 +1,4 @@
 {
-    "application": {
-        "input": {
-            "overwriteMode": -1,
-            "mouselock": true
-        },
-        "hardResetTreeOnRestart": false 
-    },
     "camera": {
         "xMaxRotation": 40.0,
         "xMinRotation": -80.0,

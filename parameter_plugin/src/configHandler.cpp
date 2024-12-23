@@ -1,22 +1,30 @@
 #include "configHandler.h"
 
+#include "configReader.hpp"
+
 #include <godot_cpp/classes/timer.hpp>
 
 constexpr float g_readingInterval = 1.5f;
+static ConfigReader g_reader;
 
 using namespace godot;
 
 parameter::Registry ConfigHandler::m_paramRegistry;
-ConfigReader ConfigHandler::m_reader;
-std::string ConfigHandler::m_file = "config.json";
 
-API parameter::Variant ConfigHandler::_getParamImpl(const parameter::StringKey& key) {
-	if (m_reader.hasEmptyCache()) {
-		if (m_reader.parseFile(m_file)) {
-			m_reader.updateParameterRegistry(m_paramRegistry);
+API parameter::Variant ConfigHandler::_getParamImpl(const parameter::StringKey& key, const std::string& file) {
+	if (g_reader.hasEmptyCache()) {
+		if (g_reader.parseFile(file)) {
+			g_reader.updateParameterRegistry(m_paramRegistry, file);
 		}
 	}
 	return m_paramRegistry.getEntry(key);
+}
+
+ConfigHandler::ConfigHandler() {
+	m_files = {
+		Files::Config,
+		Files::Application,
+	};
 }
 
 void ConfigHandler::_bind_methods() {}
@@ -52,8 +60,10 @@ void ConfigHandler::_physics_process(double delta) {
 
 void ConfigHandler::_configUpdate() {
 	if (m_isReady && _readerCheckConfig()) {
-		if (m_reader.parseFile(m_file)) {
-			m_reader.updateParameterRegistry(m_paramRegistry);
+		for (const auto& file : m_files) {
+			if (g_reader.parseFile(file)) {
+				g_reader.updateParameterRegistry(m_paramRegistry, file);
+			}
 		}
 	}
 }
@@ -61,8 +71,10 @@ void ConfigHandler::_configUpdate() {
 bool ConfigHandler::_readerCheckConfig() {
 	if (m_readNextFrame) {
 		m_readNextFrame = false;
-		if (m_reader.checkFileChanged(m_file)) {
-			return true;
+		for (const auto& file : m_files) {
+			if (g_reader.checkFileChanged(file)) {
+				return true;
+			}
 		}
 	}
 	return false;

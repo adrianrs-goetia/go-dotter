@@ -1,6 +1,6 @@
 #include "parameterRegistry.h"
 
-#include "configReader.h"
+#include "configReader.hpp"
 
 using namespace parameter;
 
