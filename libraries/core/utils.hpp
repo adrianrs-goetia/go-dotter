@@ -79,7 +79,7 @@ constexpr variantCastProxyRref<Args...> variantCast(std::variant<Args...>&& v) {
  */
 #define TYPE(type)                                                                                                     \
 public:                                                                                                                \
-	static constexpr auto Name() {                                                                                     \
+	static constexpr const char* Name() {                                                                              \
 		return #type;                                                                                                  \
 	}
 

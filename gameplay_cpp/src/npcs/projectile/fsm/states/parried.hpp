@@ -46,7 +46,7 @@ public:
 					context.forwardedAction = action;
 					ret = TParryFreeze();
 				},
-				[](const auto& a) { ASSERT_MSG(false, a.Name()) },
+				[](const auto& a) { ASSERTM(false, "Projectile::Parried state got unexpected event: ", a.Name()) },
 			},
 			action);
 
