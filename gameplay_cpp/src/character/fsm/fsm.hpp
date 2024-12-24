@@ -52,6 +52,7 @@ public:
 			state);
 
 		ASSERTNN(_currentState)
+		_context.states->push(state);
 		_processState(_currentState->enter(_context));
 	}
 
@@ -109,6 +110,7 @@ private:
 		if (newState && newState->canEnter()) {
 			ASSERTNN(_currentState)
 			_currentState->exit(_context);
+			_context.states->push(state);
 			_currentState = newState;
 			_processState(_currentState->enter(_context));
 		}

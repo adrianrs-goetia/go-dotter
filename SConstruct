@@ -21,6 +21,9 @@ env.Decider("MD5")
 env.Append(CPPPATH=['libraries/'])
 env.Append(LINKFLAGS=['-Wl,-z,defs'])
 env['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME']=1
+if env["target"] == "template_debug":
+        env.Append(CPPDEFINES=["TESTS_ENABLED"])
+env.Append( CPPPATH=['Godot-SFT'] )
 
 opts = Variables()
 opts.Add(

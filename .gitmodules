@@ -7,3 +7,6 @@
 [submodule "parameter_plugin/nlohmann"]
 	path = parameter_plugin/nlohmann
 	url = https://github.com/nlohmann/json.git
+[submodule "Godot-SFT"]
+	path = Godot-SFT
+	url = https://github.com/dementive/Godot-SFT.git
