@@ -24,6 +24,7 @@
 
 #include <components/baseClasses/grappleBase.hpp>
 #include <core/nodeComponent.hpp>
+#include <../tests/test_circularbuffer.h>
 
 using namespace godot;
 
@@ -57,6 +58,11 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 
 	// gameplayscenes
 	godot::ClassDB::register_class<GamesceneHelperStairs>();
+
+	// do tests if in testing mode
+	#ifdef TESTS_ENABLED
+	do_tests();
+	#endif
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
