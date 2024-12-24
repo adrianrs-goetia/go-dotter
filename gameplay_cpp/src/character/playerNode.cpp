@@ -18,6 +18,8 @@
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
+#include "../utils/circularbuffer.h"
+#include "fsm/typedefs.hpp"
 
 #include <configHandler.h>
 #include <debugdraw3d/api.h>
@@ -68,6 +70,7 @@ void PlayerNode::_enter_tree() {
 	auto* grappleInstigator = getComponentOfNode<ComponentGrappleInstigator>(this);
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
+	auto* states = new CircularBuffer<fsm::player::TState>{20,fsm::player::TOnGroundState{}};
 
 	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
@@ -91,6 +94,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.physics.velocity = get_velocity();
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
+	stateContext.states = states;
 
 	grappleInstigator->setInstigatorDirection(
 		[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });

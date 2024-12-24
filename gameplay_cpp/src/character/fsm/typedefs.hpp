@@ -1,6 +1,7 @@
 #pragma once
 
 #include <core/core.hpp>
+#include "../../utils/circularbuffer.h"
 
 class ComponentAnimation;
 class ComponentAttackInstigator;
@@ -19,6 +20,7 @@ namespace fsm::player {
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f; // Magic number, guesswork
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
+constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
 	bool isOnGround;
@@ -39,17 +41,6 @@ struct AudioVisualContext {
 	godot::GPUParticles3D* particles = nullptr; // todo, same as above?
 };
 
-struct Context {
-	godot::CharacterBody3D* owner = nullptr;
-	ComponentAttackInstigator* attack = nullptr;
-	ComponentAnimation* anim = nullptr;
-	ComponentGrappleInstigator* grapple = nullptr;
-	InputManager* input = nullptr;
-	ComponentParryInstigator* parry = nullptr;
-	PhysicsContext physics;
-	AudioVisualContext audioVisual;
-};
-
 struct TOnGroundState {};
 struct TInAirState {};
 struct TPreGrappleLaunchState {};
@@ -60,6 +51,18 @@ struct TParryJumpState {};
 struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
 	TParryPreState, TParryPostState, TParryJumpState, TAttackState>;
+
+struct Context {
+	godot::CharacterBody3D* owner = nullptr;
+	ComponentAttackInstigator* attack = nullptr;
+	ComponentAnimation* anim = nullptr;
+	ComponentGrappleInstigator* grapple = nullptr;
+	InputManager* input = nullptr;
+	ComponentParryInstigator* parry = nullptr;
+	PhysicsContext physics;
+	AudioVisualContext audioVisual;
+	CircularBuffer<TState>* states = nullptr;
+};
 
 class BaseState {
 public:
