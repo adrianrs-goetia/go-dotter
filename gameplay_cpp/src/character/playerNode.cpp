@@ -16,6 +16,7 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
+#include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 #include "../utils/circularbuffer.h"
@@ -60,6 +61,12 @@ void PlayerNode::_enter_tree() {
 	set_contact_monitor(true); // Required for _integrate_forces()
 	set_max_contacts_reported(4);
 	set_can_sleep(false); // _integrate_forces is not invoked once body is sleeping
+	{
+		Ref<PhysicsMaterial> mat;
+		mat.instantiate();
+		mat->set_friction(0.0);
+		set_physics_material_override(mat);
+	}
 
 	RETURN_IF_EDITOR(void())
 

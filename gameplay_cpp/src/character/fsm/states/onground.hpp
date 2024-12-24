@@ -21,6 +21,10 @@ namespace fsm::player {
 class OnGroundState : public BaseState {
 	TYPE(OnGroundState)
 
+	struct {
+		godot::Vector3 velocity;
+	} m;
+
 public:
 	TState getType() const override {
 		return TOnGroundState();
@@ -33,6 +37,7 @@ public:
 		// 	context.physics.velocity.y += GETPARAM_D("jumpStrength");
 		// 	return TInAirState();
 		// }
+		m.velocity = context.owner->get_linear_velocity();
 		return {};
 	}
 
@@ -71,6 +76,9 @@ public:
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) {
 		const auto delta = state->get_step();
 		auto gravityDir = Vector3(0, -1, 0);
+		// state->apply_central_force(gravityDir * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
+		// state->set_sleep_state(false);
+
 		auto& move = context.physics.movement;
 
 		const auto pos = context.physics.position + Vector3(0, 1, 0);
@@ -95,10 +103,13 @@ public:
 			// 	}
 			// }
 		}
+		m.velocity.y -= (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
+		m.velocity.x = move.x;
+		m.velocity.z = move.z;
+		state->set_linear_velocity(m.velocity);
 
-		state->apply_central_force(gravityDir * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
-		move.y = state->get_linear_velocity().y;
-		state->set_linear_velocity(move);
+		// move.y = state->get_linear_velocity().y;
+		// state->apply_central_force(move);
 
 		return {};
 	}
@@ -110,7 +121,8 @@ public:
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			context.owner->apply_central_impulse(godot::Vector3(0, GETPARAM_D("jumpStrength"), 0));
+			m.velocity.y = GETPARAM_D("jumpStrength");
+			// context.owner->apply_central_impulse(godot::Vector3(0, GETPARAM_D("jumpStrength"), 0));
 			// return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
