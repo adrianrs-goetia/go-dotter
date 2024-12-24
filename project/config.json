@@ -21,17 +21,19 @@
             "yMultiplier": 100.0
         }
     },
-    "gravityConstant": -9.81,
+    "gravityConstant": 9.81,
     "player": {
-        "walkSpeed": 6.5,
+        "walkSpeed": 7.5,
         "sprintSpeed": 12.0,
+        "floorMaxAngle": 0.785,
+        "terminalVelocity": 4.0,
         "sprintTimeScale": 1.8, //how many times faster the animation runs during sprinting
         "onGroundAcceleration": 30.0,
-        "onGroundDeceleration": 20.0,
-        "jumpStrength": 6.6,
+        "onGroundDeceleration": 2.0,
+        "jumpStrength": 8.6,
         "inAirAcceleration": 10.0,
-        "inAirDeceleration": 30.0,
-        "gravityScale": 2.2,
+        "inAirDeceleration": 10.0,
+        "gravityScale": 2.7,
         "animation": {
             "rootRotationSpeed": 20.0
         },

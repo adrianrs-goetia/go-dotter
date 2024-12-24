@@ -3,15 +3,16 @@
 #include "typedefs.hpp"
 
 #include <godot_cpp/classes/node3d.hpp>
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 
 #include "states/attack.hpp"
-#include "states/grapplelaunch.hpp"
+// #include "states/grapplelaunch.hpp"
 #include "states/inair.hpp"
 #include "states/onground.hpp"
 #include "states/parryjump.hpp"
 #include "states/parrypost.hpp"
 #include "states/parrypre.hpp"
-#include "states/pregrapplelaunch.hpp"
+// #include "states/pregrapplelaunch.hpp"
 
 namespace fsm::player {
 
@@ -21,12 +22,12 @@ class Fsm {
 
 	AttackState _attackState;
 	OnGroundState _onGroundState;
-	GrappleLaunchState _grappleLaunchState;
+	// GrappleLaunchState _grappleLaunchState;
 	InAirState _inAirState;
 	ParryPreState _parryState;
 	ParryPostState _parryPostState;
 	ParryJumpState _parryJumpState;
-	PreGrappleLaunchState _preGrappleLaunchState;
+	// PreGrappleLaunchState _preGrappleLaunchState;
 
 public:
 	Fsm(Context context)
@@ -37,19 +38,7 @@ public:
 	}
 
 	void init(TState state) {
-		std::visit(
-			overloaded{
-				[this](TAttackState) { _currentState = &_attackState; },
-				[this](TOnGroundState) { _currentState = &_onGroundState; },
-				[this](TGrappleLaunchState) { _currentState = &_grappleLaunchState; },
-				[this](TInAirState) { _currentState = &_inAirState; },
-				[this](TParryPreState) { _currentState = &_parryState; },
-				[this](TParryPostState) { _currentState = &_parryPostState; },
-				[this](TParryJumpState) { _currentState = &_parryJumpState; },
-				[this](TPreGrappleLaunchState) { _currentState = &_preGrappleLaunchState; },
-				[this](std::monostate) { ASSERT(false); },
-			},
-			state);
+		_currentState = &_onGroundState;
 
 		ASSERTNN(_currentState)
 		_context.states->push(state);
@@ -65,24 +54,14 @@ public:
 		_currentState = nullptr;
 	}
 
-	void process(float delta) {
+	void integrateForces(godot::PhysicsDirectBodyState3D* state) {
 		ASSERTNN(_currentState)
-		_processState(_currentState->process(_context, delta));
-	}
-
-	void physicsProcess(float delta) {
-		ASSERTNN(_currentState)
-		_processState(_currentState->physicsProcess(_context, delta));
+		_processState(_currentState->integrateForces(_context, state));
 	}
 
 	void handleInput(float delta) {
 		ASSERTNN(_currentState)
 		_processState(_currentState->handleInput(_context, delta));
-	}
-
-	void deferredPhysicsProcess(float delta) {
-		ASSERTNN(_currentState)
-		_processState(_currentState->deferredPhysicsProcess(_context, delta));
 	}
 
 private:
@@ -97,13 +76,13 @@ private:
 			overloaded{
 				[&](TAttackState) { newState = &_attackState; },
 				[&](TOnGroundState) { newState = &_onGroundState; },
-				[&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
+				// [&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
 				[&](TInAirState) { newState = &_inAirState; },
 				[&](TParryPreState) { newState = &_parryState; },
 				[&](TParryPostState) { newState = &_parryPostState; },
 				[&](TParryJumpState) { newState = &_parryJumpState; },
-				[&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
-				[&](std::monostate) { ASSERT(false); },
+				// [&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
+				[&](auto) { ASSERT(false, "Unexpected state during Fsm process state"); },
 			},
 			state);
 

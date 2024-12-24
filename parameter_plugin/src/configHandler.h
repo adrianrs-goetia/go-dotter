@@ -79,4 +79,3 @@ private:
 #define GETAPPPARAM_B(...) ConfigHandler::getParam<bool>({ __VA_ARGS__ }, ConfigHandler::Files::Application)
 #define GETAPPPARAM_S(...)                                                                                             \
 	ConfigHandler::getParam<std::string>({ __VA_ARGS__ }, ConfigHandler::Files::Application).c_str()
-

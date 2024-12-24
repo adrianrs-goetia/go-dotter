@@ -5,11 +5,10 @@
 #include <core/core.hpp>
 
 #include <godot_cpp/classes/area3d.hpp>
-#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/rigid_body3d.hpp>
 
-#include <godot_cpp/classes/collision_shape3d.hpp>
-#include <godot_cpp/classes/physics_shape_query_parameters3d.hpp>
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 
 namespace fsm::player {
 class Fsm;
@@ -23,8 +22,8 @@ class ComponentGrappleTarget;
 class ComponentParryInstigator;
 class EventParry;
 
-class PlayerNode : public CharacterBody3D {
-	GDCLASS(PlayerNode, CharacterBody3D)
+class PlayerNode : public RigidBody3D {
+	GDCLASS(PlayerNode, RigidBody3D)
 
 public:
 	fsm::player::Fsm* m_fsm = nullptr;
@@ -44,6 +43,7 @@ public:
 	void _process(double delta) override;
 	void _physics_process(double delta) override;
 	void _input(const Ref<InputEvent>& p_event);
+	void _integrate_forces(PhysicsDirectBodyState3D* state);
 };
 
 #endif // GD_CHARACTER_PLAYERNODE_PLUGIN_GAMEPLAY_H

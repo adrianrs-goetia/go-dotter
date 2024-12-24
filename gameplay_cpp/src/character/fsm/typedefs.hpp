@@ -1,6 +1,9 @@
 #pragma once
 
+#include <configHandler.h>
 #include <core/core.hpp>
+#include "../../utils/circularbuffer.h"
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include "../../utils/circularbuffer.h"
 
 class ComponentAnimation;
@@ -11,9 +14,9 @@ class InputManager;
 
 namespace godot {
 class AudioStreamPlayer3D;
-class CharacterBody3D;
 class GPUParticles3D;
 class Node3D;
+class RigidBody3D;
 } //namespace godot
 
 namespace fsm::player {
@@ -23,18 +26,26 @@ constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
-	bool isOnGround;
-	bool collided;
 	godot::Vector3 position;
-	godot::Vector3 velocity;
+	godot::Vector3 movement;
 
 	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
-	godot::Vector3 getVelocityDir2D() const {
-		return godot::Vector3(velocity.x, 0, velocity.z).normalized();
+	void applyGravity(const float delta) {
+		movement.y -= get.gravity() * delta;
 	}
+
+	struct {
+		float gravity() {
+			return GETPARAMGLOBAL_F("gravityConstant") * GETPARAMGLOBAL_F("player", "gravityScale");
+		}
+
+		float walkSpeed() {
+			return GETPARAMGLOBAL_F("player", "walkSpeed");
+		}
+	} get;
 };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
@@ -51,18 +62,6 @@ struct TParryJumpState {};
 struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
 	TParryPreState, TParryPostState, TParryJumpState, TAttackState>;
-
-struct Context {
-	godot::CharacterBody3D* owner = nullptr;
-	ComponentAttackInstigator* attack = nullptr;
-	ComponentAnimation* anim = nullptr;
-	ComponentGrappleInstigator* grapple = nullptr;
-	InputManager* input = nullptr;
-	ComponentParryInstigator* parry = nullptr;
-	PhysicsContext physics;
-	AudioVisualContext audioVisual;
-	CircularBuffer<TState>* states = nullptr;
-};
 
 inline godot::String stateName(TState state) {
 	godot::String out;
@@ -90,6 +89,18 @@ inline void printStates(CircularBuffer<TState>* states) {
 	LOG(DEBUG, "states:", out);
 }
 
+struct Context {
+	godot::RigidBody3D* owner = nullptr;
+	ComponentAttackInstigator* attack = nullptr;
+	ComponentAnimation* anim = nullptr;
+	ComponentGrappleInstigator* grapple = nullptr;
+	InputManager* input = nullptr;
+	ComponentParryInstigator* parry = nullptr;
+	PhysicsContext physics;
+	AudioVisualContext audioVisual;
+	CircularBuffer<TState>* states = nullptr;
+};
+
 class BaseState {
 public:
 	virtual bool canEnter() const {
@@ -98,10 +109,8 @@ public:
 	virtual TState getType() const = 0;
 	virtual TState enter(Context& context) = 0;
 	virtual TState exit(Context& context) = 0;
-	virtual TState process(Context& context, float delta) = 0;
-	virtual TState physicsProcess(Context& context, float delta) = 0;
+	virtual TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) = 0;
 	virtual TState handleInput(Context& context, float delta) = 0;
-	virtual TState deferredPhysicsProcess(Context& context, float delta) = 0;
 };
 
 } //namespace fsm::player

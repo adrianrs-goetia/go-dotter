@@ -21,6 +21,58 @@ namespace fsm::player {
 class OnGroundState : public BaseState {
 	TYPE(OnGroundState)
 
+	struct Data {
+		int8_t coyoteframes;
+		godot::Vector3 velocity;
+	} data;
+
+	struct Get {
+		float jumpStrenght() {
+			return GETPARAM_F("jumpStrength");
+		}
+
+		auto coyoteFrames() {
+			return GETPARAM_I("coyoteframes");
+		}
+
+		float walkSpeed() {
+			return GETPARAM_F("walkSpeed");
+		}
+
+		float maxFloorAngle() {
+			return GETPARAM_F("floorMaxAngle");
+		}
+
+		float onGroundAcceleration() {
+			return GETPARAM_D("onGroundAcceleration");
+		}
+
+		float onGroundDeceleration() {
+			return GETPARAM_D("onGroundDeceleration");
+		}
+
+		float animRootRotation() {
+			return GETPARAM_D("animation", "rootRotationSpeed");
+		}
+	} get;
+
+	void _rotateRoot(Context& c, float delta) {
+		auto& vel = c.owner->get_linear_velocity();
+		const godot::Vector2 vel2d(vel.x, vel.z);
+		const float speed = vel2d.length();
+
+		float walkSpeed = GETPARAM_F("walkSpeed");
+		float sprintSpeed = GETPARAM_F("sprintSpeed");
+		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
+		float sprintBlend = godot::Math::clamp(
+			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
+		c.anim->idleRunValue(idleWalkBlend);
+		c.anim->sprintValue(sprintBlend);
+
+		c.anim->rotateRootTowardsVector(
+			c.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+	}
+
 public:
 	TState getType() const override {
 		return TOnGroundState();
@@ -28,11 +80,16 @@ public:
 
 	TState enter(Context& context) override {
 		context.anim->onGround();
+		LOG(DEBUG, "state: ", Name())
+		context.anim->onGround();
 		// Immediate jump when entering while having just pressed jump
 		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-			context.physics.velocity.y += GETPARAM_D("jumpStrength");
+			context.physics.movement.y += get.jumpStrenght();
+			context.owner->set_linear_velocity(context.physics.movement);
 			return TInAirState();
 		}
+		data.velocity = context.owner->get_linear_velocity();
+		data.coyoteframes = get.coyoteFrames();
 		return {};
 	}
 
@@ -40,43 +97,63 @@ public:
 		return {};
 	}
 
-	TState process(Context& context, float delta) override {
-		return {};
-	}
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) {
+		const auto delta = state->get_step();
 
-	TState physicsProcess(Context& context, float delta) override {
-		context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
-
-		// walking off edge
-		if (!context.physics.isOnGround) {
-			return TInAirState();
+		auto& move = context.physics.movement;
+		const auto contactCount = state->get_contact_count();
+		if (!contactCount) {
+			data.coyoteframes = MAX(--data.coyoteframes, 0);
+			if (!data.coyoteframes)
+				return TInAirState();
+		}
+		for (int i = 0; i < contactCount; i++) {
+			auto normal = state->get_contact_local_normal(i);
+			// On floor
+			if (g_up.dot(normal) > get.maxFloorAngle()) {
+				data.velocity.y = 0;
+				data.coyoteframes = get.coyoteFrames();
+			}
+			else {
+				auto pos = state->get_contact_local_position(i);
+				if (pos.y < context.physics.position.y) {
+					data.coyoteframes = MAX(--data.coyoteframes, 0);
+					if (!data.coyoteframes)
+						return TInAirState();
+				}
+			}
 		}
 
-		auto& vel = context.physics.velocity;
-		const godot::Vector2 vel2d(vel.x, vel.z);
-		const float speed = vel2d.length();
-		
-		float walkSpeed = GETPARAM_F("walkSpeed");
-		float sprintSpeed = GETPARAM_F("sprintSpeed");
-		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
-		float sprintBlend = godot::Math::clamp((speed-walkSpeed)/(sprintSpeed-walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
-		context.anim->idleRunValue(idleWalkBlend);
-		context.anim->sprintValue(sprintBlend);
+		data.velocity.y -= context.physics.get.gravity() * delta;
+		data.velocity.x = move.x;
+		data.velocity.z = move.z;
+		state->set_linear_velocity(data.velocity);
 
-		context.anim->rotateRootTowardsVector(
-			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+		// Disable friction when actively moving
+		{
+			auto mat = context.owner->get_physics_material_override();
+			ASSERTNN(mat)
+			if (data.velocity.length_squared() > 0.2f) {
+				mat->set_friction(0.0);
+			}
+			else {
+				mat->set_friction(1.0);
+			}
+		}
+
+		_rotateRoot(context, delta);
 
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
 		// direction
-		utils::movementAcceleration(
-			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
+		utils::movementAcceleration(context, get.onGroundAcceleration(), get.onGroundDeceleration(), delta);
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			context.physics.velocity.y += GETPARAM_D("jumpStrength");
+			data.velocity.y = get.jumpStrenght();
+			context.owner->set_linear_velocity(data.velocity);
 			return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
@@ -88,11 +165,6 @@ public:
 		if (context.input->isActionPressed(EInputAction::ATTACK)) {
 			return TAttackState();
 		}
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
-		utils::moveSlideOwner(context);
 		return {};
 	}
 };

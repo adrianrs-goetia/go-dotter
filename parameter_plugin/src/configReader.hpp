@@ -130,7 +130,8 @@ public:
 	}
 
 private:
-	void _parseJsonObject(parameter::Registry& registry, parameter::StringKey& key, const json& object, const std::string filepath) {
+	void _parseJsonObject(
+		parameter::Registry& registry, parameter::StringKey& key, const json& object, const std::string filepath) {
 		for (const auto& entry : object.items()) {
 			key.push_back(entry.key());
 
