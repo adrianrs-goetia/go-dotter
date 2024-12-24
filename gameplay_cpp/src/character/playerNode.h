@@ -5,8 +5,8 @@
 #include <core/core.hpp>
 
 #include <godot_cpp/classes/area3d.hpp>
-#include <godot_cpp/classes/rigid_body3d.hpp>
 #include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/rigid_body3d.hpp>
 
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 

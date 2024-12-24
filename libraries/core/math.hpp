@@ -13,3 +13,4 @@ inline float canonicalRandomNumber(float min, float max) {
 	std::uniform_real_distribution<> dis(min, max);
 	return dis(rng);
 }
+

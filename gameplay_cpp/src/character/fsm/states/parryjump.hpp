@@ -64,8 +64,9 @@ public:
 		data.velocity.y -= context.physics.get.gravity() * delta;
 		state->set_linear_velocity(data.velocity);
 
-		context.anim->rotateRootTowardsVector(
-			context.physics.getVelocityDir2D(), delta, GETPARAMGLOBAL_D("player", "animation", "rootRotationSpeed"));
+		context.anim->rotateRootTowardsVector(getHorizontalUnit(state->get_linear_velocity()),
+			delta,
+			GETPARAMGLOBAL_D("player", "animation", "rootRotationSpeed"));
 
 		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("stateTime"))) {
 			return TInAirState();
@@ -89,7 +90,7 @@ public:
 			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
 			newVel *= GETPARAM_D("doubleJumpHorizontalStrength");
 			newVel.y = GETPARAM_D("doubleJumpImpulse");
-			context.physics.velocity = newVel;
+			context.owner->set_linear_velocity(newVel);
 			return TInAirState();
 		}
 

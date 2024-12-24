@@ -89,6 +89,10 @@ inline godot::Vector3 getScaleFromBasis(const godot::Basis& basis) {
 	return godot::Vector3(basis.get_column(0).length(), basis.get_column(1).length(), basis.get_column(2).length());
 }
 
+inline auto getHorizontalUnit(const godot::Vector3& vec) {
+	return godot::Vector3(vec.x, 0, vec.z).normalized();
+}
+
 /**
  * Common property implementations as macros
  * Usually just getters and setters causing a bunch of boilerplate code

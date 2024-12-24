@@ -58,12 +58,11 @@ public:
 	TState enter(Context& context) override {
 		LOG(DEBUG, "state: ", Name())
 		data.jumpframes = 3;
-		data.velocity = context.physics.velocity;
+		data.velocity = context.owner->get_linear_velocity();
 		return {};
 	}
 
 	TState exit(Context& context) override {
-		context.physics.velocity = data.velocity;
 		return {};
 	}
 

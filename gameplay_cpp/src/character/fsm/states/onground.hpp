@@ -57,7 +57,7 @@ class OnGroundState : public BaseState {
 	} get;
 
 	void _rotateRoot(Context& c, float delta) {
-		auto& vel = c.physics.velocity;
+		const auto vel = c.owner->get_linear_velocity();
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
 		float idleWalkBlend = godot::Math::clamp(speed / get.walkSpeed(), 0.0f, 1.0f);
@@ -75,7 +75,8 @@ public:
 		LOG(DEBUG, "state: ", Name())
 		// Immediate jump when entering while having just pressed jump
 		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-			context.physics.velocity.y += get.jumpStrenght();
+			context.physics.movement.y += get.jumpStrenght();
+			context.owner->set_linear_velocity(context.physics.movement);
 			return TInAirState();
 		}
 		data.velocity = context.owner->get_linear_velocity();
@@ -84,7 +85,6 @@ public:
 	}
 
 	TState exit(Context& context) override {
-		context.physics.velocity = data.velocity;
 		return {};
 	}
 
@@ -172,6 +172,7 @@ public:
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			data.velocity.y = get.jumpStrenght();
+			context.owner->set_linear_velocity(data.velocity);
 			return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {

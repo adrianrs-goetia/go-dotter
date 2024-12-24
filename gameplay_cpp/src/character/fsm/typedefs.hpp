@@ -26,19 +26,14 @@ constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
 	godot::Vector3 position;
-	godot::Vector3 velocity;
 	godot::Vector3 movement;
 
 	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
-	godot::Vector3 getVelocityDir2D() const {
-		return godot::Vector3(velocity.x, 0, velocity.z).normalized();
-	}
-
 	void applyGravity(const float delta) {
-		velocity.y -= get.gravity();
+		movement.y -= get.gravity() * delta;
 	}
 
 	struct {

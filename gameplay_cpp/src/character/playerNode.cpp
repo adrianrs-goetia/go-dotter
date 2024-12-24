@@ -99,7 +99,6 @@ void PlayerNode::_enter_tree() {
 	stateContext.input = input;
 	stateContext.parry = m_parryComponent;
 	stateContext.physics.position = get_position();
-	stateContext.physics.velocity = get_linear_velocity();
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 	stateContext.states = states;
@@ -153,6 +152,5 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 
 void PlayerNode::_integrate_forces(PhysicsDirectBodyState3D* state) {
 	ASSERTNN(m_fsm)
-	m_fsm->getContext().physics.velocity = get_linear_velocity();
 	m_fsm->integrateForces(state);
 }
