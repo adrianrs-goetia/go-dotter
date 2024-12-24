@@ -1,5 +1,6 @@
 #pragma once
 
+#include <configHandler.h>
 #include <core/core.hpp>
 #include "../../utils/circularbuffer.h"
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
@@ -24,8 +25,6 @@ constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
-	bool isOnGround;
-	bool collided;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
 	godot::Vector3 movement;
@@ -34,9 +33,15 @@ struct PhysicsContext {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
-	// godot::Vector3 getVelocityDir2D() const {
-	// 	return godot::Vector3(velocity.x, 0, velocity.z).normalized();
-	// }
+	struct {
+		float gravity() {
+			return GETPARAMGLOBAL_F("gravityConstant") * GETPARAMGLOBAL_F("player", "gravityScale");
+		}
+
+		float walkSpeed() {
+			return GETPARAMGLOBAL_F("player", "walkSpeed");
+		}
+	} get;
 };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?

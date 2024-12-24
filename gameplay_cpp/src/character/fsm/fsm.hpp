@@ -23,7 +23,7 @@ class Fsm {
 	// AttackState _attackState;
 	OnGroundState _onGroundState;
 	// GrappleLaunchState _grappleLaunchState;
-	// InAirState _inAirState;
+	InAirState _inAirState;
 	// ParryPreState _parryState;
 	// ParryPostState _parryPostState;
 	// ParryJumpState _parryJumpState;
@@ -39,13 +39,6 @@ public:
 
 	void init(TState state) {
 		_currentState = &_onGroundState;
-		// std::visit_currentState = &_onGroundState;(
-		// 	overloaded{
-		// 		[this](TOnGroundState) { _currentState = &_onGroundState; },
-		// 		// [this](TInAirState) { _currentState = &_inAirState; },
-		// 		[this](auto) { ASSERT(false, "Player expected to start in either onground or inair state"); },
-		// 	},
-		// 	state);
 
 		ASSERTNN(_currentState)
 		_context.states->push(state);
@@ -94,7 +87,7 @@ private:
 				// [&](TAttackState) { newState = &_attackState; },
 				[&](TOnGroundState) { newState = &_onGroundState; },
 				// [&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
-				// [&](TInAirState) { newState = &_inAirState; },
+				[&](TInAirState) { newState = &_inAirState; },
 				// [&](TParryPreState) { newState = &_parryState; },
 				// [&](TParryPostState) { newState = &_parryPostState; },
 				// [&](TParryJumpState) { newState = &_parryJumpState; },

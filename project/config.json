@@ -31,7 +31,7 @@
         "onGroundDeceleration": 2.0,
         "jumpStrength": 8.6,
         "inAirAcceleration": 10.0,
-        "inAirDeceleration": 0.0,
+        "inAirDeceleration": 10.0,
         "gravityScale": 2.7,
         "animation": {
             "rootRotationSpeed": 20.0

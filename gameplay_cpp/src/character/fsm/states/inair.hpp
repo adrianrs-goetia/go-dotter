@@ -19,6 +19,33 @@ namespace fsm::player {
 class InAirState : public BaseState {
 	TYPE(InAirState)
 
+	struct Data {
+		int jumpframes = 3;
+		godot::Vector3 velocity;
+	} data;
+
+	struct Get {
+		float walkSpeed() {
+			return GETPARAM_F("walkSpeed");
+		}
+
+		float maxFloorAngle() {
+			return GETPARAM_F("floorMaxAngle");
+		}
+
+		float inAirAcceleration() {
+			return GETPARAM_D("inAirAcceleration");
+		}
+
+		float inAirDeceleration() {
+			return GETPARAM_D("inAirDeceleration");
+		}
+
+		float animRootRotation() {
+			return GETPARAM_D("animation", "rootRotationSpeed");
+		}
+	} get;
+
 public:
 	TState getType() const override {
 		return TInAirState();
@@ -29,11 +56,14 @@ public:
 	}
 
 	TState enter(Context& context) override {
-		context.anim->inAir();
+		LOG(DEBUG, "state: ", Name())
+		data.jumpframes = 3;
+		data.velocity = context.physics.velocity;
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.physics.velocity = data.velocity;
 		return {};
 	}
 
@@ -42,13 +72,6 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) {
-		if (context.physics.isOnGround) {
-			DebugDraw::Position(Transform3D(Basis(), Vector3(context.physics.position)), Color(1, 1, 1), 2.f);
-			return TOnGroundState();
-		}
-		utils::movementAcceleration(context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
-		// context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
-
 		context.anim->rotateRootTowardsVector(
 			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
@@ -56,16 +79,34 @@ public:
 	}
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
-		state->apply_central_force(
-			Vector3(0, 1, 0) * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
-		// state->apply_central_force(context.physics.horizontalForce);
+		const auto delta = state->get_step();
+		auto& move = context.physics.movement;
+		data.jumpframes = MAX(--data.jumpframes, 0);
+
+		for (int i = 0; i < state->get_contact_count(); i++) {
+			auto normal = state->get_contact_local_normal(i);
+			// Land on floor
+			if (g_up.dot(normal) > get.maxFloorAngle()) {
+				if (!data.jumpframes) {
+					return TOnGroundState();
+				}
+			}
+		}
+
+		data.velocity.y -= context.physics.get.gravity() * delta;
+		data.velocity.x = move.x;
+		data.velocity.z = move.z;
+		state->set_linear_velocity(data.velocity);
+
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
-			return TPreGrappleLaunchState();
-		}
+		utils::movementAcceleration(context, get.inAirAcceleration(), get.inAirDeceleration(), delta);
+
+		// if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
+		// 	return TPreGrappleLaunchState();
+		// }
 		if (context.input->isActionPressed(EInputAction::PARRY)) {
 			return TParryPreState();
 		}

@@ -23,10 +23,44 @@ namespace fsm::player {
 class OnGroundState : public BaseState {
 	TYPE(OnGroundState)
 
-	struct {
-		int jumpframes = 3;
+	struct Data {
 		godot::Vector3 velocity;
-	} m;
+	} data;
+
+	struct Get {
+		float jumpStrenght() {
+			return GETPARAM_F("jumpStrength");
+		}
+
+		float walkSpeed() {
+			return GETPARAM_F("walkSpeed");
+		}
+
+		float maxFloorAngle() {
+			return GETPARAM_F("floorMaxAngle");
+		}
+
+		float onGroundAcceleration() {
+			return GETPARAM_D("onGroundAcceleration");
+		}
+
+		float onGroundDeceleration() {
+			return GETPARAM_D("onGroundDeceleration");
+		}
+
+		float animRootRotation() {
+			return GETPARAM_D("animation", "rootRotationSpeed");
+		}
+	} get;
+
+	void _rotateRoot(Context& c, float delta) {
+		auto& vel = c.physics.velocity;
+		const godot::Vector2 vel2d(vel.x, vel.z);
+		const float speed = vel2d.length();
+		float idleWalkBlend = godot::Math::clamp(speed / get.walkSpeed(), 0.0f, 1.0f);
+		c.anim->idleRunValue(idleWalkBlend);
+		c.anim->rotateRootTowardsVector(c.input->getInputRelative3d(), delta, get.animRootRotation());
+	}
 
 public:
 	TState getType() const override {
@@ -35,16 +69,18 @@ public:
 
 	TState enter(Context& context) override {
 		context.anim->onGround();
+		LOG(DEBUG, "state: ", Name())
 		// Immediate jump when entering while having just pressed jump
-		// if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-		// 	context.physics.velocity.y += GETPARAM_D("jumpStrength");
-		// 	return TInAirState();
-		// }
-		m.velocity = context.owner->get_linear_velocity();
+		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
+			context.physics.velocity.y += get.jumpStrenght();
+			return TInAirState();
+		}
+		data.velocity = context.owner->get_linear_velocity();
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.physics.velocity = data.velocity;
 		return {};
 	}
 
@@ -78,40 +114,35 @@ public:
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) {
 		const auto delta = state->get_step();
-		m.jumpframes = MAX(--m.jumpframes, 0);
-
-		auto gravityDir = Vector3(0, -1, 0);
-		m.velocity.y -= (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 		auto& move = context.physics.movement;
-
-		const auto pos = context.physics.position + Vector3(0, 1, 0);
-		DebugDraw::Line(pos, pos + (move), Color(1, 1, 1), delta);
-
-		for (int i = 0; i < state->get_contact_count(); i++) {
+		const auto contactCount = state->get_contact_count();
+		if (!contactCount) {
+			return TInAirState();
+		}
+		for (int i = 0; i < contactCount; i++) {
 			auto normal = state->get_contact_local_normal(i);
 			// On floor
-			if (g_up.dot(normal) > GETPARAM_F("floorMaxAngle")) {
-				if (!m.jumpframes) {
-					m.velocity.y = 0;
-					auto pos = state->get_contact_collider_position(i);
-					DebugDraw::Position(pos, Color(0, 1, 0), delta);
-				}
+			if (g_up.dot(normal) > get.maxFloorAngle()) {
+				data.velocity.y = 0;
 			}
 			else {
-				// return TInAirState();
+				auto pos = state->get_contact_local_position(i);
+				if (pos.y < context.physics.position.y)
+					return TInAirState();
 			}
 		}
 
-		m.velocity.x = move.x;
-		m.velocity.z = move.z;
-		state->set_linear_velocity(m.velocity);
+		data.velocity.y -= context.physics.get.gravity() * delta;
+		data.velocity.x = move.x;
+		data.velocity.z = move.z;
+		state->set_linear_velocity(data.velocity);
 
 		// Disable friction when actively moving
 		{
 			auto mat = context.owner->get_physics_material_override();
 			ASSERTNN(mat)
-			if (m.velocity.length_squared() > 0.2f) {
+			if (data.velocity.length_squared() > 0.2f) {
 				mat->set_friction(0.0);
 			}
 			else {
@@ -119,19 +150,19 @@ public:
 			}
 		}
 
+		_rotateRoot(context, delta);
+
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
 		// direction
-		utils::movementAcceleration(
-			context, GETPARAM_D("onGroundAcceleration"), GETPARAM_D("onGroundDeceleration"), delta);
+		utils::movementAcceleration(context, get.onGroundAcceleration(), get.onGroundDeceleration(), delta);
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			m.jumpframes = 3;
-			m.velocity.y = GETPARAM_D("jumpStrength");
-			// return TInAirState();
+			data.velocity.y = get.jumpStrenght();
+			return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
 			return TPreGrappleLaunchState();

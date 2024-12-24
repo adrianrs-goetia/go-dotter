@@ -97,8 +97,6 @@ void PlayerNode::_enter_tree() {
 	stateContext.anim = m_animComponent;
 	stateContext.input = input;
 	stateContext.parry = m_parryComponent;
-	// stateContext.physics.isOnGround = is_on_floor();
-	stateContext.physics.isOnGround = true;
 	stateContext.physics.position = get_position();
 	stateContext.physics.velocity = get_linear_velocity();
 	stateContext.audioVisual.audio = audio;
@@ -136,7 +134,6 @@ void PlayerNode::_physics_process(double delta) {
 	ASSERTNN(m_fsm)
 	// capture current physics context
 	auto& stateContext = m_fsm->getContext();
-	// stateContext.physics.isOnGround = is_on_floor();
 	stateContext.physics.position = get_position();
 	stateContext.physics.velocity = get_linear_velocity();
 
