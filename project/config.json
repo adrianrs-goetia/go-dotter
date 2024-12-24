@@ -24,6 +24,7 @@
     "gravityConstant": -9.81,
     "player": {
         "walkSpeed": 6.5,
+        "sprintSpeed": 12.0,
         "onGroundAcceleration": 30.0,
         "onGroundDeceleration": 20.0,
         "jumpStrength": 6.6,

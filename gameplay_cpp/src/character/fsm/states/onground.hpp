@@ -55,8 +55,13 @@ public:
 		auto& vel = context.physics.velocity;
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
-		float idleWalkBlend = godot::Math::clamp(speed / GETPARAM_F("walkSpeed"), 0.0f, 1.0f);
+		
+		float walkSpeed = GETPARAM_F("walkSpeed");
+		float sprintSpeed = GETPARAM_F("sprintSpeed");
+		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
+		float sprintBlend = godot::Math::clamp((speed-walkSpeed)/(sprintSpeed-walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
 		context.anim->idleRunValue(idleWalkBlend);
+		context.anim->sprintValue(sprintBlend);
 
 		context.anim->rotateRootTowardsVector(
 			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));

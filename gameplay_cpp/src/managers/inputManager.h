@@ -16,6 +16,7 @@ constexpr const char* jump = "jump";
 constexpr const char* attack = "attack";
 constexpr const char* parry = "parry";
 constexpr const char* grapplehook = "grapplehook";
+constexpr const char* sprint = "sprint";
 
 constexpr const char* cameraLeft = "camera_left";
 constexpr const char* cameraRight = "camera_right";
@@ -50,6 +51,7 @@ enum class EInputAction : uint8_t {
 	PARRY,
 	ATTACK,
 	PAUSE_MENU,
+	SPRINT
 
 	// Some Built-in Actions
 	// UI_ACCEPT,
@@ -148,6 +150,7 @@ public:
 	void _unhandled_input(const godot::Ref<godot::InputEvent>& p_event);
 
 	bool isActionPressed(EInputAction action, float timeframe = -1.0f);
+	bool isActionHeld(EInputAction action);
 
 	/**
 	 * Reference node needed as we don't have a handle on the scene itself otherwise

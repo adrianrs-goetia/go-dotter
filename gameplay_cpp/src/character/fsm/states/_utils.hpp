@@ -20,11 +20,15 @@ namespace fsm::player::utils {
 inline void movementAcceleration(Context& context, float acceleration, float deceleration, float delta) {
 	// direction
 	if (context.input->m_inputRaw.abs() > godot::Vector2()) {
+		float desiredSpeed = context.input->isActionHeld(EInputAction::SPRINT) ? 
+			GETPARAM_F("sprintSpeed") : 
+			GETPARAM_F("walkSpeed");
+
 		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x,
-			context.input->m_inputCameraRelative.x * GETPARAM_F("walkSpeed"),
+			context.input->m_inputCameraRelative.x * desiredSpeed,
 			acceleration * delta);
 		context.physics.velocity.z = godot::Math::move_toward(context.physics.velocity.z,
-			context.input->m_inputCameraRelative.y * GETPARAM_F("walkSpeed"),
+			context.input->m_inputCameraRelative.y * desiredSpeed,
 			acceleration * delta);
 	}
 	else {

@@ -63,6 +63,9 @@ void InputManager::_physics_process(double delta) {
 	if (input->is_action_just_pressed(InputString::attack)) {
 		m_inputActions.emplace_back(InputAction{ EInputAction::ATTACK, EInputActionType::PRESSED });
 	}
+	if (input->is_action_pressed(InputString::sprint)) {
+		m_inputActions.emplace_back(InputAction{ EInputAction::SPRINT, EInputActionType::HELD });
+	}
 
 	// Motion vector for keyboard only
 	if (m_mode == EInputMode::KEYBOARD_ONLY) {
@@ -230,6 +233,19 @@ bool InputManager::isActionPressed(EInputAction action, float timeframe) {
 	}
 	if (!m_inputActions.empty()) {
 		return m_inputActions.begin()->isActionPressed(action);
+	}
+	return false;
+}
+
+bool InputManager::isActionHeld(EInputAction action) {
+		for (auto it = m_inputActions.begin(); it != m_inputActions.end(); it++) {
+			if (it->isActionHeld(action)) {
+				LOG(DEBUG, "STINPIN'!!!");
+				return true;
+			}
+		}
+	if (!m_inputActions.empty()) {
+		return m_inputActions.begin()->isActionHeld(action);
 	}
 	return false;
 }

@@ -162,6 +162,11 @@ public:
 		set("parameters/run_lower/blend_position", value);
 	}
 
+	void sprintValue(float value) {
+		set("parameters/sprint_upper/blend_amount", value);
+		set("parameters/sprint_lower/blend_amount", value);
+	}
+
 	// Tmp method for forcing TPose
 	void setActive(bool active) {
 		set_active(active);
