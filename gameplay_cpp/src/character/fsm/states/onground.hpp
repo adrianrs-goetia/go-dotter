@@ -11,7 +11,6 @@
 #include <components/parryTarget.hpp>
 #include <events/parry.hpp>
 
-#include <godot_cpp/classes/physics_material.hpp>
 
 #ifdef CONFIG_PREFIX
 #undef CONFIG_PREFIX

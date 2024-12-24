@@ -98,6 +98,18 @@ public:
 		data.velocity.z = move.z;
 		state->set_linear_velocity(data.velocity);
 
+		// Disable friction when actively moving
+		{
+			auto mat = context.owner->get_physics_material_override();
+			ASSERTNN(mat)
+			if (data.velocity.length_squared() > 0.2f) {
+				mat->set_friction(0.0);
+			}
+			else {
+				mat->set_friction(1.0);
+			}
+		}
+
 		return {};
 	}
 

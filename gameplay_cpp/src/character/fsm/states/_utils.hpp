@@ -5,6 +5,7 @@
 #include <managers/inputManager.h>
 
 #include <godot_cpp/classes/kinematic_collision3d.hpp>
+#include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
 #include <configHandler.h>
