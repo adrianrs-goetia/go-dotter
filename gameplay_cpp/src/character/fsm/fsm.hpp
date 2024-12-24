@@ -54,16 +54,6 @@ public:
 		_currentState = nullptr;
 	}
 
-	void process(float delta) {
-		ASSERTNN(_currentState)
-		_processState(_currentState->process(_context, delta));
-	}
-
-	void physicsProcess(float delta) {
-		ASSERTNN(_currentState)
-		_processState(_currentState->physicsProcess(_context, delta));
-	}
-
 	void integrateForces(godot::PhysicsDirectBodyState3D* state) {
 		ASSERTNN(_currentState)
 		_processState(_currentState->integrateForces(_context, state));

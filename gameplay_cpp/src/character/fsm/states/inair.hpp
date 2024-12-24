@@ -67,17 +67,6 @@ public:
 		return {};
 	}
 
-	TState process(Context& context, float delta) override {
-		return {};
-	}
-
-	TState physicsProcess(Context& context, float delta) {
-		context.anim->rotateRootTowardsVector(
-			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
-
-		return {};
-	}
-
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
 		const auto delta = state->get_step();
 		auto& move = context.physics.movement;
@@ -109,6 +98,10 @@ public:
 				mat->set_friction(1.0);
 			}
 		}
+
+		// animation
+		context.anim->rotateRootTowardsVector(
+			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
 		return {};
 	}

@@ -138,7 +138,6 @@ void PlayerNode::_physics_process(double delta) {
 	stateContext.physics.velocity = get_linear_velocity();
 
 	// Let FSM deal with physics and input context
-	m_fsm->physicsProcess(delta);
 	m_fsm->handleInput(delta);
 }
 

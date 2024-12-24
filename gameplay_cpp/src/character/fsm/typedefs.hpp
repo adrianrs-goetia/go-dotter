@@ -105,8 +105,6 @@ public:
 	virtual TState getType() const = 0;
 	virtual TState enter(Context& context) = 0;
 	virtual TState exit(Context& context) = 0;
-	virtual TState process(Context& context, float delta) = 0;
-	virtual TState physicsProcess(Context& context, float delta) = 0;
 	virtual TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) = 0;
 	virtual TState handleInput(Context& context, float delta) = 0;
 };
