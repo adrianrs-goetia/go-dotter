@@ -38,6 +38,7 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.anim->doAttack();
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
 		context.attack->setAttackStrength(GETPARAM_F("attack", "strength"));

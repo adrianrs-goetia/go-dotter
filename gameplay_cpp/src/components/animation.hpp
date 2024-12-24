@@ -15,6 +15,43 @@
 class ComponentAnimation : public godot::AnimationTree {
 	GDCLASS(ComponentAnimation, godot::AnimationTree)
 
+private:
+	enum MovementAnimationType {
+		Airborne,
+		Walking,
+	};
+
+	enum ParryAnimationType {
+		ParryHigh,
+		ParryLow,
+	};
+	
+		void setParryType(ParryAnimationType type) {
+		switch (type) {
+			case ParryAnimationType::ParryHigh:
+				set("parameters/parry_type/blend_amount", 0);
+				break;
+			case ParryAnimationType::ParryLow:
+				set("parameters/parry_type/blend_amount", 1);
+				break; 
+		}
+	}
+
+	void setMovement(MovementAnimationType type) {
+		set("parameters/action_or_locomotion_upper/blend_amount", 1);
+		set("parameters/action_or_locomotion_lower/blend_amount", 1);
+		switch (type) {
+			case MovementAnimationType::Walking:
+				set("parameters/locomotion_lower/blend_amount", 0);
+				set("parameters/locomotion_upper/blend_amount", 0);
+				break;
+			case MovementAnimationType::Airborne:
+				set("parameters/locomotion_lower/blend_amount", 1);
+				set("parameters/locomotion_upper/blend_amount", 1);
+				break; 
+		}
+	}
+
 public:
 	enum EAnim : int {
 		NONE = -1,
@@ -78,7 +115,7 @@ public:
 		godot::Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 		m_animRoot->set_basis(godot::Basis(newquat));
 	}
-
+	
 	void setRootTowardsVector(godot::Vector3 vector) {
 		if (vector.length_squared() <= 0) {
 			return;
@@ -88,8 +125,41 @@ public:
 		m_animRoot->set_basis(createBasisFromDirection(vector));
 	}
 
+	void doParry(bool mask_upper = true, bool mask_lower = true) {
+		if (mask_upper)
+			set("parameters/action_or_locomotion_upper/blend_amount", 0);
+		if (mask_lower)
+			set("parameters/action_or_locomotion_lower/blend_amount", 0);
+		// if stand still, should set 
+		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
+		set("parameters/action_lower/blend_amount", 0);
+		set("parameters/action_upper/blend_amount", 0);
+	}
+
+	void dontParry() {
+		set("parameters/action_lower/blend_amount", 0);
+		set("parameters/action_upper/blend_amount", 0);
+	}
+
+	void doAttack() {
+		set("parameters/action_or_locomotion_upper/blend_amount", 0);
+		// if stand still, should set 
+		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
+		set("parameters/action_lower/blend_amount", 1);
+		set("parameters/action_upper/blend_amount", 1);
+	}
+
+	void inAir() {
+		setMovement(MovementAnimationType::Airborne);
+	}
+
+	void onGround() {
+		setMovement(MovementAnimationType::Walking);
+	}
+
 	void idleRunValue(float value) {
-		set("parameters/blend_position", value);
+		set("parameters/run_upper/blend_position", value);
+		set("parameters/run_lower/blend_position", value);
 	}
 
 	// Tmp method for forcing TPose

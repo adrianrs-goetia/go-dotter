@@ -27,6 +27,7 @@ public:
 	};
 
 	TState enter(Context& context) override {
+		context.anim->onGround();
 		// Immediate jump when entering while having just pressed jump
 		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
 			context.physics.velocity.y += GETPARAM_D("jumpStrength");

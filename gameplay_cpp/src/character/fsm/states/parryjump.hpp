@@ -37,6 +37,7 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.anim->doParry(true, false); //only animate upper
 		m_enterTime.setTimestamp();
 
 		m_clm = utils::disableCollision(context);

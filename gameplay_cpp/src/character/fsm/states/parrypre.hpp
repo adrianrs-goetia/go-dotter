@@ -41,12 +41,21 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		auto previousState = context.states->get(1);
+		std::visit(
+			overloaded{
+				[&](TOnGroundState) { context.anim->doParry(true, true); }, 
+				[&](TInAirState)    { context.anim->doParry(true, false); }, //dont animate legs
+				[&](auto state) { LOG(DEBUG, "Entered parry from unexpected state ", stateName(state)); ASSERT(false); },
+			},
+			previousState);
 		m_enterTimestamp.setTimestamp();
 		context.physics.velocity = godot::Vector3(); // zero out velocity while in
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.anim->dontParry();
 		m_exitTimestamp.setTimestamp();
 		return {};
 	}

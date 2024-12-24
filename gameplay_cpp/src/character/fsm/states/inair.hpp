@@ -29,6 +29,7 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.anim->inAir();
 		return {};
 	}
 
