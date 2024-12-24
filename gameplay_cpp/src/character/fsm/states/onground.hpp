@@ -57,12 +57,20 @@ class OnGroundState : public BaseState {
 	} get;
 
 	void _rotateRoot(Context& c, float delta) {
-		const auto vel = c.owner->get_linear_velocity();
+		auto& vel = c.owner->get_linear_velocity();
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
-		float idleWalkBlend = godot::Math::clamp(speed / get.walkSpeed(), 0.0f, 1.0f);
+
+		float walkSpeed = GETPARAM_F("walkSpeed");
+		float sprintSpeed = GETPARAM_F("sprintSpeed");
+		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
+		float sprintBlend = godot::Math::clamp(
+			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
 		c.anim->idleRunValue(idleWalkBlend);
-		c.anim->rotateRootTowardsVector(c.input->getInputRelative3d(), delta, get.animRootRotation());
+		c.anim->sprintValue(sprintBlend);
+
+		c.anim->rotateRootTowardsVector(
+			c.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 	}
 
 public:
@@ -86,34 +94,6 @@ public:
 	}
 
 	TState exit(Context& context) override {
-		return {};
-	}
-
-	TState process(Context& context, float delta) override {
-		return {};
-	}
-
-	TState physicsProcess(Context& context, float delta) override {
-		// walking off edge
-		if (!context.physics.isOnGround) {
-			return TInAirState();
-		}
-
-		// @todo, part of integrateForces..
-		auto& vel = context.physics.velocity;
-		const godot::Vector2 vel2d(vel.x, vel.z);
-		const float speed = vel2d.length();
-		
-		float walkSpeed = GETPARAM_F("walkSpeed");
-		float sprintSpeed = GETPARAM_F("sprintSpeed");
-		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
-		float sprintBlend = godot::Math::clamp((speed-walkSpeed)/(sprintSpeed-walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
-		context.anim->idleRunValue(idleWalkBlend);
-		context.anim->sprintValue(sprintBlend);
-
-		context.anim->rotateRootTowardsVector(
-			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
-
 		return {};
 	}
 
