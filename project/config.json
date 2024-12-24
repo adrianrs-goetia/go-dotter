@@ -25,6 +25,7 @@
     "player": {
         "walkSpeed": 7.5,
         "sprintSpeed": 12.0,
+        "coyoteframes": 12,
         "floorMaxAngle": 0.785,
         "terminalVelocity": 4.0,
         "sprintTimeScale": 1.8, //how many times faster the animation runs during sprinting

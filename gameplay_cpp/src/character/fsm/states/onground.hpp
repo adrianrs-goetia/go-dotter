@@ -57,7 +57,7 @@ class OnGroundState : public BaseState {
 	} get;
 
 	void _rotateRoot(Context& c, float delta) {
-		auto& vel = c.owner->get_linear_velocity();
+		const auto vel = c.owner->get_linear_velocity();
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
 
