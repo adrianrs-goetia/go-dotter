@@ -24,7 +24,6 @@ namespace fsm::player {
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f; // Magic number, guesswork
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 constexpr int STATES_BUFFER_SIZE = 20;
-constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
 	godot::Vector3 position;
@@ -64,8 +63,34 @@ struct TAttackState {};
 using TState = std::variant<std::monostate, TOnGroundState, TInAirState, TPreGrappleLaunchState, TGrappleLaunchState,
 	TParryPreState, TParryPostState, TParryJumpState, TAttackState>;
 
+inline godot::String stateName(TState state) {
+	godot::String out;
+	std::visit(
+		overloaded{
+			[&](TAttackState) { out="atttackState"; },
+			[&](TOnGroundState) { out="onGroundState"; },
+			[&](TGrappleLaunchState) { out="grappleLaunchState"; },
+			[&](TInAirState) { out="inAirState"; },
+			[&](TParryPreState) { out="parryState"; },
+			[&](TParryPostState) { out="parryPostState"; },
+			[&](TParryJumpState) { out="parryJumpState"; },
+			[&](TPreGrappleLaunchState) { out="preGrappleLaunchState"; },
+			[&](std::monostate) { ASSERT(false); },
+		},
+		state);
+	return out;
+};
+
+inline void printStates(CircularBuffer<TState>* states) {
+	godot::String out="";
+	for (int i=0; i<5; i++ ) {
+		out+=stateName(states->get(i)) + "<-";
+	}
+	LOG(DEBUG, "states:", out);
+}
+
 struct Context {
-	godot::CharacterBody3D* owner = nullptr;
+	godot::RigidBody3D* owner = nullptr;
 	ComponentAttackInstigator* attack = nullptr;
 	ComponentAnimation* anim = nullptr;
 	ComponentGrappleInstigator* grapple = nullptr;
