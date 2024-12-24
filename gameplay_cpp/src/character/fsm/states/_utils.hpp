@@ -4,7 +4,6 @@
 
 #include <managers/inputManager.h>
 
-#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/kinematic_collision3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
@@ -18,29 +17,20 @@
 namespace fsm::player::utils {
 
 inline void movementAcceleration(Context& context, float acceleration, float deceleration, float delta) {
+	auto& vec = context.physics.movement;
 	// direction
-	if (context.input->m_inputRaw.abs() > godot::Vector2()) {
-		float desiredSpeed = context.input->isActionHeld(EInputAction::SPRINT) ? 
-			GETPARAM_F("sprintSpeed") : 
-			GETPARAM_F("walkSpeed");
+	// if (context.input->m_inputRaw.abs() > godot::Vector2()) {
+	float desiredSpeed =
+		context.input->isActionHeld(EInputAction::SPRINT) ? GETPARAM_F("sprintSpeed") : GETPARAM_F("walkSpeed");
 
-		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x,
-			context.input->m_inputCameraRelative.x * desiredSpeed,
-			acceleration * delta);
-		context.physics.velocity.z = godot::Math::move_toward(context.physics.velocity.z,
-			context.input->m_inputCameraRelative.y * desiredSpeed,
-			acceleration * delta);
+	if (context.input->m_inputRaw.length_squared() > 0.2f) {
+		vec.x = godot::Math::move_toward(vec.x, context.input->m_inputCameraRelative.x * desiredSpeed, acceleration);
+		vec.z = godot::Math::move_toward(vec.z, context.input->m_inputCameraRelative.y * desiredSpeed, acceleration);
 	}
 	else {
-		context.physics.velocity.x = godot::Math::move_toward(context.physics.velocity.x, 0.0f, deceleration * delta);
-		context.physics.velocity.z = godot::Math::move_toward(context.physics.velocity.z, 0.0f, deceleration * delta);
+		vec.x = godot::Math::move_toward(vec.x, 0.0f, deceleration);
+		vec.z = godot::Math::move_toward(vec.z, 0.0f, deceleration);
 	}
-}
-
-inline void moveSlideOwner(Context& context) {
-	auto* owner = context.owner;
-	owner->set_velocity(context.physics.velocity);
-	context.physics.collided = owner->move_and_slide();
 }
 
 typedef struct {
@@ -58,20 +48,6 @@ inline CollisionLayerMask disableCollision(Context& context) {
 inline void enableCollision(Context& context, const CollisionLayerMask& clm) {
 	context.owner->set_collision_layer(clm.layer);
 	context.owner->set_collision_mask(clm.mask);
-}
-
-inline void revertRigidbodyCollisionSlide(Context& context) {
-	auto* owner = context.owner;
-	for (int i = 0; i < owner->get_slide_collision_count(); i++) {
-		auto col = owner->get_slide_collision(i);
-		if (godot::Object::cast_to<godot::RigidBody3D>(col->get_collider())) {
-			const auto pos = owner->get_global_position();
-			// const auto adjustment = col->get_travel() + col->get_remainder();
-			const auto adjustment = col->get_travel();
-			owner->set_global_position(pos - adjustment);
-			owner->set_velocity(Vector3());
-		}
-	}
 }
 
 } //namespace fsm::player::utils

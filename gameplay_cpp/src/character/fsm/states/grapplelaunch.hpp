@@ -32,7 +32,7 @@ public:
 		ComponentGrappleTarget::LaunchContext launch = context.grapple->launch(GETPARAM_D("grapple", "launchStrength"));
 		if (launch.type != ComponentGrappleTarget::LaunchType::INSTIGATOR_ANCHOR &&
 			launch.type != ComponentGrappleTarget::LaunchType::BOTH_ANCHOR) {
-			context.physics.velocity = launch.impulse;
+			context.physics.horizontalForce = launch.impulse;
 		}
 		return TInAirState();
 	}

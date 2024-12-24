@@ -2,6 +2,7 @@
 
 #include <core/core.hpp>
 #include "../../utils/circularbuffer.h"
+#include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 
 class ComponentAnimation;
 class ComponentAttackInstigator;
@@ -11,9 +12,9 @@ class InputManager;
 
 namespace godot {
 class AudioStreamPlayer3D;
-class CharacterBody3D;
 class GPUParticles3D;
 class Node3D;
+class RigidBody3D;
 } //namespace godot
 
 namespace fsm::player {
@@ -27,14 +28,15 @@ struct PhysicsContext {
 	bool collided;
 	godot::Vector3 position;
 	godot::Vector3 velocity;
+	godot::Vector3 movement;
 
 	godot::Vector3 getGravityCenter() const {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
-	godot::Vector3 getVelocityDir2D() const {
-		return godot::Vector3(velocity.x, 0, velocity.z).normalized();
-	}
+	// godot::Vector3 getVelocityDir2D() const {
+	// 	return godot::Vector3(velocity.x, 0, velocity.z).normalized();
+	// }
 };
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
@@ -100,8 +102,8 @@ public:
 	virtual TState exit(Context& context) = 0;
 	virtual TState process(Context& context, float delta) = 0;
 	virtual TState physicsProcess(Context& context, float delta) = 0;
+	virtual TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) = 0;
 	virtual TState handleInput(Context& context, float delta) = 0;
-	virtual TState deferredPhysicsProcess(Context& context, float delta) = 0;
 };
 
 } //namespace fsm::player

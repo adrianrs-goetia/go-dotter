@@ -47,6 +47,7 @@ void PlayerNode::_notification(int what) {
 		}
 		case ENotifications::SOFT_RESTART: {
 			set_global_transform(PlayerNode::startTransform);
+			set_linear_velocity(Vector3());
 		}
 
 		default:
@@ -55,13 +56,14 @@ void PlayerNode::_notification(int what) {
 }
 
 void PlayerNode::_enter_tree() {
-	Log(ELog::DEBUG, "PlayerNode entering tree -- editor");
+	set_lock_rotation_enabled(true);
+	set_contact_monitor(true); // Required for _integrate_forces()
+	set_max_contacts_reported(4);
+	set_can_sleep(false); // _integrate_forces is not invoked once body is sleeping
 
 	RETURN_IF_EDITOR(void())
 
 	PlayerNode::startTransform = get_global_transform();
-
-	Log(ELog::DEBUG, "PlayerNode entering tree");
 
 	auto* input = InputManager::get(*this);
 	m_animComponent = getComponentOfNode<ComponentAnimation>(this);
@@ -89,9 +91,10 @@ void PlayerNode::_enter_tree() {
 	stateContext.anim = m_animComponent;
 	stateContext.input = input;
 	stateContext.parry = m_parryComponent;
-	stateContext.physics.isOnGround = is_on_floor();
+	// stateContext.physics.isOnGround = is_on_floor();
+	stateContext.physics.isOnGround = true;
 	stateContext.physics.position = get_position();
-	stateContext.physics.velocity = get_velocity();
+	stateContext.physics.velocity = get_linear_velocity();
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 	stateContext.states = states;
@@ -127,14 +130,13 @@ void PlayerNode::_physics_process(double delta) {
 	ASSERTNN(m_fsm)
 	// capture current physics context
 	auto& stateContext = m_fsm->getContext();
-	stateContext.physics.isOnGround = is_on_floor();
+	// stateContext.physics.isOnGround = is_on_floor();
 	stateContext.physics.position = get_position();
-	stateContext.physics.velocity = get_velocity();
+	stateContext.physics.velocity = get_linear_velocity();
 
 	// Let FSM deal with physics and input context
 	m_fsm->physicsProcess(delta);
 	m_fsm->handleInput(delta);
-	m_fsm->deferredPhysicsProcess(delta);
 }
 
 void PlayerNode::_input(const Ref<InputEvent>& p_event) {
@@ -145,4 +147,9 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 	}
 	ASSERTNN(m_camerapivot);
 	m_camerapivot->processInput(m_fsm->getContext(), get_process_delta_time());
+}
+
+void PlayerNode::_integrate_forces(PhysicsDirectBodyState3D* state) {
+	ASSERTNN(m_fsm)
+	m_fsm->integrateForces(state);
 }

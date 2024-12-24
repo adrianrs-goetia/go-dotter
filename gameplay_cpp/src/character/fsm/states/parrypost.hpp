@@ -45,7 +45,7 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) {
-		context.physics.velocity = Vector3();
+		// context.physics.velocity = Vector3();
 
 		if (_passiveExit(context)) {
 			return TOnGroundState();
@@ -71,7 +71,7 @@ public:
 			return {};
 		}
 
-		utils::revertRigidbodyCollisionSlide(context);
+		// utils::revertRigidbodyCollisionSlide(context);
 		return {};
 	}
 

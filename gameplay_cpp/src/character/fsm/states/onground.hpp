@@ -29,10 +29,10 @@ public:
 	TState enter(Context& context) override {
 		context.anim->onGround();
 		// Immediate jump when entering while having just pressed jump
-		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-			context.physics.velocity.y += GETPARAM_D("jumpStrength");
-			return TInAirState();
-		}
+		// if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
+		// 	context.physics.velocity.y += GETPARAM_D("jumpStrength");
+		// 	return TInAirState();
+		// }
 		return {};
 	}
 
@@ -45,13 +45,12 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) override {
-		context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
-
 		// walking off edge
 		if (!context.physics.isOnGround) {
 			return TInAirState();
 		}
 
+		// @todo, part of integrateForces..
 		auto& vel = context.physics.velocity;
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
@@ -69,6 +68,41 @@ public:
 		return {};
 	}
 
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) {
+		const auto delta = state->get_step();
+		auto gravityDir = Vector3(0, -1, 0);
+		auto& move = context.physics.movement;
+
+		const auto pos = context.physics.position + Vector3(0, 1, 0);
+		DebugDraw::Line(pos, pos + (move), Color(1, 1, 1), delta);
+
+		for (int i = 0; i < state->get_contact_count(); i++) {
+			auto pos = state->get_contact_collider_position(i);
+			DebugDraw::Position(pos, Color(0, 1, 0), delta);
+
+			auto normal = state->get_contact_local_normal(i);
+			// Wall collision
+			// if (g_up.dot(normal) < GETPARAM_F("floorMaxAngle")) {
+			// 	// Adjust velocity along surface of collision if velocity is towards the wall.
+			// 	const float walldot = normal.dot(move.normalized());
+
+			// 	const auto rightOrtho = normal.cross(g_up).normalized();
+			// 	const auto upOrtho = rightOrtho.cross(normal).normalized();
+
+			// 	if (walldot < 0.f) {
+			// 		const auto adjustment = move.project(normal);
+			// 		move -= adjustment;
+			// 	}
+			// }
+		}
+
+		state->apply_central_force(gravityDir * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
+		move.y = state->get_linear_velocity().y;
+		state->set_linear_velocity(move);
+
+		return {};
+	}
+
 	TState handleInput(Context& context, float delta) override {
 		// direction
 		utils::movementAcceleration(
@@ -76,8 +110,8 @@ public:
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			context.physics.velocity.y += GETPARAM_D("jumpStrength");
-			return TInAirState();
+			context.owner->apply_central_impulse(godot::Vector3(0, GETPARAM_D("jumpStrength"), 0));
+			// return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
 			return TPreGrappleLaunchState();
@@ -88,11 +122,6 @@ public:
 		if (context.input->isActionPressed(EInputAction::ATTACK)) {
 			return TAttackState();
 		}
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
-		utils::moveSlideOwner(context);
 		return {};
 	}
 };

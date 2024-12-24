@@ -35,15 +35,15 @@ public:
 		return {};
 	}
 
-	TState physicsProcess(Context& context, float delta) {
+	TState physicsProcess(Context& context, float delta) override {
+		return {};
+	}
+
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
 		return {};
 	}
 };

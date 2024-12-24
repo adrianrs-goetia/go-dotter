@@ -70,7 +70,7 @@ public:
 				return TInAirState();
 		}
 
-		context.physics.velocity *= 0;
+		context.physics.horizontalForce *= 0;
 
 		switch (context.attack->getAttackState()) {
 			case ComponentAttackInstigator::EState::HIT: {

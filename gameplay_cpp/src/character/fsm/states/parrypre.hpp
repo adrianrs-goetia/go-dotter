@@ -50,7 +50,7 @@ public:
 			},
 			previousState);
 		m_enterTimestamp.setTimestamp();
-		context.physics.velocity = godot::Vector3(); // zero out velocity while in
+		context.physics.horizontalForce = godot::Vector3(); // zero out velocity while in
 		return {};
 	}
 
@@ -65,7 +65,7 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) override {
-		context.physics.velocity = Vector3();
+		context.physics.horizontalForce = Vector3();
 
 		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("stateTime"))) {
 			// Enter on ground by default, should discern if in air or onGround?
@@ -102,7 +102,7 @@ public:
 			return {};
 		}
 
-		utils::revertRigidbodyCollisionSlide(context);
+		// utils::revertRigidbodyCollisionSlide(context);
 
 		return {};
 	}

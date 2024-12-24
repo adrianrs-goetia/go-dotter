@@ -27,7 +27,7 @@ public:
 	TState enter(Context& context) override {
 		// TODO: PlayerState::can_enter_state() const ?? Make certain states not spammable?
 		// TODO: camera adjustment and whatnot here?
-		context.physics.velocity = godot::Vector3();
+		context.physics.horizontalForce = godot::Vector3();
 		return TGrappleLaunchState();
 	}
 

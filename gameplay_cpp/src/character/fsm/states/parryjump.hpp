@@ -47,7 +47,7 @@ public:
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
 
-		context.physics.velocity = dir * length.length() * GETPARAM_F("impulse");
+		context.physics.horizontalForce = dir * length.length() * GETPARAM_F("impulse");
 		return {};
 	}
 
@@ -61,7 +61,7 @@ public:
 	}
 
 	TState physicsProcess(Context& context, float delta) override {
-		context.physics.velocity.y +=
+		context.physics.horizontalForce.y +=
 			(GETPARAMGLOBAL_D("gravityConstant") * GETPARAMGLOBAL_D("player", "gravityScale")) * delta;
 
 		context.anim->rotateRootTowardsVector(
@@ -89,7 +89,7 @@ public:
 			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
 			newVel *= GETPARAM_D("doubleJumpHorizontalStrength");
 			newVel.y = GETPARAM_D("doubleJumpImpulse");
-			context.physics.velocity = newVel;
+			context.physics.horizontalForce = newVel;
 			return TInAirState();
 		}
 

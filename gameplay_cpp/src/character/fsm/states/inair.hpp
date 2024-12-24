@@ -47,11 +47,18 @@ public:
 			return TOnGroundState();
 		}
 		utils::movementAcceleration(context, GETPARAM_D("inAirAcceleration"), GETPARAM_D("inAirDeceleration"), delta);
-		context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
+		// context.physics.velocity.y += (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 		context.anim->rotateRootTowardsVector(
 			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 
+		return {};
+	}
+
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
+		state->apply_central_force(
+			Vector3(0, 1, 0) * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
+		// state->apply_central_force(context.physics.horizontalForce);
 		return {};
 	}
 
@@ -62,11 +69,6 @@ public:
 		if (context.input->isActionPressed(EInputAction::PARRY)) {
 			return TParryPreState();
 		}
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
-		utils::moveSlideOwner(context);
 		return {};
 	}
 };
