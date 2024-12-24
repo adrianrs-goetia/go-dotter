@@ -61,10 +61,9 @@ void PlayerNode::_enter_tree() {
 	set_contact_monitor(true); // Required for _integrate_forces()
 	set_max_contacts_reported(4);
 	set_can_sleep(false); // _integrate_forces is not invoked once body is sleeping
-	{
+	{ // Each state needs to handle the physics material, so we override it here
 		Ref<PhysicsMaterial> mat;
 		mat.instantiate();
-		mat->set_friction(0.0);
 		set_physics_material_override(mat);
 	}
 

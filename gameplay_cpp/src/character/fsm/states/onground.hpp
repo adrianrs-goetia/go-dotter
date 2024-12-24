@@ -11,6 +11,8 @@
 #include <components/parryTarget.hpp>
 #include <events/parry.hpp>
 
+#include <godot_cpp/classes/physics_material.hpp>
+
 #ifdef CONFIG_PREFIX
 #undef CONFIG_PREFIX
 #endif
@@ -22,6 +24,7 @@ class OnGroundState : public BaseState {
 	TYPE(OnGroundState)
 
 	struct {
+		int jumpframes = 3;
 		godot::Vector3 velocity;
 	} m;
 
@@ -75,9 +78,10 @@ public:
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) {
 		const auto delta = state->get_step();
+		m.jumpframes = MAX(--m.jumpframes, 0);
+
 		auto gravityDir = Vector3(0, -1, 0);
-		// state->apply_central_force(gravityDir * (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")));
-		// state->set_sleep_state(false);
+		m.velocity.y -= (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
 
 		auto& move = context.physics.movement;
 
@@ -85,31 +89,35 @@ public:
 		DebugDraw::Line(pos, pos + (move), Color(1, 1, 1), delta);
 
 		for (int i = 0; i < state->get_contact_count(); i++) {
-			auto pos = state->get_contact_collider_position(i);
-			DebugDraw::Position(pos, Color(0, 1, 0), delta);
-
 			auto normal = state->get_contact_local_normal(i);
-			// Wall collision
-			// if (g_up.dot(normal) < GETPARAM_F("floorMaxAngle")) {
-			// 	// Adjust velocity along surface of collision if velocity is towards the wall.
-			// 	const float walldot = normal.dot(move.normalized());
-
-			// 	const auto rightOrtho = normal.cross(g_up).normalized();
-			// 	const auto upOrtho = rightOrtho.cross(normal).normalized();
-
-			// 	if (walldot < 0.f) {
-			// 		const auto adjustment = move.project(normal);
-			// 		move -= adjustment;
-			// 	}
-			// }
+			// On floor
+			if (g_up.dot(normal) > GETPARAM_F("floorMaxAngle")) {
+				if (!m.jumpframes) {
+					m.velocity.y = 0;
+					auto pos = state->get_contact_collider_position(i);
+					DebugDraw::Position(pos, Color(0, 1, 0), delta);
+				}
+			}
+			else {
+				// return TInAirState();
+			}
 		}
-		m.velocity.y -= (GETPARAMGLOBAL_D("gravityConstant") * GETPARAM_D("gravityScale")) * delta;
+
 		m.velocity.x = move.x;
 		m.velocity.z = move.z;
 		state->set_linear_velocity(m.velocity);
 
-		// move.y = state->get_linear_velocity().y;
-		// state->apply_central_force(move);
+		// Disable friction when actively moving
+		{
+			auto mat = context.owner->get_physics_material_override();
+			ASSERTNN(mat)
+			if (m.velocity.length_squared() > 0.2f) {
+				mat->set_friction(0.0);
+			}
+			else {
+				mat->set_friction(1.0);
+			}
+		}
 
 		return {};
 	}
@@ -121,8 +129,8 @@ public:
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
+			m.jumpframes = 3;
 			m.velocity.y = GETPARAM_D("jumpStrength");
-			// context.owner->apply_central_impulse(godot::Vector3(0, GETPARAM_D("jumpStrength"), 0));
 			// return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
