@@ -12,6 +12,11 @@
 
 #include <configHandler.h>
 
+#ifdef CONFIG_PREFIX
+#undef CONFIG_PREFIX
+#endif
+#define CONFIG_PREFIX "player"
+
 class ComponentAnimation : public godot::AnimationTree {
 	GDCLASS(ComponentAnimation, godot::AnimationTree)
 
@@ -163,6 +168,8 @@ public:
 	}
 
 	void sprintValue(float value) {
+		double sprintTimeScale = GETPARAM_F("sprintTimeScale");
+		set("parameters/timescale/scale", godot::Math::clamp(1.0+value*(sprintTimeScale-1.0), 1.0 ,sprintTimeScale));
 		set("parameters/sprint_upper/blend_amount", value);
 		set("parameters/sprint_lower/blend_amount", value);
 	}

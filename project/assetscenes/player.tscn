@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=48 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
@@ -111,12 +111,14 @@ animation = &"run_cool"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_otaya"]
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_0yxyo"]
+
 [sub_resource type="AnimationNodeAdd2" id="AnimationNodeAdd2_3gncf"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:mixamorig_Head", "Armature/Skeleton3D:mixamorig_LeftArm", "Armature/Skeleton3D:mixamorig_LeftForeArm", "Armature/Skeleton3D:mixamorig_LeftHand", "Armature/Skeleton3D:mixamorig_LeftHandIndex1", "Armature/Skeleton3D:mixamorig_LeftHandIndex2", "Armature/Skeleton3D:mixamorig_LeftHandIndex3", "Armature/Skeleton3D:mixamorig_LeftHandMiddle1", "Armature/Skeleton3D:mixamorig_LeftHandMiddle2", "Armature/Skeleton3D:mixamorig_LeftHandMiddle3", "Armature/Skeleton3D:mixamorig_LeftHandPinky1", "Armature/Skeleton3D:mixamorig_LeftHandPinky2", "Armature/Skeleton3D:mixamorig_LeftHandPinky3", "Armature/Skeleton3D:mixamorig_LeftHandRing1", "Armature/Skeleton3D:mixamorig_LeftHandRing2", "Armature/Skeleton3D:mixamorig_LeftHandRing3", "Armature/Skeleton3D:mixamorig_LeftHandThumb1", "Armature/Skeleton3D:mixamorig_LeftHandThumb2", "Armature/Skeleton3D:mixamorig_LeftHandThumb3", "Armature/Skeleton3D:mixamorig_LeftShoulder", "Armature/Skeleton3D:mixamorig_Neck", "Armature/Skeleton3D:mixamorig_RightArm", "Armature/Skeleton3D:mixamorig_RightForeArm", "Armature/Skeleton3D:mixamorig_RightHand", "Armature/Skeleton3D:mixamorig_RightHandIndex1", "Armature/Skeleton3D:mixamorig_RightHandIndex2", "Armature/Skeleton3D:mixamorig_RightHandIndex3", "Armature/Skeleton3D:mixamorig_RightHandMiddle1", "Armature/Skeleton3D:mixamorig_RightHandMiddle2", "Armature/Skeleton3D:mixamorig_RightHandMiddle3", "Armature/Skeleton3D:mixamorig_RightHandPinky1", "Armature/Skeleton3D:mixamorig_RightHandPinky2", "Armature/Skeleton3D:mixamorig_RightHandPinky3", "Armature/Skeleton3D:mixamorig_RightHandRing1", "Armature/Skeleton3D:mixamorig_RightHandRing2", "Armature/Skeleton3D:mixamorig_RightHandRing3", "Armature/Skeleton3D:mixamorig_RightHandThumb1", "Armature/Skeleton3D:mixamorig_RightHandThumb2", "Armature/Skeleton3D:mixamorig_RightHandThumb3", "Armature/Skeleton3D:mixamorig_RightShoulder", "Armature/Skeleton3D:mixamorig_Spine", "Armature/Skeleton3D:mixamorig_Spine1", "Armature/Skeleton3D:mixamorig_Spine2"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ul21n"]
-graph_offset = Vector2(-807.748, 343.724)
+graph_offset = Vector2(-110.329, -1.98994)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_xj7yo")
 nodes/Animation/position = Vector2(-300, 160)
 nodes/action_lower/node = SubResource("AnimationNodeBlend2_bv2ow")
@@ -139,8 +141,9 @@ nodes/locomotion_lower/node = SubResource("AnimationNodeBlend2_4ryrg")
 nodes/locomotion_lower/position = Vector2(-240, 600)
 nodes/locomotion_upper/node = SubResource("AnimationNodeBlend2_hme6s")
 nodes/locomotion_upper/position = Vector2(-360, -160)
-nodes/lower/node = SubResource("AnimationNodeAdd2_j6qrd")
-nodes/lower/position = Vector2(80, 140)
+nodes/lowerbody/node = SubResource("AnimationNodeAdd2_j6qrd")
+nodes/lowerbody/position = Vector2(80, 140)
+nodes/output/position = Vector2(500, 140)
 nodes/parry_lower/node = SubResource("AnimationNodeAnimation_h1ipo")
 nodes/parry_lower/position = Vector2(-500, 260)
 nodes/parry_upper/node = SubResource("AnimationNodeAnimation_jmxvq")
@@ -157,9 +160,11 @@ nodes/sprint_lower/node = SubResource("AnimationNodeBlend2_nl7yn")
 nodes/sprint_lower/position = Vector2(-560, 560)
 nodes/sprint_upper/node = SubResource("AnimationNodeBlend2_otaya")
 nodes/sprint_upper/position = Vector2(-580, -200)
+nodes/timescale/node = SubResource("AnimationNodeTimeScale_0yxyo")
+nodes/timescale/position = Vector2(318.772, 149.35)
 nodes/upperbody/node = SubResource("AnimationNodeAdd2_3gncf")
 nodes/upperbody/position = Vector2(-80, 140)
-node_connections = [&"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"action_upper", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"action_upper", 0, &"parry_upper", &"action_upper", 1, &"attack_upper", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lower", 0, &"upperbody", &"lower", 1, &"action_or_locomotion_lower", &"output", 0, &"lower", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
+node_connections = [&"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"action_upper", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"action_upper", 0, &"parry_upper", &"action_upper", 1, &"attack_upper", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lowerbody", 0, &"upperbody", &"lowerbody", 1, &"action_or_locomotion_lower", &"output", 0, &"timescale", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"timescale", 0, &"lowerbody", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
 
 [sub_resource type="Curve" id="Curve_unhab"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]
@@ -278,11 +283,12 @@ parameters/action_or_locomotion_upper/blend_amount = 0.0
 parameters/action_upper/blend_amount = 0
 parameters/locomotion_lower/blend_amount = 0
 parameters/locomotion_upper/blend_amount = 0
-parameters/lower/add_amount = 1.0
+parameters/lowerbody/add_amount = 1.0
 parameters/run_lower/blend_position = 0
 parameters/run_upper/blend_position = 0
 parameters/sprint_lower/blend_amount = 0
 parameters/sprint_upper/blend_amount = 0.0
+parameters/timescale/scale = 1.0
 parameters/upperbody/add_amount = 1.0
 
 [node name="ComponentAttackInstigator" type="ComponentAttackInstigator" parent="."]
