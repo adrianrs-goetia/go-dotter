@@ -58,6 +58,7 @@ void PlayerNode::_notification(int what) {
 
 void PlayerNode::_enter_tree() {
 	set_lock_rotation_enabled(true);
+	set_gravity_scale(0.0);
 	set_contact_monitor(true); // Required for _integrate_forces()
 	set_max_contacts_reported(4);
 	set_can_sleep(false); // _integrate_forces is not invoked once body is sleeping
@@ -135,7 +136,6 @@ void PlayerNode::_physics_process(double delta) {
 	// capture current physics context
 	auto& stateContext = m_fsm->getContext();
 	stateContext.physics.position = get_position();
-	stateContext.physics.velocity = get_linear_velocity();
 
 	// Let FSM deal with physics and input context
 	m_fsm->handleInput(delta);
@@ -153,5 +153,6 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 
 void PlayerNode::_integrate_forces(PhysicsDirectBodyState3D* state) {
 	ASSERTNN(m_fsm)
+	m_fsm->getContext().physics.velocity = get_linear_velocity();
 	m_fsm->integrateForces(state);
 }

@@ -53,24 +53,19 @@ public:
 		return {};
 	}
 
-	TState process(Context& context, float delta) override {
-		return {};
-	}
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
+		const auto delta = state->get_step();
 
-	TState physicsProcess(Context& context, float delta) override {
 		DebugDraw::Position(
 			godot::Transform3D(Basis(), godot::Vector3(context.physics.position + godot::Vector3(0, 1, 0))),
 			godot::Color(0.7, 0, 0.5),
 			delta);
 
 		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "stateLength"))) {
-			if (context.physics.isOnGround)
-				return TOnGroundState();
-			else
-				return TInAirState();
+			return TOnGroundState();
 		}
 
-		context.physics.horizontalForce *= 0;
+		context.physics.velocity *= 0;
 
 		switch (context.attack->getAttackState()) {
 			case ComponentAttackInstigator::EState::HIT: {
@@ -81,14 +76,13 @@ public:
 			default:
 				break;
 		}
+
+		state->set_linear_velocity(context.physics.velocity);
+
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
 		return {};
 	}
 };

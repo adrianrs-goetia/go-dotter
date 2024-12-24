@@ -5,13 +5,13 @@
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 
-// #include "states/attack.hpp"
+#include "states/attack.hpp"
 // #include "states/grapplelaunch.hpp"
 #include "states/inair.hpp"
 #include "states/onground.hpp"
-// #include "states/parryjump.hpp"
-// #include "states/parrypost.hpp"
-// #include "states/parrypre.hpp"
+#include "states/parryjump.hpp"
+#include "states/parrypost.hpp"
+#include "states/parrypre.hpp"
 // #include "states/pregrapplelaunch.hpp"
 
 namespace fsm::player {
@@ -20,13 +20,13 @@ class Fsm {
 	Context _context;
 	BaseState* _currentState = nullptr;
 
-	// AttackState _attackState;
+	AttackState _attackState;
 	OnGroundState _onGroundState;
 	// GrappleLaunchState _grappleLaunchState;
 	InAirState _inAirState;
-	// ParryPreState _parryState;
-	// ParryPostState _parryPostState;
-	// ParryJumpState _parryJumpState;
+	ParryPreState _parryState;
+	ParryPostState _parryPostState;
+	ParryJumpState _parryJumpState;
 	// PreGrappleLaunchState _preGrappleLaunchState;
 
 public:
@@ -74,13 +74,13 @@ private:
 
 		std::visit(
 			overloaded{
-				// [&](TAttackState) { newState = &_attackState; },
+				[&](TAttackState) { newState = &_attackState; },
 				[&](TOnGroundState) { newState = &_onGroundState; },
 				// [&](TGrappleLaunchState) { newState = &_grappleLaunchState; },
 				[&](TInAirState) { newState = &_inAirState; },
-				// [&](TParryPreState) { newState = &_parryState; },
-				// [&](TParryPostState) { newState = &_parryPostState; },
-				// [&](TParryJumpState) { newState = &_parryJumpState; },
+				[&](TParryPreState) { newState = &_parryState; },
+				[&](TParryPostState) { newState = &_parryPostState; },
+				[&](TParryJumpState) { newState = &_parryJumpState; },
 				// [&](TPreGrappleLaunchState) { newState = &_preGrappleLaunchState; },
 				[&](auto) { ASSERT(false, "Unexpected state during Fsm process state"); },
 			},

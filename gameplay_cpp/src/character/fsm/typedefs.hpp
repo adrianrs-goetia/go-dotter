@@ -33,6 +33,14 @@ struct PhysicsContext {
 		return godot::Vector3(position.x, position.y + PLAYER_CHARACTER_HALFHEIGHT, position.z);
 	}
 
+	godot::Vector3 getVelocityDir2D() const {
+		return godot::Vector3(velocity.x, 0, velocity.z).normalized();
+	}
+
+	void applyGravity(const float delta) {
+		velocity.y -= get.gravity();
+	}
+
 	struct {
 		float gravity() {
 			return GETPARAMGLOBAL_F("gravityConstant") * GETPARAMGLOBAL_F("player", "gravityScale");

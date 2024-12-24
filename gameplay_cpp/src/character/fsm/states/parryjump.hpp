@@ -26,6 +26,9 @@ private:
 	Timestamp m_enterTime;
 	Timestamp m_intangibilityTime;
 	utils::CollisionLayerMask m_clm;
+	struct {
+		godot::Vector3 velocity;
+	} data;
 
 public:
 	TState getType() const override {
@@ -47,7 +50,7 @@ public:
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
 
-		context.physics.horizontalForce = dir * length.length() * GETPARAM_F("impulse");
+		data.velocity = dir * length.length() * GETPARAM_F("impulse");
 		return {};
 	}
 
@@ -56,13 +59,10 @@ public:
 		return {};
 	}
 
-	TState process(Context& context, float delta) override {
-		return {};
-	}
-
-	TState physicsProcess(Context& context, float delta) override {
-		context.physics.horizontalForce.y +=
-			(GETPARAMGLOBAL_D("gravityConstant") * GETPARAMGLOBAL_D("player", "gravityScale")) * delta;
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
+		const auto delta = state->get_step();
+		data.velocity.y -= context.physics.get.gravity() * delta;
+		state->set_linear_velocity(data.velocity);
 
 		context.anim->rotateRootTowardsVector(
 			context.physics.getVelocityDir2D(), delta, GETPARAMGLOBAL_D("player", "animation", "rootRotationSpeed"));
@@ -89,15 +89,10 @@ public:
 			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
 			newVel *= GETPARAM_D("doubleJumpHorizontalStrength");
 			newVel.y = GETPARAM_D("doubleJumpImpulse");
-			context.physics.horizontalForce = newVel;
+			context.physics.velocity = newVel;
 			return TInAirState();
 		}
 
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
-		utils::moveSlideOwner(context);
 		return {};
 	}
 };

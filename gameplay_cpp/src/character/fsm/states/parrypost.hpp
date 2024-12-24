@@ -40,12 +40,8 @@ public:
 		return {};
 	}
 
-	TState process(Context& context, float delta) override {
-		return {};
-	}
-
-	TState physicsProcess(Context& context, float delta) {
-		// context.physics.velocity = Vector3();
+	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
+		state->set_linear_velocity(godot::Vector3());
 
 		if (_passiveExit(context)) {
 			return TOnGroundState();
@@ -63,15 +59,6 @@ public:
 			target->onAction(EventParryFreeze{ GETPARAM_F("freezetime") });
 			return TParryJumpState();
 		}
-		return {};
-	}
-
-	TState deferredPhysicsProcess(Context& context, float delta) {
-		if (!context.physics.collided) {
-			return {};
-		}
-
-		// utils::revertRigidbodyCollisionSlide(context);
 		return {};
 	}
 
