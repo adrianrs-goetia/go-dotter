@@ -4,6 +4,7 @@
 #include <core/core.hpp>
 #include "../../utils/circularbuffer.h"
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
+#include "../../utils/circularbuffer.h"
 
 class ComponentAnimation;
 class ComponentAttackInstigator;
@@ -22,6 +23,7 @@ namespace fsm::player {
 
 constexpr float PLAYER_CHARACTER_HEIGHT = 2.0f; // Magic number, guesswork
 constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
+constexpr int STATES_BUFFER_SIZE = 20;
 constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
@@ -73,32 +75,6 @@ struct Context {
 	AudioVisualContext audioVisual;
 	CircularBuffer<TState>* states = nullptr;
 };
-
-inline godot::String stateName(TState state) {
-	godot::String out;
-	std::visit(
-		overloaded{
-			[&](TAttackState) { out="atttackState"; },
-			[&](TOnGroundState) { out="onGroundState"; },
-			[&](TGrappleLaunchState) { out="grappleLaunchState"; },
-			[&](TInAirState) { out="inAirState"; },
-			[&](TParryPreState) { out="parryState"; },
-			[&](TParryPostState) { out="parryPostState"; },
-			[&](TParryJumpState) { out="parryJumpState"; },
-			[&](TPreGrappleLaunchState) { out="preGrappleLaunchState"; },
-			[&](std::monostate) { ASSERT(false); },
-		},
-		state);
-	return out;
-};
-
-inline void printStates(CircularBuffer<TState>* states) {
-	godot::String out="";
-	for (int i=0; i<5; i++ ) {
-		out+=stateName(states->get(i)) + "<-";
-	}
-	LOG(DEBUG, "states:", out);
-}
 
 class BaseState {
 public:
