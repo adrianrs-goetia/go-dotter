@@ -24,12 +24,17 @@ class OnGroundState : public BaseState {
 	TYPE(OnGroundState)
 
 	struct Data {
+		int8_t coyoteframes;
 		godot::Vector3 velocity;
 	} data;
 
 	struct Get {
 		float jumpStrenght() {
 			return GETPARAM_F("jumpStrength");
+		}
+
+		auto coyoteFrames() {
+			return GETPARAM_I("coyoteframes");
 		}
 
 		float walkSpeed() {
@@ -76,6 +81,7 @@ public:
 			return TInAirState();
 		}
 		data.velocity = context.owner->get_linear_velocity();
+		data.coyoteframes = get.coyoteFrames();
 		return {};
 	}
 
@@ -118,18 +124,24 @@ public:
 		auto& move = context.physics.movement;
 		const auto contactCount = state->get_contact_count();
 		if (!contactCount) {
-			return TInAirState();
+			data.coyoteframes = MAX(--data.coyoteframes, 0);
+			if (!data.coyoteframes)
+				return TInAirState();
 		}
 		for (int i = 0; i < contactCount; i++) {
 			auto normal = state->get_contact_local_normal(i);
 			// On floor
 			if (g_up.dot(normal) > get.maxFloorAngle()) {
 				data.velocity.y = 0;
+				data.coyoteframes = get.coyoteFrames();
 			}
 			else {
 				auto pos = state->get_contact_local_position(i);
-				if (pos.y < context.physics.position.y)
-					return TInAirState();
+				if (pos.y < context.physics.position.y) {
+					data.coyoteframes = MAX(--data.coyoteframes, 0);
+					if (!data.coyoteframes)
+						return TInAirState();
+				}
 			}
 		}
 
