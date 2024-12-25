@@ -81,8 +81,20 @@ struct Parry{
 struct Pre{
 inline static auto cooldown() { return GETPARAMGLOBAL_F("player", "parry", "pre", "cooldown"); }
 inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "pre", "timeout"); }
-inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "length"); }
-inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "lift"); }
+struct Onground{
+inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "length"); }
+inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "lift"); }
+}
+//['player', 'parry', 'pre']
+      onground;
+
+struct Inair{
+inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "length"); }
+inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "lift"); }
+}
+//['player', 'parry', 'pre']
+      inair;
+
 }
 //['player', 'parry']
     pre;

@@ -46,8 +46,14 @@
             "pre": {
                 "cooldown": 0.5,
                 "timeout": 0.7,
-                "length": 1.0,
-                "lift": 6.0
+                "onground":{
+                    "length": 1.0,
+                    "lift": 6.0
+                },
+                "inair":{
+                    "length": 0.5,
+                    "lift": 3.0
+                }
             },
             "post": {
                 "freezetime": 1.0,
