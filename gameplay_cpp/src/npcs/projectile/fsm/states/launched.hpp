@@ -53,7 +53,7 @@ public:
 			context.owner->set_linear_velocity(godot::Vector3(0, a.params.lift, 0));
 
 			// this gets called during integrateForces, which does not support setting position directly
-			context.owner->set_deferred("position", a.instigatorPosition + (a.params.direction * a.params.length));
+			context.owner->set_deferred("position", a.getDirectionPos());
 			return TParried{};
 		}
 		return {};

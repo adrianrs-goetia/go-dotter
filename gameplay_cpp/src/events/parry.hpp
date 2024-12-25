@@ -29,6 +29,10 @@ struct EventParry {
 		const auto dir3D = getVectorToTarget();
 		return godot::Vector3(dir3D.x, 0, dir3D.z).normalized();
 	}
+
+	godot::Vector3 getDirectionPos() const {
+		return instigatorPosition + (params.direction * params.length);
+	}
 };
 
 struct EventParryFreeze {

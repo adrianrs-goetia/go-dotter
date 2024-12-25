@@ -32,25 +32,26 @@ public:
 	}
 
 	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
-		VState ret;
-		std::visit(
+		return std::visit(
 			overloaded{
-				[&](const EventAttack& action)
+				[&](EventAttack action) -> VState
 				{
 					const auto dir = action.getDirection();
 					context.owner->set_linear_velocity(dir * action.attackStrength);
-					ret = TPostParryLaunched();
+					return TPostParryLaunched();
 				},
-				[&](const EventParryFreeze& action)
+				[&](EventParryJump) -> VState
 				{
-					context.forwardedAction = action;
-					ret = TParryFreeze();
+					utils::death(context);
+					return std::monostate();
 				},
-				[](const auto& a) { ASSERT(false, "Projectile state #", Name(), "# got unexpected event: ", a.Name()) },
+				[](auto a) -> VState
+				{
+					ASSERT(false, "Projectile state # ", Name(), " # got unexpected event: ", a.Name())
+					return std::monostate();
+				},
 			},
 			action);
-
-		return ret;
 	}
 
 	VState physicsProcess(Context& context, float delta) override {

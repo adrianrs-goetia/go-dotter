@@ -23,9 +23,6 @@ private:
 	Timestamp m_enterTime;
 	Timestamp m_intangibilityTime;
 	utils::CollisionLayerMask m_clm;
-	struct {
-		godot::Vector3 velocity;
-	} data;
 
 public:
 	TState getType() const override {
@@ -42,12 +39,11 @@ public:
 
 		m_clm = utils::disableCollision(context);
 
-		auto* target = context.parry->getLastParryContactAssert();
-		const auto targetPos = target->get_global_position() + godot::Vector3(0, 1, 0); // add margin to go above target
-		const auto length = godot::Vector3(targetPos - context.physics.position);
-		const auto dir = length.normalized();
+		auto impulse = utils::getInputOrForward(context);
+		impulse *= param.impulse.xz();
+		impulse.y = param.impulse.y();
+		context.physics.movement = impulse;
 
-		data.velocity = dir * length.length() * param.impulse();
 		return {};
 	}
 
@@ -58,8 +54,8 @@ public:
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
 		const auto delta = state->get_step();
-		data.velocity.y -= context.physics.get.gravity() * delta;
-		state->set_linear_velocity(data.velocity);
+		context.physics.applyGravity(delta);
+		state->set_linear_velocity(context.physics.movement);
 
 		context.anim->rotateRootTowardsVector(getHorizontalUnit(state->get_linear_velocity()),
 			delta,
@@ -69,27 +65,12 @@ public:
 			return TInAirState();
 		}
 
-		if (!m_intangibilityTime.timestampWithinTimeframe(param.intagibilityTime())) {
-			utils::enableCollision(context, m_clm);
-		}
-
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		// @todo: should auto leave state after a certain point along the jump curve?
-
-		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			// @todo: check if target is within range
-			auto target = context.parry->getLastParryContactAssert();
-			target->onAction({ EventParryJump() });
-
-			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
-			newVel *= param.doubleJumpHorizontalStrength();
-			newVel.y = param.doubleJumpImpulse();
-			context.owner->set_linear_velocity(newVel);
-			return TInAirState();
-		}
+		utils::movementAcceleration(
+			context, ConfigParam::Player::inAirAcceleration(), ConfigParam::Player::inAirDeceleration(), delta);
 
 		return {};
 	}

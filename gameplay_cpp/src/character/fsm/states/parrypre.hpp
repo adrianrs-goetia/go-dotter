@@ -68,16 +68,20 @@ public:
 			return TOnGroundState();
 		}
 
-		godot::Vector3 parryDirection = context.input->getInputRelative3d();
-		if (parryDirection.length_squared() < 0.2f) {
-			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
-		}
+		const auto parryDirection = utils::getInputOrForward(context);
 
 		const bool isOnFloor = utils::isOnFloor(*state);
 		const auto length = isOnFloor ? param.onground.length() : param.inair.length();
 		const auto lift = isOnFloor ? param.onground.lift() : param.inair.lift();
 
 		if (const auto pi = context.parry->activateParry(EventParry::Params{ parryDirection, length, lift })) {
+			if (!isOnFloor) {
+				auto impulse = pi.value().params.direction * param.inair.impulse.xz();
+				impulse.y = param.inair.impulse.y();
+				context.physics.movement = impulse;
+				DebugDraw::Line(pi->instigatorPosition, pi->instigatorPosition + impulse, Color(), 1);
+			}
+
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);
@@ -91,9 +95,9 @@ public:
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			return TInAirState();
-		}
+		// if (context.input->isActionPressed(EInputAction::JUMP)) {
+		// 	return TInAirState();
+		// }
 		return {};
 	}
 };

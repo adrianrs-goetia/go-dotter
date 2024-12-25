@@ -45,27 +45,32 @@
         "parry": {
             "pre": {
                 "cooldown": 0.5,
-                "timeout": 0.7,
+                "timeout": 1.7,
                 "onground": {
                     "length": 0.5,
                     "lift": 3.0
                 },
                 "inair": {
-                    "length": 1.5,
-                    "lift": 6.0
+                    "length": 2.5,
+                    "lift": 6.0,
+                    "impulse": {
+                        "xz": 2.0,
+                        "y": 6.0
+                    }
                 }
             },
             "post": {
-                "freezetime": 1.0,
-                "timeout": 1.0
+                "timeout": 0.5,
+                "inair": {
+                    "gravityScaleOverride": 1.7
+                }
             },
             "jump": {
-                "freezetime": 1.0,
-                "impulse": 2.1,
-                "doubleJumpImpulse": 8.0,
-                "timeout": 1.2,
-                "intagibilityTime": 0.9,
-                "doubleJumpHorizontalStrength": 2.0
+                "impulse": {
+                    "xz": 4.0,
+                    "y": 10.0
+                },
+                "timeout": 0.3
             }
         },
         "attack": {

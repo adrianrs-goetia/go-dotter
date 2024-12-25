@@ -3,6 +3,7 @@
 #include "../typedefs.hpp"
 
 #include <managers/inputManager.h>
+#include <components/animation.hpp>
 
 #include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
@@ -28,10 +29,10 @@ inline void movementAcceleration(Context& context, float acceleration, float dec
 	}
 }
 
-typedef struct {
+struct CollisionLayerMask {
 	uint32_t layer;
 	uint32_t mask;
-} CollisionLayerMask;
+};
 
 inline CollisionLayerMask disableCollision(Context& context) {
 	CollisionLayerMask clm{ context.owner->get_collision_layer(), context.owner->get_collision_mask() };
@@ -54,6 +55,15 @@ inline bool isOnFloor(const godot::PhysicsDirectBodyState3D& state) {
 		}
 	}
 	return false;
+}
+
+// Assumes input is always along the horizontal plane
+inline godot::Vector3 getInputOrForward(const Context& c) {
+	const auto dir = c.input->getInputRelative3d();
+	if (dir.length_squared() < 0.2f) {
+		return c.anim->m_animRoot->get_global_basis().get_column(2);
+	}
+	return dir;
 }
 
 } //namespace fsm::player::utils
