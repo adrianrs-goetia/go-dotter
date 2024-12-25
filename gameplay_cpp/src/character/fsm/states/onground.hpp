@@ -5,6 +5,9 @@
 #include <configHandler.h>
 #include <managers/inputManager.h>
 
+#include <applicationparams.hpp>
+#include <configparams.hpp>
+
 #include <components/animation.hpp>
 #include <components/grappleInstigator.hpp>
 #include <components/parryInstigator.hpp>
@@ -26,52 +29,7 @@ class OnGroundState : public BaseState {
 		godot::Vector3 velocity;
 	} data;
 
-	struct Get {
-		float jumpStrenght() {
-			return GETPARAM_F("jumpStrength");
-		}
-
-		auto coyoteFrames() {
-			return GETPARAM_I("coyoteframes");
-		}
-
-		float walkSpeed() {
-			return GETPARAM_F("walkSpeed");
-		}
-
-		float maxFloorAngle() {
-			return GETPARAM_F("floorMaxAngle");
-		}
-
-		float onGroundAcceleration() {
-			return GETPARAM_D("onGroundAcceleration");
-		}
-
-		float onGroundDeceleration() {
-			return GETPARAM_D("onGroundDeceleration");
-		}
-
-		float animRootRotation() {
-			return GETPARAM_D("animation", "rootRotationSpeed");
-		}
-	} get;
-
-	void _rotateRoot(Context& c, float delta) {
-		const auto vel = c.owner->get_linear_velocity();
-		const godot::Vector2 vel2d(vel.x, vel.z);
-		const float speed = vel2d.length();
-
-		float walkSpeed = GETPARAM_F("walkSpeed");
-		float sprintSpeed = GETPARAM_F("sprintSpeed");
-		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
-		float sprintBlend = godot::Math::clamp(
-			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
-		c.anim->idleRunValue(idleWalkBlend);
-		c.anim->sprintValue(sprintBlend);
-
-		c.anim->rotateRootTowardsVector(
-			c.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
-	}
+	const ConfigParam::Player& param = configparam.player;
 
 public:
 	TState getType() const override {
@@ -84,12 +42,12 @@ public:
 		context.anim->onGround();
 		// Immediate jump when entering while having just pressed jump
 		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
-			context.physics.movement.y += get.jumpStrenght();
+			context.physics.movement.y += param.jumpStrength();
 			context.owner->set_linear_velocity(context.physics.movement);
 			return TInAirState();
 		}
 		data.velocity = context.owner->get_linear_velocity();
-		data.coyoteframes = get.coyoteFrames();
+		data.coyoteframes = param.coyoteframes();
 		return {};
 	}
 
@@ -110,9 +68,9 @@ public:
 		for (int i = 0; i < contactCount; i++) {
 			auto normal = state->get_contact_local_normal(i);
 			// On floor
-			if (g_up.dot(normal) > get.maxFloorAngle()) {
+			if (g_up.dot(normal) > param.floorMaxAngle()) {
 				data.velocity.y = 0;
-				data.coyoteframes = get.coyoteFrames();
+				data.coyoteframes = param.coyoteframes();
 			}
 			else {
 				auto pos = state->get_contact_local_position(i);
@@ -148,11 +106,11 @@ public:
 
 	TState handleInput(Context& context, float delta) override {
 		// direction
-		utils::movementAcceleration(context, get.onGroundAcceleration(), get.onGroundDeceleration(), delta);
+		utils::movementAcceleration(context, param.onGroundAcceleration(), param.onGroundDeceleration(), delta);
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			data.velocity.y = get.jumpStrenght();
+			data.velocity.y = param.jumpStrength();
 			context.owner->set_linear_velocity(data.velocity);
 			return TInAirState();
 		}
@@ -166,6 +124,24 @@ public:
 			return TAttackState();
 		}
 		return {};
+	}
+
+private:
+	void _rotateRoot(Context& c, float delta) {
+		const auto vel = c.owner->get_linear_velocity();
+		const godot::Vector2 vel2d(vel.x, vel.z);
+		const float speed = vel2d.length();
+
+		float walkSpeed = param.walkSpeed();
+		float sprintSpeed = configparam.player.sprintSpeed();
+		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
+		float sprintBlend = godot::Math::clamp(
+			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
+		c.anim->idleRunValue(idleWalkBlend);
+		c.anim->sprintValue(sprintBlend);
+
+		c.anim->rotateRootTowardsVector(
+			c.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
 	}
 };
 
