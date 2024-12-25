@@ -20,6 +20,26 @@
 
 #include <debugdraw3d/api.h>
 
+template <typename T, int _size>
+class ArrayContainer {
+	std::array<T, _size> buffer;
+	int current = 0;
+
+public:
+	void push(T element) {
+		current = (++current + _size) % _size;
+		buffer.at(current) = element;
+	}
+
+	bool contains(T element) {
+		bool b = false;
+		for (int i = 0; i < _size; i++) {
+			b |= (buffer.at(i) == element);
+		}
+		return b;
+	}
+};
+
 class ComponentParryInstigator : public NodeComponent {
 	GDCLASS(ComponentParryInstigator, NodeComponent)
 
@@ -28,7 +48,7 @@ public:
 
 	godot::Area3D* m_area = nullptr;
 	std::map<godot::RID, ComponentParryTarget&> m_inRangeParryTargets;
-	std::set<godot::RID> m_previouslyParried;
+	ArrayContainer<godot::RID, 10> m_recentlyParried;
 
 	std::weak_ptr<ParryContact> m_lastParryContact;
 
@@ -67,7 +87,7 @@ public:
 		}
 		if (auto* parrytarget = getAdjacentNode<ComponentParryTarget>(area)) {
 			// should be a CircularBuffer
-			if (!m_previouslyParried.emplace(rid).second) {
+			if (m_recentlyParried.contains(rid)) {
 				return;
 			}
 			m_inRangeParryTargets.emplace(area->get_rid(), *parrytarget);
@@ -116,6 +136,7 @@ public:
 		auto t = m_inRangeParryTargets.extract(target);
 		EventParry event{ getPosition(), t.mapped().getPosition(), std::move(params) };
 		m_lastParryContact = t.mapped().onParried({ event });
+		m_recentlyParried.push(t.key());
 
 		return std::move(event);
 	}
