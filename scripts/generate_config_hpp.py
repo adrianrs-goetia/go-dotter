@@ -7,25 +7,29 @@ import sys
 
 class CodeGenerator():
     def __init__(self):
-        self.context_stack = []
-        self.buffer = ""
+        self.context_stack: list[str] = []
+        self.buffer: str = ""
+        self.name: str = ""
     
-    def start(self) -> str:
+    def start(self, filepath: str) -> str:
+        f = filepath.split('/')[-1]
+        self.name = f.split('.')[0].capitalize()
+        
         s = "#pragma once\n"
         s += "#include <configHandler.h>\n"
         s += "\n"
         s += "// CODE IS GENERATED FROM A CONFIG JSON\n"
         s += "// CHANGES WILL BE OVERWRITTEN\n"
         s += "\n"
-        s += "struct Param {\n"
+        s += f"struct {self.name}Param {{\n"
         self.buffer += s
 
     def end(self) -> str:
-        self.buffer +=  "\n}\n param;\n\n"
+        self.buffer +=  f"\n}}\n {self.name.lower()}param;\n\n"
     
     def push_object(self, key: str) -> str:
         self.context_stack.append(key)
-        self.buffer +=  "struct {\n"
+        self.buffer +=  f"struct {key.capitalize()}{{\n"
     
     def pop(self) -> str:
         if not self.context_stack:
@@ -92,7 +96,7 @@ def generate_hpp_from_json(json_file: str, output_file: str):
                         codegen.add_value(k2, v2)
                     codegen.pop()
 
-                codegen.start()
+                codegen.start(json_file)
                 for key, value in data.items():
                     if isinstance(value, dict):
                         _read_object(key, value)

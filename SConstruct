@@ -10,7 +10,7 @@ import gameplay_cpp.sconstruct as gameplay_cpp
 import godot_debug_draw_3d.sconstruct as dd3d
 import parameter_plugin.sconstruct as paramplug
 
-from scripts.generate_typed_config import generate_hpp_from_json
+from scripts.generate_config_hpp import generate_hpp_from_json
 
 project_name = "go-dotter"
 
