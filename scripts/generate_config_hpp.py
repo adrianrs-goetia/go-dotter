@@ -49,7 +49,7 @@ class CodeGenerator():
         self.buffer +=  f"}}\n//{comment}\n{space}{last};\n\n"
     
     def add_value(self, key, val):
-        suffix = '#'
+        suffix = '##ERROR_HAS_HAPPENED##'
         if isinstance(val, int):
             suffix = 'I'
         elif isinstance(val, bool):
