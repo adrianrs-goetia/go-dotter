@@ -10,6 +10,8 @@ import gameplay_cpp.sconstruct as gameplay_cpp
 import godot_debug_draw_3d.sconstruct as dd3d
 import parameter_plugin.sconstruct as paramplug
 
+from scripts.generate_typed_config import generate_hpp_from_json
+
 project_name = "go-dotter"
 
 env: SConsEnvironment = SConscript("godot-cpp/SConstruct")
@@ -36,6 +38,10 @@ opts.Add(
     )
 )
 opts.Update(env)
+
+# Generate code from json configs
+generate_hpp_from_json("project/config.json", "parameter_plugin/generated/configtypes.hpp")
+generate_hpp_from_json("project/application.json", "parameter_plugin/generated/applicationtypes.hpp")
 
 # Section for creating and linking shared libraries
 dd3d_libfile = dd3d.configure_environment(env, ARGUMENTS)
