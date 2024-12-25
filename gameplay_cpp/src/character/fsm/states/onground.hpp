@@ -4,6 +4,7 @@
 #include "_utils.hpp"
 #include <configHandler.h>
 #include <managers/inputManager.h>
+#include <configtypes.hpp>
 
 #include <components/animation.hpp>
 #include <components/grappleInstigator.hpp>
@@ -61,8 +62,8 @@ class OnGroundState : public BaseState {
 		const godot::Vector2 vel2d(vel.x, vel.z);
 		const float speed = vel2d.length();
 
-		float walkSpeed = GETPARAM_F("walkSpeed");
-		float sprintSpeed = GETPARAM_F("sprintSpeed");
+		float walkSpeed = param.player.walkSpeed();
+		float sprintSpeed = param.player.sprintSpeed();
 		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
 		float sprintBlend = godot::Math::clamp(
 			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
