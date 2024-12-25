@@ -4,7 +4,6 @@
 
 #include <managers/inputManager.h>
 
-#include <godot_cpp/classes/kinematic_collision3d.hpp>
 #include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
@@ -44,6 +43,17 @@ inline CollisionLayerMask disableCollision(Context& context) {
 inline void enableCollision(Context& context, const CollisionLayerMask& clm) {
 	context.owner->set_collision_layer(clm.layer);
 	context.owner->set_collision_mask(clm.mask);
+}
+
+inline bool isOnFloor(const godot::PhysicsDirectBodyState3D& state) {
+	for (int i = 0; i < state.get_contact_count(); i++) {
+		auto normal = state.get_contact_local_normal(i);
+		// On floor
+		if (g_up.dot(normal) > ConfigParam::Player::floorMaxAngle()) {
+			return true;
+		}
+	}
+	return false;
 }
 
 } //namespace fsm::player::utils

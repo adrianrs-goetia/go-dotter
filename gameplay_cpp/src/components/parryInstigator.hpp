@@ -108,10 +108,10 @@ public:
 		}
 		ASSERTNN(target)
 
-		EventParry instance{ getPosition(), target->getPosition(), std::move(params) };
-		m_lastParryContact = target->onParried({ instance });
+		EventParry event{ getPosition(), target->getPosition(), std::move(params) };
+		m_lastParryContact = target->onParried({ event });
 
-		return std::move(instance);
+		return std::move(event);
 	}
 
 	godot::Vector3 getPosition() const {

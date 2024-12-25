@@ -73,8 +73,11 @@ public:
 			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
 		}
 
-		if (const auto pi =
-				context.parry->activateParry(EventParry::Params{ parryDirection, param.length(), param.lift() })) {
+		const bool isOnFloor = utils::isOnFloor(*state);
+		const auto length = isOnFloor ? param.onground.length() : param.inair.length();
+		const auto lift = isOnFloor ? param.onground.lift() : param.inair.lift();
+
+		if (const auto pi = context.parry->activateParry(EventParry::Params{ parryDirection, length, lift })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);
