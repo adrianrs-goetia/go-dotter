@@ -13,7 +13,7 @@
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
 
-#include <configHandler.h>
+#include <configparams.hpp>
 
 #define CONFIG_PREFIX "npcs", "projectile"
 

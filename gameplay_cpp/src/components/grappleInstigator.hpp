@@ -10,8 +10,8 @@
 
 #include <managers/inputManager.h>
 
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
+#include <configparams.hpp>
 #include <godot_cpp/classes/area3d.hpp>
 
 #include <algorithm>
@@ -75,8 +75,8 @@ public:
 
 		// maybe a callback instead of checking each frame?
 		setComponentEnabled(
-			GETPARAMGLOBAL_B("player", "grapple", "enabled")); // @TODO, make this function into cb that owner has to
-															   // set. Do NOT use specified path like this.. yuk
+			ConfigParam::Player::Grapple::enabled()); // @TODO, make this function into cb that owner has to
+													  // set. Do NOT use specified path like this.. yuk
 		if (!isComponentEnabled()) {
 			return;
 		}

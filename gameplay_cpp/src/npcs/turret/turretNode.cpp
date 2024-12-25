@@ -9,10 +9,10 @@
 #include <godot_cpp/classes/scene_tree.hpp>
 #include <godot_cpp/classes/window.hpp>
 
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
+#include <configparams.hpp>
 
-#define CONFIG_PREFIX "npcs", "turret"
+ConfigParam::Npcs::Turret param;
 
 using namespace godot;
 
@@ -63,14 +63,14 @@ void TurretNode::_physics_process(double delta) {
 	RETURN_IF_EDITOR(void())
 	//
 
-	m_isEnabled = GETPARAM_B("enabled");
+	m_isEnabled = param.enabled();
 
 	rotateHeadTowardsTarget();
 }
 
 float TurretNode::getFiringInterval() const {
-	const auto variance = GETPARAM_D("firingIntervalVariance");
-	return GETPARAM_D("firingInterval") + canonicalRandomNumber(-variance, variance);
+	const auto variance = param.firingIntervalVariance();
+	return param.firingInterval() + canonicalRandomNumber(-variance, variance);
 }
 
 void TurretNode::rotateHeadTowardsTarget() {
@@ -108,7 +108,7 @@ void TurretNode::fireProjectile() {
 
 	if (auto* rigidbody = cast_to<RigidBody3D>(instance)) {
 		rigidbody->set_global_position(getGunOpeningLocation());
-		rigidbody->set_linear_velocity(getGunOpeningDirection() * GETPARAM_D("firingStrength"));
+		rigidbody->set_linear_velocity(getGunOpeningDirection() * param.firingStrength());
 	}
 	m_firingTimer->start(getFiringInterval());
 

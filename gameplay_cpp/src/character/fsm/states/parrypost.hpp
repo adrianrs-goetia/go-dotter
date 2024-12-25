@@ -2,22 +2,19 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player", "parry", "post"
 
 namespace fsm::player {
 
 class ParryPostState : public BaseState {
 	TYPE(ParryPostState)
+
+	ConfigParam::Player::Parry::Post param;
 
 private:
 	Timestamp m_enterTime;
@@ -56,7 +53,7 @@ public:
 	TState handleInput(Context& context, float delta) override {
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			auto* target = context.parry->getLastParryContactAssert();
-			target->onAction(EventParryFreeze{ GETPARAM_F("freezetime") });
+			target->onAction(EventParryFreeze{ param.freezetime() });
 			return TParryJumpState();
 		}
 		return {};
@@ -67,7 +64,7 @@ private:
 		if (!context.parry->getLastParryContact()) {
 			return true;
 		}
-		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("stateTime"))) {
+		if (!m_enterTime.timestampWithinTimeframe(param.timeout())) {
 			return true;
 		}
 
@@ -76,5 +73,3 @@ private:
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX

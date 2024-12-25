@@ -2,18 +2,13 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 
 #include <debugdraw3d/api.h>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
 
 namespace fsm::player {
 
@@ -24,13 +19,15 @@ private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;
 
+	ConfigParam::Player::Attack param;
+
 public:
 	TState getType() const override {
 		return TAttackState();
 	}
 
 	bool canEnter() const override {
-		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "cooldown"));
+		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(param.cooldown());
 		if (!canEnter) {
 			LOG(DEBUG, "Player AttackState still on cooldown")
 		}
@@ -41,7 +38,7 @@ public:
 		context.anim->doAttack();
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
-		context.attack->setAttackStrength(GETPARAM_F("attack", "strength"));
+		context.attack->setAttackStrength(param.strength());
 		context.anim->playAnimation(ComponentAnimation::EAnim::ATTACK);
 		return {};
 	}
@@ -62,7 +59,7 @@ public:
 			godot::Color(0.7, 0, 0.5),
 			delta);
 
-		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("attack", "stateLength"))) {
+		if (!m_enterTimestamp.timestampWithinTimeframe(param.timeout())) {
 			return TOnGroundState();
 		}
 

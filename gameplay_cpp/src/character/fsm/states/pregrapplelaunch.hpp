@@ -2,7 +2,7 @@
 
 // #include "../typedefs.hpp"
 // #include "_utils.hpp"
-// #include <configHandler.h>
+// #include <configparams.hpp>
 // #include <managers/inputManager.h>
 
 // #ifdef CONFIG_PREFIX

@@ -1,10 +1,9 @@
 #pragma once
 
-#include <configHandler.h>
+#include "../../utils/circularbuffer.h"
+#include <configparams.hpp>
 #include <core/core.hpp>
-#include "../../utils/circularbuffer.h"
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
-#include "../../utils/circularbuffer.h"
 
 class ComponentAnimation;
 class ComponentAttackInstigator;
@@ -39,11 +38,7 @@ struct PhysicsContext {
 
 	struct {
 		float gravity() {
-			return GETPARAMGLOBAL_F("gravityConstant") * GETPARAMGLOBAL_F("player", "gravityScale");
-		}
-
-		float walkSpeed() {
-			return GETPARAMGLOBAL_F("player", "walkSpeed");
+			return ConfigParam::gravityConstant() * ConfigParam::Player::gravityScale();
 		}
 	} get;
 };
@@ -67,14 +62,14 @@ inline godot::String stateName(TState state) {
 	godot::String out;
 	std::visit(
 		overloaded{
-			[&](TAttackState) { out="atttackState"; },
-			[&](TOnGroundState) { out="onGroundState"; },
-			[&](TGrappleLaunchState) { out="grappleLaunchState"; },
-			[&](TInAirState) { out="inAirState"; },
-			[&](TParryPreState) { out="parryState"; },
-			[&](TParryPostState) { out="parryPostState"; },
-			[&](TParryJumpState) { out="parryJumpState"; },
-			[&](TPreGrappleLaunchState) { out="preGrappleLaunchState"; },
+			[&](TAttackState) { out = "atttackState"; },
+			[&](TOnGroundState) { out = "onGroundState"; },
+			[&](TGrappleLaunchState) { out = "grappleLaunchState"; },
+			[&](TInAirState) { out = "inAirState"; },
+			[&](TParryPreState) { out = "parryState"; },
+			[&](TParryPostState) { out = "parryPostState"; },
+			[&](TParryJumpState) { out = "parryJumpState"; },
+			[&](TPreGrappleLaunchState) { out = "preGrappleLaunchState"; },
 			[&](std::monostate) { ASSERT(false); },
 		},
 		state);
@@ -82,9 +77,9 @@ inline godot::String stateName(TState state) {
 };
 
 inline void printStates(CircularBuffer<TState>* states) {
-	godot::String out="";
-	for (int i=0; i<5; i++ ) {
-		out+=stateName(states->get(i)) + "<-";
+	godot::String out = "";
+	for (int i = 0; i < 5; i++) {
+		out += stateName(states->get(i)) + "<-";
 	}
 	LOG(DEBUG, "states:", out);
 }

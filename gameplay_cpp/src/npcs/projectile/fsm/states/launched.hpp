@@ -6,14 +6,14 @@
 
 #include <godot_cpp/classes/timer.hpp>
 
-#include <configHandler.h>
-
-#define CONFIG_PREFIX "npcs", "projectile"
+#include <configparams.hpp>
 
 namespace fsm::projectile {
 
 class Launched : public BaseState {
 	TYPE(Launched)
+
+	ConfigParam::Npcs::Projectile param;
 
 private:
 	godot::Timer* m_timer = nullptr;
@@ -29,7 +29,7 @@ public:
 
 		context.owner->add_child(m_timer);
 		m_timer->connect("timeout", callable_mp(context.owner, &Projectile::onTimeout));
-		m_timer->start(GETPARAM_D("lifetime"));
+		m_timer->start(param.lifetime());
 
 		return {};
 	}
@@ -61,7 +61,5 @@ public:
 		return {};
 	}
 };
-
-#undef CONFIG_PREFIX
 
 } //namespace fsm::projectile

@@ -3,10 +3,6 @@
 
 #include <godot_cpp/core/math.hpp>
 
-#include <configHandler.h>
-
-#define CONFIG_PREFIX "camera"
-
 using namespace godot;
 
 void CameraPivot::_bind_methods() {}
@@ -20,15 +16,15 @@ void CameraPivot::process(const fsm::player::Context& context, float delta) {
 	switch (context.input->m_mode) {
 		case EInputMode::KEYBOARD_ONLY: {
 			_rotation(context,
-				GETPARAM_F("keyboardOnly", "xMultiplier") * (GETPARAM_B("keyboardOnly", "xInverted") ? 1.f : -1.f),
-				GETPARAM_F("keyboardOnly", "yMultiplier") * (GETPARAM_B("keyboardOnly", "yInverted") ? 1.f : -1.f),
+				param.keyboardOnly.xMultiplier() * (param.keyboardOnly.xInverted() ? 1.f : -1.f),
+				param.keyboardOnly.yMultiplier() * (param.keyboardOnly.yInverted() ? 1.f : -1.f),
 				delta);
 			break;
 		}
 		case EInputMode::JOYPAD: {
 			_rotation(context,
-				GETPARAM_F("joypad", "xMultiplier") * (GETPARAM_B("joypad", "xInverted") ? 1.f : -1.f),
-				GETPARAM_F("joypad", "yMultiplier") * (GETPARAM_B("joypad", "yInverted") ? 1.f : -1.f),
+				param.joypad.xMultiplier() * (param.joypad.xInverted() ? 1.f : -1.f),
+				param.joypad.yMultiplier() * (param.joypad.yInverted() ? 1.f : -1.f),
 				delta);
 			break;
 		}
@@ -46,8 +42,8 @@ void CameraPivot::processInput(const fsm::player::Context& context, float delta)
 	switch (context.input->m_mode) {
 		case EInputMode::MOUSE_N_KEYBOARD: {
 			_rotation(context,
-				GETPARAM_F("mnk", "xMultiplier") * (GETPARAM_B("mnk", "xInverted") ? 1.f : -1.f),
-				GETPARAM_F("mnk", "yMultiplier") * (GETPARAM_B("mnk", "yInverted") ? 1.f : -1.f),
+				param.mnk.xMultiplier() * (param.mnk.xInverted() ? 1.f : -1.f),
+				param.mnk.yMultiplier() * (param.mnk.yInverted() ? 1.f : -1.f),
 				delta);
 			break;
 		}
@@ -61,6 +57,6 @@ void CameraPivot::_rotation(const fsm::player::Context& context, float xMulti, f
 	Vector2 motion = context.input->m_motion;
 	current_rot.y += motion.x * xMulti * delta;
 	current_rot.x += motion.y * yMulti * delta;
-	current_rot.x = Math::clamp(current_rot.x, GETPARAM_F("xMinRotation"), GETPARAM_F("xMaxRotation"));
+	current_rot.x = Math::clamp(current_rot.x, param.xMinRotation(), param.xMaxRotation());
 	set_rotation_degrees(current_rot);
 }

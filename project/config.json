@@ -45,26 +45,26 @@
         "parry": {
             "pre": {
                 "cooldown": 0.5,
-                "stateTime": 0.7,
+                "timeout": 0.7,
                 "length": 1.0,
                 "lift": 6.0
             },
             "post": {
                 "freezetime": 1.0,
-                "stateTime": 1.0
+                "timeout": 1.0
             },
             "jump": {
                 "freezetime": 1.0,
                 "impulse": 2.1,
                 "doubleJumpImpulse": 8.0,
-                "stateTime": 1.2,
+                "timeout": 1.2,
                 "intagibilityTime": 0.9,
                 "doubleJumpHorizontalStrength": 2.0
             }
         },
         "attack": {
             "cooldown": 0.5,
-            "stateLength": 0.3,
+            "timeout": 0.3,
             "strength": 5.3,
             "tmpRotation": 35.0
         }

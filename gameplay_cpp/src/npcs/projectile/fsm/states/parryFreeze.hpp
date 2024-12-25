@@ -4,10 +4,6 @@
 #include "_utils.hpp"
 #include <events/parry.hpp>
 
-#include <configHandler.h>
-
-#define CONFIG_PREFIX "npcs", "projectile"
-
 namespace fsm::projectile {
 
 class ParryFreeze : public BaseState {
@@ -68,7 +64,5 @@ public:
 		return {};
 	}
 };
-
-#undef CONFIG_PREFIX
 
 } //namespace fsm::projectile

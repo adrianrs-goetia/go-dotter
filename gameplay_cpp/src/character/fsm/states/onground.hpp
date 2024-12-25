@@ -2,8 +2,8 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <applicationparams.hpp>
 #include <configparams.hpp>
@@ -13,11 +13,6 @@
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
 #include <events/parry.hpp>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
 
 namespace fsm::player {
 
@@ -29,7 +24,7 @@ class OnGroundState : public BaseState {
 		godot::Vector3 velocity;
 	} data;
 
-	const ConfigParam::Player& param = configparam.player;
+	ConfigParam::Player param;
 
 public:
 	TState getType() const override {
@@ -133,18 +128,15 @@ private:
 		const float speed = vel2d.length();
 
 		float walkSpeed = param.walkSpeed();
-		float sprintSpeed = configparam.player.sprintSpeed();
+		float sprintSpeed = param.sprintSpeed();
 		float idleWalkBlend = godot::Math::clamp(speed / walkSpeed, 0.0f, 1.0f);
 		float sprintBlend = godot::Math::clamp(
 			(speed - walkSpeed) / (sprintSpeed - walkSpeed), 0.0f, 1.0f); // =0 for walkSpeed, 1 for sprintSpeed
 		c.anim->idleRunValue(idleWalkBlend);
 		c.anim->sprintValue(sprintBlend);
 
-		c.anim->rotateRootTowardsVector(
-			c.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+		c.anim->rotateRootTowardsVector(c.input->getInputRelative3d(), delta, param.animation.rootRotationSpeed());
 	}
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX

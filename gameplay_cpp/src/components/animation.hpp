@@ -10,15 +10,12 @@
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/skeleton3d.hpp>
 
-#include <configHandler.h>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
+#include <configparams.hpp>
 
 class ComponentAnimation : public godot::AnimationTree {
 	GDCLASS(ComponentAnimation, godot::AnimationTree)
+
+	ConfigParam::Player param;
 
 private:
 	enum MovementAnimationType {
@@ -30,15 +27,15 @@ private:
 		ParryHigh,
 		ParryLow,
 	};
-	
-		void setParryType(ParryAnimationType type) {
+
+	void setParryType(ParryAnimationType type) {
 		switch (type) {
 			case ParryAnimationType::ParryHigh:
 				set("parameters/parry_type/blend_amount", 0);
 				break;
 			case ParryAnimationType::ParryLow:
 				set("parameters/parry_type/blend_amount", 1);
-				break; 
+				break;
 		}
 	}
 
@@ -53,7 +50,7 @@ private:
 			case MovementAnimationType::Airborne:
 				set("parameters/locomotion_lower/blend_amount", 1);
 				set("parameters/locomotion_upper/blend_amount", 1);
-				break; 
+				break;
 		}
 	}
 
@@ -92,7 +89,7 @@ public:
 
 		RETURN_IF_EDITOR(void())
 
-		m_animRoot = get_node<Node3D>(m_pathToRootAnimationNode);
+		m_animRoot = get_node<godot::Node3D>(m_pathToRootAnimationNode);
 		ASSERTNN(m_animRoot);
 	}
 
@@ -102,7 +99,7 @@ public:
 		// @todo: remove this tmp get variable. Should be feed as some parameter
 		// Used to spin in TPose
 		if (m_currentOneshotAnim == EAnim::ATTACK) {
-			m_animRoot->rotate_y(GETPARAMGLOBAL_D("player", "attack", "tmpRotation") * delta);
+			m_animRoot->rotate_y(param.attack.tmpRotation() * delta);
 		}
 	}
 
@@ -120,8 +117,7 @@ public:
 		godot::Quaternion newquat = curquat.slerp(targetquat, delta * slerpWeight);
 		m_animRoot->set_basis(godot::Basis(newquat));
 	}
-	
-	
+
 	void setRootTowardsVector(godot::Vector3 vector) {
 		if (vector.length_squared() <= 0) {
 			return;
@@ -136,7 +132,7 @@ public:
 			set("parameters/action_or_locomotion_upper/blend_amount", 0);
 		if (mask_lower)
 			set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		// if stand still, should set 
+		// if stand still, should set
 		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
 		set("parameters/action_lower/blend_amount", 0);
 		set("parameters/action_upper/blend_amount", 0);
@@ -149,7 +145,7 @@ public:
 
 	void doAttack() {
 		set("parameters/action_or_locomotion_upper/blend_amount", 0);
-		// if stand still, should set 
+		// if stand still, should set
 		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
 		set("parameters/action_lower/blend_amount", 1);
 		set("parameters/action_upper/blend_amount", 1);
@@ -169,8 +165,9 @@ public:
 	}
 
 	void sprintValue(float value) {
-		double sprintTimeScale = GETPARAM_F("sprintTimeScale");
-		set("parameters/timescale/scale", godot::Math::clamp(1.0+value*(sprintTimeScale-1.0), 1.0 ,sprintTimeScale));
+		double sprintTimeScale = param.sprintTimeScale();
+		set("parameters/timescale/scale",
+			godot::Math::clamp(1.0 + value * (sprintTimeScale - 1.0), 1.0, sprintTimeScale));
 		set("parameters/sprint_upper/blend_amount", value);
 		set("parameters/sprint_lower/blend_amount", value);
 	}

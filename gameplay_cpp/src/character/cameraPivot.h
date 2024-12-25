@@ -9,10 +9,14 @@
 
 #include <character/fsm/typedefs.hpp>
 
+#include <configparams.hpp>
+
 class PlayerNode;
 
 class CameraPivot : public godot::SpringArm3D {
 	GDCLASS(CameraPivot, godot::SpringArm3D)
+
+	ConfigParam::Camera param;
 
 public:
 	static void _bind_methods();

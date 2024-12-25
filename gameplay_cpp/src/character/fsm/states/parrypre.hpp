@@ -2,9 +2,9 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
@@ -13,15 +13,12 @@
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player", "parry", "pre"
-
 namespace fsm::player {
 
 class ParryPreState : public BaseState {
 	TYPE(ParryPreState)
+
+	ConfigParam::Player::Parry::Pre param;
 
 private:
 	Timestamp m_enterTimestamp;
@@ -33,7 +30,7 @@ public:
 	}
 
 	bool canEnter() const override {
-		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(GETPARAM_D("cooldown"));
+		const bool canEnter = !m_exitTimestamp.timestampWithinTimeframe(param.cooldown());
 		if (!canEnter) {
 			LOG(DEBUG, "Tried entering parryState before cooldown was ready")
 		}
@@ -44,9 +41,13 @@ public:
 		auto previousState = context.states->get(1);
 		std::visit(
 			overloaded{
-				[&](TOnGroundState) { context.anim->doParry(true, true); }, 
-				[&](TInAirState)    { context.anim->doParry(true, false); }, //dont animate legs
-				[&](auto state) { LOG(DEBUG, "Entered parry from unexpected state ", stateName(state)); ASSERT(false); },
+				[&](TOnGroundState) { context.anim->doParry(true, true); },
+				[&](TInAirState) { context.anim->doParry(true, false); }, //dont animate legs
+				[&](auto state)
+				{
+					LOG(DEBUG, "Entered parry from unexpected state ", stateName(state));
+					ASSERT(false);
+				},
 			},
 			previousState);
 		m_enterTimestamp.setTimestamp();
@@ -62,7 +63,7 @@ public:
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
 		state->set_linear_velocity(godot::Vector3());
 
-		if (!m_enterTimestamp.timestampWithinTimeframe(GETPARAM_D("stateTime"))) {
+		if (!m_enterTimestamp.timestampWithinTimeframe(param.timeout())) {
 			// Enter on ground by default, should discern if in air or onGround?
 			return TOnGroundState();
 		}
@@ -72,8 +73,8 @@ public:
 			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
 		}
 
-		if (const auto pi = context.parry->activateParry(
-				EventParry::Params{ parryDirection, GETPARAM_F("length"), GETPARAM_F("lift") })) {
+		if (const auto pi =
+				context.parry->activateParry(EventParry::Params{ parryDirection, param.length(), param.lift() })) {
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);
@@ -95,5 +96,3 @@ public:
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <configHandler.h>
 
 // CODE IS GENERATED FROM A CONFIG JSON -> file: project/config.json
@@ -7,40 +8,40 @@
 //
 // EXAMPLE USE CASE:
 //
-//    param.myvalue();
-//    param.nestedobject.mynestedvalue();
+//    ParamType::myvalue();
+//    ParamType::nestedobject::mynestedvalue();
 //
-//    const MyParam::NestedObject& param = param.nestedobject;
+//    MyParam::NestedObject param;
 //    param.mynestedvalue();
 
 
 struct ConfigParam {
 struct Camera{
-auto xMaxRotation() const { return GETPARAMGLOBAL_F("camera", "xMaxRotation"); }
-auto xMinRotation() const { return GETPARAMGLOBAL_F("camera", "xMinRotation"); }
+inline static auto xMaxRotation() { return GETPARAMGLOBAL_F("camera", "xMaxRotation"); }
+inline static auto xMinRotation() { return GETPARAMGLOBAL_F("camera", "xMinRotation"); }
 struct Mnk{
-auto xInverted() const { return GETPARAMGLOBAL_I("camera", "mnk", "xInverted"); }
-auto xMultiplier() const { return GETPARAMGLOBAL_F("camera", "mnk", "xMultiplier"); }
-auto yInverted() const { return GETPARAMGLOBAL_I("camera", "mnk", "yInverted"); }
-auto yMultiplier() const { return GETPARAMGLOBAL_F("camera", "mnk", "yMultiplier"); }
+inline static auto xInverted() { return GETPARAMGLOBAL_B("camera", "mnk", "xInverted"); }
+inline static auto xMultiplier() { return GETPARAMGLOBAL_F("camera", "mnk", "xMultiplier"); }
+inline static auto yInverted() { return GETPARAMGLOBAL_B("camera", "mnk", "yInverted"); }
+inline static auto yMultiplier() { return GETPARAMGLOBAL_F("camera", "mnk", "yMultiplier"); }
 }
 //['camera']
   mnk;
 
 struct Keyboardonly{
-auto xInverted() const { return GETPARAMGLOBAL_I("camera", "keyboardOnly", "xInverted"); }
-auto xMultiplier() const { return GETPARAMGLOBAL_F("camera", "keyboardOnly", "xMultiplier"); }
-auto yInverted() const { return GETPARAMGLOBAL_I("camera", "keyboardOnly", "yInverted"); }
-auto yMultiplier() const { return GETPARAMGLOBAL_F("camera", "keyboardOnly", "yMultiplier"); }
+inline static auto xInverted() { return GETPARAMGLOBAL_B("camera", "keyboardOnly", "xInverted"); }
+inline static auto xMultiplier() { return GETPARAMGLOBAL_F("camera", "keyboardOnly", "xMultiplier"); }
+inline static auto yInverted() { return GETPARAMGLOBAL_B("camera", "keyboardOnly", "yInverted"); }
+inline static auto yMultiplier() { return GETPARAMGLOBAL_F("camera", "keyboardOnly", "yMultiplier"); }
 }
 //['camera']
   keyboardOnly;
 
 struct Joypad{
-auto xInverted() const { return GETPARAMGLOBAL_I("camera", "joypad", "xInverted"); }
-auto xMultiplier() const { return GETPARAMGLOBAL_F("camera", "joypad", "xMultiplier"); }
-auto yInverted() const { return GETPARAMGLOBAL_I("camera", "joypad", "yInverted"); }
-auto yMultiplier() const { return GETPARAMGLOBAL_F("camera", "joypad", "yMultiplier"); }
+inline static auto xInverted() { return GETPARAMGLOBAL_B("camera", "joypad", "xInverted"); }
+inline static auto xMultiplier() { return GETPARAMGLOBAL_F("camera", "joypad", "xMultiplier"); }
+inline static auto yInverted() { return GETPARAMGLOBAL_B("camera", "joypad", "yInverted"); }
+inline static auto yMultiplier() { return GETPARAMGLOBAL_F("camera", "joypad", "yMultiplier"); }
 }
 //['camera']
   joypad;
@@ -49,57 +50,57 @@ auto yMultiplier() const { return GETPARAMGLOBAL_F("camera", "joypad", "yMultipl
 //[]
 camera;
 
-auto gravityConstant() const { return GETPARAMGLOBAL_F("gravityConstant"); }
+inline static auto gravityConstant() { return GETPARAMGLOBAL_F("gravityConstant"); }
 struct Player{
-auto walkSpeed() const { return GETPARAMGLOBAL_F("player", "walkSpeed"); }
-auto sprintSpeed() const { return GETPARAMGLOBAL_F("player", "sprintSpeed"); }
-auto coyoteframes() const { return GETPARAMGLOBAL_I("player", "coyoteframes"); }
-auto floorMaxAngle() const { return GETPARAMGLOBAL_F("player", "floorMaxAngle"); }
-auto terminalVelocity() const { return GETPARAMGLOBAL_F("player", "terminalVelocity"); }
-auto sprintTimeScale() const { return GETPARAMGLOBAL_F("player", "sprintTimeScale"); }
-auto onGroundAcceleration() const { return GETPARAMGLOBAL_F("player", "onGroundAcceleration"); }
-auto onGroundDeceleration() const { return GETPARAMGLOBAL_F("player", "onGroundDeceleration"); }
-auto jumpStrength() const { return GETPARAMGLOBAL_F("player", "jumpStrength"); }
-auto inAirAcceleration() const { return GETPARAMGLOBAL_F("player", "inAirAcceleration"); }
-auto inAirDeceleration() const { return GETPARAMGLOBAL_F("player", "inAirDeceleration"); }
-auto gravityScale() const { return GETPARAMGLOBAL_F("player", "gravityScale"); }
+inline static auto walkSpeed() { return GETPARAMGLOBAL_F("player", "walkSpeed"); }
+inline static auto sprintSpeed() { return GETPARAMGLOBAL_F("player", "sprintSpeed"); }
+inline static auto coyoteframes() { return GETPARAMGLOBAL_I("player", "coyoteframes"); }
+inline static auto floorMaxAngle() { return GETPARAMGLOBAL_F("player", "floorMaxAngle"); }
+inline static auto terminalVelocity() { return GETPARAMGLOBAL_F("player", "terminalVelocity"); }
+inline static auto sprintTimeScale() { return GETPARAMGLOBAL_F("player", "sprintTimeScale"); }
+inline static auto onGroundAcceleration() { return GETPARAMGLOBAL_F("player", "onGroundAcceleration"); }
+inline static auto onGroundDeceleration() { return GETPARAMGLOBAL_F("player", "onGroundDeceleration"); }
+inline static auto jumpStrength() { return GETPARAMGLOBAL_F("player", "jumpStrength"); }
+inline static auto inAirAcceleration() { return GETPARAMGLOBAL_F("player", "inAirAcceleration"); }
+inline static auto inAirDeceleration() { return GETPARAMGLOBAL_F("player", "inAirDeceleration"); }
+inline static auto gravityScale() { return GETPARAMGLOBAL_F("player", "gravityScale"); }
 struct Animation{
-auto rootRotationSpeed() const { return GETPARAMGLOBAL_F("player", "animation", "rootRotationSpeed"); }
+inline static auto rootRotationSpeed() { return GETPARAMGLOBAL_F("player", "animation", "rootRotationSpeed"); }
 }
 //['player']
   animation;
 
 struct Grapple{
-auto enabled() const { return GETPARAMGLOBAL_I("player", "grapple", "enabled"); }
-auto launchStrength() const { return GETPARAMGLOBAL_F("player", "grapple", "launchStrength"); }
+inline static auto enabled() { return GETPARAMGLOBAL_B("player", "grapple", "enabled"); }
+inline static auto launchStrength() { return GETPARAMGLOBAL_F("player", "grapple", "launchStrength"); }
 }
 //['player']
   grapple;
 
 struct Parry{
 struct Pre{
-auto cooldown() const { return GETPARAMGLOBAL_F("player", "parry", "pre", "cooldown"); }
-auto stateTime() const { return GETPARAMGLOBAL_F("player", "parry", "pre", "stateTime"); }
-auto length() const { return GETPARAMGLOBAL_F("player", "parry", "pre", "length"); }
-auto lift() const { return GETPARAMGLOBAL_F("player", "parry", "pre", "lift"); }
+inline static auto cooldown() { return GETPARAMGLOBAL_F("player", "parry", "pre", "cooldown"); }
+inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "pre", "timeout"); }
+inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "length"); }
+inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "lift"); }
 }
 //['player', 'parry']
     pre;
 
 struct Post{
-auto freezetime() const { return GETPARAMGLOBAL_F("player", "parry", "post", "freezetime"); }
-auto stateTime() const { return GETPARAMGLOBAL_F("player", "parry", "post", "stateTime"); }
+inline static auto freezetime() { return GETPARAMGLOBAL_F("player", "parry", "post", "freezetime"); }
+inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "post", "timeout"); }
 }
 //['player', 'parry']
     post;
 
 struct Jump{
-auto freezetime() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "freezetime"); }
-auto impulse() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "impulse"); }
-auto doubleJumpImpulse() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpImpulse"); }
-auto stateTime() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "stateTime"); }
-auto intagibilityTime() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "intagibilityTime"); }
-auto doubleJumpHorizontalStrength() const { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpHorizontalStrength"); }
+inline static auto freezetime() { return GETPARAMGLOBAL_F("player", "parry", "jump", "freezetime"); }
+inline static auto impulse() { return GETPARAMGLOBAL_F("player", "parry", "jump", "impulse"); }
+inline static auto doubleJumpImpulse() { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpImpulse"); }
+inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "jump", "timeout"); }
+inline static auto intagibilityTime() { return GETPARAMGLOBAL_F("player", "parry", "jump", "intagibilityTime"); }
+inline static auto doubleJumpHorizontalStrength() { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpHorizontalStrength"); }
 }
 //['player', 'parry']
     jump;
@@ -109,10 +110,10 @@ auto doubleJumpHorizontalStrength() const { return GETPARAMGLOBAL_F("player", "p
   parry;
 
 struct Attack{
-auto cooldown() const { return GETPARAMGLOBAL_F("player", "attack", "cooldown"); }
-auto stateLength() const { return GETPARAMGLOBAL_F("player", "attack", "stateLength"); }
-auto strength() const { return GETPARAMGLOBAL_F("player", "attack", "strength"); }
-auto tmpRotation() const { return GETPARAMGLOBAL_F("player", "attack", "tmpRotation"); }
+inline static auto cooldown() { return GETPARAMGLOBAL_F("player", "attack", "cooldown"); }
+inline static auto timeout() { return GETPARAMGLOBAL_F("player", "attack", "timeout"); }
+inline static auto strength() { return GETPARAMGLOBAL_F("player", "attack", "strength"); }
+inline static auto tmpRotation() { return GETPARAMGLOBAL_F("player", "attack", "tmpRotation"); }
 }
 //['player']
   attack;
@@ -123,17 +124,17 @@ player;
 
 struct Npcs{
 struct Turret{
-auto enabled() const { return GETPARAMGLOBAL_I("npcs", "turret", "enabled"); }
-auto firingInterval() const { return GETPARAMGLOBAL_F("npcs", "turret", "firingInterval"); }
-auto firingIntervalVariance() const { return GETPARAMGLOBAL_F("npcs", "turret", "firingIntervalVariance"); }
-auto firingStrength() const { return GETPARAMGLOBAL_F("npcs", "turret", "firingStrength"); }
+inline static auto enabled() { return GETPARAMGLOBAL_B("npcs", "turret", "enabled"); }
+inline static auto firingInterval() { return GETPARAMGLOBAL_F("npcs", "turret", "firingInterval"); }
+inline static auto firingIntervalVariance() { return GETPARAMGLOBAL_F("npcs", "turret", "firingIntervalVariance"); }
+inline static auto firingStrength() { return GETPARAMGLOBAL_F("npcs", "turret", "firingStrength"); }
 }
 //['npcs']
   turret;
 
 struct Projectile{
-auto lifetime() const { return GETPARAMGLOBAL_F("npcs", "projectile", "lifetime"); }
-auto postParryIntagibleTime() const { return GETPARAMGLOBAL_F("npcs", "projectile", "postParryIntagibleTime"); }
+inline static auto lifetime() { return GETPARAMGLOBAL_F("npcs", "projectile", "lifetime"); }
+inline static auto postParryIntagibleTime() { return GETPARAMGLOBAL_F("npcs", "projectile", "postParryIntagibleTime"); }
 }
 //['npcs']
   projectile;
@@ -143,6 +144,5 @@ auto postParryIntagibleTime() const { return GETPARAMGLOBAL_F("npcs", "projectil
 npcs;
 
 
-}
- configparam;
+};
 

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <configHandler.h>
 
 // CODE IS GENERATED FROM A CONFIG JSON -> file: project/application.json
@@ -7,23 +8,22 @@
 //
 // EXAMPLE USE CASE:
 //
-//    param.myvalue();
-//    param.nestedobject.mynestedvalue();
+//    ParamType::myvalue();
+//    ParamType::nestedobject::mynestedvalue();
 //
-//    const MyParam::NestedObject& param = param.nestedobject;
+//    MyParam::NestedObject param;
 //    param.mynestedvalue();
 
 
 struct ApplicationParam {
 struct Input{
-auto overwriteMode() const { return GETPARAMGLOBAL_I("input", "overwriteMode"); }
-auto mouselock() const { return GETPARAMGLOBAL_I("input", "mouselock"); }
+inline static auto overwriteMode() { return GETPARAMGLOBAL_I("input", "overwriteMode"); }
+inline static auto mouselock() { return GETPARAMGLOBAL_B("input", "mouselock"); }
 }
 //[]
 input;
 
-auto hardResetTreeOnRestart() const { return GETPARAMGLOBAL_I("hardResetTreeOnRestart"); }
+inline static auto hardResetTreeOnRestart() { return GETPARAMGLOBAL_B("hardResetTreeOnRestart"); }
 
-}
- applicationparam;
+};
 

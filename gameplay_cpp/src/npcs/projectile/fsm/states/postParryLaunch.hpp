@@ -6,14 +6,14 @@
 
 #include <godot_cpp/classes/timer.hpp>
 
-#include <configHandler.h>
-
-#define CONFIG_PREFIX "npcs", "projectile"
+#include <configparams.hpp>
 
 namespace fsm::projectile {
 
 class PostParryLaunch : public BaseState {
 	TYPE(PostParryLaunch)
+
+	ConfigParam::Npcs::Projectile param;
 
 private:
 	Timestamp m_enterTime;
@@ -37,13 +37,11 @@ public:
 	}
 
 	VState physicsProcess(Context& context, float delta) {
-		if (m_enterTime.timestampWithinTimeframe(GETPARAM_F("postParryIntagibleTime"))) {
+		if (m_enterTime.timestampWithinTimeframe(param.postParryIntagibleTime())) {
 			return TLaunched();
 		}
 		return {};
 	}
 };
-
-#undef CONFIG_PREFIX
 
 } //namespace fsm::projectile

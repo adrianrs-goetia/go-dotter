@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../typedefs.hpp"
-#include <configHandler.h>
 #include <npcs/projectile/projectile.h>
+#include <configparams.hpp>
 
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 #include <godot_cpp/classes/node.hpp>

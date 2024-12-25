@@ -8,12 +8,7 @@
 #include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
 
-#include <configHandler.h>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
+#include <configparams.hpp>
 
 namespace fsm::player::utils {
 
@@ -21,8 +16,8 @@ inline void movementAcceleration(Context& context, float acceleration, float dec
 	auto& vec = context.physics.movement;
 	// direction
 	// if (context.input->m_inputRaw.abs() > godot::Vector2()) {
-	float desiredSpeed =
-		context.input->isActionHeld(EInputAction::SPRINT) ? GETPARAM_F("sprintSpeed") : GETPARAM_F("walkSpeed");
+	float desiredSpeed = context.input->isActionHeld(EInputAction::SPRINT) ? ConfigParam::Player::sprintSpeed()
+																		   : ConfigParam::Player::walkSpeed();
 
 	if (context.input->m_inputRaw.length_squared() > 0.2f) {
 		vec.x = godot::Math::move_toward(vec.x, context.input->m_inputCameraRelative.x * desiredSpeed, acceleration);
@@ -52,5 +47,3 @@ inline void enableCollision(Context& context, const CollisionLayerMask& clm) {
 }
 
 } //namespace fsm::player::utils
-
-#undef CONFIG_PREFIX

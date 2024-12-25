@@ -9,12 +9,15 @@ class CodeGenerator():
         self.context_stack: list[str] = []
         self.buffer: str = ""
         self.name: str = ""
+        self.typename: str = ""
     
     def start(self, filepath: str) -> str:
         f = filepath.split('/')[-1]
         self.name = f.split('.')[0].capitalize()
+        self.typename = f"{self.name}Param"
         
         s = "#pragma once\n"
+        s += "\n"
         s += "#include <configHandler.h>\n"
         s += "\n"
         s += f"// CODE IS GENERATED FROM A CONFIG JSON -> file: {filepath}\n"
@@ -23,18 +26,18 @@ class CodeGenerator():
         s += "//\n"
         s += "// EXAMPLE USE CASE:\n"
         s += "//\n"
-        s += "//    param.myvalue();\n"
-        s += "//    param.nestedobject.mynestedvalue();\n"
+        s += "//    ParamType::myvalue();\n"
+        s += "//    ParamType::nestedobject::mynestedvalue();\n"
         s += "//\n"
-        s += "//    const MyParam::NestedObject& param = param.nestedobject;\n"
+        s += "//    MyParam::NestedObject param;\n"
         s += "//    param.mynestedvalue();\n"
         s += "\n"
         s += "\n"
-        s += f"struct {self.name}Param {{\n"
+        s += f"struct {self.typename} {{\n"
         self.buffer += s
 
     def end(self) -> str:
-        self.buffer +=  f"\n}}\n {self.name.lower()}param;\n\n"
+        self.buffer +=  f"\n}};\n\n"
     
     def push_object(self, key: str) -> str:
         self.context_stack.append(key)
@@ -50,10 +53,10 @@ class CodeGenerator():
     
     def add_value(self, key, val):
         suffix = '##ERROR_HAS_HAPPENED##'
-        if isinstance(val, int):
-            suffix = 'I'
-        elif isinstance(val, bool):
+        if isinstance(val, bool):
             suffix = 'B'
+        elif isinstance(val, int):
+            suffix = 'I'
         elif isinstance(val, float):
             suffix = 'F'
         elif isinstance(val, str):
@@ -69,7 +72,7 @@ class CodeGenerator():
                 config_key += ", "
         self.context_stack.pop()
 
-        self.buffer += f"auto {key}() const {{ return GETPARAMGLOBAL_{suffix}({config_key}); }}\n"
+        self.buffer += f"inline static auto {key}() {{ return GETPARAMGLOBAL_{suffix}({config_key}); }}\n"
     
 
 def generate_hpp_from_json(json_file: str, output_file: str):

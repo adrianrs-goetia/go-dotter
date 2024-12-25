@@ -9,6 +9,8 @@
 #include <components/grappleTarget.hpp>
 #include <components/parryInstigator.hpp>
 
+#include "../utils/circularbuffer.h"
+#include "fsm/typedefs.hpp"
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/collision_shape3d.hpp>
 #include <godot_cpp/classes/engine.hpp>
@@ -19,11 +21,9 @@
 #include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
-#include "../utils/circularbuffer.h"
-#include "fsm/typedefs.hpp"
 
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
+#include <configparams.hpp>
 
 #ifdef CONFIG_PREFIX
 #undef CONFIG_PREFIX
@@ -79,7 +79,7 @@ void PlayerNode::_enter_tree() {
 	auto* grappleInstigator = getComponentOfNode<ComponentGrappleInstigator>(this);
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
-	auto* states = new CircularBuffer<fsm::player::TState>{20,fsm::player::TOnGroundState{}};
+	auto* states = new CircularBuffer<fsm::player::TState>{ 20, fsm::player::TOnGroundState{} };
 
 	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);

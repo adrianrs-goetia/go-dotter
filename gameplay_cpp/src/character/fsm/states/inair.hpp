@@ -2,17 +2,12 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/grappleInstigator.hpp>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
 
 namespace fsm::player {
 
@@ -24,27 +19,7 @@ class InAirState : public BaseState {
 		godot::Vector3 velocity;
 	} data;
 
-	struct Get {
-		float walkSpeed() {
-			return GETPARAM_F("walkSpeed");
-		}
-
-		float maxFloorAngle() {
-			return GETPARAM_F("floorMaxAngle");
-		}
-
-		float inAirAcceleration() {
-			return GETPARAM_D("inAirAcceleration");
-		}
-
-		float inAirDeceleration() {
-			return GETPARAM_D("inAirDeceleration");
-		}
-
-		float animRootRotation() {
-			return GETPARAM_D("animation", "rootRotationSpeed");
-		}
-	} get;
+	ConfigParam::Player param;
 
 public:
 	TState getType() const override {
@@ -75,7 +50,7 @@ public:
 		for (int i = 0; i < state->get_contact_count(); i++) {
 			auto normal = state->get_contact_local_normal(i);
 			// Land on floor
-			if (g_up.dot(normal) > get.maxFloorAngle()) {
+			if (g_up.dot(normal) > param.floorMaxAngle()) {
 				if (!data.jumpframes) {
 					return TOnGroundState();
 				}
@@ -101,13 +76,13 @@ public:
 
 		// animation
 		context.anim->rotateRootTowardsVector(
-			context.input->getInputRelative3d(), delta, GETPARAM_D("animation", "rootRotationSpeed"));
+			context.input->getInputRelative3d(), delta, param.animation.rootRotationSpeed());
 
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		utils::movementAcceleration(context, get.inAirAcceleration(), get.inAirDeceleration(), delta);
+		utils::movementAcceleration(context, param.inAirAcceleration(), param.inAirDeceleration(), delta);
 
 		// if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {
 		// 	return TPreGrappleLaunchState();
@@ -120,5 +95,3 @@ public:
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX

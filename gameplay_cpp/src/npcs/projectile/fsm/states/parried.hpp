@@ -3,10 +3,7 @@
 #include "../typedefs.hpp"
 #include "_utils.hpp"
 
-#include <configHandler.h>
 #include <npcs/projectile/projectile.h>
-
-#define CONFIG_PREFIX "npcs", "projectile"
 
 namespace fsm::projectile {
 
@@ -63,7 +60,5 @@ public:
 		return {};
 	}
 };
-
-#undef CONFIG_PREFIX
 
 } //namespace fsm::projectile

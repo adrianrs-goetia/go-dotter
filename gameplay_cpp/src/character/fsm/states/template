@@ -2,18 +2,15 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <debugdraw3d/api.h>
 #include <managers/inputManager.h>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player", "..."
+#include <configparams.hpp>
 
 namespace fsm::player {
 
 class StateName : public BaseState {
+	ConfigParam::Player::type ...;
+
 public:
 	TState getType() const override {
 		return TStateType();
@@ -41,5 +38,3 @@ public:
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX

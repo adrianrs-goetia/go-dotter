@@ -2,8 +2,8 @@
 
 #include "../typedefs.hpp"
 #include "_utils.hpp"
-#include <configHandler.h>
 #include <managers/inputManager.h>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/parryInstigator.hpp>
@@ -12,15 +12,12 @@
 #include <godot_cpp/classes/audio_stream_player3d.hpp>
 #include <godot_cpp/classes/gpu_particles3d.hpp>
 
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player", "parry", "jump"
-
 namespace fsm::player {
 
 class ParryJumpState : public BaseState {
 	TYPE(ParryJumpState)
+
+	ConfigParam::Player::Parry::Jump param;
 
 private:
 	Timestamp m_enterTime;
@@ -50,7 +47,7 @@ public:
 		const auto length = godot::Vector3(targetPos - context.physics.position);
 		const auto dir = length.normalized();
 
-		data.velocity = dir * length.length() * GETPARAM_F("impulse");
+		data.velocity = dir * length.length() * param.impulse();
 		return {};
 	}
 
@@ -66,13 +63,13 @@ public:
 
 		context.anim->rotateRootTowardsVector(getHorizontalUnit(state->get_linear_velocity()),
 			delta,
-			GETPARAMGLOBAL_D("player", "animation", "rootRotationSpeed"));
+			ConfigParam::Player::Animation::rootRotationSpeed());
 
-		if (!m_enterTime.timestampWithinTimeframe(GETPARAM_F("stateTime"))) {
+		if (!m_enterTime.timestampWithinTimeframe(param.timeout())) {
 			return TInAirState();
 		}
 
-		if (!m_intangibilityTime.timestampWithinTimeframe(GETPARAM_F("intagibilityTime"))) {
+		if (!m_intangibilityTime.timestampWithinTimeframe(param.intagibilityTime())) {
 			utils::enableCollision(context, m_clm);
 		}
 
@@ -88,8 +85,8 @@ public:
 			target->onAction({ EventParryJump() });
 
 			auto newVel = context.input->getInputRelative3d(); // Expected to be horizontal
-			newVel *= GETPARAM_D("doubleJumpHorizontalStrength");
-			newVel.y = GETPARAM_D("doubleJumpImpulse");
+			newVel *= param.doubleJumpHorizontalStrength();
+			newVel.y = param.doubleJumpImpulse();
 			context.owner->set_linear_velocity(newVel);
 			return TInAirState();
 		}
@@ -99,5 +96,3 @@ public:
 };
 
 } //namespace fsm::player
-
-#undef CONFIG_PREFIX
