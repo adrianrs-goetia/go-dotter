@@ -16,7 +16,6 @@ class InAirState : public BaseState {
 
 	struct Data {
 		int jumpframes = 3;
-		godot::Vector3 velocity;
 	} data;
 
 	ConfigParam::Player param;
@@ -32,8 +31,7 @@ public:
 
 	TState enter(Context& context) override {
 		LOG(DEBUG, "state: ", Name())
-		data.jumpframes = 3;
-		data.velocity = context.owner->get_linear_velocity();
+		std::holds_alternative<TParryJumpState>(context.states->get(1)) ? data.jumpframes = 0 : data.jumpframes = 3;
 		context.anim->inAir();
 		return {};
 	}
@@ -57,16 +55,14 @@ public:
 			}
 		}
 
-		data.velocity.y -= context.physics.get.gravity() * delta;
-		data.velocity.x = move.x;
-		data.velocity.z = move.z;
-		state->set_linear_velocity(data.velocity);
+		context.physics.applyGravity(delta);
+		state->set_linear_velocity(move);
 
 		// Disable friction when actively moving
 		{
 			auto mat = context.owner->get_physics_material_override();
 			ASSERTNN(mat)
-			if (data.velocity.length_squared() > 0.2f) {
+			if (move.length_squared() > 0.2f) {
 				mat->set_friction(0.0);
 			}
 			else {
