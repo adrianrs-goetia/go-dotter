@@ -40,8 +40,8 @@ opts.Add(
 opts.Update(env)
 
 # Generate code from json configs
-generate_hpp_from_json("project/config.json", "parameter_plugin/generated/configtypes.hpp")
-generate_hpp_from_json("project/application.json", "parameter_plugin/generated/applicationtypes.hpp")
+generate_hpp_from_json("project/config.json", "parameter_plugin/generated/configparams.hpp")
+generate_hpp_from_json("project/application.json", "parameter_plugin/generated/applicationparams.hpp")
 
 # Section for creating and linking shared libraries
 dd3d_libfile = dd3d.configure_environment(env, ARGUMENTS)

@@ -1,8 +1,9 @@
 #pragma once
 #include <configHandler.h>
 
-// CODE IS GENERATED FROM A CONFIG JSON
+// CODE IS GENERATED FROM A CONFIG JSON -> file: project/application.json
 // CHANGES WILL BE OVERWRITTEN
+//
 //
 // EXAMPLE USE CASE:
 //

@@ -4,8 +4,9 @@
 #include "_utils.hpp"
 #include <configHandler.h>
 #include <managers/inputManager.h>
-#include <applicationtypes.hpp>
-#include <configtypes.hpp>
+
+#include <applicationparams.hpp>
+#include <configparams.hpp>
 
 #include <components/animation.hpp>
 #include <components/grappleInstigator.hpp>
