@@ -3,6 +3,15 @@
 
 // CODE IS GENERATED FROM A CONFIG JSON
 // CHANGES WILL BE OVERWRITTEN
+//
+// EXAMPLE USE CASE:
+//
+//    param.myvalue();
+//    param.nestedobject.mynestedvalue();
+//
+//    const MyParam::NestedObject& param = param.nestedobject;
+//    param.mynestedvalue();
+
 
 struct ApplicationParam {
 struct Input{
