@@ -66,6 +66,11 @@ inline static auto inAirDeceleration() { return GETPARAMGLOBAL_F("player", "inAi
 inline static auto gravityScale() { return GETPARAMGLOBAL_F("player", "gravityScale"); }
 struct Animation{
 inline static auto rootRotationSpeed() { return GETPARAMGLOBAL_F("player", "animation", "rootRotationSpeed"); }
+inline static auto parryDrive() { return GETPARAMGLOBAL_I("player", "animation", "parryDrive"); }
+inline static auto onGroundDrive() { return GETPARAMGLOBAL_I("player", "animation", "onGroundDrive"); }
+inline static auto inAirDrive() { return GETPARAMGLOBAL_I("player", "animation", "inAirDrive"); }
+inline static auto attackDrive() { return GETPARAMGLOBAL_I("player", "animation", "attackDrive"); }
+inline static auto attackSpeed() { return GETPARAMGLOBAL_F("player", "animation", "attackSpeed"); }
 }
 //['player']
   animation;

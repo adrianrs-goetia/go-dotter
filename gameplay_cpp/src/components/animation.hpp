@@ -41,16 +41,16 @@ private:
 	}
 
 	void setMovement(MovementAnimationType type) {
-		set("parameters/action_or_locomotion_upper/blend_amount", 1);
-		set("parameters/action_or_locomotion_lower/blend_amount", 1);
+		tween("parameters/action_or_locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::onGroundDrive());
+		tween("parameters/action_or_locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::onGroundDrive());
 		switch (type) {
 			case MovementAnimationType::Walking:
-				set("parameters/locomotion_lower/blend_amount", 0);
-				set("parameters/locomotion_upper/blend_amount", 0);
+				tween("parameters/locomotion_lower/blend_amount", 0, ConfigParam::Player::Animation::onGroundDrive());
+				tween("parameters/locomotion_upper/blend_amount", 0, ConfigParam::Player::Animation::onGroundDrive());
 				break;
 			case MovementAnimationType::Airborne:
-				set("parameters/locomotion_lower/blend_amount", 1);
-				set("parameters/locomotion_upper/blend_amount", 1);
+				tween("parameters/locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::inAirDrive());
+				tween("parameters/locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::inAirDrive());
 				break;
 		}
 	}
@@ -141,26 +141,24 @@ public:
 
 	void doParry(bool mask_upper = true, bool mask_lower = true) {
 		if (mask_upper)
-			set("parameters/action_or_locomotion_upper/blend_amount", 0);
+			tween("parameters/action_or_locomotion_upper/blend_amount", 0, ConfigParam::Player::Animation::parryDrive());
 		if (mask_lower)
-			set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		// if stand still, should set
-		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		set("parameters/action_lower/blend_amount", 0);
-		set("parameters/action_upper/blend_amount", 0);
+			tween("parameters/action_or_locomotion_lower/blend_amount", 0, ConfigParam::Player::Animation::parryDrive());
 	}
 
-	void dontParry() {
-		set("parameters/action_lower/blend_amount", 0);
-		set("parameters/action_upper/blend_amount", 0);
+	void dontParry(bool mask_upper = true, bool mask_lower = true) {
+		tween("parameters/action_or_locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::parryDrive());
+		tween("parameters/action_or_locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::parryDrive());
 	}
 
 	void doAttack() {
-		set("parameters/action_or_locomotion_upper/blend_amount", 0);
-		// if stand still, should set
-		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		set("parameters/action_lower/blend_amount", 1);
-		set("parameters/action_upper/blend_amount", 1);
+		set("parameters/attack_horizontal/request", 1);
+		tween("parameters/attack/blend_amount", 1, ConfigParam::Player::Animation::attackDrive());
+	}
+
+	void dontAttack() {
+		set("parameters/attack_horizontal/request", 2);
+		tween("parameters/attack/blend_amount", 0, ConfigParam::Player::Animation::attackDrive());
 	}
 
 	void inAir() {
