@@ -12,6 +12,17 @@
 
 namespace fsm::player::utils {
 
+inline godot::Vector3 lerpVectorSpeedToInput(
+	Context& context, godot::Vector3 vec, float speed, float acceleration, float deceleration, float delta) {
+	if (context.input->isInputActive()) {
+		vec = godot::Math::move_toward(vec, context.input->m_inputCameraRelative * speed, deceleration * delta);
+	}
+	else {
+		vec = godot::Math::move_toward(vec, godot::Vector2(), deceleration * delta);
+	}
+	return vec;
+}
+
 inline void movementAcceleration(Context& context, float acceleration, float deceleration, float delta) {
 	auto& vec = context.physics.movement;
 	// direction
@@ -19,13 +30,11 @@ inline void movementAcceleration(Context& context, float acceleration, float dec
 	float desiredSpeed = context.input->isActionHeld(EInputAction::SPRINT) ? ConfigParam::Player::sprintSpeed()
 																		   : ConfigParam::Player::walkSpeed();
 
-	if (context.input->m_inputRaw.length_squared() > 0.2f) {
-		vec.x = godot::Math::move_toward(vec.x, context.input->m_inputCameraRelative.x * desiredSpeed, acceleration);
-		vec.z = godot::Math::move_toward(vec.z, context.input->m_inputCameraRelative.y * desiredSpeed, acceleration);
+	if (context.input->isInputActive()) {
+		vec = godot::Math::move_toward(vec, context.input->m_inputCameraRelative * desiredSpeed, acceleration);
 	}
 	else {
-		vec.x = godot::Math::move_toward(vec.x, 0.0f, deceleration);
-		vec.z = godot::Math::move_toward(vec.z, 0.0f, deceleration);
+		vec = godot::Math::move_toward(vec, godot::Vector2(), deceleration);
 	}
 }
 
@@ -61,7 +70,7 @@ inline bool isOnFloor(const godot::PhysicsDirectBodyState3D& state) {
 inline godot::Vector3 getInputOrForward(const Context& c) {
 	const auto dir = c.input->getInputRelative3d();
 	if (dir.length_squared() < 0.2f) {
-		return c.anim->m_animRoot->get_global_basis().get_column(2);
+		return c.anim->getRootForward();
 	}
 	return dir;
 }

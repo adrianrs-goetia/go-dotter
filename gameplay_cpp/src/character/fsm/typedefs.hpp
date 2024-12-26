@@ -15,6 +15,7 @@ namespace godot {
 class AudioStreamPlayer3D;
 class GPUParticles3D;
 class Node3D;
+class PhysicsDirectBodyState3D;
 class RigidBody3D;
 } //namespace godot
 
@@ -25,6 +26,10 @@ constexpr float PLAYER_CHARACTER_HALFHEIGHT = PLAYER_CHARACTER_HEIGHT / 2.f;
 constexpr int STATES_BUFFER_SIZE = 20;
 
 struct PhysicsContext {
+	// Ptr to current physics state, overwritten each frame
+	// tmp ugly thing
+	// to be replaced by transition objects
+	godot::PhysicsDirectBodyState3D* state = nullptr;
 	godot::Vector3 position;
 	godot::Vector3 movement;
 
@@ -42,6 +47,7 @@ struct PhysicsContext {
 		}
 	} get;
 };
+
 struct AudioVisualContext {
 	godot::AudioStreamPlayer3D* audio = nullptr; // todo, audiocomponent for streaming multiple sounds from context?
 	godot::GPUParticles3D* particles = nullptr; // todo, same as above?

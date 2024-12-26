@@ -44,23 +44,30 @@
         },
         "parry": {
             "pre": {
-                "cooldown": 0.5,
-                "timeout": 1.7,
+                "cooldown": 1.0,
+                "timeout": 0.3,
                 "onground": {
+                    "slide": { // Slide towards input direction
+                        "basespeed": 2.0,
+                        "inactivebasespeed": 1.0, // basespeed based on active input
+                        "acceleration": 10.0,
+                        "deceleration": 20.0,
+                        "turnspeed": 0.5
+                    },
                     "length": 0.5,
                     "lift": 3.0
                 },
                 "inair": {
-                    "length": 2.5,
-                    "lift": 6.0,
-                    "impulse": {
+                    "length": 1.0,
+                    "lift": 4.0,
+                    "impulse": { // impulse towards parried target
                         "xz": 2.0,
                         "y": 6.0
                     }
                 }
             },
             "post": {
-                "timeout": 0.5,
+                "timeout": 0.9,
                 "inair": {
                     "gravityScaleOverride": 1.7
                 }

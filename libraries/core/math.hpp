@@ -14,3 +14,18 @@ inline float canonicalRandomNumber(float min, float max) {
 	return dis(rng);
 }
 
+namespace godot::Math {
+
+inline godot::Vector3 move_toward(godot::Vector3 p_from, godot::Vector3 p_to, float p_delta) {
+	return godot::Vector3(godot::Math::move_toward(p_from.x, p_to.x, p_delta),
+		godot::Math::move_toward(p_from.y, p_to.y, p_delta),
+		godot::Math::move_toward(p_from.z, p_to.z, p_delta));
+}
+
+inline godot::Vector3 move_toward(godot::Vector3 p_from, godot::Vector2 p_to, float p_delta) {
+	return godot::Vector3(godot::Math::move_toward(p_from.x, p_to.x, p_delta),
+		p_from.y,
+		godot::Math::move_toward(p_from.z, p_to.y, p_delta));
+}
+
+} //namespace godot::Math

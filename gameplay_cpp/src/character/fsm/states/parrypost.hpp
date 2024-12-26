@@ -31,7 +31,7 @@ public:
 
 	TState enter(Context& context) override {
 		m_enterTime.setTimestamp();
-
+		// context.physics.movement *= 0; // todo, proper transitions
 		return {};
 	}
 

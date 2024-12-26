@@ -160,4 +160,5 @@ public:
 	godot::Vector3 getCamera3dDir() const;
 	godot::Vector3 getInputRaw3d() const;
 	godot::Vector3 getInputRelative3d(float y = 0.f) const;
+	bool isInputActive() const;
 };
