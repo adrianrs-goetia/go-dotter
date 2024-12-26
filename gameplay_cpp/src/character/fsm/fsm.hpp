@@ -91,6 +91,7 @@ private:
 			_currentState->exit(_context);
 			_context.states->push(state);
 			_currentState = newState;
+			LOG(DEBUG, "Enter state: ", stateName(state));
 			_processState(_currentState->enter(_context));
 		}
 	}

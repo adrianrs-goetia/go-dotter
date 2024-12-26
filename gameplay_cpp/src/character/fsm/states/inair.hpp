@@ -30,7 +30,6 @@ public:
 	}
 
 	TState enter(Context& context) override {
-		LOG(DEBUG, "state: ", Name())
 		std::holds_alternative<TParryJumpState>(context.states->get(1)) ? data.jumpframes = 0 : data.jumpframes = 3;
 		context.anim->inAir();
 		return {};

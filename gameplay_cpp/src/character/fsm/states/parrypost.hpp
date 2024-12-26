@@ -51,7 +51,9 @@ public:
 		}
 
 		if (_passiveExit(context)) {
-			return TOnGroundState();
+			TState ret;
+			utils::isOnFloor(*state) ? ret = TOnGroundState() : ret = TInAirState();
+			return ret;
 		}
 
 		const godot::Vector3 dir = context.parry->getLastParryTargetDir2D();
