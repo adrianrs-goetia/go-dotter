@@ -265,3 +265,7 @@ Vector3 InputManager::getInputRaw3d() const {
 Vector3 InputManager::getInputRelative3d(float y) const {
 	return Vector3(m_inputCameraRelative.x, y, m_inputCameraRelative.y).normalized();
 }
+
+bool InputManager::isInputActive() const {
+	return m_inputRaw.length_squared() > 0.2f;
+}

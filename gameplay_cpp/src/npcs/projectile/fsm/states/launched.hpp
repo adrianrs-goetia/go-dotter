@@ -4,9 +4,9 @@
 #include "_utils.hpp"
 #include <npcs/projectile/projectile.h>
 
-#include <godot_cpp/classes/timer.hpp>
-
+#include <debugdraw3d/api.h>
 #include <configparams.hpp>
+#include <godot_cpp/classes/timer.hpp>
 
 namespace fsm::projectile {
 
@@ -51,7 +51,9 @@ public:
 		else if (std::holds_alternative<EventParry>(action)) {
 			const auto& a = std::get<EventParry>(action);
 			context.owner->set_linear_velocity(godot::Vector3(0, a.params.lift, 0));
-			context.owner->set_global_position(a.instigatorPosition + (a.params.direction * a.params.length));
+
+			// this gets called during integrateForces, which does not support setting position directly
+			context.owner->set_deferred("position", a.getDirectionPos());
 			return TParried{};
 		}
 		return {};

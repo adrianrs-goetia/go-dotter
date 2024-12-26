@@ -88,6 +88,30 @@ public:
 				case 4:
 					param = cachedJson.at(arguments.at(0)).at(arguments.at(1)).at(arguments.at(2)).at(arguments.at(3));
 					break;
+				case 5:
+					param = cachedJson.at(arguments.at(0))
+								.at(arguments.at(1))
+								.at(arguments.at(2))
+								.at(arguments.at(3))
+								.at(arguments.at(4));
+					break;
+				case 6:
+					param = cachedJson.at(arguments.at(0))
+								.at(arguments.at(1))
+								.at(arguments.at(2))
+								.at(arguments.at(3))
+								.at(arguments.at(4))
+								.at(arguments.at(5));
+					break;
+				case 7:
+					param = cachedJson.at(arguments.at(0))
+								.at(arguments.at(1))
+								.at(arguments.at(2))
+								.at(arguments.at(3))
+								.at(arguments.at(4))
+								.at(arguments.at(5))
+								.at(arguments.at(6));
+					break;
 				default: {
 					LOG(ERROR, "Unexpected amount of arguments when getting config.cache value:", arguments.size())
 					return {};

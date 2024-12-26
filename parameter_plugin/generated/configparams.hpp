@@ -86,26 +86,62 @@ struct Parry{
 struct Pre{
 inline static auto cooldown() { return GETPARAMGLOBAL_F("player", "parry", "pre", "cooldown"); }
 inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "pre", "timeout"); }
-inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "length"); }
-inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "lift"); }
+struct Onground{
+struct Slide{
+inline static auto basespeed() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "slide", "basespeed"); }
+inline static auto inactivebasespeed() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "slide", "inactivebasespeed"); }
+inline static auto acceleration() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "slide", "acceleration"); }
+inline static auto deceleration() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "slide", "deceleration"); }
+inline static auto turnspeed() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "slide", "turnspeed"); }
+}
+//['player', 'parry', 'pre', 'onground']
+        slide;
+
+inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "length"); }
+inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "onground", "lift"); }
+}
+//['player', 'parry', 'pre']
+      onground;
+
+struct Inair{
+inline static auto length() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "length"); }
+inline static auto lift() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "lift"); }
+struct Impulse{
+inline static auto xz() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "impulse", "xz"); }
+inline static auto y() { return GETPARAMGLOBAL_F("player", "parry", "pre", "inair", "impulse", "y"); }
+}
+//['player', 'parry', 'pre', 'inair']
+        impulse;
+
+}
+//['player', 'parry', 'pre']
+      inair;
+
 }
 //['player', 'parry']
     pre;
 
 struct Post{
-inline static auto freezetime() { return GETPARAMGLOBAL_F("player", "parry", "post", "freezetime"); }
 inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "post", "timeout"); }
+struct Inair{
+inline static auto gravityScaleOverride() { return GETPARAMGLOBAL_F("player", "parry", "post", "inair", "gravityScaleOverride"); }
+}
+//['player', 'parry', 'post']
+      inair;
+
 }
 //['player', 'parry']
     post;
 
 struct Jump{
-inline static auto freezetime() { return GETPARAMGLOBAL_F("player", "parry", "jump", "freezetime"); }
-inline static auto impulse() { return GETPARAMGLOBAL_F("player", "parry", "jump", "impulse"); }
-inline static auto doubleJumpImpulse() { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpImpulse"); }
+struct Impulse{
+inline static auto xz() { return GETPARAMGLOBAL_F("player", "parry", "jump", "impulse", "xz"); }
+inline static auto y() { return GETPARAMGLOBAL_F("player", "parry", "jump", "impulse", "y"); }
+}
+//['player', 'parry', 'jump']
+      impulse;
+
 inline static auto timeout() { return GETPARAMGLOBAL_F("player", "parry", "jump", "timeout"); }
-inline static auto intagibilityTime() { return GETPARAMGLOBAL_F("player", "parry", "jump", "intagibilityTime"); }
-inline static auto doubleJumpHorizontalStrength() { return GETPARAMGLOBAL_F("player", "parry", "jump", "doubleJumpHorizontalStrength"); }
 }
 //['player', 'parry']
     jump;

@@ -111,6 +111,10 @@ public:
 		}
 	}
 
+	godot::Vector3 getRootForward() const {
+		return m_animRoot->get_global_basis().get_column(2);
+	}
+
 	void rotateRootTowardsVector(godot::Vector3 vector, float delta, float slerpWeight) {
 		if (vector.length_squared() <= 0) {
 			return;

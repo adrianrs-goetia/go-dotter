@@ -56,6 +56,7 @@ public:
 
 	void integrateForces(godot::PhysicsDirectBodyState3D* state) {
 		ASSERTNN(_currentState)
+		_context.physics.state = state;
 		_processState(_currentState->integrateForces(_context, state));
 	}
 
@@ -91,6 +92,7 @@ private:
 			_currentState->exit(_context);
 			_context.states->push(state);
 			_currentState = newState;
+			LOG(DEBUG, "Enter state: ", stateName(state));
 			_processState(_currentState->enter(_context));
 		}
 	}

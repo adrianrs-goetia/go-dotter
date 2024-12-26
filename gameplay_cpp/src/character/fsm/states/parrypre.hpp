@@ -24,6 +24,11 @@ private:
 	Timestamp m_enterTimestamp;
 	Timestamp m_exitTimestamp;
 
+	struct {
+		godot::Vector3 direction;
+		float speed;
+	} slide;
+
 public:
 	TState getType() const override {
 		return TParryPreState();
@@ -51,6 +56,17 @@ public:
 			},
 			previousState);
 		m_enterTimestamp.setTimestamp();
+
+		auto inputDir = utils::getInputOrForward(context);
+		if (utils::isOnFloor(*context.physics.state)) {
+			slide.speed = param.onground.slide.basespeed();
+			context.physics.movement =
+				inputDir * (context.input->isInputActive() ? slide.speed : param.onground.slide.inactivebasespeed());
+		}
+		else {
+			context.physics.movement *= 0;
+		}
+		context.anim->setRootTowardsVector(inputDir);
 		return {};
 	}
 
@@ -61,20 +77,36 @@ public:
 	}
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
-		state->set_linear_velocity(godot::Vector3());
+		const float delta = state->get_step();
+		const bool isOnFloor = utils::isOnFloor(*state);
+		const auto parryDirection = utils::getInputOrForward(context);
 
-		if (!m_enterTimestamp.timestampWithinTimeframe(param.timeout())) {
-			// Enter on ground by default, should discern if in air or onGround?
-			return TOnGroundState();
+		auto& move = context.physics.movement;
+		if (isOnFloor) {
+			auto desiredMove = utils::lerpVectorSpeedToInput(context,
+				move,
+				(context.input->isInputActive() ? param.onground.slide.basespeed()
+												: param.onground.slide.inactivebasespeed()),
+				param.onground.slide.acceleration(),
+				param.onground.slide.acceleration(),
+				delta);
+
+			move = desiredMove;
 		}
-
-		godot::Vector3 parryDirection = context.input->getInputRelative3d();
-		if (parryDirection.length_squared() < 0.2f) {
-			parryDirection = context.anim->m_animRoot->get_global_basis().get_column(2);
+		else {
+			move *= 0;
 		}
+		state->set_linear_velocity(move);
 
-		if (const auto pi =
-				context.parry->activateParry(EventParry::Params{ parryDirection, param.length(), param.lift() })) {
+		const auto length = isOnFloor ? param.onground.length() : param.inair.length();
+		const auto lift = isOnFloor ? param.onground.lift() : param.inair.lift();
+		if (const auto pi = context.parry->activateParry(EventParry::Params{ parryDirection, length, lift })) {
+			if (!isOnFloor) {
+				auto impulse = pi.value().params.direction * param.inair.impulse.xz();
+				impulse.y = param.inair.impulse.y();
+				context.physics.movement = impulse;
+			}
+
 			// Play effects
 			context.audioVisual.audio->play();
 			context.audioVisual.particles->set_global_position(pi->targetPosition);
@@ -84,13 +116,18 @@ public:
 			return TParryPostState();
 		}
 
+		if (!m_enterTimestamp.timestampWithinTimeframe(param.timeout())) {
+			// Enter on ground by default, should discern if in air or onGround?
+			return isOnFloor ? TState(TOnGroundState()) : TState(TInAirState());
+		}
+
 		return {};
 	}
 
 	TState handleInput(Context& context, float delta) override {
-		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			return TInAirState();
-		}
+		// if (context.input->isActionPressed(EInputAction::JUMP)) {
+		// 	return TInAirState();
+		// }
 		return {};
 	}
 };

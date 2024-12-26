@@ -20,16 +20,35 @@
 
 #include <debugdraw3d/api.h>
 
+template <typename T, int _size>
+class ArrayContainer {
+	std::array<T, _size> buffer;
+	int current = 0;
+
+public:
+	void push(T element) {
+		current = (++current + _size) % _size;
+		buffer.at(current) = element;
+	}
+
+	bool contains(T element) {
+		bool b = false;
+		for (int i = 0; i < _size; i++) {
+			b |= (buffer.at(i) == element);
+		}
+		return b;
+	}
+};
+
 class ComponentParryInstigator : public NodeComponent {
 	GDCLASS(ComponentParryInstigator, NodeComponent)
 
 public:
-	using GodotRID = uint64_t;
-
 	GS_PATH_IMPL(m_colliderPath, ColliderPath)
 
 	godot::Area3D* m_area = nullptr;
-	std::map<GodotRID, ComponentParryTarget&> m_inRangeParryTargets;
+	std::map<godot::RID, ComponentParryTarget&> m_inRangeParryTargets;
+	ArrayContainer<godot::RID, 10> m_recentlyParried;
 
 	std::weak_ptr<ParryContact> m_lastParryContact;
 
@@ -62,19 +81,21 @@ public:
 	}
 
 	void areaEnteredParryDetection(godot::Area3D* area) {
-		if (m_area->get_rid() == area->get_rid()) {
+		const auto rid = area->get_rid();
+		if (m_area->get_rid() == rid) {
 			return;
 		}
 		if (auto* parrytarget = getAdjacentNode<ComponentParryTarget>(area)) {
-			m_inRangeParryTargets.emplace(area->get_rid().get_id(), *parrytarget);
+			// should be a CircularBuffer
+			if (m_recentlyParried.contains(rid)) {
+				return;
+			}
+			m_inRangeParryTargets.emplace(area->get_rid(), *parrytarget);
 		}
 	}
 
 	void areaExitedParryDetection(godot::Area3D* area) {
-		auto it = m_inRangeParryTargets.find(area->get_rid().get_id());
-		if (it != m_inRangeParryTargets.end()) {
-			m_inRangeParryTargets.erase(it);
-		}
+		m_inRangeParryTargets.erase(area->get_rid());
 	}
 
 	ComponentParryTarget* getLastParryContactAssert() const {
@@ -98,20 +119,26 @@ public:
 
 		// get closest in range parry target
 		const Vector3 instigatorPosition = m_area->get_global_position();
-		Vector3 closest = m_inRangeParryTargets.begin()->second.getPosition();
-		ComponentParryTarget* target = &m_inRangeParryTargets.begin()->second;
-		for (const auto& [rid, parryTarget] : m_inRangeParryTargets) {
-			if (Vector3(instigatorPosition - parryTarget.getPosition()).length_squared() < closest.length_squared()) {
-				closest = parryTarget.getPosition();
-				target = &parryTarget;
+
+		auto it = m_inRangeParryTargets.begin();
+		auto target = it;
+		Vector3 closest = it->second.getPosition();
+
+		for (; it != m_inRangeParryTargets.end(); it++) {
+			auto& [_, parrytarget] = *it;
+			if (Vector3(instigatorPosition - parrytarget.getPosition()).length_squared() < closest.length_squared()) {
+				closest = parrytarget.getPosition();
+				target = it;
 			}
 		}
-		ASSERTNN(target)
 
-		EventParry instance{ getPosition(), target->getPosition(), std::move(params) };
-		m_lastParryContact = target->onParried({ instance });
+		// Remove from map to avoid potentially invoking onParried twice on a target
+		auto t = m_inRangeParryTargets.extract(target);
+		EventParry event{ getPosition(), t.mapped().getPosition(), std::move(params) };
+		m_lastParryContact = t.mapped().onParried({ event });
+		m_recentlyParried.push(t.key());
 
-		return std::move(instance);
+		return std::move(event);
 	}
 
 	godot::Vector3 getPosition() const {

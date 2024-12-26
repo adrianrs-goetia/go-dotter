@@ -18,6 +18,7 @@ class ParryPostState : public BaseState {
 
 private:
 	Timestamp m_enterTime;
+	bool m_isOnFloor{};
 
 public:
 	TState getType() const override {
@@ -30,6 +31,7 @@ public:
 
 	TState enter(Context& context) override {
 		m_enterTime.setTimestamp();
+		// context.physics.movement *= 0; // todo, proper transitions
 		return {};
 	}
 
@@ -38,10 +40,20 @@ public:
 	}
 
 	TState integrateForces(Context& context, godot::PhysicsDirectBodyState3D* state) override {
-		state->set_linear_velocity(godot::Vector3());
+		m_isOnFloor = utils::isOnFloor(*state);
+		if (m_isOnFloor) {
+			state->set_linear_velocity(godot::Vector3());
+		}
+		else {
+			context.physics.movement.y -=
+				ConfigParam::gravityConstant() * param.inair.gravityScaleOverride() * state->get_step();
+			state->set_linear_velocity(context.physics.movement);
+		}
 
 		if (_passiveExit(context)) {
-			return TOnGroundState();
+			TState ret;
+			utils::isOnFloor(*state) ? ret = TOnGroundState() : ret = TInAirState();
+			return ret;
 		}
 
 		const godot::Vector3 dir = context.parry->getLastParryTargetDir2D();
@@ -53,7 +65,7 @@ public:
 	TState handleInput(Context& context, float delta) override {
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
 			auto* target = context.parry->getLastParryContactAssert();
-			target->onAction(EventParryFreeze{ param.freezetime() });
+			target->onAction({ EventParryJump() });
 			return TParryJumpState();
 		}
 		return {};

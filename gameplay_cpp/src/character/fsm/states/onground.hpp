@@ -21,7 +21,6 @@ class OnGroundState : public BaseState {
 
 	struct Data {
 		int8_t coyoteframes;
-		godot::Vector3 velocity;
 	} data;
 
 	ConfigParam::Player param;
@@ -33,15 +32,12 @@ public:
 
 	TState enter(Context& context) override {
 		context.anim->onGround();
-		LOG(DEBUG, "state: ", Name())
-		context.anim->onGround();
 		// Immediate jump when entering while having just pressed jump
 		if (context.input->isActionPressed(EInputAction::JUMP, 0.1f)) {
 			context.physics.movement.y += param.jumpStrength();
 			context.owner->set_linear_velocity(context.physics.movement);
 			return TInAirState();
 		}
-		data.velocity = context.owner->get_linear_velocity();
 		data.coyoteframes = param.coyoteframes();
 		return {};
 	}
@@ -64,7 +60,7 @@ public:
 			auto normal = state->get_contact_local_normal(i);
 			// On floor
 			if (g_up.dot(normal) > param.floorMaxAngle()) {
-				data.velocity.y = 0;
+				move.y = 0;
 				data.coyoteframes = param.coyoteframes();
 			}
 			else {
@@ -77,16 +73,14 @@ public:
 			}
 		}
 
-		data.velocity.y -= context.physics.get.gravity() * delta;
-		data.velocity.x = move.x;
-		data.velocity.z = move.z;
-		state->set_linear_velocity(data.velocity);
+		context.physics.applyGravity(delta);
+		state->set_linear_velocity(move);
 
 		// Disable friction when actively moving
 		{
 			auto mat = context.owner->get_physics_material_override();
 			ASSERTNN(mat)
-			if (data.velocity.length_squared() > 0.2f) {
+			if (move.length_squared() > 0.2f) {
 				mat->set_friction(0.0);
 			}
 			else {
@@ -105,8 +99,7 @@ public:
 
 		// actions
 		if (context.input->isActionPressed(EInputAction::JUMP)) {
-			data.velocity.y = param.jumpStrength();
-			context.owner->set_linear_velocity(data.velocity);
+			context.physics.movement.y = param.jumpStrength();
 			return TInAirState();
 		}
 		if (context.input->isActionPressed(EInputAction::GRAPPLE) && context.grapple->getTarget()) {

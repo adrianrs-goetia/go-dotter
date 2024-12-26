@@ -48,9 +48,9 @@ public:
 				[&](EventParryJump)
 				{
 					utils::death(context);
-					return std::monostate();
+					return VState();
 				},
-				[](auto) { return std::monostate(); },
+				[](auto) { return VState(); },
 			},
 			action);
 	}
