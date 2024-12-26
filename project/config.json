@@ -44,8 +44,8 @@
         },
         "parry": {
             "pre": {
-                "cooldown": 1.0,
-                "timeout": 0.3,
+                "cooldown": 0.5,
+                "timeout": 0.5,
                 "onground": {
                     "slide": { // Slide towards input direction
                         "basespeed": 2.0,
