@@ -11,6 +11,7 @@
 #include <godot_cpp/classes/skeleton3d.hpp>
 
 #include <configparams.hpp>
+#include <utils/animationTweener.hpp>
 
 class ComponentAnimation : public godot::AnimationTree {
 	GDCLASS(ComponentAnimation, godot::AnimationTree)
@@ -40,16 +41,16 @@ private:
 	}
 
 	void setMovement(MovementAnimationType type) {
-		set("parameters/action_or_locomotion_upper/blend_amount", 1);
-		set("parameters/action_or_locomotion_lower/blend_amount", 1);
+		tween("parameters/action_or_locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::onGroundDrive());
+		tween("parameters/action_or_locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::onGroundDrive());
 		switch (type) {
 			case MovementAnimationType::Walking:
-				set("parameters/locomotion_lower/blend_amount", 0);
-				set("parameters/locomotion_upper/blend_amount", 0);
+				tween("parameters/locomotion_lower/blend_amount", 0, ConfigParam::Player::Animation::onGroundDrive());
+				tween("parameters/locomotion_upper/blend_amount", 0, ConfigParam::Player::Animation::onGroundDrive());
 				break;
 			case MovementAnimationType::Airborne:
-				set("parameters/locomotion_lower/blend_amount", 1);
-				set("parameters/locomotion_upper/blend_amount", 1);
+				tween("parameters/locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::inAirDrive());
+				tween("parameters/locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::inAirDrive());
 				break;
 		}
 	}
@@ -70,6 +71,9 @@ public:
 
 	EAnim m_currentOneshotAnim = EAnim::NONE;
 	godot::Skeleton3D* m_skeleton = nullptr;
+	AnimationTweener m_tweener;
+
+	ComponentAnimation() : m_tweener{*this} {};
 
 public:
 	static void _bind_methods() {
@@ -91,6 +95,10 @@ public:
 
 		m_animRoot = get_node<godot::Node3D>(m_pathToRootAnimationNode);
 		ASSERTNN(m_animRoot);
+	}
+
+	void _process(double delta) override {
+		m_tweener.process(delta);
 	}
 
 	void _physics_process(double delta) override {
@@ -127,28 +135,30 @@ public:
 		m_animRoot->set_basis(createBasisFromDirection(vector));
 	}
 
-	void doParry(bool mask_upper = true, bool mask_lower = true) {
-		if (mask_upper)
-			set("parameters/action_or_locomotion_upper/blend_amount", 0);
-		if (mask_lower)
-			set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		// if stand still, should set
-		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		set("parameters/action_lower/blend_amount", 0);
-		set("parameters/action_upper/blend_amount", 0);
+	void tween(std::string parameter, float value, float duration) {
+		m_tweener.tween(parameter, value, duration);
 	}
 
-	void dontParry() {
-		set("parameters/action_lower/blend_amount", 0);
-		set("parameters/action_upper/blend_amount", 0);
+	void doParry(bool mask_upper = true, bool mask_lower = true) {
+		if (mask_upper)
+			tween("parameters/action_or_locomotion_upper/blend_amount", 0, ConfigParam::Player::Animation::parryDrive());
+		if (mask_lower)
+			tween("parameters/action_or_locomotion_lower/blend_amount", 0, ConfigParam::Player::Animation::parryDrive());
+	}
+
+	void dontParry(bool mask_upper = true, bool mask_lower = true) {
+		tween("parameters/action_or_locomotion_upper/blend_amount", 1, ConfigParam::Player::Animation::parryDrive());
+		tween("parameters/action_or_locomotion_lower/blend_amount", 1, ConfigParam::Player::Animation::parryDrive());
 	}
 
 	void doAttack() {
-		set("parameters/action_or_locomotion_upper/blend_amount", 0);
-		// if stand still, should set
-		// set("parameters/action_or_locomotion_lower/blend_amount", 0);
-		set("parameters/action_lower/blend_amount", 1);
-		set("parameters/action_upper/blend_amount", 1);
+		set("parameters/attack_horizontal/request", 1);
+		tween("parameters/attack/blend_amount", 1, ConfigParam::Player::Animation::attackDrive());
+	}
+
+	void dontAttack() {
+		set("parameters/attack_horizontal/request", 2);
+		tween("parameters/attack/blend_amount", 0, ConfigParam::Player::Animation::attackDrive());
 	}
 
 	void inAir() {

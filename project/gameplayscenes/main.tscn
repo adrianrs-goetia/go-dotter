@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://assetscenes/turret.tscn" id="5_c2tsa"]
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://assetscenes/player.tscn" id="5_v1y23"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_58i5l"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_o123k"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -27,8 +27,7 @@ shadow_enabled = true
 shadow_blur = 1.38
 
 [node name="PlayerNode" parent="." instance=ExtResource("5_v1y23")]
-physics_material_override = SubResource("PhysicsMaterial_58i5l")
-gravity_scale = 0.0
+physics_material_override = SubResource("PhysicsMaterial_o123k")
 
 [node name="grid" type="Node3D" parent="."]
 

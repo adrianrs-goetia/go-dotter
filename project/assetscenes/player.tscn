@@ -1,7 +1,9 @@
-[gd_scene load_steps=48 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=60 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_235l5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
 size = Vector3(2.08374, 1.7627, 0.460938)
@@ -31,13 +33,23 @@ radius = 2.89418
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xj7yo"]
 animation = &"T-pose"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rbhk1"]
+animation = &"attack_horizontal"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5t8r7"]
+animation = &"attack_spin"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ixymg"]
+animation = &"attack_uppercut"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cg100"]
+animation = &"block_react"
+
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_bv2ow"]
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_5p0jc"]
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_y7xys"]
-
-[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_kt42e"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_s12k8"]
 animation = &"airborne"
@@ -45,11 +57,26 @@ animation = &"airborne"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jj6ex"]
 animation = &"airborne"
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_i0fv1"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_tweaj"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4amwn"]
 animation = &"attack_spin"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7s2r3"]
-animation = &"attack_spin"
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_0hnwv"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_cigtg"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_xoag7"]
+fadein_time = 0.1
+fadeout_time = 0.1
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_umymk"]
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4ryrg"]
 
@@ -61,6 +88,10 @@ filters = ["Armature/Skeleton3D:mixamorig_Hips", "Armature/Skeleton3D:mixamorig_
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_h1ipo"]
 animation = &"block"
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_i7ngr"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_8utx3"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jmxvq"]
 animation = &"block"
@@ -118,36 +149,56 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D:mixamorig_Head", "Armature/Skeleton3D:mixamorig_LeftArm", "Armature/Skeleton3D:mixamorig_LeftForeArm", "Armature/Skeleton3D:mixamorig_LeftHand", "Armature/Skeleton3D:mixamorig_LeftHandIndex1", "Armature/Skeleton3D:mixamorig_LeftHandIndex2", "Armature/Skeleton3D:mixamorig_LeftHandIndex3", "Armature/Skeleton3D:mixamorig_LeftHandMiddle1", "Armature/Skeleton3D:mixamorig_LeftHandMiddle2", "Armature/Skeleton3D:mixamorig_LeftHandMiddle3", "Armature/Skeleton3D:mixamorig_LeftHandPinky1", "Armature/Skeleton3D:mixamorig_LeftHandPinky2", "Armature/Skeleton3D:mixamorig_LeftHandPinky3", "Armature/Skeleton3D:mixamorig_LeftHandRing1", "Armature/Skeleton3D:mixamorig_LeftHandRing2", "Armature/Skeleton3D:mixamorig_LeftHandRing3", "Armature/Skeleton3D:mixamorig_LeftHandThumb1", "Armature/Skeleton3D:mixamorig_LeftHandThumb2", "Armature/Skeleton3D:mixamorig_LeftHandThumb3", "Armature/Skeleton3D:mixamorig_LeftShoulder", "Armature/Skeleton3D:mixamorig_Neck", "Armature/Skeleton3D:mixamorig_RightArm", "Armature/Skeleton3D:mixamorig_RightForeArm", "Armature/Skeleton3D:mixamorig_RightHand", "Armature/Skeleton3D:mixamorig_RightHandIndex1", "Armature/Skeleton3D:mixamorig_RightHandIndex2", "Armature/Skeleton3D:mixamorig_RightHandIndex3", "Armature/Skeleton3D:mixamorig_RightHandMiddle1", "Armature/Skeleton3D:mixamorig_RightHandMiddle2", "Armature/Skeleton3D:mixamorig_RightHandMiddle3", "Armature/Skeleton3D:mixamorig_RightHandPinky1", "Armature/Skeleton3D:mixamorig_RightHandPinky2", "Armature/Skeleton3D:mixamorig_RightHandPinky3", "Armature/Skeleton3D:mixamorig_RightHandRing1", "Armature/Skeleton3D:mixamorig_RightHandRing2", "Armature/Skeleton3D:mixamorig_RightHandRing3", "Armature/Skeleton3D:mixamorig_RightHandThumb1", "Armature/Skeleton3D:mixamorig_RightHandThumb2", "Armature/Skeleton3D:mixamorig_RightHandThumb3", "Armature/Skeleton3D:mixamorig_RightShoulder", "Armature/Skeleton3D:mixamorig_Spine", "Armature/Skeleton3D:mixamorig_Spine1", "Armature/Skeleton3D:mixamorig_Spine2"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ul21n"]
-graph_offset = Vector2(-110.329, -1.98994)
+graph_offset = Vector2(328.603, -30.5734)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_xj7yo")
 nodes/Animation/position = Vector2(-300, 160)
+nodes/_attack_horizontal/node = SubResource("AnimationNodeAnimation_rbhk1")
+nodes/_attack_horizontal/position = Vector2(1155, 357)
+nodes/_attack_spin/node = SubResource("AnimationNodeAnimation_5t8r7")
+nodes/_attack_spin/position = Vector2(693, 378)
+nodes/_attack_uppercut/node = SubResource("AnimationNodeAnimation_ixymg")
+nodes/_attack_uppercut/position = Vector2(903, 378)
+nodes/_parry_react/node = SubResource("AnimationNodeAnimation_cg100")
+nodes/_parry_react/position = Vector2(-980, -480)
 nodes/action_lower/node = SubResource("AnimationNodeBlend2_bv2ow")
 nodes/action_lower/position = Vector2(-300, 300)
 nodes/action_or_locomotion_lower/node = SubResource("AnimationNodeBlend2_5p0jc")
 nodes/action_or_locomotion_lower/position = Vector2(-40, 420)
 nodes/action_or_locomotion_upper/node = SubResource("AnimationNodeBlend2_y7xys")
 nodes/action_or_locomotion_upper/position = Vector2(-180, -280)
-nodes/action_upper/node = SubResource("AnimationNodeBlend2_kt42e")
-nodes/action_upper/position = Vector2(-340, -440)
 nodes/airborne_lower/node = SubResource("AnimationNodeAnimation_s12k8")
 nodes/airborne_lower/position = Vector2(-400, 700)
 nodes/airborne_upper/node = SubResource("AnimationNodeAnimation_jj6ex")
 nodes/airborne_upper/position = Vector2(-740, 20)
+nodes/attack_horisontal_speed/node = SubResource("AnimationNodeTimeScale_i0fv1")
+nodes/attack_horisontal_speed/position = Vector2(1155, 210)
+nodes/attack_horizontal/node = SubResource("AnimationNodeOneShot_tweaj")
+nodes/attack_horizontal/position = Vector2(1155, -42)
 nodes/attack_lower/node = SubResource("AnimationNodeAnimation_4amwn")
 nodes/attack_lower/position = Vector2(-500, 400)
-nodes/attack_upper/node = SubResource("AnimationNodeAnimation_7s2r3")
-nodes/attack_upper/position = Vector2(-540, -360)
+nodes/attack_spin/node = SubResource("AnimationNodeOneShot_0hnwv")
+nodes/attack_spin/position = Vector2(693, -21)
+nodes/attack_spin_speed/node = SubResource("AnimationNodeTimeScale_cigtg")
+nodes/attack_spin_speed/position = Vector2(693, 231)
+nodes/attack_uppercut/node = SubResource("AnimationNodeOneShot_xoag7")
+nodes/attack_uppercut/position = Vector2(924, -21)
+nodes/attack_uppercut_speed/node = SubResource("AnimationNodeTimeScale_umymk")
+nodes/attack_uppercut_speed/position = Vector2(903, 231)
 nodes/locomotion_lower/node = SubResource("AnimationNodeBlend2_4ryrg")
 nodes/locomotion_lower/position = Vector2(-240, 600)
 nodes/locomotion_upper/node = SubResource("AnimationNodeBlend2_hme6s")
 nodes/locomotion_upper/position = Vector2(-360, -160)
 nodes/lowerbody/node = SubResource("AnimationNodeAdd2_j6qrd")
 nodes/lowerbody/position = Vector2(80, 140)
-nodes/output/position = Vector2(500, 140)
+nodes/output/position = Vector2(1428, -21)
 nodes/parry_lower/node = SubResource("AnimationNodeAnimation_h1ipo")
 nodes/parry_lower/position = Vector2(-500, 260)
+nodes/parry_react/node = SubResource("AnimationNodeOneShot_i7ngr")
+nodes/parry_react/position = Vector2(-580, -660)
+nodes/parry_react_speed/node = SubResource("AnimationNodeTimeScale_8utx3")
+nodes/parry_react_speed/position = Vector2(-820, -500)
 nodes/parry_upper/node = SubResource("AnimationNodeAnimation_jmxvq")
-nodes/parry_upper/position = Vector2(-540, -500)
+nodes/parry_upper/position = Vector2(-780, -640)
 nodes/run_lower/node = SubResource("AnimationNodeBlendSpace1D_nkjaw")
 nodes/run_lower/position = Vector2(-760, 560)
 nodes/run_upper/node = SubResource("AnimationNodeBlendSpace1D_4yxi2")
@@ -161,10 +212,12 @@ nodes/sprint_lower/position = Vector2(-560, 560)
 nodes/sprint_upper/node = SubResource("AnimationNodeBlend2_otaya")
 nodes/sprint_upper/position = Vector2(-580, -200)
 nodes/timescale/node = SubResource("AnimationNodeTimeScale_0yxyo")
-nodes/timescale/position = Vector2(318.772, 149.35)
+nodes/timescale/position = Vector2(357, -105)
 nodes/upperbody/node = SubResource("AnimationNodeAdd2_3gncf")
 nodes/upperbody/position = Vector2(-80, 140)
-node_connections = [&"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"action_upper", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"action_upper", 0, &"parry_upper", &"action_upper", 1, &"attack_upper", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lowerbody", 0, &"upperbody", &"lowerbody", 1, &"action_or_locomotion_lower", &"output", 0, &"timescale", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"timescale", 0, &"lowerbody", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
+node_connections = [&"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"parry_react", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"attack_horisontal_speed", 0, &"_attack_horizontal", &"attack_horizontal", 0, &"attack_uppercut", &"attack_horizontal", 1, &"attack_horisontal_speed", &"attack_spin", 0, &"timescale", &"attack_spin", 1, &"attack_spin_speed", &"attack_spin_speed", 0, &"_attack_spin", &"attack_uppercut", 0, &"attack_spin", &"attack_uppercut", 1, &"attack_uppercut_speed", &"attack_uppercut_speed", 0, &"_attack_uppercut", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lowerbody", 0, &"upperbody", &"lowerbody", 1, &"action_or_locomotion_lower", &"output", 0, &"attack_horizontal", &"parry_react", 0, &"parry_upper", &"parry_react", 1, &"parry_react_speed", &"parry_react_speed", 0, &"_parry_react", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"timescale", 0, &"lowerbody", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
+
+[sub_resource type="AnimationRootNode" id="AnimationRootNode_5oj5n"]
 
 [sub_resource type="Curve" id="Curve_unhab"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.98827, 0), -3.49105, 0.0, 0, 0]
@@ -231,6 +284,8 @@ radius = 1.521
 [node name="PlayerNode" type="PlayerNode"]
 collision_layer = 6
 collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_235l5")
+gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
 max_contacts_reported = 4
@@ -280,20 +335,39 @@ RootAnimationNode = NodePath("../meshAnchor")
 AnimatedCharacterScene = NodePath("../meshAnchor/character")
 root_node = NodePath("../meshAnchor/character")
 tree_root = SubResource("AnimationNodeBlendTree_ul21n")
+advance_expression_base_node = NodePath("../meshAnchor/character")
 anim_player = NodePath("/root/@EditorNode@17149/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/AnimationPlayer")
 parameters/action_lower/blend_amount = 0
 parameters/action_or_locomotion_lower/blend_amount = 0
 parameters/action_or_locomotion_upper/blend_amount = 0.0
-parameters/action_upper/blend_amount = 0
+parameters/attack_horisontal_speed/scale = 2.2
+parameters/attack_horizontal/active = false
+parameters/attack_horizontal/internal_active = false
+parameters/attack_horizontal/request = 0
+parameters/attack_spin/active = false
+parameters/attack_spin/internal_active = false
+parameters/attack_spin/request = 0
+parameters/attack_spin_speed/scale = 1.5
+parameters/attack_uppercut/active = false
+parameters/attack_uppercut/internal_active = false
+parameters/attack_uppercut/request = 0
+parameters/attack_uppercut_speed/scale = 1.5
 parameters/locomotion_lower/blend_amount = 0
 parameters/locomotion_upper/blend_amount = 0
 parameters/lowerbody/add_amount = 1.0
+parameters/parry_react/active = false
+parameters/parry_react/internal_active = false
+parameters/parry_react/request = 0
+parameters/parry_react_speed/scale = 1.0
 parameters/run_lower/blend_position = 0
 parameters/run_upper/blend_position = 0
 parameters/sprint_lower/blend_amount = 0
 parameters/sprint_upper/blend_amount = 0.0
 parameters/timescale/scale = 1.0
 parameters/upperbody/add_amount = 1.0
+
+[node name="AnimationTree" type="AnimationTree" parent="ComponentAnimation"]
+tree_root = SubResource("AnimationRootNode_5oj5n")
 
 [node name="ComponentAttackInstigator" type="ComponentAttackInstigator" parent="."]
 ColliderPath = NodePath("../meshAnchor/AttackCollider")

@@ -36,7 +36,12 @@
         "inAirDeceleration": 10.0,
         "gravityScale": 2.7,
         "animation": {
-            "rootRotationSpeed": 20.0
+            "rootRotationSpeed": 20.0,
+            "parryDrive": 10,
+            "onGroundDrive": 10,
+            "inAirDrive": 10,
+            "attackDrive": 10,
+            "attackSpeed": 2.5
         },
         "grapple": {
             "enabled": false,
@@ -63,8 +68,8 @@
             }
         },
         "attack": {
-            "cooldown": 0.5,
-            "timeout": 0.3,
+            "cooldown": 1.2,
+            "timeout": 1.2,
             "strength": 5.3,
             "tmpRotation": 35.0
         }

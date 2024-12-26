@@ -39,11 +39,11 @@ public:
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
 		context.attack->setAttackStrength(param.strength());
-		context.anim->playAnimation(ComponentAnimation::EAnim::ATTACK);
 		return {};
 	}
 
 	TState exit(Context& context) override {
+		context.anim->dontAttack();
 		m_exitTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(false);
 		context.anim->playAnimation(ComponentAnimation::EAnim::NONE);
