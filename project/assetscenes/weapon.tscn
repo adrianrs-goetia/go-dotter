@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://l3kvcjeajujb"]
+
+[node name="Weapon" type="Node3D"]
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="."]
+use_external_skeleton = true
+external_skeleton = NodePath("")
