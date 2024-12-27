@@ -57,6 +57,15 @@ public:
 		setCanvasVisibility(false);
 	}
 
+	void _notification(int what) {
+		if (what == ENotifications::INTERNAL_RELOAD) {
+			if (is_node_ready()) {
+				setBillboardSize(getBillboardSize());
+				setBillboardText(getBillboardText());
+			}
+		}
+	}
+
 	void enteredPlayerDetection(godot::PhysicsBody3D* body) {
 		if (cast_to<PlayerNode>(body)) {
 			setCanvasVisibility(true);
