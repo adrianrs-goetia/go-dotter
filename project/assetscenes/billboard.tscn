@@ -1,0 +1,86 @@
+[gd_scene load_steps=5 format=3 uid="uid://dict6khi17ai2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j0bmn"]
+radius = 2.89058
+
+[sub_resource type="BoxMesh" id="BoxMesh_qqx4y"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aqhsr"]
+size = Vector3(1.11523, 1.11353, 0.253906)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_cepgb"]
+viewport_path = NodePath("Node3D/SubViewport")
+
+[node name="GamesceneBillboard" type="GamesceneBillboard"]
+TextPath = NodePath("Node3D/SubViewport/RichTextLabel")
+CanvasPath = NodePath("Node3D")
+SubviewportPath = NodePath("Node3D/SubViewport")
+BillboardText = "asdasd"
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.817207, 0)
+collision_layer = 0
+collision_mask = 4
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_j0bmn")
+
+[node name="mesh" type="Node3D" parent="."]
+transform = Transform3D(0.995348, 0.0763014, -0.0588208, -0.0761685, 0.997085, 0.00450123, 0.0589928, 0, 0.998258, 0, 0.158825, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(0.11426, -0.115207, 0, 0.0186433, 0.706075, 0, 0, 0, 0.0928091, 0, 0.118577, 0)
+mesh = SubResource("BoxMesh_qqx4y")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(0.127152, 0.0177025, -0.00692075, -0.00361136, 0.427134, 0.00846818, 0.013586, -0.0521396, 0.0670225, -0.024632, 0.586734, -0.0163396)
+mesh = SubResource("BoxMesh_qqx4y")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="mesh"]
+transform = Transform3D(1.22815, -0.0151892, 0.00065166, 0.029244, 0.60545, 0.0126772, -0.0120404, -0.0788132, 0.097262, -0.0148926, 1.06757, -0.0762755)
+mesh = SubResource("BoxMesh_qqx4y")
+skeleton = NodePath("../..")
+
+[node name="Area3D" type="Area3D" parent="mesh"]
+transform = Transform3D(1, 7.47651e-09, 0, -1.49012e-08, 1, 9.31323e-10, 0, -2.68964e-11, 1, 9.31323e-09, 0.533747, -5.82077e-11)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="mesh/Area3D"]
+transform = Transform3D(1, -8.45356e-07, 5.21541e-08, -1.63913e-07, 1, -2.18861e-08, -4.5076e-07, -9.32021e-09, 1, 0.0367126, 0.00244337, -0.0404319)
+shape = SubResource("BoxShape3D_aqhsr")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.993915, 0.110039, 0.00496219, -0.109844, 0.986785, 0.119118, 0.00821103, -0.118939, 0.992868, -0.00570464, 2.11878, 0.0167753)
+
+[node name="Sprite3D" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(0.998698, -0.0509933, 0.000226066, 0.0509938, 0.998688, -0.00442745, -4.65661e-10, 0.00443315, 0.999989, 0, 0, 0)
+billboard = 2
+double_sided = false
+texture = SubResource("ViewportTexture_cepgb")
+
+[node name="SubViewport" type="SubViewport" parent="Node3D"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(145, 140)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Node3D/SubViewport"]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.306923, 0.306923, 0.306923, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center]asdasdasda[/center]"
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+text_direction = 1

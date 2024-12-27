@@ -30,7 +30,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_iuh8p")
 
 [node name="ComponentGrappleTarget" type="ComponentGrappleTarget" parent="."]
 ColliderPath = NodePath("../Area3D")
-mass = 4.37
 
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 458752
