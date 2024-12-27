@@ -52,6 +52,13 @@ camera;
 
 inline static auto gravityConstant() { return GETPARAMGLOBAL_F("gravityConstant"); }
 struct Player{
+struct Seameter{
+inline static auto base() { return GETPARAMGLOBAL_I("player", "seameter", "base"); }
+inline static auto max() { return GETPARAMGLOBAL_I("player", "seameter", "max"); }
+}
+//['player']
+  seameter;
+
 inline static auto walkSpeed() { return GETPARAMGLOBAL_F("player", "walkSpeed"); }
 inline static auto sprintSpeed() { return GETPARAMGLOBAL_F("player", "sprintSpeed"); }
 inline static auto coyoteframes() { return GETPARAMGLOBAL_I("player", "coyoteframes"); }

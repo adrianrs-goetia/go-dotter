@@ -41,7 +41,7 @@ public:
 		METHOD_PROPERTY_IMPL(GamesceneBillboard, BillboardText, STRING)
 		METHOD_PROPERTY_IMPL(GamesceneBillboard, BillboardSize, VECTOR2)
 
-		BIND_METHOD(GamesceneBillboard, setCanvasVisibility, bool, float)
+		BIND_METHOD_ARG(GamesceneBillboard, setCanvasVisibility, bool)
 	}
 
 	void _enter_tree() {

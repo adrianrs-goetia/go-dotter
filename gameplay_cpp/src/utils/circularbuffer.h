@@ -14,7 +14,7 @@ public:
 
     CircularBuffer(int size, T fill): _size{size}, pos{_size-1} {
         _buffer = new T[_size];
-        Log(ELog::DEBUG, "size=%s", _size);
+        LOG(DEBUG, "size=%s", _size);
         for (int i=0; i<_size; i++) {
             _buffer[i]=fill;
         }

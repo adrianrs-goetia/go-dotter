@@ -4,9 +4,10 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+#include <character/playerGui.hpp>
 
-#include <gameplayscenes/stairs.hpp>
 #include <gameplayscenes/billboard.hpp>
+#include <gameplayscenes/stairs.hpp>
 
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
@@ -23,9 +24,9 @@
 #include <npcs/projectile/projectile.h>
 #include <npcs/turret/turretNode.h>
 
+#include <../tests/test_circularbuffer.h>
 #include <components/baseClasses/grappleBase.hpp>
 #include <core/nodeComponent.hpp>
-#include <../tests/test_circularbuffer.h>
 
 using namespace godot;
 
@@ -36,6 +37,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<CameraPivot>();
 	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<PlayerNode>();
+	godot::ClassDB::register_class<PlayerGui>();
 
 	// Managers
 	godot::ClassDB::register_class<InputManager>();
@@ -61,10 +63,10 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<GamesceneHelperStairs>();
 	godot::ClassDB::register_class<GamesceneBillboard>();
 
-	// do tests if in testing mode
-	#ifdef TESTS_ENABLED
+// do tests if in testing mode
+#ifdef TESTS_ENABLED
 	do_tests();
-	#endif
+#endif
 }
 
 void uninit_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {

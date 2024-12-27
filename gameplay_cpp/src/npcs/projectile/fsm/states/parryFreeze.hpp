@@ -42,7 +42,7 @@ public:
 		return {};
 	}
 
-	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
+	VState handleExternalEvent(Context& context, VExternalEvent event) override {
 		return std::visit(
 			overloaded{
 				[&](EventParryJump)
@@ -52,7 +52,7 @@ public:
 				},
 				[](auto) { return VState(); },
 			},
-			action);
+			event);
 	}
 
 	VState physicsProcess(Context& context, float delta) {

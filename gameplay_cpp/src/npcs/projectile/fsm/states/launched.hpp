@@ -44,19 +44,30 @@ public:
 		return {};
 	}
 
-	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
-		if (std::holds_alternative<EventAttack>(action)) {
-			utils::death(context);
-		}
-		else if (std::holds_alternative<EventParry>(action)) {
-			const auto& a = std::get<EventParry>(action);
-			context.owner->set_linear_velocity(godot::Vector3(0, a.params.lift, 0));
+	VState handleExternalEvent(Context& context, VExternalEvent action) override {
+		return std::visit(
+			overloaded{
+				[&](EventAttack) -> VState
+				{
+					utils::death(context);
+					return {};
+				},
+				[&](EventPlayerCollision) -> VState
+				{
+					utils::death(context);
+					return {};
+				},
+				[&](EventParry a) -> VState
+				{
+					context.owner->set_linear_velocity(godot::Vector3(0, a.params.lift, 0));
 
-			// this gets called during integrateForces, which does not support setting position directly
-			context.owner->set_deferred("position", a.getDirectionPos());
-			return TParried{};
-		}
-		return {};
+					// this gets called during integrateForces, which does not support setting position directly
+					context.owner->set_deferred("position", a.getDirectionPos());
+					return TParried{};
+				},
+				[&](auto) -> VState { return {}; },
+			},
+			action);
 	}
 
 	VState physicsProcess(Context& context, float delta) {

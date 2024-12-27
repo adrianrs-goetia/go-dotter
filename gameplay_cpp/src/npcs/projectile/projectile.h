@@ -2,6 +2,8 @@
 
 #include <core/core.hpp>
 
+#include "fsm/typedefs.hpp"
+
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>
@@ -44,6 +46,8 @@ public:
 	void _exit_tree() override;
 	void _physics_process(double delta) override;
 	void _integrate_forces(godot::PhysicsDirectBodyState3D* state) override;
+
+	void handleExternalEvent(fsm::projectile::VExternalEvent action);
 
 	bool isOnGround() const {
 		return m_isOnGround;

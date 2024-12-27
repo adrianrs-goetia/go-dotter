@@ -1,5 +1,7 @@
+#include "playerNode.h"
+
+#include <character/playerGui.hpp>
 #include <character/cameraPivot.h>
-#include <character/playerNode.h>
 #include <character/fsm/fsm.hpp>
 
 #include <managers/inputManager.h>
@@ -19,16 +21,12 @@
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
 #include <godot_cpp/classes/physics_material.hpp>
+#include <godot_cpp/classes/progress_bar.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
 
 #include <debugdraw3d/api.h>
 #include <configparams.hpp>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
 
 extern "C" {
 #include <stdlib.h>
@@ -38,7 +36,9 @@ using namespace godot;
 
 Transform3D PlayerNode::startTransform = {};
 
-void PlayerNode::_bind_methods() {}
+void PlayerNode::_bind_methods() {
+	BIND_METHOD(PlayerNode, setupGui)
+}
 
 void PlayerNode::_notification(int what) {
 	switch (what) {
@@ -70,6 +70,8 @@ void PlayerNode::_enter_tree() {
 
 	RETURN_IF_EDITOR(void())
 
+	call_deferred("setupGui");
+
 	PlayerNode::startTransform = get_global_transform();
 
 	auto* input = InputManager::get(*this);
@@ -80,6 +82,7 @@ void PlayerNode::_enter_tree() {
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
 	auto* states = new CircularBuffer<fsm::player::TState>{ 20, fsm::player::TOnGroundState{} };
+	auto* gui = getComponentOfNode<PlayerGui>(this);
 
 	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
@@ -92,6 +95,7 @@ void PlayerNode::_enter_tree() {
 	ASSERTNN(grappleInstigator)
 	ASSERTNN(audio)
 	ASSERTNN(particles)
+	ASSERTNN(gui)
 
 	stateContext.owner = this;
 	stateContext.attack = attackComponent;
@@ -102,6 +106,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 	stateContext.states = states;
+	stateContext.gui = gui;
 
 	grappleInstigator->setInstigatorDirection(
 		[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });
@@ -115,7 +120,7 @@ void PlayerNode::_enter_tree() {
 void PlayerNode::_exit_tree() {
 	RETURN_IF_EDITOR(void())
 
-	Log(ELog::DEBUG, "PlayerNode exiting tree");
+	LOG(DEBUG, "PlayerNode exiting tree");
 
 	delete m_fsm;
 	m_fsm = nullptr;
@@ -153,4 +158,13 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 void PlayerNode::_integrate_forces(PhysicsDirectBodyState3D* state) {
 	ASSERTNN(m_fsm)
 	m_fsm->integrateForces(state);
+}
+
+void PlayerNode::setupGui() {
+	auto* seameter = get_node<godot::ProgressBar>("PlayerGui/Seameter/ProgressBar");
+	ASSERTNN(seameter)
+	seameter->set_step(1);
+	seameter->set_max(ConfigParam::Player::Seameter::max());
+	seameter->set_min(0);
+	seameter->set_value(ConfigParam::Player::Seameter::base());
 }

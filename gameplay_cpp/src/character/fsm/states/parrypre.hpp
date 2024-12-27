@@ -60,8 +60,8 @@ public:
 		auto inputDir = utils::getInputOrForward(context);
 		if (utils::isOnFloor(*context.physics.state)) {
 			slide.speed = param.onground.slide.basespeed();
-			context.physics.movement =
-				inputDir * (context.input->isInputActive() ? slide.speed : param.onground.slide.inactivebasespeed());
+			context.physics.movement
+				= inputDir * (context.input->isInputActive() ? slide.speed : param.onground.slide.inactivebasespeed());
 		}
 		else {
 			context.physics.movement *= 0;
@@ -100,7 +100,10 @@ public:
 
 		const auto length = isOnFloor ? param.onground.length() : param.inair.length();
 		const auto lift = isOnFloor ? param.onground.lift() : param.inair.lift();
+		// Check if successful parry
 		if (const auto pi = context.parry->activateParry(EventParry::Params{ parryDirection, length, lift })) {
+			context.gui->increment();
+
 			if (!isOnFloor) {
 				auto impulse = pi.value().params.direction * param.inair.impulse.xz();
 				impulse.y = param.inair.impulse.y();

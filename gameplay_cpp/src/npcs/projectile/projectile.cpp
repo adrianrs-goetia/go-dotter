@@ -42,9 +42,9 @@ void Projectile::_enter_tree() {
 	ASSERTNN(m_parryTargetComp)
 	ASSERTNN(m_attackTargetComp)
 
-	m_parryTargetComp->_callback = [this](const auto& event) { this->m_fsm->handleExternalAction(variantCast(event)); };
+	m_parryTargetComp->_callback = [this](auto event) { this->m_fsm->handleExternalEvent(variantCast(event)); };
 
-	m_attackTargetComp->_callback = [this](const auto& instance) { this->m_fsm->handleExternalAction(instance); };
+	m_attackTargetComp->_callback = [this](auto instance) { this->m_fsm->handleExternalEvent(instance); };
 
 	add_to_group(godotgroups::projectile);
 }
@@ -69,6 +69,10 @@ void Projectile::_integrate_forces(godot::PhysicsDirectBodyState3D* state) {
 		const bool onGround = normal.dot(g_up) > 0.99;
 		m_isOnGround = onGround | m_isOnGround;
 	}
+}
+
+void Projectile::handleExternalEvent(fsm::projectile::VExternalEvent event) {
+	m_fsm->handleExternalEvent(event);
 }
 
 void Projectile::onTimeout() {
