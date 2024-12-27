@@ -16,6 +16,13 @@ class GamesceneHelperStairs : public godot::Node3D {
 	G_FLOAT_IMPL(m_stepScale, StepScale, = 0.3f)
 	G_FLOAT_IMPL(m_curveAngle, CurveAngle, = 0.f) // angle in degrees
 
+	// Helper for allocations, deallocations and transform adjustments without errors
+	enum {
+		NONE,
+		ALLOCATING,
+		DEALLOCATING,
+	} state;
+
 public:
 	static void _bind_methods() {
 		METHOD_PROPERTY_PACKEDSCENE_IMPL(GamesceneHelperStairs, StairScene)
@@ -36,6 +43,11 @@ public:
 		 * transforms before a node has entered the tree returns an error. As the child node has not
 		 * yet been properly instantiated and entered the node tree.
 		 */
+		{
+			state = ALLOCATING;
+			set_process(true);
+			set_process_internal(true);
+		}
 		if (godot::Engine::get_singleton()->is_editor_hint()) {
 			if (m_stairScene.is_valid() && is_node_ready()) {
 				allocateChildren();
@@ -44,6 +56,41 @@ public:
 		else {
 			allocateChildren();
 			adjustChildTransforms();
+		}
+	}
+
+	void _process(double delta) override {
+		switch (state) {
+			case ALLOCATING: {
+				bool ready = true;
+				auto children = get_children();
+				for (int i = 0; i < children.size(); i++) {
+					auto child = cast_to<Node>(children.pop_back());
+					if (!child->is_inside_tree() || !child->is_node_ready()) {
+						ready = false;
+						break;
+					}
+				}
+				if (ready) {
+					state = NONE;
+					set_process(false);
+					set_process_internal(false);
+					adjustChildTransforms();
+				}
+				break;
+			}
+			case DEALLOCATING: {
+				if (get_children().is_empty()) {
+					{
+						state = ALLOCATING;
+					}
+					allocateChildren();
+				}
+				break;
+			}
+
+			default:
+				break;
 		}
 	}
 
@@ -106,26 +153,18 @@ public:
 
 	void resetAll() {
 		removeAll();
-
-		ASSERT(m_stairScene.is_valid())
-		Node* step = nullptr;
-		step = m_stairScene->instantiate();
-		ASSERTNN(step)
-		add_child(step);
-		for (int i = 1; i < m_num; i++) {
-			auto* nextStep = m_stairScene->instantiate();
-			ASSERTNN(step)
-			step->add_sibling(nextStep);
-			step = nextStep;
+		{
+			state = DEALLOCATING;
+			set_process(true);
+			set_process_internal(true);
 		}
-		adjustChildTransforms();
 	}
 
 	void removeAll() {
 		auto children = get_children();
 		while (children.size()) {
 			auto* child = cast_to<Node>(children.pop_back());
-			remove_child(child);
+			call_deferred("remove_child", (child));
 		}
 	}
 
