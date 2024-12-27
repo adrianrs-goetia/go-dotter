@@ -54,6 +54,10 @@ def configure_environment(env: SConsEnvironment, args):
     public_api = os.path.join(current_dir, 'generated')
     nlohmann_api = os.path.join(os.path.dirname(src_folder), 'nlohmann/single_include')
     env.Append(CPPPATH=[src_folder, public_api, nlohmann_api])
+    if env.get("is_msvc", False):
+        env.Replace(CXXFLAGS=["/std:c++20"])
+    else:
+        env.Replace(CXXFLAGS=["-std=c++20"])
 
     generate_gdextension_file()
     lib_file = env.File(get_libname(env, env["target"]))
