@@ -23,14 +23,6 @@ void InputManager::exitGame() {
 	}
 }
 
-void InputManager::_internalReload() {
-	RETURN_IF_GAME(void())
-	if (auto root = godot::EditorInterface::get_singleton()->get_edited_scene_root()) {
-		LOG(INFO, "_internalReload")
-		root->propagate_notification(ENotifications::INTERNAL_RELOAD);
-	}
-}
-
 InputManager::InputManager() {
 	set_process(true);
 	set_process_internal(true); // Is autoloaded into scene, but this *should* ensure it always runs during editor
@@ -107,11 +99,6 @@ void InputManager::_notification(int what) {
 	}
 }
 
-void InputManager::_ready() {
-	RETURN_IF_GAME(void())
-	auto palett = godot::EditorInterface::get_singleton()->get_command_palette();
-	palett->add_command("InternalReload All Nodes", "InputManager/", callable_mp(this, &InputManager::_internalReload));
-}
 
 void InputManager::_enter_tree() {
 	set_name(get_class());
