@@ -36,8 +36,14 @@ public:
 		 * transforms before a node has entered the tree returns an error. As the child node has not
 		 * yet been properly instantiated and entered the node tree.
 		 */
-		if (m_stairScene.is_valid() && is_node_ready()) {
+		if (godot::Engine::get_singleton()->is_editor_hint()) {
+			if (m_stairScene.is_valid() && is_node_ready()) {
+				allocateChildren();
+			}
+		}
+		else {
 			allocateChildren();
+			adjustChildTransforms();
 		}
 	}
 
