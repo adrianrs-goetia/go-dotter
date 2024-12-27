@@ -71,6 +71,7 @@ public:
 
 	void setBillboardText(godot::String string) {
 		m_billboardText = string;
+		RETURN_IF_NODE_NOT_READY(void())
 		if (auto* text = get_node<godot::RichTextLabel>(m_textPath)) {
 			text->set_text("[center]" + string + "[/center]");
 		}
@@ -78,6 +79,7 @@ public:
 
 	void setBillboardSize(godot::Vector2i size) {
 		m_billboardSize = size;
+		RETURN_IF_NODE_NOT_READY(void())
 		if (auto* subviewport = get_node<godot::SubViewport>(m_subviewportPath)) {
 			subviewport->set_size(size);
 		}

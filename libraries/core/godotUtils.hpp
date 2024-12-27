@@ -27,6 +27,11 @@ static const godot::Vector3 g_right(1, 0, 0);
 		return ret;                                                                                                    \
 	}
 
+#define RETURN_IF_NODE_NOT_READY(ret)                                                                                  \
+	if (!is_node_ready()) {                                                                                            \
+		return ret;                                                                                                    \
+	}
+
 /**
  * We ALWAYS expect there to only be a single component of type T under a specific node
  */
