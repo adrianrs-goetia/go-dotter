@@ -111,6 +111,16 @@ public:
 		if (context.input->isActionPressed(EInputAction::ATTACK)) {
 			return TAttackState();
 		}
+
+		if (godot::Input::get_singleton()->is_key_label_pressed(godot::KEY_9)) {
+			context.seameter.decrement();
+			context.gui->update(context.seameter.value);
+		}
+		if (godot::Input::get_singleton()->is_key_pressed(godot::KEY_0)) {
+			context.seameter.increment();
+			context.gui->update(context.seameter.value);
+		}
+
 		return {};
 	}
 

@@ -1,5 +1,7 @@
+#include "playerNode.h"
+
+#include <character/playerGui.hpp>
 #include <character/cameraPivot.h>
-#include <character/playerNode.h>
 #include <character/fsm/fsm.hpp>
 
 #include <managers/inputManager.h>
@@ -25,11 +27,6 @@
 
 #include <debugdraw3d/api.h>
 #include <configparams.hpp>
-
-#ifdef CONFIG_PREFIX
-#undef CONFIG_PREFIX
-#endif
-#define CONFIG_PREFIX "player"
 
 extern "C" {
 #include <stdlib.h>
@@ -85,6 +82,7 @@ void PlayerNode::_enter_tree() {
 	auto* audio = getComponentOfNode<AudioStreamPlayer3D>(this);
 	auto* particles = getComponentOfNode<GPUParticles3D>(this);
 	auto* states = new CircularBuffer<fsm::player::TState>{ 20, fsm::player::TOnGroundState{} };
+	auto* gui = getComponentOfNode<PlayerGui>(this);
 
 	fsm::player::Context stateContext;
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
@@ -97,6 +95,7 @@ void PlayerNode::_enter_tree() {
 	ASSERTNN(grappleInstigator)
 	ASSERTNN(audio)
 	ASSERTNN(particles)
+	ASSERTNN(gui)
 
 	stateContext.owner = this;
 	stateContext.attack = attackComponent;
@@ -107,6 +106,7 @@ void PlayerNode::_enter_tree() {
 	stateContext.audioVisual.audio = audio;
 	stateContext.audioVisual.particles = particles;
 	stateContext.states = states;
+	stateContext.gui = gui;
 
 	grappleInstigator->setInstigatorDirection(
 		[](const Node& node) -> Vector3 { return InputManager::get(node)->getCamera3dDir(); });
@@ -120,7 +120,7 @@ void PlayerNode::_enter_tree() {
 void PlayerNode::_exit_tree() {
 	RETURN_IF_EDITOR(void())
 
-	Log(ELog::DEBUG, "PlayerNode exiting tree");
+	LOG(DEBUG, "PlayerNode exiting tree");
 
 	delete m_fsm;
 	m_fsm = nullptr;

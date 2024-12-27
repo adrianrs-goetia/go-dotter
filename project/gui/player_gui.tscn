@@ -2,8 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b0c5br751icv0" path="res://gui/seameter.tscn" id="1_c83hc"]
 
-[node name="PlayerGui" type="Control"]
-layout_mode = 3
+[node name="PlayerGui" type="PlayerGui"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

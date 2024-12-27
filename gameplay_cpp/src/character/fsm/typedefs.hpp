@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../utils/circularbuffer.h"
+#include <character/playerGui.hpp>
 #include <configparams.hpp>
 #include <core/core.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
@@ -46,6 +47,16 @@ struct PhysicsContext {
 			return ConfigParam::gravityConstant() * ConfigParam::Player::gravityScale();
 		}
 	} get;
+};
+
+struct SeameterContext {
+	int value;
+	void increment() {
+		value = std::min(++value, ConfigParam::Player::Seameter::max());
+	}
+	void decrement() {
+		value = std::max(--value, 0);
+	}
 };
 
 struct AudioVisualContext {
@@ -98,6 +109,8 @@ struct Context {
 	InputManager* input = nullptr;
 	ComponentParryInstigator* parry = nullptr;
 	PhysicsContext physics;
+	PlayerGui* gui = nullptr;
+	SeameterContext seameter;
 	AudioVisualContext audioVisual;
 	CircularBuffer<TState>* states = nullptr;
 };

@@ -99,7 +99,6 @@ void InputManager::_notification(int what) {
 	}
 }
 
-
 void InputManager::_enter_tree() {
 	set_name(get_class());
 

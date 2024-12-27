@@ -55,7 +55,6 @@ struct Player{
 struct Seameter{
 inline static auto base() { return GETPARAMGLOBAL_I("player", "seameter", "base"); }
 inline static auto max() { return GETPARAMGLOBAL_I("player", "seameter", "max"); }
-inline static auto current() { return GETPARAMGLOBAL_I("player", "seameter", "current"); }
 }
 //['player']
   seameter;
