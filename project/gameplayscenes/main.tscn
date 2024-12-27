@@ -1,12 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://h2pqh1vnci7k"]
+[gd_scene load_steps=12 format=3 uid="uid://h2pqh1vnci7k"]
 
 [ext_resource type="PackedScene" uid="uid://viyfpoo0felw" path="res://assetscenes/terrain_block.tscn" id="2_we13y"]
 [ext_resource type="PackedScene" uid="uid://dbbpmkgt1qrtf" path="res://assetscenes/grapplenode.tscn" id="4_ii646"]
 [ext_resource type="PackedScene" uid="uid://b53204e7tdcq8" path="res://assetscenes/rigid_body_3d.tscn" id="4_nem2m"]
 [ext_resource type="PackedScene" uid="uid://dn7bsvt1xcuws" path="res://assetscenes/turret.tscn" id="5_c2tsa"]
 [ext_resource type="PackedScene" uid="uid://cyjfpgx2xna18" path="res://assetscenes/player.tscn" id="5_v1y23"]
+[ext_resource type="PackedScene" uid="uid://dict6khi17ai2" path="res://assetscenes/billboard.tscn" id="6_rkahn"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_o123k"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tdfws"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_reeng"]
 
@@ -27,7 +28,7 @@ shadow_enabled = true
 shadow_blur = 1.38
 
 [node name="PlayerNode" parent="." instance=ExtResource("5_v1y23")]
-physics_material_override = SubResource("PhysicsMaterial_o123k")
+physics_material_override = SubResource("PhysicsMaterial_tdfws")
 
 [node name="grid" type="Node3D" parent="."]
 
@@ -148,3 +149,13 @@ metadata/_edit_group_ = true
 
 [node name="TurretNode" parent="Turrets" instance=ExtResource("5_c2tsa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.60591, 0, -8.48214)
+
+[node name="Billboards" type="Node" parent="."]
+
+[node name="GamesceneBillboard" parent="Billboards" instance=ExtResource("6_rkahn")]
+BillboardText = "Shift to spwint"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.22829, 2.35556, -16.5972)
+
+[node name="GamesceneBillboard2" parent="Billboards" instance=ExtResource("6_rkahn")]
+BillboardText = "Space to jump"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25168, 0.434087, -12.4435)

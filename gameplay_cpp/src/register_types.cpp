@@ -5,7 +5,8 @@
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
 
-#include <gameplayscenes/helpers/stairs.hpp>
+#include <gameplayscenes/stairs.hpp>
+#include <gameplayscenes/billboard.hpp>
 
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
@@ -58,6 +59,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 
 	// gameplayscenes
 	godot::ClassDB::register_class<GamesceneHelperStairs>();
+	godot::ClassDB::register_class<GamesceneBillboard>();
 
 	// do tests if in testing mode
 	#ifdef TESTS_ENABLED

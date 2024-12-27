@@ -149,6 +149,10 @@ public:                                                                         
 #define S_INT_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, int, __VA_ARGS__)
 #define GS_INT_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, int, __VA_ARGS__)
 
+#define G_STRING_IMPL(variableName, functionName, ...) _G_IMPL(variableName, functionName, godot::String, __VA_ARGS__)
+#define S_STRING_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, godot::String, __VA_ARGS__)
+#define GS_STRING_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, godot::String, __VA_ARGS__)
+
 #define G_PACKEDSCENE_IMPL(variableName, functionName)                                                                 \
 	_G_IMPL(variableName, functionName, godot::Ref<godot::PackedScene>)
 #define S_PACKEDSCENE_IMPL(variableName, functionName)                                                                 \
@@ -195,3 +199,11 @@ public:                                                                         
 #define METHOD_INOUT_BIND(classname, entered, exited, fieldName)                                                       \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(exited), TOSTRING(fieldName)), &classname::exited);
+
+#define AREACONNECT_AREA(class, area, functionName)                                                                         \
+	area->connect("area_entered", callable_mp(this, &class ::entered##functionName));                                  \
+	area->connect("area_exited", callable_mp(this, &class ::exited##functionName));
+
+#define AREACONNECT_BODY(class, area, functionName)                                                                         \
+	area->connect("body_entered", callable_mp(this, &class ::entered##functionName));                                  \
+	area->connect("body_exited", callable_mp(this, &class ::exited##functionName));
