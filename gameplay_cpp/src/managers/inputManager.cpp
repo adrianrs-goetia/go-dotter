@@ -224,7 +224,6 @@ bool InputManager::isActionPressed(EInputAction action, float timeframe) {
 bool InputManager::isActionHeld(EInputAction action) {
 	for (auto it = m_inputActions.begin(); it != m_inputActions.end(); it++) {
 		if (it->isActionHeld(action)) {
-			LOG(DEBUG, "STINPIN'!!!");
 			return true;
 		}
 	}
