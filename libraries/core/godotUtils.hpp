@@ -217,6 +217,9 @@ public:                                                                         
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(entered), TOSTRING(fieldName)), &classname::entered);         \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(exited), TOSTRING(fieldName)), &classname::exited);
 
+#define BIND_METHOD(classname, method, ...)                                                                            \
+	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(method), #__VA_ARGS__), &classname::method);
+
 #define AREACONNECT_AREA(class, area, functionName)                                                                    \
 	area->connect("area_entered", callable_mp(this, &class ::entered##functionName));                                  \
 	area->connect("area_exited", callable_mp(this, &class ::exited##functionName));

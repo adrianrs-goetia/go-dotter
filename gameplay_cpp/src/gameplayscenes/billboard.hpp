@@ -40,6 +40,8 @@ public:
 		METHOD_PROPERTY_IMPL(GamesceneBillboard, SubviewportPath, NODE_PATH)
 		METHOD_PROPERTY_IMPL(GamesceneBillboard, BillboardText, STRING)
 		METHOD_PROPERTY_IMPL(GamesceneBillboard, BillboardSize, VECTOR2)
+
+		BIND_METHOD(GamesceneBillboard, setCanvasVisibility, bool, float)
 	}
 
 	void _enter_tree() {
@@ -54,7 +56,9 @@ public:
 		area->set_name(Path::area3d());
 		shape->set_name(Path::collisionshape());
 
-		setCanvasVisibility(false);
+		call_deferred("setCanvasVisibility", false);
+		call_deferred("setBillboardSize", getBillboardSize());
+		call_deferred("setBillboardText", getBillboardText());
 	}
 
 	void _notification(int what) {
