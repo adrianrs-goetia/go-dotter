@@ -12,8 +12,10 @@ size = Vector3(1.11523, 1.11353, 0.253906)
 viewport_path = NodePath("Node3D/SubViewport")
 
 [node name="GamesceneBillboard" type="GamesceneBillboard"]
-TextPath = NodePath("Node3D/SubViewport/TextEdit")
+TextPath = NodePath("Node3D/SubViewport/RichTextLabel")
 CanvasPath = NodePath("Node3D")
+SubviewportPath = NodePath("Node3D/SubViewport")
+BillboardText = "asdasd"
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.817207, 0)
@@ -55,16 +57,30 @@ transform = Transform3D(0.993915, 0.110039, 0.00496219, -0.109844, 0.986785, 0.1
 [node name="Sprite3D" type="Sprite3D" parent="Node3D"]
 transform = Transform3D(0.998698, -0.0509933, 0.000226066, 0.0509938, 0.998688, -0.00442745, -4.65661e-10, 0.00443315, 0.999989, 0, 0, 0)
 billboard = 2
+double_sided = false
 texture = SubResource("ViewportTexture_cepgb")
 
 [node name="SubViewport" type="SubViewport" parent="Node3D"]
-size = Vector2i(175, 100)
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(145, 140)
 
-[node name="TextEdit" type="TextEdit" parent="Node3D/SubViewport"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Node3D/SubViewport"]
+layout_direction = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-placeholder_text = "ADD NEW TEXT OR TUTORIAL HERE!!"
-wrap_mode = 1
+theme_override_colors/default_color = Color(0.306923, 0.306923, 0.306923, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 40
+bbcode_enabled = true
+text = "[center]asdasdasda[/center]"
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+text_direction = 1

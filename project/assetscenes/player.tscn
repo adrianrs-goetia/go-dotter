@@ -3,7 +3,7 @@
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fdrl6"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_x8xim"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
 size = Vector3(2.08374, 1.7627, 0.460938)
@@ -284,7 +284,7 @@ radius = 1.521
 [node name="PlayerNode" type="PlayerNode"]
 collision_layer = 6
 collision_mask = 3
-physics_material_override = SubResource("PhysicsMaterial_fdrl6")
+physics_material_override = SubResource("PhysicsMaterial_x8xim")
 gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
