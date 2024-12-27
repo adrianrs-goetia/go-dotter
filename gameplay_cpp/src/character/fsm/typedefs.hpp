@@ -50,13 +50,6 @@ struct PhysicsContext {
 };
 
 struct SeameterContext {
-	int value;
-	void increment() {
-		value = std::min(++value, ConfigParam::Player::Seameter::max());
-	}
-	void decrement() {
-		value = std::max(--value, 0);
-	}
 };
 
 struct AudioVisualContext {

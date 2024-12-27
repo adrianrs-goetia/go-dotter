@@ -27,9 +27,9 @@ public:
 		return m_currentState->getType();
 	}
 
-	void handleExternalAction(const VExternalEvent& action) {
+	void handleExternalEvent(VExternalEvent action) {
 		ASSERTNN(m_currentState)
-		_processState(m_currentState->handleExternalAction(m_context, action));
+		_processState(m_currentState->handleExternalEvent(m_context, action));
 	}
 
 	void init(VState state) {

@@ -3,7 +3,11 @@
 #include "../typedefs.hpp"
 
 #include <managers/inputManager.h>
+#include <npcs/projectile/projectile.h>
 #include <components/animation.hpp>
+#include <events/attack.hpp>
+#include <events/collision.hpp>
+#include <events/parry.hpp>
 
 #include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/rigid_body3d.hpp>

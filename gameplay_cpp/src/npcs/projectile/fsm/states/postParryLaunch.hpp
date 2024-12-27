@@ -32,7 +32,7 @@ public:
 		return {};
 	}
 
-	VState handleExternalAction(Context& context, const VExternalEvent& action) override {
+	VState handleExternalEvent(Context& context, VExternalEvent event) override {
 		return {};
 	}
 

@@ -12,7 +12,6 @@
 #include <components/grappleInstigator.hpp>
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
-#include <events/parry.hpp>
 
 namespace fsm::player {
 
@@ -58,6 +57,12 @@ public:
 		}
 		for (int i = 0; i < contactCount; i++) {
 			auto normal = state->get_contact_local_normal(i);
+			// if (utils::projectileCollision(state->get_contact_collider_object(i))) {
+			// Check type of object collision
+			if (auto* projectile = godot::Object::cast_to<Projectile>(state->get_contact_collider_object(i))) {
+				_projectileCollision(context, *projectile);
+			}
+
 			// On floor
 			if (g_up.dot(normal) > param.floorMaxAngle()) {
 				move.y = 0;
@@ -112,15 +117,6 @@ public:
 			return TAttackState();
 		}
 
-		if (godot::Input::get_singleton()->is_key_label_pressed(godot::KEY_9)) {
-			context.seameter.decrement();
-			context.gui->update(context.seameter.value);
-		}
-		if (godot::Input::get_singleton()->is_key_pressed(godot::KEY_0)) {
-			context.seameter.increment();
-			context.gui->update(context.seameter.value);
-		}
-
 		return {};
 	}
 
@@ -139,6 +135,15 @@ private:
 		c.anim->sprintValue(sprintBlend);
 
 		c.anim->rotateRootTowardsVector(c.input->getInputRelative3d(), delta, param.animation.rootRotationSpeed());
+	}
+
+	void _projectileCollision(Context& c, Projectile& projectile) {
+		projectile.handleExternalEvent(EventPlayerCollision{});
+		const bool isdead = c.gui->decrement();
+		if (isdead) {
+			LOG(WARN, "Player has OFFICIALLY died")
+			return;
+		}
 	}
 };
 

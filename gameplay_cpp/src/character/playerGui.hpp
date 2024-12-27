@@ -11,8 +11,12 @@
 class PlayerGui : public godot::Control {
 	GDTYPE(PlayerGui, godot::Control)
 
-	ConfigParam::Player::Seameter param;
-	godot::ProgressBar* seameter = nullptr;
+	ConfigParam::Player param;
+
+	struct {
+		godot::ProgressBar* progressbar = nullptr;
+		int value;
+	} seameter;
 
 public:
 	static void _bind_methods() {
@@ -21,20 +25,31 @@ public:
 
 	void _enter_tree() override {
 		RETURN_IF_EDITOR(void())
-		seameter = get_node<godot::ProgressBar>("Seameter/ProgressBar");
-		ASSERTNN(seameter)
+		seameter.progressbar = get_node<godot::ProgressBar>("Seameter/ProgressBar");
+		ASSERTNN(seameter.progressbar)
 	}
 
 	void setupGui() {
-		ASSERTNN(seameter)
-		seameter->set_step(1);
-		seameter->set_max(param.max());
-		seameter->set_min(0);
-		seameter->set_value(param.base());
+		ASSERTNN(seameter.progressbar)
+		seameter.value = param.seameter.base();
+		seameter.progressbar->set_step(1);
+		seameter.progressbar->set_max(param.seameter.max());
+		seameter.progressbar->set_min(0);
+		seameter.progressbar->set_value(seameter.value);
 	}
 
-	void update(int val) {
-		ASSERTNN(seameter)
-		seameter->set_value(std::clamp(val, 0, param.max()));
+	bool increment() {
+		ASSERTNN(seameter.progressbar)
+		seameter.value = std::min(++seameter.value, param.seameter.max());
+		seameter.progressbar->set_value(seameter.value);
+		return seameter.value == param.seameter.max();
+	}
+
+    // returns true when seameter is 0
+	bool decrement() {
+		ASSERTNN(seameter.progressbar)
+		seameter.value = std::max(--seameter.value, 0);
+		seameter.progressbar->set_value(seameter.value);
+		return seameter.value == 0;
 	}
 };
