@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://hu560y6tkq1"]
+
+[ext_resource type="Theme" uid="uid://dk3g6ggt4e1d2" path="res://gui/themes/seameter.tres" id="1_lsvb5"]
+
+[node name="Panel" type="Panel"]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate = false
+localize_numeral_system = false
+mouse_force_pass_scroll_events = false
+theme = ExtResource("1_lsvb5")
