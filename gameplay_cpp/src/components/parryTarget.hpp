@@ -76,6 +76,11 @@ public:
 		ASSERTNN(m_areaPtr)
 		return m_areaPtr->get_global_position();
 	}
+
+	godot::RID getRID() const {
+		ASSERTNN(m_areaPtr)
+		return m_areaPtr->get_rid();
+	}
 };
 
 // VARIANT_ENUM_CAST(ComponentParryTarget::EParryTargetTag)

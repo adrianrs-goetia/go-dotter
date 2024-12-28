@@ -57,9 +57,10 @@ public:
 		}
 		for (int i = 0; i < contactCount; i++) {
 			auto normal = state->get_contact_local_normal(i);
-			// if (utils::projectileCollision(state->get_contact_collider_object(i))) {
+			auto object = state->get_contact_collider_object(i);
+
 			// Check type of object collision
-			if (auto* projectile = godot::Object::cast_to<Projectile>(state->get_contact_collider_object(i))) {
+			if (auto* projectile = godot::Object::cast_to<Projectile>(object)) {
 				_projectileCollision(context, *projectile);
 			}
 
@@ -139,10 +140,14 @@ private:
 
 	void _projectileCollision(Context& c, Projectile& projectile) {
 		projectile.handleExternalEvent(EventPlayerCollision{});
-		const bool isdead = c.gui->get<Seameter>().decrement();
-		if (isdead) {
-			LOG(WARN, "Player has OFFICIALLY died")
-			return;
+
+		// Safety check to avoid dying from projectiles we recently parried
+		if (!c.parry->hasRecentlyParried(projectile.getCompParry().getRID())) {
+			const bool isdead = c.gui->get<Seameter>().decrement();
+			if (isdead) {
+				LOG(WARN, "Player has OFFICIALLY died")
+				return;
+			}
 		}
 	}
 };

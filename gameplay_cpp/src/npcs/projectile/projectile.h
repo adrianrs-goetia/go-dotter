@@ -54,4 +54,9 @@ public:
 	}
 
 	void onTimeout();
+
+	ComponentParryTarget& getCompParry() const {
+		ASSERTNN(m_parryTargetComp)
+		return *m_parryTargetComp;
+	}
 };

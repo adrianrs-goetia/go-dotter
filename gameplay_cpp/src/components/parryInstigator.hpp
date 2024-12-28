@@ -121,22 +121,23 @@ public:
 		const Vector3 instigatorPosition = m_area->get_global_position();
 
 		auto it = m_inRangeParryTargets.begin();
-		auto target = it;
+		auto targetIt = it;
 		Vector3 closest = it->second.getPosition();
 
 		for (; it != m_inRangeParryTargets.end(); it++) {
 			auto& [_, parrytarget] = *it;
 			if (Vector3(instigatorPosition - parrytarget.getPosition()).length_squared() < closest.length_squared()) {
 				closest = parrytarget.getPosition();
-				target = it;
+				targetIt = it;
 			}
 		}
 
-		// Remove from map to avoid potentially invoking onParried twice on a target
-		auto t = m_inRangeParryTargets.extract(target);
-		EventParry event{ getPosition(), t.mapped().getPosition(), std::move(params) };
-		m_lastParryContact = t.mapped().onParried({ event });
-		m_recentlyParried.push(t.key());
+		// Remove from map to avoid potentially invoking onParried twice on a targetIt
+		auto target = m_inRangeParryTargets.extract(targetIt);
+		EventParry event{ getPosition(), target.mapped().getPosition(), std::move(params) };
+		m_lastParryContact = target.mapped().onParried({ event });
+		m_recentlyParried.push(
+			target.key()); // should push additional RIDs? An object will have multiple area collisions...
 
 		return std::move(event);
 	}
@@ -164,5 +165,9 @@ public:
 		auto* target = getLastParryContactAssert();
 		const godot::Vector3 dir(target->get_global_position() - get_global_position());
 		return godot::Vector3(dir.x, 0.0, dir.z).normalized();
+	}
+
+	bool hasRecentlyParried(godot::RID rid) {
+		return m_recentlyParried.contains(rid);
 	}
 };
