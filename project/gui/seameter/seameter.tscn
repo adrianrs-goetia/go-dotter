@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0c5br751icv0"]
+
+[ext_resource type="Theme" uid="uid://dk3g6ggt4e1d2" path="res://gui/themes/seameter.tres" id="1_nvdit"]
+[ext_resource type="PackedScene" uid="uid://hu560y6tkq1" path="res://gui/seameter/divider.tscn" id="1_pc6r6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2f1hi"]
+
+[node name="Seameter" type="Seameter"]
+PosY = 4.0
+Size = Vector2(2.18, 35)
+BarSlider = ExtResource("1_pc6r6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+material = SubResource("ShaderMaterial_2f1hi")
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -129.5
+offset_top = -200.0
+offset_right = 129.5
+offset_bottom = -173.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_nvdit")
+max_value = 5.0
+step = 1.0
+value = 1.0
+rounded = true
+show_percentage = false

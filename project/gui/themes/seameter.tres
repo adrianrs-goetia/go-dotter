@@ -3,6 +3,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mluny"]
 bg_color = Color(0.0940047, 0.10286, 0.0404935, 1)
 corner_radius_top_left = 2
+corner_radius_bottom_right = 2
 anti_aliasing_size = 0.01
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_begyv"]

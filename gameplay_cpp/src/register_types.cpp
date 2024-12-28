@@ -4,7 +4,7 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
-#include <character/playerGui.hpp>
+#include <character/gui/playerGui.hpp>
 
 #include <gameplayscenes/billboard.hpp>
 #include <gameplayscenes/stairs.hpp>
@@ -37,7 +37,10 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<CameraPivot>();
 	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<PlayerNode>();
+	
+	// GUI
 	godot::ClassDB::register_class<PlayerGui>();
+	godot::ClassDB::register_class<Seameter>();
 
 	// Managers
 	godot::ClassDB::register_class<InputManager>();

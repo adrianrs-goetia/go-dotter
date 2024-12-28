@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../utils/circularbuffer.h"
-#include <character/playerGui.hpp>
+#include <character/gui/playerGui.hpp>
 #include <configparams.hpp>
 #include <core/core.hpp>
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
