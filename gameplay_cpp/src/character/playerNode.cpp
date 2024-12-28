@@ -1,8 +1,8 @@
 #include "playerNode.h"
 
-#include <character/playerGui.hpp>
 #include <character/cameraPivot.h>
 #include <character/fsm/fsm.hpp>
+#include <character/gui/playerGui.hpp>
 
 #include <managers/inputManager.h>
 #include <components/weapon.hpp>
@@ -37,9 +37,7 @@ using namespace godot;
 
 Transform3D PlayerNode::startTransform = {};
 
-void PlayerNode::_bind_methods() {
-	BIND_METHOD(PlayerNode, setupGui)
-}
+void PlayerNode::_bind_methods() {}
 
 void PlayerNode::_notification(int what) {
 	switch (what) {
@@ -70,8 +68,6 @@ void PlayerNode::_enter_tree() {
 	}
 
 	RETURN_IF_EDITOR(void())
-
-	call_deferred("setupGui");
 
 	PlayerNode::startTransform = get_global_transform();
 
@@ -162,13 +158,4 @@ void PlayerNode::_input(const Ref<InputEvent>& p_event) {
 void PlayerNode::_integrate_forces(PhysicsDirectBodyState3D* state) {
 	ASSERTNN(m_fsm)
 	m_fsm->integrateForces(state);
-}
-
-void PlayerNode::setupGui() {
-	auto* seameter = get_node<godot::ProgressBar>("PlayerGui/Seameter/ProgressBar");
-	ASSERTNN(seameter)
-	seameter->set_step(1);
-	seameter->set_max(ConfigParam::Player::Seameter::max());
-	seameter->set_min(0);
-	seameter->set_value(ConfigParam::Player::Seameter::base());
 }

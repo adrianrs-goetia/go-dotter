@@ -139,7 +139,7 @@ private:
 
 	void _projectileCollision(Context& c, Projectile& projectile) {
 		projectile.handleExternalEvent(EventPlayerCollision{});
-		const bool isdead = c.gui->decrement();
+		const bool isdead = c.gui->get<Seameter>().decrement();
 		if (isdead) {
 			LOG(WARN, "Player has OFFICIALLY died")
 			return;

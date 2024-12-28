@@ -1,45 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://cetcuoaks817f"]
+[gd_scene load_steps=2 format=3 uid="uid://cetcuoaks817f"]
 
-[ext_resource type="Theme" uid="uid://dk3g6ggt4e1d2" path="res://gui/themes/seameter.tres" id="1_3e7l4"]
-[ext_resource type="PackedScene" uid="uid://hu560y6tkq1" path="res://gui/helpers/progressbar_dvider.tscn" id="1_wtoxm"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2f1hi"]
+[ext_resource type="PackedScene" uid="uid://b0c5br751icv0" path="res://gui/seameter/seameter.tscn" id="1_itqe4"]
 
 [node name="PlayerGui" type="PlayerGui"]
-MaxNum = 6
-Num = 2
-PosY = 5.0
-Size = Vector2(3.38, 24.26)
-BarSlider = ExtResource("1_wtoxm")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Seameter" type="Control" parent="."]
+[node name="Seameter" parent="." instance=ExtResource("1_itqe4")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="Seameter"]
-material = SubResource("ShaderMaterial_2f1hi")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 400.0
-offset_top = 500.0
-offset_right = -400.0
-offset_bottom = -280.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("1_3e7l4")
-max_value = 6.0
-step = 1.0
-value = 2.0
-rounded = true
-show_percentage = false

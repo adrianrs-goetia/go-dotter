@@ -104,7 +104,7 @@ public:
 		const auto lift = isOnFloor ? param.onground.lift() : param.inair.lift();
 		// Check if successful parry
 		if (const auto pi = context.parry->activateParry(EventParry::Params{ parryDirection, length, lift })) {
-			context.gui->increment();
+			context.gui->get<Seameter>().increment();
 
 			if (!isOnFloor) {
 				auto impulse = pi.value().params.direction * param.inair.impulse.xz();
