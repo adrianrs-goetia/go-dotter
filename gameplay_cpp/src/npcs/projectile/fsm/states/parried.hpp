@@ -12,6 +12,7 @@ class Parried : public BaseState {
 
 private:
 	uint32_t enteredCollisionLayers = 0;
+	Timestamp entertime;
 
 public:
 	VState getType() const override {
@@ -19,6 +20,7 @@ public:
 	}
 
 	VState enter(Context& context) override {
+		entertime.setTimestamp();
 		enteredCollisionLayers = context.owner->get_collision_layer();
 		// const auto newCollisionLayers = collisionflags::staticWorld | collisionflags::attackTarget;
 		const auto newCollisionLayers = collisionflags::attackTarget;
@@ -56,7 +58,8 @@ public:
 	}
 
 	VState physicsProcess(Context& context, float delta) override {
-		if (context.owner->isOnGround()) {
+		if (!entertime.timestampWithinTimeframe(0.4f) // This anti death timer could be in config
+			&& context.owner->isOnGround()) {
 			utils::death(context);
 		}
 		return {};
