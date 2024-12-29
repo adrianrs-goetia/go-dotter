@@ -17,6 +17,7 @@ class Fsm;
 using namespace godot;
 
 class CameraPivot;
+class ComponentWeapon;
 class ComponentAnimation;
 class ComponentGrappleTarget;
 class ComponentParryInstigator;
@@ -28,6 +29,7 @@ class PlayerNode : public RigidBody3D {
 public:
 	fsm::player::Fsm* m_fsm = nullptr;
 	CameraPivot* m_camerapivot = nullptr;
+	ComponentWeapon* m_weaponComponent = nullptr;
 	ComponentAnimation* m_animComponent = nullptr;
 	ComponentParryInstigator* m_parryComponent = nullptr;
 	std::vector<ComponentGrappleTarget*> m_inRangeGrapplenodes;

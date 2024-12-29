@@ -5,6 +5,7 @@
 #include <character/fsm/fsm.hpp>
 
 #include <managers/inputManager.h>
+#include <components/weapon.hpp>
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/grappleInstigator.hpp>
@@ -75,6 +76,7 @@ void PlayerNode::_enter_tree() {
 	PlayerNode::startTransform = get_global_transform();
 
 	auto* input = InputManager::get(*this);
+	m_weaponComponent = getComponentOfNode<ComponentWeapon>(this);
 	m_animComponent = getComponentOfNode<ComponentAnimation>(this);
 	m_parryComponent = getComponentOfNode<ComponentParryInstigator>(this);
 	auto* attackComponent = getComponentOfNode<ComponentAttackInstigator>(this);
@@ -88,6 +90,7 @@ void PlayerNode::_enter_tree() {
 	m_camerapivot = get_node<CameraPivot>(nodePaths::cameraPivot);
 
 	ASSERTNN(input)
+	ASSERTNN(m_weaponComponent)
 	ASSERTNN(m_parryComponent)
 	ASSERTNN(m_camerapivot)
 	ASSERTNN(m_animComponent)
@@ -98,6 +101,7 @@ void PlayerNode::_enter_tree() {
 	ASSERTNN(gui)
 
 	stateContext.owner = this;
+	stateContext.weapon = m_weaponComponent;
 	stateContext.attack = attackComponent;
 	stateContext.anim = m_animComponent;
 	stateContext.input = input;

@@ -43,6 +43,7 @@ public:
 	}
 
 	TState enter(Context& context) override {
+		context.weapon->enableTrail(); 
 		auto previousState = context.states->get(1);
 		std::visit(
 			overloaded{
@@ -71,6 +72,7 @@ public:
 	}
 
 	TState exit(Context& context) override {
+		context.weapon->disableTrail(); 
 		context.anim->dontParry();
 		m_exitTimestamp.setTimestamp();
 		return {};

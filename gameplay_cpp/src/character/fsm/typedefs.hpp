@@ -7,6 +7,7 @@
 #include <godot_cpp/classes/physics_direct_body_state3d.hpp>
 
 class ComponentAnimation;
+class ComponentWeapon;
 class ComponentAttackInstigator;
 class ComponentGrappleInstigator;
 class ComponentParryInstigator;
@@ -97,6 +98,7 @@ inline void printStates(CircularBuffer<TState>* states) {
 struct Context {
 	godot::RigidBody3D* owner = nullptr;
 	ComponentAttackInstigator* attack = nullptr;
+	ComponentWeapon* weapon = nullptr;
 	ComponentAnimation* anim = nullptr;
 	ComponentGrappleInstigator* grapple = nullptr;
 	InputManager* input = nullptr;

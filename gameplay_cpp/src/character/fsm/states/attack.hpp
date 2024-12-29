@@ -6,6 +6,7 @@
 #include <configparams.hpp>
 
 #include <components/animation.hpp>
+#include <components/weapon.hpp>
 #include <components/attackInstigator.hpp>
 
 #include <debugdraw3d/api.h>
@@ -36,6 +37,7 @@ public:
 
 	TState enter(Context& context) override {
 		context.anim->doAttack();
+		context.weapon->enableTrail();
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
 		context.attack->setAttackStrength(param.strength());
@@ -44,6 +46,7 @@ public:
 
 	TState exit(Context& context) override {
 		context.anim->dontAttack();
+		context.weapon->disableTrail();
 		m_exitTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(false);
 		context.anim->playAnimation(ComponentAnimation::EAnim::NONE);
