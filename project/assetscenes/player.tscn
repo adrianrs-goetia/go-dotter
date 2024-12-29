@@ -1,13 +1,13 @@
-[gd_scene load_steps=72 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=74 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
 [ext_resource type="PackedScene" uid="uid://krhc1xnksqgx" path="res://models/weapons/scissors_vintage.blend" id="2_6ra04"]
-[ext_resource type="PackedScene" uid="uid://cetcuoaks817f" path="res://gui/player_gui.tscn" id="3_32mh5"]
 [ext_resource type="Shader" path="res://addons/GPUTrail/shaders/trail.gdshader" id="3_0h5hg"]
+[ext_resource type="PackedScene" uid="uid://cetcuoaks817f" path="res://gui/player_gui.tscn" id="3_32mh5"]
 [ext_resource type="Shader" path="res://addons/GPUTrail/shaders/trail_draw_pass.gdshader" id="4_mce0c"]
 [ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail/defaults/texture.tres" id="5_mnavn"]
-[ext_resource type="Texture2D" uid="uid://ct31fhxvcragr" path="res://addons/GPUTrail/defaults/curve.tres" id="6_4vv1y"]
+[ext_resource type="Curve" uid="uid://heoulagsihcy" path="res://curve/attackAnimationCurve.tres" id="6_wu6nb"]
 [ext_resource type="Script" path="res://addons/GPUTrail/GPUTrail3D.gd" id="7_iov6s"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hjgm0"]
@@ -15,8 +15,15 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
 size = Vector3(2.08374, 1.7627, 0.460938)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
+radius = 0.279674
+height = 2.0324
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ji6i6"]
 shader = ExtResource("3_0h5hg")
+
+[sub_resource type="CurveTexture" id="CurveTexture_2fsuk"]
+curve = ExtResource("6_wu6nb")
 
 [sub_resource type="Gradient" id="Gradient_gvtgl"]
 interpolation_mode = 1
@@ -44,17 +51,13 @@ shader_parameter/emmission_transform = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 
 shader_parameter/flags = 42
 shader_parameter/tex = SubResource("NoiseTexture2D_ngujf")
 shader_parameter/color_ramp = ExtResource("5_mnavn")
-shader_parameter/curve = ExtResource("6_4vv1y")
+shader_parameter/curve = SubResource("CurveTexture_2fsuk")
 
 [sub_resource type="QuadMesh" id="QuadMesh_ygeoi"]
 lightmap_size_hint = Vector2i(7, 7)
 material = SubResource("ShaderMaterial_bksix")
 subdivide_width = 2
 subdivide_depth = 2
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
-radius = 0.279674
-height = 2.0324
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5wjqk"]
 sky_top_color = Color(0.573493, 0.313666, 0.329186, 1)
@@ -348,20 +351,26 @@ collision_mask = 16
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00803697)
 shape = SubResource("BoxShape3D_5oxfn")
 
-[node name="Weapon" type="Node3D" parent="meshAnchor"]
+[node name="Capsule" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
+shape = SubResource("CapsuleShape3D_xmldd")
 
-[node name="BoneAttachment3D" type="BoneAttachment3D" parent="meshAnchor/Weapon"]
-transform = Transform3D(0.583086, -0.123432, 0.367117, -0.057379, -0.683709, -0.138742, 0.383038, 0.0854768, -0.579634, -0.335079, 0.761361, 0.0308207)
+[node name="ComponentWeapon" type="ComponentWeapon" parent="."]
+RootWielderNode = NodePath("../meshAnchor/character")
+WeaponNode = NodePath("scissors_vintage")
+TrailNode = NodePath("scissors_vintage/TrailWeapon")
+transform = Transform3D(0.394366, 0.0641302, 0.574772, 0.522334, 0.259158, -0.387303, -0.248278, 0.647089, 0.0981514, -0.264538, 1.07008, 0.601524)
 bone_name = "mixamorig_RightHand"
 bone_idx = 34
 use_external_skeleton = true
-external_skeleton = NodePath("../../character/Armature/Skeleton3D")
+external_skeleton = NodePath("../meshAnchor/character/Armature/Skeleton3D")
 
-[node name="scissors_vintage" parent="meshAnchor/Weapon/BoneAttachment3D" instance=ExtResource("2_6ra04")]
+[node name="scissors_vintage" parent="ComponentWeapon" instance=ExtResource("2_6ra04")]
 transform = Transform3D(0.292819, 0.158548, 0.727406, 0.713494, 0.163412, -0.322836, -0.212565, 0.766915, -0.0815917, 0.00493367, 0.457184, -0.0350523)
 
-[node name="TrailWeapon" type="GPUParticles3D" parent="meshAnchor/Weapon/BoneAttachment3D/scissors_vintage"]
-transform = Transform3D(0.795964, 0.0802091, -0.00180478, -0.00295074, 0.0112807, -0.799913, -0.0801748, 0.795887, 0.0115197, 0.504975, -0.0202084, 2.60008)
+[node name="TrailWeapon" type="GPUParticles3D" parent="ComponentWeapon/scissors_vintage"]
+transform = Transform3D(0.988842, 0.0870368, -0.120881, -0.122277, 0.0108889, -0.992434, -0.0850613, 0.996144, 0.0214097, 0.523024, -0.0133493, 2.57192)
+top_level = true
 amount = 100
 lifetime = 100.0
 explosiveness = 1.0
@@ -372,13 +381,9 @@ script = ExtResource("7_iov6s")
 length_seconds = 0.5
 texture = SubResource("NoiseTexture2D_ngujf")
 color_ramp = ExtResource("5_mnavn")
-curve = ExtResource("6_4vv1y")
+curve = SubResource("CurveTexture_2fsuk")
 use_red_as_alpha = true
 _defaults_have_been_set = true
-
-[node name="Capsule" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00985, 0)
-shape = SubResource("CapsuleShape3D_xmldd")
 
 [node name="CameraPivot" type="CameraPivot" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
