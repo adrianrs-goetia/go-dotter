@@ -31,7 +31,6 @@ private:
 	fsm::projectile::Fsm* m_fsm = nullptr;
 
 	// godot::AudioStreamPlayer3D* m_audio = nullptr; // todo, audiocomponent for streaming multiple sounds from
-	// context?
 	// godot::GPUParticles3D* m_particles = nullptr; // todo, same as above?
 	ComponentParryTarget* m_parryTargetComp = nullptr;
 	ComponentAttackTarget* m_attackTargetComp = nullptr;

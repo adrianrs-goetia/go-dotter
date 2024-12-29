@@ -15,8 +15,6 @@
 
 #include <configparams.hpp>
 
-#define CONFIG_PREFIX "npcs", "projectile"
-
 using namespace godot;
 
 void Projectile::_bind_methods() {
@@ -25,7 +23,6 @@ void Projectile::_bind_methods() {
 
 void Projectile::_enter_tree() {
 	RETURN_IF_EDITOR(void())
-	//
 
 	// Required for PhysicsDirectBodyState3D to register contacts to be used within _integrate_forces
 	set_contact_monitor(true);
