@@ -16,6 +16,7 @@
 #include <components/grappleTarget.hpp>
 #include <components/parryInstigator.hpp>
 #include <components/parryTarget.hpp>
+#include <components/weapon.hpp>
 
 #include <mainNode.h>
 #include <managers/inputManager.h>
@@ -53,6 +54,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<ComponentGrappleTarget>();
 	godot::ClassDB::register_class<ComponentParryInstigator>();
 	godot::ClassDB::register_class<ComponentParryTarget>();
+	godot::ClassDB::register_class<ComponentWeapon>();
 
 	// npcs
 	godot::ClassDB::register_class<GrappleNode>();
