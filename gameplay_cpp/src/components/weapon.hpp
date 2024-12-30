@@ -54,6 +54,7 @@ public:
 			LOG(DEBUG, "GOT WEILDER IN ENTER TREE: ", m_pathWielderNode)
 			auto* skelly = m_wielder.value()->get_node<godot::Skeleton3D>("Armature/Skeleton3D");
 			set_external_skeleton(skelly->get_path());
+			set_bone_idx(34);
 		} else { LOG(DEBUG, "WIELDER PATH EMPTY ", m_pathWielderNode) }
 
 		if (!m_pathWeaponNode.is_empty()) {
