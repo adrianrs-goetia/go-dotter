@@ -162,6 +162,7 @@ inline static auto cooldown() { return GETPARAMGLOBAL_F("player", "attack", "coo
 inline static auto timeout() { return GETPARAMGLOBAL_F("player", "attack", "timeout"); }
 inline static auto strength() { return GETPARAMGLOBAL_F("player", "attack", "strength"); }
 inline static auto tmpRotation() { return GETPARAMGLOBAL_F("player", "attack", "tmpRotation"); }
+inline static auto upAngle() { return GETPARAMGLOBAL_F("player", "attack", "upAngle"); }
 }
 //['player']
   attack;

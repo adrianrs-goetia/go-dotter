@@ -37,8 +37,15 @@ public:
 			overloaded{
 				[&](EventAttack event) -> VState
 				{
-					const auto dir = event.getDirection();
+					const auto dir = event.getDir2DRotated();
 					context.owner->set_linear_velocity(dir * event.attackStrength);
+					// {
+					// 	auto pos = context.owner->get_global_position();
+					// 	DebugDraw::Line(pos, pos + (event.getDirection() * 3.f), Color(), 1.f);
+					// 	DebugDraw::Line(pos, pos + (event.getDirection2D() * 3.f), Color(1,1,1), 1.f);
+					// 	DebugDraw::Line(pos, pos + (event.getDirectionAverage() * 3.f), Color(1,0,0), 1.f);
+					// 	DebugDraw::Line(pos, pos + (event.getDir2DRotated() * 3.f), Color(0,0,1), 1.f);
+					// }
 					return TPostParryLaunched{};
 				},
 				[&](EventParryJump) -> VState

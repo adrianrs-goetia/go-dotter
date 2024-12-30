@@ -6,8 +6,8 @@
 #include <configparams.hpp>
 
 #include <components/animation.hpp>
-#include <components/weapon.hpp>
 #include <components/attackInstigator.hpp>
+#include <components/weapon.hpp>
 
 #include <debugdraw3d/api.h>
 
@@ -41,6 +41,7 @@ public:
 		m_enterTimestamp.setTimestamp();
 		context.attack->setComponentEnabled(true);
 		context.attack->setAttackStrength(param.strength());
+		context.attack->setAttackUpAngle(param.upAngle());
 		return {};
 	}
 

@@ -69,6 +69,9 @@ public:
 			target->onAction({ EventParryJump() });
 			return TParryJumpState();
 		}
+		if (context.input->isActionPressed(EInputAction::ATTACK)) {
+			return TAttackState{};
+		}
 		return {};
 	}
 

@@ -68,7 +68,7 @@
                 },
                 "inair": {
                     "length": 1.0,
-                    "lift": 4.0,
+                    "lift": 5.5,
                     "impulse": { // impulse towards parried target
                         "xz": 2.0,
                         "y": 6.0
@@ -90,10 +90,11 @@
             }
         },
         "attack": {
-            "cooldown": 1.2,
-            "timeout": 1.2,
-            "strength": 5.3,
-            "tmpRotation": 35.0
+            "cooldown": 0.4, // todo: cooldown based on 
+            "timeout": 0.6,
+            "strength": 15.3,
+            "tmpRotation": 35.0,
+            "upAngle": -20.0
         }
     },
     "npcs": {
