@@ -22,7 +22,6 @@ public:
 	static void _bind_methods() {}
 
 	void _enter_tree() override {
-		// Create initial vertical box
 		vbox = getComponentOfNode<godot::VBoxContainer>(this);
 		if (!vbox) {
 			vbox = memnew(godot::VBoxContainer);
@@ -49,10 +48,14 @@ public:
 
 			button->set_text(f);
 			button->setOnPressed( // do we want to do scene transitions here or through some management system??
-				[path = levelspath, tree = get_tree(), f]
+				[button = button, path = levelspath, tree = get_tree(), f]
 				{
+					ASSERTNN(button)
+					ASSERTNN(tree)
 					LOG(WARN, "change_scene_to_file: ", path, f)
-					tree->change_scene_to_file(godot::String(path) + f);
+					button->release_focus();
+					tree->call_deferred("change_scene_to_file", godot::String(path) + f);
+					tree->set_pause(false);
 				});
 
 			vbox->call_deferred("add_child", button);

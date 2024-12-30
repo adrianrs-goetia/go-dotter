@@ -133,9 +133,6 @@ public:
 
 	std::list<InputAction> m_inputActions;
 
-private:
-	void exitGame();
-
 public:
 	InputManager();
 

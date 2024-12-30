@@ -6,6 +6,7 @@
 #include <character/playerNode.h>
 #include <character/gui/utils/button.hpp>
 #include <character/gui/playerGui.hpp>
+#include <character/gui/pausemenu.hpp>
 #include <character/gui/levelselect.hpp>
 
 #include <gameplayscenes/billboard.hpp>
@@ -43,6 +44,7 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	
 	// GUI
 	godot::ClassDB::register_class<GuiButton>();
+	godot::ClassDB::register_class<PauseMenu>();
 	godot::ClassDB::register_class<PlayerGui>();
 	godot::ClassDB::register_class<Seameter>();
 	godot::ClassDB::register_class<LevelSelect>();

@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cetcuoaks817f"]
+[gd_scene load_steps=2 format=3 uid="uid://cetcuoaks817f"]
 
 [ext_resource type="PackedScene" uid="uid://b0c5br751icv0" path="res://gui/seameter/seameter.tscn" id="1_itqe4"]
-[ext_resource type="PackedScene" uid="uid://bj7ad2uvtw8qd" path="res://gui/pausemenu.tscn" id="2_nymmh"]
 
 [node name="PlayerGui" type="PlayerGui"]
 anchors_preset = 15
@@ -9,9 +8,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
 
 [node name="Seameter" parent="." instance=ExtResource("1_itqe4")]
 layout_mode = 1
-
-[node name="Pausemenu" parent="." instance=ExtResource("2_nymmh")]
-layout_mode = 1
+mouse_filter = 2
