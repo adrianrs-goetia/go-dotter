@@ -44,7 +44,7 @@ public:
 	}
 
 	void activate() {
-		LOG(WARN, "PAUSE_GAME")
+		LOG(DEBUG, "PAUSE_GAME")
 		active = true;
 		set_visible(true);
 		set_z_index(godot::RenderingServer::CANVAS_ITEM_Z_MAX); // Always draw this on top of everything else
@@ -55,7 +55,7 @@ public:
 	}
 
 	void deactivate() {
-		LOG(INFO, "UNPAUSE_GAME")
+		LOG(DEBUG, "UNPAUSE_GAME")
 		active = false;
 		set_visible(false);
 

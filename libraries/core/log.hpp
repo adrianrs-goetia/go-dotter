@@ -64,10 +64,13 @@ inline std::string __toString(auto t) {
 	if constexpr (std::is_same_v<T, const char*>) {
 		return std::string(t);
 	}
-	if constexpr (std::is_same_v<T, bool> || std::is_same_v<T, float> || std::is_same_v<T, double>
-				  || std::is_same_v<T, int8_t> || std::is_same_v<T, int16_t> || std::is_same_v<T, int32_t>
-				  || std::is_same_v<T, int64_t> || std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t>
-				  || std::is_same_v<T, uint32_t> || std::is_same_v<T, uint64_t>) {
+	if constexpr (std::is_same_v<T, bool>) {
+		return t ? "true" : "false";
+	}
+	if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, int8_t>
+				  || std::is_same_v<T, int16_t> || std::is_same_v<T, int32_t> || std::is_same_v<T, int64_t>
+				  || std::is_same_v<T, uint8_t> || std::is_same_v<T, uint16_t> || std::is_same_v<T, uint32_t>
+				  || std::is_same_v<T, uint64_t>) {
 		return std::to_string(t);
 	}
 	else if constexpr (std::is_same_v<T, godot::String>) {
