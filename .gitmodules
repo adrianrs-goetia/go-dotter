@@ -10,6 +10,3 @@
 [submodule "Godot-SFT"]
 	path = Godot-SFT
 	url = https://github.com/dementive/Godot-SFT.git
-[submodule "project/addons/GPUTrail"]
-	path = project/addons/GPUTrail
-	url = https://github.com/celyk/GPUTrail
