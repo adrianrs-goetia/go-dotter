@@ -18,7 +18,6 @@
 struct ApplicationParam {
 struct Input{
 inline static auto overwriteMode() { return GETPARAMGLOBAL_I("input", "overwriteMode"); }
-inline static auto mouselock() { return GETPARAMGLOBAL_B("input", "mouselock"); }
 }
 //[]
 input;

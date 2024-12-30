@@ -1,7 +1,6 @@
 {
     "input": {
-        "overwriteMode": -1,
-        "mouselock": false
+        "overwriteMode": -1
     },
     "hardResetTreeOnRestart": false
 }

@@ -6,8 +6,5 @@
 process_mode = 3
 process_priority = 1
 process_physics_priority = 1
-process_thread_group = 1
-process_thread_group_order = 0
-process_thread_messages = 0
 
 [node name="Pausemenu" parent="." instance=ExtResource("1_ypnb4")]
