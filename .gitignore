@@ -7,6 +7,9 @@
 *.blend2
 *.blend3
 
+# Personal trials
+tmp/
+
 # Python virtual environment
 venv/
 # SCons
