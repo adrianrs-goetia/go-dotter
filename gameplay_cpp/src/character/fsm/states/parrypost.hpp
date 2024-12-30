@@ -45,15 +45,16 @@ public:
 			state->set_linear_velocity(godot::Vector3());
 		}
 		else {
-			context.physics.movement.y -=
-				ConfigParam::gravityConstant() * param.inair.gravityScaleOverride() * state->get_step();
+			context.physics.movement.y
+				-= ConfigParam::gravityConstant() * param.inair.gravityScaleOverride() * state->get_step();
 			state->set_linear_velocity(context.physics.movement);
 		}
 
 		if (_passiveExit(context)) {
-			TState ret;
-			utils::isOnFloor(*state) ? ret = TOnGroundState() : ret = TInAirState();
-			return ret;
+			if (utils::isOnFloor(*state))
+				return TOnGroundState();
+			else
+				return TInAirState();
 		}
 
 		const godot::Vector3 dir = context.parry->getLastParryTargetDir2D();
