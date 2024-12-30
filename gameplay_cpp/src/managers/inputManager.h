@@ -133,16 +133,13 @@ public:
 
 	std::list<InputAction> m_inputActions;
 
-private:
-	void exitGame();
-
 public:
 	InputManager();
 
 	static void _bind_methods();
 
-	void _notification(int what);
 	void _enter_tree() override;
+	void _notification(int what);
 	void _physics_process(double delta);
 	void _input(const godot::Ref<godot::InputEvent>& p_event);
 	void _unhandled_input(const godot::Ref<godot::InputEvent>& p_event);

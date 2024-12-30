@@ -16,20 +16,15 @@ using namespace godot;
 
 static constexpr float MAX_INPUT_LIFETIME = 0.1f;
 
-void InputManager::exitGame() {
-	if (SceneTree* tree = get_tree()) {
-		LOG(INFO, "tree->quit(0)")
-		tree->quit(0);
-	}
-}
-
 InputManager::InputManager() {
 	set_process(true);
 	set_process_internal(true); // Is autoloaded into scene, but this *should* ensure it always runs during editor
 }
 
-void InputManager::_bind_methods() {
-	ClassDB::bind_method(godot::D_METHOD("exitGame"), &InputManager::exitGame);
+void InputManager::_bind_methods() {}
+
+void InputManager::_enter_tree() {
+	set_name(get_class());
 }
 
 void InputManager::_physics_process(double delta) {
@@ -86,34 +81,19 @@ void InputManager::_physics_process(double delta) {
 }
 
 void InputManager::_notification(int what) {
-	// LOG(INFO, "Notification", (int64_t)what)
 	switch (what) {
 		case NOTIFICATION_WM_CLOSE_REQUEST: {
 			LOG(INFO, "InputManager WM_CLOSE_REQUEST")
-			// exitGame();
 			break;
 		}
-
 		default:
 			break;
 	}
 }
 
-void InputManager::_enter_tree() {
-	set_name(get_class());
-
-	RETURN_IF_EDITOR(void())
-}
-
 void InputManager::_input(const Ref<InputEvent>& p_event) {
 	godot::Input* input = Input::get_singleton();
-
 	ASSERTNN(DisplayServer::get_singleton())
-	if (DisplayServer::get_singleton()->window_is_focused()) {
-		const bool mouselock = ApplicationParam::Input::mouselock();
-		mouselock ? input->set_mouse_mode(Input::MOUSE_MODE_CAPTURED)
-				  : input->set_mouse_mode(Input::MOUSE_MODE_VISIBLE);
-	}
 
 	const auto overwriteMode = ApplicationParam::Input::overwriteMode();
 	if (overwriteMode != static_cast<int>(EInputMode::NONE)) {
@@ -158,8 +138,9 @@ void InputManager::_input(const Ref<InputEvent>& p_event) {
 void InputManager::_unhandled_input(const Ref<InputEvent>& p_event) {
 	RETURN_IF_EDITOR(void())
 	if (p_event->is_action_pressed(InputString::pauseMenu)) {
-		LOG(INFO, "tree notification WM_CLOSE_REQUEST")
-		exitGame();
+		const bool setPause = !get_tree()->is_paused();
+		LOG(DEBUG, "Pause game: ", setPause)
+		get_tree()->set_pause(setPause);
 		return;
 	}
 	else if (p_event->is_action_pressed(InputString::toggleScreenMode)) {

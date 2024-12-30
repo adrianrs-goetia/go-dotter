@@ -4,7 +4,10 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
+#include <character/gui/utils/button.hpp>
 #include <character/gui/playerGui.hpp>
+#include <character/gui/pausemenu.hpp>
+#include <character/gui/levelselect.hpp>
 
 #include <gameplayscenes/billboard.hpp>
 #include <gameplayscenes/stairs.hpp>
@@ -40,8 +43,11 @@ void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	godot::ClassDB::register_class<PlayerNode>();
 	
 	// GUI
+	godot::ClassDB::register_class<GuiButton>();
+	godot::ClassDB::register_class<PauseMenu>();
 	godot::ClassDB::register_class<PlayerGui>();
 	godot::ClassDB::register_class<Seameter>();
+	godot::ClassDB::register_class<LevelSelect>();
 
 	// Managers
 	godot::ClassDB::register_class<InputManager>();

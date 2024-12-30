@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj7ad2uvtw8qd"]
+
+[ext_resource type="Script" path="res://gui/Button.gd" id="1_67ihf"]
+
+[node name="Pausemenu" type="PauseMenu"]
+process_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="ScrollContainer" type="LevelSelect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -182.0
+offset_top = -232.0
+offset_right = 182.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 475.0
+offset_top = 489.0
+offset_right = 723.0
+offset_bottom = 591.0
+text = "Quit"
+script = ExtResource("1_67ihf")
