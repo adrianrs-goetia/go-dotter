@@ -58,11 +58,6 @@ public:
 		const auto delta = state->get_step();
 		state->set_linear_velocity(Vector3());
 
-		DebugDraw::Position(
-			godot::Transform3D(Basis(), godot::Vector3(context.physics.position + godot::Vector3(0, 1, 0))),
-			godot::Color(0.7, 0, 0.5),
-			delta);
-
 		if (!m_enterTimestamp.timestampWithinTimeframe(param.timeout())) {
 			return TOnGroundState();
 		}
