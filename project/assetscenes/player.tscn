@@ -10,10 +10,7 @@
 [ext_resource type="Curve" uid="uid://heoulagsihcy" path="res://curve/attackAnimationCurve.tres" id="6_wu6nb"]
 [ext_resource type="Script" path="res://addons/GPUTrail/GPUTrail3D.gd" id="7_iov6s"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hjgm0"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_5oxfn"]
-size = Vector3(2.08374, 1.7627, 0.460938)
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_l8sdf"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xmldd"]
 radius = 0.279674
@@ -333,7 +330,7 @@ radius = 1.521
 [node name="PlayerNode" type="PlayerNode"]
 collision_layer = 6
 collision_mask = 3
-physics_material_override = SubResource("PhysicsMaterial_hjgm0")
+physics_material_override = SubResource("PhysicsMaterial_l8sdf")
 gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
@@ -357,7 +354,7 @@ transform = Transform3D(0.394366, 0.0641302, 0.574772, 0.522334, 0.259158, -0.38
 bone_name = "mixamorig_RightHand"
 bone_idx = 34
 use_external_skeleton = true
-external_skeleton = NodePath("../meshAnchor/character/Armature/Skeleton3D")
+external_skeleton = NodePath("/root/@EditorNode@17149/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/Armature/Skeleton3D")
 
 [node name="scissors_vintage" parent="ComponentWeapon" instance=ExtResource("2_6ra04")]
 transform = Transform3D(0.292819, 0.158548, 0.727406, 0.713494, 0.163412, -0.322836, -0.212565, 0.766915, -0.0815917, 0.00493367, 0.457184, -0.0350523)
@@ -475,6 +472,7 @@ shape = SubResource("SphereShape3D_en38a")
 [node name="ComponentGrappleInstigator" type="ComponentGrappleInstigator" parent="."]
 ColliderPath = NodePath("../GrappleDetection")
 PullStrength = nan
+Mass = 1.4013e-45
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00901, 0)
 
 [node name="PlayerGui" parent="." instance=ExtResource("3_32mh5")]
