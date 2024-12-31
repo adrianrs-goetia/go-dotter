@@ -5,12 +5,12 @@
 #include <character/gui/playerGui.hpp>
 
 #include <managers/inputManager.h>
-#include <components/weapon.hpp>
 #include <components/animation.hpp>
 #include <components/attackInstigator.hpp>
 #include <components/grappleInstigator.hpp>
 #include <components/grappleTarget.hpp>
 #include <components/parryInstigator.hpp>
+#include <components/weapon.hpp>
 
 #include "../utils/circularbuffer.h"
 #include "fsm/typedefs.hpp"
@@ -21,7 +21,6 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/input_event_action.hpp>
 #include <godot_cpp/classes/input_event_joypad_motion.hpp>
-#include <godot_cpp/classes/physics_material.hpp>
 #include <godot_cpp/classes/progress_bar.hpp>
 #include <godot_cpp/classes/sphere_shape3d.hpp>
 #include <godot_cpp/classes/viewport.hpp>
@@ -61,11 +60,6 @@ void PlayerNode::_enter_tree() {
 	set_contact_monitor(true); // Required for _integrate_forces()
 	set_max_contacts_reported(4);
 	set_can_sleep(false); // _integrate_forces is not invoked once body is sleeping
-	{ // Each state needs to handle the physics material, so we override it here
-		Ref<PhysicsMaterial> mat;
-		mat.instantiate();
-		set_physics_material_override(mat);
-	}
 
 	RETURN_IF_EDITOR(void())
 
@@ -95,6 +89,9 @@ void PlayerNode::_enter_tree() {
 	ASSERTNN(audio)
 	ASSERTNN(particles)
 	ASSERTNN(gui)
+	ASSERT(get_physics_material_override().is_valid(),
+		"PlayerNode is expected to have its physics material overriden") // Each state needs to handle the physics
+																		 // material
 
 	stateContext.owner = this;
 	stateContext.weapon = m_weaponComponent;
