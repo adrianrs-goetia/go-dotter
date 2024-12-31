@@ -11,6 +11,7 @@
 #include <godot_cpp/classes/node3d.hpp>
 
 #include <debugdraw3d/api.h>
+#include <configparams.hpp>
 
 class ComponentAttackInstigator : public NodeComponent {
 	GDCLASS(ComponentAttackInstigator, NodeComponent)
@@ -26,6 +27,7 @@ public:
 private:
 	GS_PATH_IMPL(m_attackColliderPath, ColliderPath)
 	GS_FLOAT_IMPL(m_attackStrength, AttackStrength);
+	GS_FLOAT_IMPL(m_attacUpkAngle, AttackUpAngle);
 
 	godot::Area3D* m_attackCollider = nullptr;
 
@@ -78,8 +80,8 @@ public:
 		ASSERTNN(target);
 
 		if (auto* attackComp = getComponentOfNode<ComponentAttackTarget>(target)) {
-			attackComp->receiveAttack(
-				EventAttack{ get_global_transform(), attackComp->get_global_transform(), getAttackStrength() });
+			attackComp->receiveAttack(EventAttack{
+				get_global_transform(), attackComp->get_global_transform(), getAttackStrength(), getAttackUpAngle() });
 		}
 	}
 
