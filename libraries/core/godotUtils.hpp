@@ -158,9 +158,15 @@ public:                                                                         
 #define S_STRING_IMPL(variableName, functionName, ...) _S_IMPL(variableName, functionName, godot::String, __VA_ARGS__)
 #define GS_STRING_IMPL(variableName, functionName, ...) _GS_IMPL(variableName, functionName, godot::String, __VA_ARGS__)
 
-#define G_RESOURCE_IMPL(variableName , resourceType, functionName, ...) static_assert(std::is_base_of_v<godot::Resource, resourceType>); _G_IMPL(variableName, functionName,   godot::Ref<resourceType>, __VA_ARGS__)
-#define S_RESOURCE_IMPL(variableName , resourceType, functionName, ...) static_assert(std::is_base_of_v<godot::Resource, resourceType>); _S_IMPL(variableName, functionName,   godot::Ref<resourceType>, __VA_ARGS__)
-#define GS_RESOURCE_IMPL(variableName, resourceType, functionName, ...) static_assert(std::is_base_of_v<godot::Resource, resourceType>); _GS_IMPL(variableName, functionName,  godot::Ref<resourceType>, __VA_ARGS__)
+#define G_RESOURCE_IMPL(variableName, resourceType, functionName, ...)                                                 \
+	static_assert(std::is_base_of_v<godot::Resource, resourceType>);                                                   \
+	_G_IMPL(variableName, functionName, godot::Ref<resourceType>, __VA_ARGS__)
+#define S_RESOURCE_IMPL(variableName, resourceType, functionName, ...)                                                 \
+	static_assert(std::is_base_of_v<godot::Resource, resourceType>);                                                   \
+	_S_IMPL(variableName, functionName, godot::Ref<resourceType>, __VA_ARGS__)
+#define GS_RESOURCE_IMPL(variableName, resourceType, functionName, ...)                                                \
+	static_assert(std::is_base_of_v<godot::Resource, resourceType>);                                                   \
+	_GS_IMPL(variableName, functionName, godot::Ref<resourceType>, __VA_ARGS__)
 
 #define G_VECTOR2I_IMPL(variableName, functionName, ...)                                                               \
 	_G_IMPL(variableName, functionName, godot::Vector2i, __VA_ARGS__)
@@ -181,6 +187,18 @@ public:                                                                         
 #define GS_PACKEDSCENE_IMPL(variableName, functionName)                                                                \
 	_GS_IMPL(variableName, functionName, godot::Ref<godot::PackedScene>)
 
+#define G_ENUM_IMPL(variableName, functionName, enumType, ...)                                                         \
+protected:                                                                                                             \
+	enumType variableName __VA_ARGS__;                                                                                 \
+                                                                                                                       \
+public:                                                                                                                \
+	int get##functionName() const {                                                                                    \
+		return static_cast<int>(variableName);                                                                         \
+	}                                                                                                                  \
+	enumType get##functionName##Enum() const {                                                                         \
+		return variableName;                                                                                           \
+	}
+
 #define GS_ENUM_IMPL(variableName, functionName, enumType)                                                             \
 	void set##functionName(int value) {                                                                                \
 		variableName = static_cast<enumType>(value);                                                                   \
@@ -198,6 +216,7 @@ public:                                                                         
 	ADD_PROPERTY(godot::PropertyInfo(godot::Variant::propertyType, TOSTRING(functionName)),                            \
 		TOSTRING(set##functionName),                                                                                   \
 		TOSTRING(get##functionName));
+
 #define METHOD_PROPERTY_ENUM_IMPL(class, functionName, propertyType, enumFields)                                       \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \
@@ -207,6 +226,7 @@ public:                                                                         
 					 enumFields),                                                                                      \
 		TOSTRING(set##functionName),                                                                                   \
 		TOSTRING(get##functionName));
+
 #define METHOD_PROPERTY_PACKEDSCENE_IMPL(class, functionName)                                                          \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(get##functionName)), &class ::get##functionName);             \
 	godot::ClassDB::bind_method(godot::D_METHOD(TOSTRING(set##functionName), "value"), &class ::set##functionName);    \

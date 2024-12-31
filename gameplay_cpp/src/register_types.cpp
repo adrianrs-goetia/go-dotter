@@ -4,10 +4,11 @@
 
 #include <character/cameraPivot.h>
 #include <character/playerNode.h>
-#include <character/gui/utils/button.hpp>
-#include <character/gui/playerGui.hpp>
-#include <character/gui/pausemenu.hpp>
+#include <character/animation/oneShotNode.hpp>
 #include <character/gui/levelselect.hpp>
+#include <character/gui/pausemenu.hpp>
+#include <character/gui/playerGui.hpp>
+#include <character/gui/utils/button.hpp>
 
 #include <gameplayscenes/billboard.hpp>
 #include <gameplayscenes/stairs.hpp>
@@ -32,16 +33,18 @@
 #include <components/baseClasses/grappleBase.hpp>
 #include <core/nodeComponent.hpp>
 
-using namespace godot;
-
 void init_parameter_plugin_module(godot::ModuleInitializationLevel p_level) {
 	if (p_level != godot::ModuleInitializationLevel::MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
 	godot::ClassDB::register_class<CameraPivot>();
 	godot::ClassDB::register_class<MainNode>();
 	godot::ClassDB::register_class<PlayerNode>();
-	
+
+	// Animation
+	godot::ClassDB::register_class<GodotterAnimationNodeOneShot>();
+
 	// GUI
 	godot::ClassDB::register_class<GuiButton>();
 	godot::ClassDB::register_class<PauseMenu>();
