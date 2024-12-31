@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://cyjfpgx2xna18"]
+[gd_scene load_steps=82 format=3 uid="uid://cyjfpgx2xna18"]
 
 [ext_resource type="AudioStream" uid="uid://qhiptgd0vfyw" path="res://sounds/parrySound.wav" id="1_j0ubi"]
 [ext_resource type="PackedScene" uid="uid://b6xqdmaw35rih" path="res://models/character/character.blend" id="1_s8c4i"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://crk6pkb7e5rwc" path="res://addons/GPUTrail/defaults/texture.tres" id="5_mnavn"]
 [ext_resource type="Curve" uid="uid://heoulagsihcy" path="res://curve/attackAnimationCurve.tres" id="6_wu6nb"]
 [ext_resource type="Script" path="res://addons/GPUTrail/GPUTrail3D.gd" id="7_iov6s"]
+[ext_resource type="GodotterAnimationNodeOneShot" uid="uid://c7lqcm13til8o" path="res://testing/godotter_animation_node_one_shot.tres" id="8_2402j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_l8sdf"]
 
@@ -77,8 +78,35 @@ sky = SubResource("Sky_j0wsn")
 [sub_resource type="SphereShape3D" id="SphereShape3D_6du44"]
 radius = 2.89418
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ly1w4"]
+animation = &"attack_horizontal"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xj7yo"]
 animation = &"T-pose"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kcu6x"]
+animation = &"airborne"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jcdkq"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_we2y7"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u07mt"]
+advance_condition = &"in_air"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xc01h"]
+advance_condition = &"on_ground"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4i0tp"]
+states/Start/position = Vector2(220, -90)
+states/airborne/node = SubResource("AnimationNodeAnimation_kcu6x")
+states/airborne/position = Vector2(410, 138)
+states/run/node = SubResource("AnimationNodeAnimation_jcdkq")
+states/run/position = Vector2(410, -90)
+transitions = ["Start", "run", SubResource("AnimationNodeStateMachineTransition_we2y7"), "run", "airborne", SubResource("AnimationNodeStateMachineTransition_u07mt"), "airborne", "run", SubResource("AnimationNodeStateMachineTransition_xc01h")]
+graph_offset = Vector2(-315, -232)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rbhk1"]
 animation = &"attack_horizontal"
@@ -196,8 +224,15 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D:mixamorig_Head", "Armature/Skeleton3D:mixamorig_LeftArm", "Armature/Skeleton3D:mixamorig_LeftForeArm", "Armature/Skeleton3D:mixamorig_LeftHand", "Armature/Skeleton3D:mixamorig_LeftHandIndex1", "Armature/Skeleton3D:mixamorig_LeftHandIndex2", "Armature/Skeleton3D:mixamorig_LeftHandIndex3", "Armature/Skeleton3D:mixamorig_LeftHandMiddle1", "Armature/Skeleton3D:mixamorig_LeftHandMiddle2", "Armature/Skeleton3D:mixamorig_LeftHandMiddle3", "Armature/Skeleton3D:mixamorig_LeftHandPinky1", "Armature/Skeleton3D:mixamorig_LeftHandPinky2", "Armature/Skeleton3D:mixamorig_LeftHandPinky3", "Armature/Skeleton3D:mixamorig_LeftHandRing1", "Armature/Skeleton3D:mixamorig_LeftHandRing2", "Armature/Skeleton3D:mixamorig_LeftHandRing3", "Armature/Skeleton3D:mixamorig_LeftHandThumb1", "Armature/Skeleton3D:mixamorig_LeftHandThumb2", "Armature/Skeleton3D:mixamorig_LeftHandThumb3", "Armature/Skeleton3D:mixamorig_LeftShoulder", "Armature/Skeleton3D:mixamorig_Neck", "Armature/Skeleton3D:mixamorig_RightArm", "Armature/Skeleton3D:mixamorig_RightForeArm", "Armature/Skeleton3D:mixamorig_RightHand", "Armature/Skeleton3D:mixamorig_RightHandIndex1", "Armature/Skeleton3D:mixamorig_RightHandIndex2", "Armature/Skeleton3D:mixamorig_RightHandIndex3", "Armature/Skeleton3D:mixamorig_RightHandMiddle1", "Armature/Skeleton3D:mixamorig_RightHandMiddle2", "Armature/Skeleton3D:mixamorig_RightHandMiddle3", "Armature/Skeleton3D:mixamorig_RightHandPinky1", "Armature/Skeleton3D:mixamorig_RightHandPinky2", "Armature/Skeleton3D:mixamorig_RightHandPinky3", "Armature/Skeleton3D:mixamorig_RightHandRing1", "Armature/Skeleton3D:mixamorig_RightHandRing2", "Armature/Skeleton3D:mixamorig_RightHandRing3", "Armature/Skeleton3D:mixamorig_RightHandThumb1", "Armature/Skeleton3D:mixamorig_RightHandThumb2", "Armature/Skeleton3D:mixamorig_RightHandThumb3", "Armature/Skeleton3D:mixamorig_RightShoulder", "Armature/Skeleton3D:mixamorig_Spine", "Armature/Skeleton3D:mixamorig_Spine1", "Armature/Skeleton3D:mixamorig_Spine2"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_ul21n"]
+graph_offset = Vector2(205.425, -531.866)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_xj7yo")
 nodes/Animation/position = Vector2(-300, 160)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ly1w4")
+"nodes/Animation 2/position" = Vector2(680, -280)
+nodes/GodotterAnimationNodeOneShot/node = ExtResource("8_2402j")
+nodes/GodotterAnimationNodeOneShot/position = Vector2(920, -420)
+nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_4i0tp")
+nodes/StateMachine/position = Vector2(700, -500)
 nodes/_attack_horizontal/node = SubResource("AnimationNodeAnimation_rbhk1")
 nodes/_attack_horizontal/position = Vector2(1155, 357)
 nodes/_attack_spin/node = SubResource("AnimationNodeAnimation_5t8r7")
@@ -258,10 +293,10 @@ nodes/sprint_lower/position = Vector2(-560, 560)
 nodes/sprint_upper/node = SubResource("AnimationNodeBlend2_otaya")
 nodes/sprint_upper/position = Vector2(-580, -200)
 nodes/timescale/node = SubResource("AnimationNodeTimeScale_0yxyo")
-nodes/timescale/position = Vector2(357, -105)
+nodes/timescale/position = Vector2(380, 0)
 nodes/upperbody/node = SubResource("AnimationNodeAdd2_3gncf")
 nodes/upperbody/position = Vector2(-80, 140)
-node_connections = [&"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"parry_react", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"attack_horisontal_speed", 0, &"_attack_horizontal", &"attack_horizontal", 0, &"attack_uppercut", &"attack_horizontal", 1, &"attack_horisontal_speed", &"attack_spin", 0, &"timescale", &"attack_spin", 1, &"attack_spin_speed", &"attack_spin_speed", 0, &"_attack_spin", &"attack_uppercut", 0, &"attack_spin", &"attack_uppercut", 1, &"attack_uppercut_speed", &"attack_uppercut_speed", 0, &"_attack_uppercut", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lowerbody", 0, &"upperbody", &"lowerbody", 1, &"action_or_locomotion_lower", &"output", 0, &"attack_horizontal", &"parry_react", 0, &"parry_upper", &"parry_react", 1, &"parry_react_speed", &"parry_react_speed", 0, &"_parry_react", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"timescale", 0, &"lowerbody", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
+node_connections = [&"GodotterAnimationNodeOneShot", 0, &"StateMachine", &"GodotterAnimationNodeOneShot", 1, &"Animation 2", &"action_lower", 0, &"parry_lower", &"action_lower", 1, &"attack_lower", &"action_or_locomotion_lower", 0, &"action_lower", &"action_or_locomotion_lower", 1, &"locomotion_lower", &"action_or_locomotion_upper", 0, &"parry_react", &"action_or_locomotion_upper", 1, &"locomotion_upper", &"attack_horisontal_speed", 0, &"_attack_horizontal", &"attack_horizontal", 0, &"attack_uppercut", &"attack_horizontal", 1, &"attack_horisontal_speed", &"attack_spin", 0, &"timescale", &"attack_spin", 1, &"attack_spin_speed", &"attack_spin_speed", 0, &"_attack_spin", &"attack_uppercut", 0, &"attack_spin", &"attack_uppercut", 1, &"attack_uppercut_speed", &"attack_uppercut_speed", 0, &"_attack_uppercut", &"locomotion_lower", 0, &"sprint_lower", &"locomotion_lower", 1, &"airborne_lower", &"locomotion_upper", 0, &"sprint_upper", &"locomotion_upper", 1, &"airborne_upper", &"lowerbody", 0, &"upperbody", &"lowerbody", 1, &"action_or_locomotion_lower", &"output", 0, &"GodotterAnimationNodeOneShot", &"parry_react", 0, &"parry_upper", &"parry_react", 1, &"parry_react_speed", &"parry_react_speed", 0, &"_parry_react", &"sprint_lower", 0, &"run_lower", &"sprint_lower", 1, &"sprint_ lower", &"sprint_upper", 0, &"run_upper", &"sprint_upper", 1, &"sprint", &"timescale", 0, &"lowerbody", &"upperbody", 0, &"Animation", &"upperbody", 1, &"action_or_locomotion_upper"]
 
 [sub_resource type="AnimationRootNode" id="AnimationRootNode_5oj5n"]
 
@@ -350,7 +385,7 @@ shape = SubResource("CapsuleShape3D_xmldd")
 RootWielderNode = NodePath("../meshAnchor/character")
 WeaponNode = NodePath("scissors_vintage")
 TrailNode = NodePath("scissors_vintage/TrailWeapon")
-transform = Transform3D(0.394366, 0.0641302, 0.574772, 0.522334, 0.259158, -0.387303, -0.248278, 0.647089, 0.0981514, -0.264538, 1.07008, 0.601524)
+transform = Transform3D(0.551225, 0.136513, 0.409286, 0.347405, 0.253342, -0.552384, -0.255853, 0.638108, 0.131748, -0.245018, 1.03921, 0.511917)
 bone_name = "mixamorig_RightHand"
 bone_idx = 34
 use_external_skeleton = true
@@ -412,6 +447,11 @@ root_node = NodePath("../meshAnchor/character")
 tree_root = SubResource("AnimationNodeBlendTree_ul21n")
 advance_expression_base_node = NodePath("../meshAnchor/character")
 anim_player = NodePath("/root/@EditorNode@17149/@Panel@13/@VBoxContainer@14/@HSplitContainer@17/@HSplitContainer@25/@HSplitContainer@33/@VBoxContainer@34/@VSplitContainer@36/@VSplitContainer@62/@VBoxContainer@63/@PanelContainer@110/MainScreen/@CanvasItemEditor@9462/@VSplitContainer@9281/@HSplitContainer@9283/@HSplitContainer@9285/@Control@9286/@SubViewportContainer@9287/@SubViewport@9288/PlayerNode/meshAnchor/character/AnimationPlayer")
+parameters/GodotterAnimationNodeOneShot/active = false
+parameters/GodotterAnimationNodeOneShot/internal_active = false
+parameters/GodotterAnimationNodeOneShot/request = 0
+parameters/StateMachine/conditions/in_air = true
+parameters/StateMachine/conditions/on_ground = false
 parameters/action_lower/blend_amount = 0
 parameters/action_or_locomotion_lower/blend_amount = 0
 parameters/action_or_locomotion_upper/blend_amount = 0.0
@@ -472,7 +512,6 @@ shape = SubResource("SphereShape3D_en38a")
 [node name="ComponentGrappleInstigator" type="ComponentGrappleInstigator" parent="."]
 ColliderPath = NodePath("../GrappleDetection")
 PullStrength = nan
-Mass = 1.4013e-45
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00901, 0)
 
 [node name="PlayerGui" parent="." instance=ExtResource("3_32mh5")]
