@@ -53,9 +53,9 @@ def configure_environment(env: SConsEnvironment, libs: list[str], args):
     e = env.Clone()
     e.Append(CPPPATH=os.path.join(current_dir, 'src'))
     if e.get("is_msvc", False):
-        e.Replace(CXXFLAGS=["/std:c++20"])
+        e.Replace(CXXFLAGS=["/std:c++23"])
     else:
-        e.Replace(CXXFLAGS=["-std=c++20"])
+        e.Replace(CXXFLAGS=["-std=c++23"])
     #e.Append(CXXFLAGS=["-Wno-template-id-cdtor"])
     ##
     # Turned out to be unstable. Causing editor to forget parameters when releoading the library. 
